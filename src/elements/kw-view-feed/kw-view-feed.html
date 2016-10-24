@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../kw-share-feed/kw-share-feed.html">
 <link rel="import" href="../kw-share-detail/kw-share-detail.html">
 
@@ -24,21 +25,100 @@
                 left: 0;
                 width: 100%;
             }
-            kw-share-detail {
+            #detail {
                 display: none;
+                @apply --layout-vertical;
+            }
+            #feed {
+                height: 100%;
+                @apply --layout-horizontal;
+            }
+            kw-share-detail, kw-share-feed {
+                @apply --layout-flex;
             }
             kw-share-feed {
-                height: 100%;
+                margin-left: -200px;
+            }
+            .promo {
+                @apply --layout-vertical;
+                position: fixed;
+                top: 70px;
+                left: calc(50% + 230px);
+                width: 400px;
+                height: 400px;
+                background: #dedede;
+                border: 1px solid #d0d0d0;
+            }
+            .promo .follow {
+                @apply --layout-flex;
+            }
+            .promo .stats {
+                @apply --layout-horizontal;
+                @apply --layout-around-justified;
+                margin-bottom: 12px;
+            }
+            .stat-display {
+                @apply --layout-horizontal-reverse;
+                overflow: hidden;
+            }
+            .stat-display span:nth-of-type(1) {
+                font-weight: bold;
+            }
+            .stat-display>div {
+                @apply --layout-vertical;
+                padding-left: 12px;
+            }
+            .stat-display>iron-image {
+                width: 40px;
+                height: 40px;
+            }
+            .online>iron-image {
+                background: rgb(127, 192, 75);
+            }
+            .lines-written>iron-image {
+                background: rgb(255, 132, 42);
+            }
+            @media screen and (max-width: 1345px) {
+                .promo {
+                    display: none;
+                }
+                kw-share-feed {
+                    margin-left: 0px;
+                }
             }
         </style>
         <div class="content">
-            <kw-share-feed id="feed" selected-share="{{selectedShare}}"></kw-share-feed>
-            <kw-share-detail id="detail" share="[[selectedShare]]"></kw-share-detail>
+            <div id="feed">
+                <kw-share-feed selected-share="{{selectedShare}}"></kw-share-feed>
+                <div class="promo">
+                    <div class="follow"></div>
+                    <div class="stats">
+                        <div class="stat-display online">
+                            <div>
+                                <span>[[_commaify(stats.total_active_today)]]</span>
+                                <span>Online today</span>
+                            </div>
+                            <iron-image></iron-image>
+                        </div>
+                        <div class="stat-display lines-written">
+                            <div>
+                                <span>[[_commaify(stats.total_lines_of_code)]]</span>
+                                <span>Lines of code</span>
+                            </div>
+                            <iron-image></iron-image>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="detail">
+                <kw-share-detail share="[[selectedShare]]"></kw-share-detail>
+            </div>
         </div>
     </template>
     <script>
         Polymer({
             is: 'kw-view-feed',
+            behaviors: [Kano.APIClient],
             properties: {
                 route: {
                     type: Object,
@@ -54,12 +134,42 @@
             ],
             attached () {
                 this._supportsAnimations = ('animate' in HTMLElement.prototype);
+                Polymer.RenderStatus.afterNextRender(this, () => {
+                    let displays;
+                    fetch(this._getUrl('stats'))
+                        .then(r => r.json())
+                        .then(stats => this.stats = stats);
+
+                    if (this._supportsAnimations) {
+                        displays = Polymer.dom(this.root).querySelectorAll('.stat-display>div');
+
+                        for (let i = 0; i < displays.length; i++) {
+                            this.transform('translateX(-100%)', displays[i]);
+                            displays[i].animate([{
+                                transform: `translateX(-100%)`
+                            }, {
+                                transform: `translateX(0%)`
+                            }], {
+                                delay: (i * 200) + 100,
+                                duration: 400,
+                                easing: 'ease-out',
+                                fill: 'forwards'
+                            });
+                        }
+                    }
+
+                    
+                    
+                });
+            },
+            _commaify (n) {
+                return n.toLocaleString();
             },
             _showFeed () {
                 if (this.selectedShare && this._supportsAnimations) {
                     return new Promise((resolve, reject) => {
-                        let from = this.$.feed.getSelectedShareElement(),
-                            to = this.$.detail.getShareElement(),
+                        let from = this.$$('kw-share-feed').getSelectedShareElement(),
+                            to = this.$$('kw-share-detail').getShareElement(),
                             fromRect, toRect;
 
                         // Display the feed view
@@ -103,8 +213,8 @@
             },
             _showDetail () {
                 if (this.selectedShare && this._supportsAnimations) {
-                    let from = this.$.feed.getSelectedShareElement(),
-                        to = this.$.detail.getShareElement(),
+                    let from = this.$$('kw-share-feed').getSelectedShareElement(),
+                        to = this.$$('kw-share-detail').getShareElement(),
                         fromRect, toRect;
 
                     // Display the detail view

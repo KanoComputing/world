@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/date-util/date-util.html">
 
 <link rel="import" href="../kano-style/typography.html">
 
@@ -17,7 +18,7 @@
                 height: 250px;
                 width: 250px;
                 color: #6e6e6e;
-                box-shadow: 0 2px 0 0 rgba(0,0,0,0.06);
+                border: 1px solid #e0e0e0;
                 border-radius: 3px;
                 @apply --layout-vertical;
                 @apply --layout-center;
@@ -26,6 +27,7 @@
                 @apply --kw-share-card;
                 background: white;
                 box-sizing: border-box;
+                padding: 16px;
             }
             :host(:focus) {
                 outline: none;
@@ -36,18 +38,40 @@
                 z-index: 0;
                 width: 100%;
                 background: inherit;
+                border-radius: 4px;
             }
-            .info {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+            .top, .bottom {
                 width: 100%;
-                min-height: 100px;
-                padding-left: 18px;
-                box-sizing: border-box;
+                @apply --layout-horizontal;
+                min-height: 30px;
+                margin-bottom: 16px;
+            }
+            .bottom {
+                margin-top: 16px;
+                margin-bottom: 0px;
+            }
+            .share-info {
+                @apply --layout-flex;
+                @apply --layout-horizontal;
+                @apply --layout-end;
+                width: 100%;
+            }
+            .datetime {
+                @apply --layout-horizontal;
+                @apply --layout-end;
+            }
+            .title {
+                color: black;
+                font-weight: bold;
+                margin-right: 12px;
+            }
+            .stats {
+                @apply --layout-horizontal;
             }
             iron-image.avatar {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
+                margin-right: 12px;
             }
             .details {
                 padding-left: 18px;
@@ -55,14 +79,57 @@
             .details h3, .details p {
                 margin: 0;
             }
+            .stats .likes,
+            .stats .comments {
+                padding: 6px;
+            }
+            div[tombstone].top .avatar {
+                border-radius: 50%;
+                background: rgba(0, 0, 0, 0.01);
+                overflow: hidden;
+                z-index: 0;
+            }
+            div[tombstone].top .title {
+                width: 120px;
+                height: 20px;
+                background: rgba(0, 0, 0, 0.03);
+            }
+            div[tombstone].top .author,
+            div[tombstone].top date-util {
+                width: 120px;
+                height: 20px;
+                background: rgba(0, 0, 0, 0.01);
+                color: transparent;
+            }
+            div[tombstone].bottom .likes,
+            div[tombstone].bottom .comments {
+                width: 80px;
+                height: 20px;
+                background: rgba(0, 0, 0, 0.01);
+                color: transparent;
+            }
         </style>
-        <iron-image class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
-        <div class="info">
+        <div class="top" tombstone$="[[!share]]">
             <iron-image class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
-            <div class="details">
-                <h3>[[share.title]]</h3>
-                <p>[[share.user.username]]</p>
+            <div class="share-info">
+                <span class="title">[[share.title]]</span>
+                <span class="author">by [[share.user.username]]</span>
             </div>
+            <div class="datetime">
+                <date-util format="dd Mon yyyy" date="[[_createDate(share.date_created)]]"></date-util>
+            </div>
+        </div>
+        <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade tombstone$="[[!share]]"></iron-image>
+        <div class="bottom" tombstone$="[[!share]]">
+            <div class="stats">
+                <div class="likes">
+                    <span>[[share.likes.length]] likes</span>
+                </div>
+                <div class="comments">
+                    <span>[[share.comments_count]] replies</span>
+                </div>
+            </div>
+            <div class="actions"></div>
         </div>
     </template>
     <script>
@@ -75,6 +142,12 @@
             },
             attached () {
                 this.setAttribute('tabindex', 0);
+            },
+            getCoverElement () {
+                return this.$.cover;
+            },
+            _createDate (formatted) {
+                return new Date(formatted);
             }
         });
     </script>

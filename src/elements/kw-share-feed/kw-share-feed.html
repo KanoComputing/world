@@ -31,8 +31,8 @@
                 transition: opacity linear 200ms;
             }
             kw-share-card, .shell .shell-card {
-                width: 425px;
-                height: 425px;
+                width: 580px;
+                height: 520px;
                 margin: 10px auto;
             }
             @keyframes fade-in {
@@ -47,12 +47,13 @@
                 cursor: pointer;
                 animation: fade-in linear 200ms;
             }
-            @media screen and (max-width: 425px) {
+            @media screen and (max-width: 580px) {
                 kw-share-card, .shell .shell-card {
                     width: 100%;
-                    height: 100vw;
+                    height: 90vw;
                     margin: 10px auto;
                     border-radius: 0;
+                    border: 0;
                 }
             }
         </style>
@@ -88,7 +89,7 @@
             },
             attached () {
                 this.page = 0;
-                this.shellShare = {};
+                this.shellShare = null;
             },
             _loadMoreData () {
                 // When we hit the last page
@@ -113,7 +114,7 @@
                 this.selectedShare = e.model.get('share');
             },
             getSelectedShareElement () {
-                return this.$$(`#${this.selectedShare.slug}`);
+                return this.$$(`#${this.selectedShare.slug}`).getCoverElement();
             }
         });
     </script>

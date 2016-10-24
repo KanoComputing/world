@@ -33,6 +33,7 @@
     "web-component-tester": "^4.3.5",
     "webcomponentsjs": "webcomponents/webcomponentsjs",
     "fetch": "^1.0.0",
-    "es6-promise": "^4.0.5"
+    "es6-promise": "^4.0.5",
+    "date-util": "*"
   }
 }
