@@ -52,8 +52,11 @@
             observers: [
                 '_routeChanged(route.path)'
             ],
+            attached () {
+                this._supportsAnimations = ('animate' in HTMLElement.prototype);
+            },
             _showFeed () {
-                if (this.selectedShare) {
+                if (this.selectedShare && this._supportsAnimations) {
                     return new Promise((resolve, reject) => {
                         let from = this.$.feed.getSelectedShareElement(),
                             to = this.$.detail.getShareElement(),
@@ -99,7 +102,7 @@
                 }
             },
             _showDetail () {
-                if (this.selectedShare) {
+                if (this.selectedShare && this._supportsAnimations) {
                     let from = this.$.feed.getSelectedShareElement(),
                         to = this.$.detail.getShareElement(),
                         fromRect, toRect;

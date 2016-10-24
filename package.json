@@ -1,7 +1,24 @@
 {
   "dependencies": {
+    "babel-preset-es2015": "^6.16.0",
+    "css-slam": "PolymerLabs/css-slam",
     "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-crisper": "^1.1.0",
+    "gulp-html-minifier": "^0.1.8",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-if": "^2.0.1",
+    "gulp-load-plugins": "^1.3.0",
+    "gulp-manifest": "^0.1.1",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
     "merge-stream": "^1.0.0",
-    "polymer-build": "^0.4.1"
+    "mute": "^2.0.6",
+    "parse5": "^2.2.3",
+    "polymer-analyzer": "^2.0.0-alpha.16",
+    "polymer-build": "^0.4.1",
+    "run-sequence": "^1.2.2",
+    "stream": "^0.0.2",
+    "sw-precache": "^4.2.1"
   }
 }
