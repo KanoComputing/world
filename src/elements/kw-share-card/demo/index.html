@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>kw-project-card demo</title>
+
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../kw-project-card.html">
+        <link rel="import" href="../../kano-style/typography.html">
+        <link rel="import" href="../../kano-style/button.html">
+
+        <style is="custom-style" include="demo-pages-shared-styles">
+            kw-project-card {
+                font-family: var(--font-body);
+            }
+            kw-project-card.end {
+                --kw-project-card-heading: {
+                    font-weight: 400;
+                };
+            }
+            kw-project-card.start {
+                --kw-project-card: {
+                    background-color: #FCE100;
+                };
+                --kw-project-card-heading: {
+                    font-weight: bold;
+                };
+            }
+            kw-project-card.project {
+                --kw-project-card: {
+                    background-color: #EF3442;
+                    color: white;
+                };
+            }
+            button.white {
+                background-color: white;
+                color: #333;
+            }
+        </style>
+    </head>
+
+    <body unresolved>
+        <div class="vertical-section-container centered">
+            <h3>With project</h3>
+            <demo-snippet>
+                <template>
+                    <kw-project-card image="/assets/projects/icons/light/pixel_1.png" class="project" heading="Turn on the light">
+                        <div class="card-content">
+                            <p>by kevinmurphy</p>
+                        </div>
+                        <div class="card-actions">
+                            <button class="white">Start</button>
+                        </div>
+                    </kw-project-card>
+                </template>
+            </demo-snippet>
+            <h3>As start card</h3>
+            <demo-snippet>
+                <template>
+                    <kw-project-card class="start" heading="Start a new camera project">
+                        <div class="card-actions">
+                            <button class="white">Start from scratch</button>
+                        </div>
+                    </kw-project-card>
+                </template>
+            </demo-snippet>
+            <h3>End of list card</h3>
+            <demo-snippet>
+                <template>
+                    <kw-project-card class="end" heading="Done all the light challenges? Tell us what you'd like to make next">
+                        <div class="card-actions">
+                            <button>Request Challenge</button>
+                        </div>
+                    </kw-project-card>
+                </template>
+            </demo-snippet>
+    </body>
+</html>

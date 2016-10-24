@@ -1,0 +1,159 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../kw-share-feed/kw-share-feed.html">
+<link rel="import" href="../kw-share-detail/kw-share-detail.html">
+
+<dom-module id="kw-view-feed">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply --layout-vertical;
+                background: #f1f1f1;
+                position: relative;
+                overflow: hidden;
+            }
+            .content {
+                position: relative;
+                @apply --layout-flex
+            }
+            .content>* {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+            kw-share-detail {
+                display: none;
+            }
+            kw-share-feed {
+                height: 100%;
+            }
+        </style>
+        <div class="content">
+            <kw-share-feed id="feed" selected-share="{{selectedShare}}"></kw-share-feed>
+            <kw-share-detail id="detail" share="[[selectedShare]]"></kw-share-detail>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-view-feed',
+            properties: {
+                route: {
+                    type: Object,
+                    notify: true
+                },
+                selectedShare: {
+                    type: Object,
+                    observer: '_selectedShareChanged'
+                }
+            },
+            observers: [
+                '_routeChanged(route.path)'
+            ],
+            _showFeed () {
+                if (this.selectedShare) {
+                    return new Promise((resolve, reject) => {
+                        let from = this.$.feed.getSelectedShareElement(),
+                            to = this.$.detail.getShareElement(),
+                            fromRect, toRect;
+
+                        // Display the feed view
+                        this.$.feed.style.display = 'flex';
+
+                        // Grab the required boxes, only once
+                        fromRect = from.getBoundingClientRect();
+                        toRect = to.getBoundingClientRect();
+
+                        // Ensure that the origin of the scaling will be from top left
+                        to.style.transformOrigin = 'top left';
+
+                        // Animates the detail view to fit the previous share in the list, then hides it
+                        to.animate([{
+                            transform: 'translate(0px, 0px) scale(1)',
+                            opacity: 1
+                        }, {
+                            transform: `translate(${fromRect.left - toRect.left}px, ${fromRect.top - toRect.top}px) scale(${fromRect.width / toRect.width}, ${fromRect.height / toRect.height})`,
+                            opacity: 0
+                        }], {
+                            duration: 200
+                        }).onfinish = () => {
+                            this.$.detail.style.display = 'none';
+                            resolve();
+                        };
+
+                        // Fade in the feed view
+                        this.$.feed.animate([{
+                            opacity: 0
+                        }, {
+                            opacity: 1
+                        }], {
+                            duration: 200
+                        });
+                    });
+                } else {
+                    this.$.feed.style.display = 'flex';
+                    this.$.detail.style.display = 'none';
+                    return Promise.resolve();
+                }
+            },
+            _showDetail () {
+                if (this.selectedShare) {
+                    let from = this.$.feed.getSelectedShareElement(),
+                        to = this.$.detail.getShareElement(),
+                        fromRect, toRect;
+
+                    // Display the detail view
+                    this.$.detail.style.display = 'flex';
+
+                    // Grab the required boxes, only once
+                    fromRect = from.getBoundingClientRect();
+                    toRect = to.getBoundingClientRect();
+
+                    // Ensure that the origin of the scaling will be from top left
+                    to.style.transformOrigin = 'top left';
+
+                    // Position the detail view on top of the shared selected from the feed, and animate it to its original position
+                    to.animate([{
+                        transform: `translate(${fromRect.left - toRect.left}px, ${fromRect.top - toRect.top}px) scale(${fromRect.width / toRect.width}, ${fromRect.height / toRect.height})`,
+                        opacity: 0
+                    }, {
+                        transform: 'translate(0px, 0px) scale(1)',
+                        opacity: 1
+                    }], {
+                        duration: 200
+                    });
+
+                    // Fade out the feed view
+                    this.$.feed.animate([{
+                        opacity: 1
+                    }, {
+                        opacity: 0
+                    }], {
+                        duration: 200
+                    }).onfinish = () => {
+                        this.$.feed.style.display = 'none';
+                    };
+                } else {
+                    this.$.feed.style.display = 'none';
+                    this.$.detail.style.display = 'flex';
+                }
+            },
+            _selectedShareChanged (share) {
+                if (share) {
+                    this.set('route.path', `/${share.slug}`);
+                }
+            },
+            _routeChanged (path) {
+                if (path === '') {
+                    this._showFeed().then(() => {
+                        this.selectedShare = null;
+                    });
+                } else {
+                    this._showDetail();
+                }
+            }
+        });
+    </script>
+</dom-module>

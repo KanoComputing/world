@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>kw-projects-category demo</title>
+
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../kw-projects-category.html">
+        <link rel="import" href="../../kano-style/typography.html">
+
+        <style is="custom-style" include="demo-pages-shared-styles">
+            kw-projects-category {
+                font-family: var(--font-body);
+                background-color: black; 
+            }
+        </style>
+    </head>
+
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>default</h3>
+            <demo-snippet>
+                <template>
+                    <kw-projects-category></kw-projects-category>
+                    <script>
+                        document.addEventListener('WebComponentsReady', function() {
+                            let el = document.querySelector('kw-projects-category');
+
+                            el.category = {
+                                label: 'light',
+                                header: 'Bring lights to life',
+                                mode_color: '#EF3442',
+                                start_link: 'https://apps.kano.me/make?mode=lightboard',
+                                description: 'Create incredible light shows, music visualisers, weather displays, games and more',
+                                projects: [{
+                                    creator: "kevinmurphy",
+                                    image: "/assets/projects/icons/light/pixel_1.png",
+                                    link: "https://apps.kano.me/story/pixel_1",
+                                    slug: "pixel_1",
+                                    title: "Turn on the lights"
+                                }]
+                            };
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+    </body>
+</html>

@@ -1,0 +1,120 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+
+
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kw-share-card/kw-share-card.html">
+
+<dom-module id="kw-share-feed">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply --layout-vertical;
+                position: relative;
+                overflow: hidden;
+            }
+            iron-scroll-threshold, .shell {
+                @apply --layout-flex;
+                @apply --layout-vertical;
+            }
+            iron-list {
+                @apply --layout-flex;
+            }
+            .shell {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                transition: opacity linear 200ms;
+            }
+            kw-share-card, .shell .shell-card {
+                width: 425px;
+                height: 425px;
+                margin: 10px auto;
+            }
+            @keyframes fade-in {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            kw-share-card {
+                cursor: pointer;
+                animation: fade-in linear 200ms;
+            }
+            @media screen and (max-width: 425px) {
+                kw-share-card, .shell .shell-card {
+                    width: 100%;
+                    height: 100vw;
+                    margin: 10px auto;
+                    border-radius: 0;
+                }
+            }
+        </style>
+        <div class="shell" id="shell">
+            <kw-share-card share="[[shellShare]]"></kw-share-card>
+            <kw-share-card share="[[shellShare]]"></kw-share-card>
+        </div>
+        <iron-scroll-threshold id="threshold" lower-threshold="1000" on-lower-threshold="_loadMoreData">
+            <iron-list items="[[shares]]" as="share" scroll-target="threshold">
+                <template>
+                    <div>
+                        <kw-share-card id$="[[share.slug]]" share="[[share]]" on-tap="_selectShare"></kw-share-card>
+                    </div>
+                </template>
+            </iron-list>
+        </iron-scroll-threshold>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-share-feed',
+            behaviors: [Kano.APIClient],
+            properties: {
+                shares: {
+                    type: Array,
+                    value: () => {
+                        return [];
+                    }
+                },
+                selectedShare: {
+                    type: Object,
+                    notify: true
+                }
+            },
+            attached () {
+                this.page = 0;
+                this.shellShare = {};
+            },
+            _loadMoreData () {
+                // When we hit the last page
+                if (this.page === null) {
+                    return;
+                }
+                fetch(`${this._getUrl('feed')}?featured=true&page=${this.page}&limit=15`)
+                    .then(r => r.json())
+                    .then(r => {
+                        r.entries.forEach(share => {
+                            this.push('shares', share);
+                        });
+                        this.page = r.next;
+                        if (!this.populated) {
+                            this.populated = true;
+                            this.$.shell.style.opacity = 0;
+                        }
+                        this.$.threshold.clearTriggers();
+                    });
+            },
+            _selectShare (e) {
+                this.selectedShare = e.model.get('share');
+            },
+            getSelectedShareElement () {
+                return this.$$(`#${this.selectedShare.slug}`);
+            }
+        });
+    </script>
+</dom-module>

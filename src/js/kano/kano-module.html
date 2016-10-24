@@ -1,0 +1,35 @@
+<script>
+    (function (Kano) {
+
+        class Module extends HTMLElement {
+
+            static get observedAttributes() {
+                return ['id'];
+            }
+
+            constructor () {
+                super();
+            }
+
+            attributeChangedCallback (name, oldValue, newValue) {
+                if (name === 'id') {
+                    Module.register(newValue, this);
+                }
+            }
+
+            static register (name, element) {
+                Module._modules = Module._modules || {};
+                Module._modules[name] = element;
+            }
+
+            static import (name) {
+                return Module._modules[name];
+            }
+        }
+
+        customElements.define('kano-module', Module);
+
+        Kano.Module = Module;
+
+    })(window.Kano = window.Kano || {});    
+</script>

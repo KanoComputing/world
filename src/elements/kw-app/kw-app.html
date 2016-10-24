@@ -1,0 +1,83 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/kano-nav-bar/kano-nav-bar.html">
+<link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
+
+<link rel="import" type="" href="../kano-style/typography.html">
+
+<dom-module id="kw-app">
+    <template>
+        <style>
+            :host {
+                display: block;
+                font-family: var(--font-body);
+                @apply --layout-vertical;
+            }
+            kano-nav-bar {
+                --kano-nav-bar-font-family: var(--font-body);
+                transform: translateZ(0);
+            }
+            iron-lazy-pages, iron-lazy-pages>*:not(template) {
+                @apply --layout-flex;
+                @apply --layout-vertical;
+            }
+            .projects-shell {
+                width: 100%;
+                height: 100%;
+            }
+            .projects-shell .masthead {
+                @apply --layout-horizontal;
+                height: 265px;
+            }
+            .projects-shell .masthead .speaker {
+                width: 52%;
+                background-color: rgb(89, 157, 239);
+            }
+            .projects-shell .masthead .camera {
+                width: 23%;
+                background-color: rgb(252, 225, 0);
+            }
+            .projects-shell .masthead .pixel {
+                width: 25%;
+                background-color: rgb(239, 52, 66);
+            }
+            .projects-shell .category {
+                background-color: #303030;
+                min-height: 360px;
+            }
+            .projects-shell .category:nth-of-type(even) {
+                background-color: #4a4a4a;
+            }
+        </style>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+        <kano-nav-bar assets-path="/assets/navbar/" selected-link="[[_computeSelectedLink(route.path)]]" world-root="http://localhost:7000"></kano-nav-bar>
+        <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" restamp skip-waiting>
+            <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
+                <kw-view-projects>
+                    <div class="projects-shell">
+                        <div class="masthead">
+                            <div class="speaker"></div>
+                            <div class="camera"></div>
+                            <div class="pixel"></div>
+                        </div>
+                        <div class="category"></div>
+                        <div class="category"></div>
+                    </div>
+                </kw-view-projects>
+            </template>
+            <template is="iron-lazy-page" name="shares" path="/elements/kw-view-feed/kw-view-feed.html">
+                <kw-view-feed route="{{subroute}}"></kw-view-feed>
+            </template>
+        </iron-lazy-pages>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-app',
+            _computeSelectedLink (path) {
+                return path.split('/')[1];
+            }
+        });
+    </script>
+</dom-module>

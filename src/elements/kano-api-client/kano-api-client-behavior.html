@@ -1,0 +1,16 @@
+<link rel="import" type="" href="../../config.html">
+<script>
+    (function (Kano) {
+
+        const resourceMap = {
+            'feed': 'share'
+        };
+
+        // @polymerBehavior
+        Kano.APIClient = {
+            _getUrl (resource) {
+                return `${Kano.World.config.API_URL}/${resourceMap[resource]}`;
+            }
+        };
+    })(window.Kano = window.Kano || {});
+</script>

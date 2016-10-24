@@ -1,0 +1,81 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+
+<link rel="import" href="../kano-style/typography.html">
+
+<!--
+
+
+    @demo demo/index.html
+-->
+<dom-module id="kw-share-card">
+    <template>
+        <style>
+            :host {
+                display: block;
+                height: 250px;
+                width: 250px;
+                color: #6e6e6e;
+                box-shadow: 0 2px 0 0 rgba(0,0,0,0.06);
+                border-radius: 3px;
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-justified;
+                overflow: hidden;
+                @apply --kw-share-card;
+                background: white;
+                box-sizing: border-box;
+            }
+            :host(:focus) {
+                outline: none;
+                box-shadow: 0 3px 0 0 rgba(0,0,0,0.08);
+            }
+            iron-image.cover {
+                @apply --layout-flex;
+                z-index: 0;
+                width: 100%;
+                background: inherit;
+            }
+            .info {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                width: 100%;
+                min-height: 100px;
+                padding-left: 18px;
+                box-sizing: border-box;
+            }
+            iron-image.avatar {
+                width: 40px;
+                height: 40px;
+            }
+            .details {
+                padding-left: 18px;
+            }
+            .details h3, .details p {
+                margin: 0;
+            }
+        </style>
+        <iron-image class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
+        <div class="info">
+            <iron-image class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
+            <div class="details">
+                <h3>[[share.title]]</h3>
+                <p>[[share.user.username]]</p>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-share-card',
+            properties: {
+                share: {
+                    type: Object
+                }
+            },
+            attached () {
+                this.setAttribute('tabindex', 0);
+            }
+        });
+    </script>
+</dom-module>

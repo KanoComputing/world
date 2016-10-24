@@ -1,0 +1,566 @@
+{
+  "light": {
+      "label": "light",
+      "header": "Bring lights to life",
+      "description": "Create incredible light shows, music visualisers, weather displays, games and more",
+      "mode_color": "#EF3442",
+      "start_link": "https://apps.kano.me/make?mode=lightboard",
+      "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+      "api_progress_tracking": "make-apps",
+      "projects": [
+          {
+              "title": "Turn on the lights",
+              "slug": "pixel_1",
+              "creator": "kevinmurphy",
+              "link": "https://apps.kano.me/story/pixel_1",
+              "image": "/assets/projects/icons/light/pixel_1.png"
+          },
+          {
+              "title": "Light loops",
+              "slug": "pixel_2",
+              "creator": "arif",
+              "link": "https://apps.kano.me/story/pixel_2",
+              "image": "/assets/projects/icons/light/pixel_2.png"
+          },
+          {
+              "title": "Shhhhh!",
+              "slug": "pixel_shhh",
+              "creator": "mikegreer",
+              "link": "https://apps.kano.me/story/pixel_shhh",
+              "image": "/assets/projects/icons/light/pixel_shh.png"
+          },
+          {
+              "title": "Clap flash",
+              "slug": "pixel_clap",
+              "creator": "cptncake",
+              "link": "https://apps.kano.me/story/pixel_clap",
+              "image": "/assets/projects/icons/light/pixel_clap_flash.png"
+          },
+          {
+              "title": "Color mix lights",
+              "slug": "pixel_4",
+              "creator": "Angeliki",
+              "link": "https://apps.kano.me/story/light/pixel_4",
+              "image": "/assets/projects/icons/light/pixel_color.png"
+          },
+          {
+              "title": "Clap clock",
+              "slug": "pixel_clap_clock",
+              "creator": "Brandon",
+              "link": "https://apps.kano.me/story/pixel_clap_clock",
+              "image": "/assets/projects/icons/light/pixel_clap_clock.png"
+          },
+          {
+              "title": "Light beats",
+              "slug": "pixel_light_beats",
+              "creator": "Hicks",
+              "link": "https://apps.kano.me/story/pixel_light_beats",
+              "image": "/assets/projects/icons/light/pixel_music.png"
+          },
+          {
+              "title": "Sound meter",
+              "slug": "pixels_music",
+              "creator": "Emily",
+              "link": "https://apps.kano.me/story/pixel_music",
+              "image": "/assets/projects/icons/light/pixel_music.png"
+          },
+          {
+              "title": "Marian Hill visualizer",
+              "slug": "pixels_marian_hill",
+              "creator": "marian_hill",
+              "link": "http://apps.kano.me/story/pixels_marian_hill",
+              "image": "/assets/projects/icons/light/pixel_marian_hill.png"
+          }
+      ]
+  },
+  "camera": {
+      "label": "camera",
+      "header": "Amazing camera creations",
+      "description": "Make amazing apps, filters and clever rules for the Camera Kit, or your computer’s webcam",
+      "mode_color": "#FCE100",
+      "start_link": "https://apps.kano.me/make?mode=camera",
+      "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+      "api_progress_tracking": "make-apps",
+      "projects": [
+          {
+              "title": "Clap to snap",
+              "slug": "camera_clap",
+              "creator": "mikegreer",
+              "link": "https://apps.kano.me/story/camera_clap",
+              "image": "/assets/projects/icons/camera/clap_to_snap.png"
+          },
+          {
+              "title": "Black and white",
+              "slug": "camera_bw",
+              "creator": "kevinmurphy",
+              "link": "https://apps.kano.me/story/camera_bw",
+              "image": "/assets/projects/icons/camera/camera_bw_filter.png"
+          },
+          {
+              "title": "Color filter",
+              "slug": "camera_recolor",
+              "creator": "Brandon",
+              "link": "https://apps.kano.me/story/camera_recolor",
+              "image": "/assets/projects/icons/camera/filter.png"
+          },
+          {
+              "title": "Potato head",
+              "slug": "camera_potato_head",
+              "creator": "arif",
+              "link": "https://apps.kano.me/story/camera_potato_head",
+              "image": "/assets/projects/icons/camera/camera_potato_head.png"
+          },
+          {
+              "title": "Anger cam",
+              "slug": "camera_anger",
+              "creator": "Dominique",
+              "link": "https://apps.kano.me/story/camera_anger",
+              "image": "/assets/projects/icons/camera/camera_anger.png"
+          },
+          {
+              "title": "Selfie Kaleidoscope",
+              "slug": "camera_kaleidoscope",
+              "creator": "lukeumber",
+              "link": "https://apps.kano.me/story/camera_kaleidoscope",
+              "image": "/assets/projects/icons/camera/camera_kaleidoscope.png"
+          },
+          {
+              "title": "Minecraft yourself",
+              "slug": "camera_minecraft_yourself",
+              "creator": "nvs",
+              "link": "https://apps.kano.me/story/camera_minecraft_yourself",
+              "image": "/assets/projects/icons/camera/minecraft_yourself.png"
+          },
+          {
+              "title": "Gif factory",
+              "slug": "camera_gif_factory",
+              "creator": "cptncake",
+              "link": "https://apps.kano.me/story/camera_gif_factory",
+              "image": "/assets/projects/icons/camera/gif_factory.png"
+          }
+      ]
+  },
+  "data_and_sound": {
+      "label": "sound",
+      "header": "Code with sound and build with data",
+      "description": "Code music, loops and beats, funny sounds. Teach your computer to speak",
+      "mode_color": "white",
+      "start_link": "https://apps.kano.me/make",
+      "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+      "api_progress_tracking": "make-apps",
+      "projects": [
+          {
+              "title": "Funny soundboard",
+              "slug": "funny_soundboard",
+              "creator": "Skjoldan",
+              "link": "https://apps.kano.me/story/funny_soundboard",
+              "image": "/assets/projects/icons/data_and_sound/sounds.png"
+          },
+          {
+              "title": "Space tracker",
+              "slug": "space_tracker",
+              "creator": "Hicks",
+              "link": "https://apps.kano.me/story/space_tracker",
+              "image": "/assets/projects/icons/data_and_sound/data_space.png"
+          },
+          {
+              "title": "Talking clock",
+              "slug": "talking_clock",
+              "creator": "Liviavs",
+              "link": "https://apps.kano.me/story/talking_clock",
+              "image": "/assets/projects/icons/data_and_sound/talking_clock.png"
+          },
+          {
+              "title": "Draw sound",
+              "slug": "draw_sound",
+              "creator": "Angeliki",
+              "link": "https://apps.kano.me/story/draw_sound",
+              "image": "/assets/projects/icons/data_and_sound/draw_sound.png"
+          },
+          {
+              "title": "Sports round",
+              "slug": "sports_round",
+              "creator": "R.cocetta",
+              "link": "https://apps.kano.me/story/sports_round",
+              "image": "/assets/projects/icons/data_and_sound/data_sports.png"
+          },
+          {
+              "title": "Scratch DJ",
+              "slug": "scratch_dj",
+              "creator": "Aaronhinchion",
+              "link": "https://apps.kano.me/story/scratch_dj",
+              "image": "/assets/projects/icons/data_and_sound/sound_dj.png"
+          }
+      ]
+   },
+    "drawing": {
+        "label": "art",
+        "header": "Incredible art",
+        "description": "Bring your art to life with animation",
+        "mode_color": "white",
+        "start_link": "https://apps.kano.me/make",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-apps",
+        "projects": [
+            {
+                "title": "Drawing in your app",
+                "slug": "draw_intro",
+                "creator": "lukeumber",
+                "link": "https://apps.kano.me/story/draw_intro",
+                "image": "/assets/projects/icons/drawing/draw_intro.png"
+            },
+            {
+                "title": "Cheese generator",
+                "slug": "draw_swiss_cheese",
+                "creator": "Roonio",
+                "link": "https://apps.kano.me/story/draw_swiss_cheese",
+                "image": "/assets/projects/icons/drawing/draw_cheese.png"
+            },
+            {
+                "title": "Sitcker randomiser",
+                "slug": "sticker_randomiser",
+                "creator": "R.cocetta",
+                "link": "https://apps.kano.me/story/sticker_randomiser",
+                "image": "/assets/projects/icons/drawing/sticker-randomiser.png"
+            },
+            {
+                "title": "Animating stickers",
+                "slug": "sticker_animation",
+                "creator": "Bruno",
+                "link": "https://apps.kano.me/story/sticker_animation",
+                "image": "/assets/projects/icons/drawing/sticker_animation.png"
+            },
+            {
+                "title": "Car chase",
+                "slug": "car_chase",
+                "creator": "Emily",
+                "link": "https://apps.kano.me/story/car_chase",
+                "image": "/assets/projects/icons/drawing/sticker_car_chase.png"
+            },
+            {
+                "title": "Wandering trails",
+                "slug": "wandering_trails",
+                "creator": "Hicks",
+                "link": "https://apps.kano.me/story/wandering_trails",
+                "image": "/assets/projects/icons/drawing/wandering_trails.png"
+            }
+        ]
+    },
+    "make_art_101": {
+        "label": "art",
+        "header": "Make Art 101",
+        "description": "Code awesome masterpieces. No pen or pad needed",
+        "mode_color": "white",
+        "start_link": "https://art.kano.me/playground",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-art-basic",
+        "projects": [
+            {
+                "title": "Sunny Day",
+                "slug": 1,
+                "link": "https://art.kano.me/challenge/basic/sunnyday",
+                "image": "/assets/projects/icons/make_art101/sunny-day.png"
+            },
+            {
+                "title": "Swiss Flag",
+                "slug": 3,
+                "link": "https://art.kano.me/challenge/basic/swissflag",
+                "image": "/assets/projects/icons/make_art101/swissflag.png"
+            },
+            {
+                "title": "Stare in the Dark",
+                "slug": 4,
+                "link": "https://art.kano.me/challenge/basic/stare",
+                "image": "/assets/projects/icons/make_art101/stare.png"
+            },
+            {
+                "title": "Your first face",
+                "slug": 5,
+                "link": "https://art.kano.me/challenge/basic/smiley",
+                "image": "/assets/projects/icons/make_art101/smiley.png"
+            },
+            {
+                "title": "Blue Balloon",
+                "slug": 6,
+                "link": "https://art.kano.me/challenge/basic/baloon",
+                "image": "/assets/projects/icons/make_art101/blue-balloon.png"
+            },
+            {
+                "title": "Stickman",
+                "slug": 7,
+                "link": "https://art.kano.me/challenge/basic/stickman",
+                "image": "/assets/projects/icons/make_art101/stickman.png"
+            }
+        ]
+    },
+    "summer_camp": {
+        "label": "art",
+        "header": "Summer Camp",
+        "description": "Go to camp and take on these summery challenges",
+        "mode_color": "white",
+        "start_link": "https://art.kano.me/playground",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-art-summercamp",
+        "projects": [
+            {
+                "title": "Camp Sign",
+                "slug": 1,
+                "link": "https://art.kano.me/challenge/summercamp/camp_sign",
+                "image": "/assets/projects/icons/summercamp/camp_sign.png"
+            },
+            {
+                "title": "Campsite",
+                "slug": 2,
+                "link": "https://art.kano.me/challenge/summercamp/campsite",
+                "image": "/assets/projects/icons/summercamp/campsite.png"
+            },
+            {
+                "title": "Tent",
+                "slug": 3,
+                "link": "https://art.kano.me/challenge/summercamp/tent",
+                "image": "/assets/projects/icons/summercamp/tent.png"
+            },
+            {
+                "title": "Flag",
+                "slug": 4,
+                "link": "https://art.kano.me/challenge/summercamp/flag",
+                "image": "/assets/projects/icons/summercamp/flag.png"
+            },
+            {
+                "title": "Camp Badge",
+                "slug": 5,
+                "link": "https://art.kano.me/challenge/summercamp/camp_badge",
+                "image": "/assets/projects/icons/summercamp/camp_badge.png"
+            },
+            {
+                "title": "Campfire",
+                "slug": 6,
+                "link": "https://art.kano.me/challenge/summercamp/campfire",
+                "image": "/assets/projects/icons/summercamp/campfire.png"
+            },
+            {
+                "title": "Ghost",
+                "slug": 7,
+                "link": "https://art.kano.me/challenge/summercamp/Ghost",
+                "image": "/assets/projects/icons/summercamp/ghost.png"
+            },
+            {
+                "title": "Backpack",
+                "slug": 8,
+                "link": "https://art.kano.me/challenge/summercamp/backpack",
+                "image": "/assets/projects/icons/summercamp/backpack.png"
+            },
+            {
+                "title": "Compass",
+                "slug": 9,
+                "link": "https://art.kano.me/challenge/summercamp/compass",
+                "image": "/assets/projects/icons/summercamp/compass.png"
+            },
+            {
+                "title": "Camera",
+                "slug": 10,
+                "link": "https://art.kano.me/challenge/summercamp/camera",
+                "image": "/assets/projects/icons/summercamp/camera.png"
+            },
+            {
+                "title": "Bear",
+                "slug": 11,
+                "link": "https://art.kano.me/challenge/summercamp/bear",
+                "image": "/assets/projects/icons/summercamp/bear.png"
+            },
+            {
+                "title": "Flashlight",
+                "slug": 12,
+                "link": "https://art.kano.me/challenge/summercamp/flashlight",
+                "image": "/assets/projects/icons/summercamp/flashlight.png"
+            },
+            {
+                "title": "Guitar",
+                "slug": 13,
+                "link": "https://art.kano.me/challenge/summercamp/guitar",
+                "image": "/assets/projects/icons/summercamp/guitar.png"
+            },
+            {
+                "title": "Cinema",
+                "slug": 14,
+                "link": "https://art.kano.me/challenge/summercamp/cinema",
+                "image": "/assets/projects/icons/summercamp/cinema.png"
+            },
+            {
+                "title": "Bow and Arrow",
+                "slug": 15,
+                "link": "https://art.kano.me/challenge/summercamp/bow_and_arrow",
+                "image": "/assets/projects/icons/summercamp/bow_and_arrow.png"
+            },
+            {
+                "title": "Table Tennis",
+                "slug": 16,
+                "link": "https://art.kano.me/challenge/summercamp/table_tennis",
+                "image": "/assets/projects/icons/summercamp/table_tennis.png"
+            },
+            {
+                "title": "Fishing",
+                "slug": 17,
+                "link": "https://art.kano.me/challenge/summercamp/fishing",
+                "image": "/assets/projects/icons/summercamp/fishing.png"
+            },
+            {
+                "title": "Hiking",
+                "slug": 18,
+                "link": "https://art.kano.me/challenge/summercamp/hiking",
+                "image": "/assets/projects/icons/summercamp/hiking.png"
+            },
+            {
+                "title": "Foraging",
+                "slug": 19,
+                "link": "https://art.kano.me/challenge/summercamp/foraging",
+                "image": "/assets/projects/icons/summercamp/foraging.png"
+            },
+            {
+                "title": "Tree",
+                "slug": 20,
+                "link": "https://art.kano.me/challenge/summercamp/tree",
+                "image": "/assets/projects/icons/summercamp/tree.png"
+            },
+            {
+                "title": "Fireworks",
+                "slug": 21,
+                "link": "https://art.kano.me/challenge/summercamp/fireworks",
+                "image": "/assets/projects/icons/summercamp/fireworks.png"
+            }
+        ]
+    },
+    "ozwald_boateng": {
+        "label": "fashion art",
+        "header": "Make fashion with code",
+        "description": "Create these fashionable patterns fit for the catwalk, with fashion designer Oswald Boateng",
+        "mode_color": "white",
+        "start_link": "https://art.kano.me/playground",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-art-ozwaldboateng",
+        "projects": [
+            {
+                "title": "Color",
+                "slug": 1,
+                "link": "https://art.kano.me/challenge/ozwaldboateng/color",
+                "image": "/assets/projects/icons/ozwaldboateng/color.png"
+            },
+            {
+                "title": "Material",
+                "slug": 2,
+                "link": "https://art.kano.me/challenge/ozwaldboateng/material",
+                "image": "/assets/projects/icons/ozwaldboateng/material.png"
+            },
+            {
+                "title": "Cut",
+                "slug": 3,
+                "link": "https://art.kano.me/challenge/ozwaldboateng/cut",
+                "image": "/assets/projects/icons/ozwaldboateng/cut.png"
+            },
+            {
+                "title": "Pattern",
+                "slug": 4,
+                "link": "https://art.kano.me/challenge/ozwaldboateng/pattern",
+                "image": "/assets/projects/icons/ozwaldboateng/pattern.png"
+            },
+            {
+                "title": "Ancient Codes",
+                "slug": 5,
+                "link": "https://art.kano.me/challenge/ozwaldboateng/ancientcodes",
+                "image": "/assets/projects/icons/ozwaldboateng/ancientcodes.png"
+            },
+            {
+                "title": "Inspiration",
+                "slug": 6,
+                "link": "https://art.kano.me/challenge/ozwaldboateng/inspiration",
+                "image": "/assets/projects/icons/ozwaldboateng/inspiration.png"
+            },
+            {
+                "title": "Bespoke Design",
+                "slug": 7,
+                "link": "https://art.kano.me/challenge/ozwaldboateng/bespokedesign",
+                "image": "/assets/projects/icons/ozwaldboateng/bespokedesign.png"
+            },
+            {
+                "title": "Master Challenge",
+                "slug": 8,
+                "link": "https://art.kano.me/challenge/ozwaldboateng/masterchallenge",
+                "image": "/assets/projects/icons/ozwaldboateng/masterchallenge.png"
+            }
+        ]
+    },
+    "minecraft": {
+        "label": "minecraft",
+        "header": "Minecraft",
+        "description": "Don’t play Minecraft, hack it. With a few blocks of code, make it do what you want",
+        "mode_color": "white",
+        "start_link": "/projects/category/make-minecraft",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-minecraft",
+        "projects": [
+            {
+                "title": "Code Minecraft",
+                "slug": 1,
+                "description": "Learn the power of the Make button.",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/minecraft_1.png"
+            },
+            {
+                "title": "Diamond Floor",
+                "slug": 2,
+                "description": "Create a whole floor made of nothing but diamond!",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/minecraft_2.png"
+            },
+            {
+                "title": "Floating Water Cube",
+                "slug": 3,
+                "description": "Build a huge hovering block of water",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/minecraft_3.png"
+            },
+            {
+                "title": "Shady Tunnels",
+                "slug": 4,
+                "description": "You're on your journey to becoming the master builder. It's tunnel time...",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/minecraft_4.png"
+            }
+        ]
+    },
+    "kit_projects": {
+        "label": "computer kit",
+        "header": "Kit Projects",
+        "description": "Make your Computer Kit do even more cool things",
+        "mode_color": "white",
+        "start_link": "#",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "kit_projects",
+        "projects": [
+            {
+                "title": "Joke Machine",
+                "description": "Can a computer be funny? Teach your Kano to tell your amazing jokes.",
+                "link": "/projects/create-a-joke-machine",
+                "image": "https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/covers/557b0dc602dfef070035f98e.png"
+            },
+            {
+                "title": "Exploding TNT",
+                "description": "Write some Python to create exploding TNT in Minecraft.",
+                "link": "/projects/how-to-blow-up-tnt-in-minecraft",
+                "image": "https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/covers/5677d777374988132d1e4a11.png"
+            },
+            {
+                "title": "Sensational Song",
+                "description": "Write your next song with code!",
+                "link": "/projects/write-a-sensational-song",
+                "image": "https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/covers/555e102dee27e90a00c1a09b.png"
+            },
+            {
+                "title": "Code your Pizza",
+                "description": "Make your own pizza and then show off your favorite toppings on Kano World.",
+                "link": "/projects/code-your-own-pizza",
+                "image": "https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/covers/54cb9053ec58290600bc386c.png"
+            }
+        ]
+    }
+}

@@ -1,0 +1,254 @@
+<link rel="import" type="" href="../../bower_components/polymer/polymer.html">
+<link rel="import" type="" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" type="" href="../../bower_components/iron-media-query/iron-media-query.html">
+
+<link rel="import" type="" href="../kw-projects-category/kw-projects-category.html">
+
+<dom-module id="kw-view-projects">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply --layout-vertical;
+                height: 100%;
+            }
+            .masthead {
+                @apply --layout-horizontal;
+                height: 17vw;
+                max-height: 359px;
+                min-height: 265px;
+                color: white;
+            }
+            .masthead>div {
+                padding: 0px 10px;
+            }
+            .speaker {
+                width: 52%;
+                position: relative;
+                @apply --layout-vertical;
+                @apply --layout-center-justified;
+            }
+            .speaker>iron-image {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgb(89, 157, 239);
+            }
+            .camera>iron-image,
+            .pixel>iron-image {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .camera {
+                position: relative;
+                width: 23%;
+            }
+            .camera>iron-image {
+                background-color: rgb(252, 225, 0);
+            }
+            .pixel {
+                position: relative;
+                width: 25%;
+            }
+            .pixel>iron-image {
+                background-color: rgb(239, 52, 66);
+            }
+            .heading {
+                width: 300px;
+                padding-left: 37px;
+                width: 300px;
+                transform: translateZ(0);
+            }
+            .heading h3 {
+                line-height: 100%;
+                margin-bottom: 7px;
+                margin-left: 6px;
+                margin-top: 0;
+                font-size: 32px;
+                text-shadow: 0 2px 0 rgba(0,0,0,0.2);
+                font-weight: bold;
+            }
+            .heading p {
+                margin: 0;
+                margin-left: 8px;
+                font-size: 21px;
+                font-weight: normal;
+            }
+            .heading p span {
+                white-space: nowrap
+            }
+            .heading .anchor {
+                display: flex;
+            }
+            .heading .anchor a {
+                margin: 20px 0 20px 8px;
+                background-color: #fff;
+                background-image: url(/assets/projects/marquee/kickstarter.svg);
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 250px;
+                height: 40px;
+                box-shadow: none;
+                border-radius: 3px;
+            }
+            @keyframes fade-in {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            kw-projects-category {
+                animation: fade-in linear 200ms;
+            }
+            kw-projects-category,
+            .tombstone {
+                background-color: #303030;
+                min-height: 360px;
+                transform: translateZ(0);
+            }
+            kw-projects-category:nth-of-type(even),
+            .tombstone:nth-of-type(even) {
+                background-color: #4a4a4a;
+            }
+            #tombstones {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+            .categories {
+                position: relative;
+                @apply --layout-flex;
+            }
+            @media screen and (max-width: 980px) {
+                .heading {
+                    width: 237px;
+                    padding-left: 1px;
+                }
+                .heading h3 {
+                    font-size: 24px;
+                }
+                .heading p {
+                    font-size: 16px;
+                }
+                .heading .anchor a {
+                    width: 200px;
+                    height: 32px;
+                }
+                .speaker iron-image {
+                    left: -25%;
+                    width: 125%;
+                }
+            }
+            @media screen and (max-width: 768px) {
+                .camera,
+                .pixel {
+                    display: none;
+                }
+                .speaker {
+                    width: 100%;
+                    height: 100%;
+                    text-align: center;
+                }
+                .anchor {
+                    @apply --layout-vertical;
+                    @apply --layout-center;
+                    @apply --layout-center-justified;
+                }
+                .speaker iron-image {
+                    width: 100%;
+                    left: 0px;
+                    background-color: rgb(239, 52, 66);
+                }
+                .heading {
+                    position: absolute;
+                    bottom: 0px;
+                    left: 0px;
+                    padding: 0px;
+                    width: 100%;
+                    @apply --layout-vertical;
+                    @apply --layout-center;
+                    @apply --layout-center-justified;
+                }
+                .heading p {
+                    padding: 6px;
+                }
+                .heading h3,
+                .heading p,
+                .heading .anchor {
+                    max-width: 56%;
+                }
+                .heading h3,
+                .heading p,
+                .heading .anchor a {
+                    margin-left: 0;
+                    margin-bottom: 0;
+                }
+                .heading .anchor a {
+                    margin-bottom: 13px;
+                    margin-top: 0px;
+                }
+            }
+        </style>
+        <iron-media-query query="(max-width: 980px)" query-matches="{{mediumViewport}}"></iron-media-query>
+        <iron-media-query query="(max-width: 768px)" query-matches="{{smallViewport}}"></iron-media-query>
+        <div class="masthead">
+            <div class="speaker">
+                <iron-image src="[[_computeImageSrc('speaker_blue', mediumViewport, smallViewport)]]" sizing="cover" preload fade></iron-image>
+                <div class="heading">
+                    <h3>Make computers,<br>take control</h3>
+                    <p>Build amazing apps for the new Camera, Pixel, and <span>Speaker kits.</span></p>
+                    <div class="anchor">
+                        <a href="https://kano.me/kickstarter"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="camera">
+                <iron-image src="[[_computeImageSrc('camera_yellow', mediumViewport, smallViewport)]]" sizing="cover" preload fade></iron-image>
+            </div>
+            <div class="pixel">
+                <iron-image src="[[_computeImageSrc('pixel_red', mediumViewport, smallViewport)]]" sizing="cover" preload fade></iron-image>
+            </div>
+        </div>
+        <div class="categories">
+            <div id="tombstones">
+                <div class="tombstone"></div>
+                <div class="tombstone"></div>
+            </div>
+            <template is="dom-repeat" items="[[categories]]" as="category">
+                <kw-projects-category category="[[category]]"></kw-projects-category>
+            </template>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-view-projects',
+            attached () {
+                Polymer.RenderStatus.afterNextRender(this, () => {
+                    fetch('/assets/projects/projects.json')
+                        .then(r => r.json())
+                        .then(projects => {
+                            this.categories = Object.keys(projects).map(key => {
+                                return projects[key];
+                            });
+                        });
+                });
+            },
+            _computeImageSrc (mode, medium, small) {
+                let size = medium ? 'small' : 'large';
+                if (small && mode === 'speaker_blue') {
+                    return `/assets/projects/marquee/mobile_pixel_only.jpg`;
+                }
+                return `/assets/projects/marquee/${mode}_${size}.jpg`;
+            }
+        });
+    </script>
+</dom-module>
