@@ -4,15 +4,25 @@ const mergeStream = require('merge-stream');
 const $ = require('gulp-load-plugins')();
 const shards = require('./tasks/shards');
 const runSequence = require('run-sequence');
+const compiler = require('google-closure-compiler-js').gulp();
+const env = process.env.NODE_ENV || 'development';
 
 $.cssSlam = require('css-slam').gulp;
 
 require('./tasks/sw')(gulp, $);
 
+const htmlReplaceOptions = {
+    config: `<link rel="import" href="./config/${env}.html">`
+};
+
 function hasExt(ext) {
     return (file) => {
         return file.relative.split('.').pop() === ext;
     };
+}
+
+function isConfig (file) {
+    return file.relative.indexOf('js/config.html');
 }
 
 gulp.task('copy', () => {
@@ -24,6 +34,7 @@ gulp.task('copy', () => {
             'src/js/bootstrap.js',
             'src/manifest.json'
         ], { base: 'src' })
+        .pipe($.if(isConfig, $.htmlReplace(htmlReplaceOptions)))
         .pipe(gulp.dest('www'));
 });
 
@@ -49,7 +60,12 @@ gulp.task('compress', () => {
             removeComments: true
         })))
         .pipe($.if(hasExt('css'), $.cssSlam()))
-        .pipe($.if(hasExt('js'), $.babel({ presets: ['es2015'] })))
+        .pipe($.if(hasExt('js'), compiler({
+            compilationLevel: 'SIMPLE',
+            outputWrapper: '(function(){\n%output%\n}).call(this)',
+            jsOutputFile: 'output.min.js',
+            polymerPass: true
+        })))
         .pipe($.if(hasExt('js'), $.uglify()))
         .pipe(gulp.dest('www'));
 });

@@ -3,6 +3,8 @@
 <link rel="import" type="" href="../../bower_components/iron-media-query/iron-media-query.html">
 
 <link rel="import" type="" href="../kw-projects-category/kw-projects-category.html">
+<link rel="import" type="" href="../kano-session/kano-session.html">
+<link rel="import" type="" href="../kano-api-client/kano-api-client-behavior.html">
 
 <dom-module id="kw-view-projects">
     <template>
@@ -15,7 +17,7 @@
             .masthead {
                 @apply --layout-horizontal;
                 height: 17vw;
-                max-height: 359px;
+                max-height: 265px;
                 min-height: 265px;
                 color: white;
             }
@@ -200,6 +202,7 @@
         </style>
         <iron-media-query query="(max-width: 980px)" query-matches="{{mediumViewport}}"></iron-media-query>
         <iron-media-query query="(max-width: 768px)" query-matches="{{smallViewport}}"></iron-media-query>
+        <kano-session user="{{user}}" token="{{token}}" include-profile></kano-session>
         <div class="masthead">
             <div class="speaker">
                 <iron-image src="[[_computeImageSrc('speaker_blue', mediumViewport, smallViewport)]]" sizing="cover" preload fade></iron-image>
@@ -223,24 +226,81 @@
                 <div class="tombstone"></div>
                 <div class="tombstone"></div>
             </div>
-            <template is="dom-repeat" items="[[categories]]" as="category">
-                <kw-projects-category category="[[category]]"></kw-projects-category>
+            <template is="dom-if" if="[[completed]]">
+                <template is="dom-repeat" items="[[categories]]" as="category">
+                    <kw-projects-category category="[[category]]" animate-stars="[[!index]]"></kw-projects-category>
+                </template>
             </template>
+            
         </div>
     </template>
     <script>
         Polymer({
             is: 'kw-view-projects',
+            behaviors: [Kano.APIClient],
+            properties: {
+                categories: {
+                    type: Array
+                }
+            },
+            observers: [
+                '_userChanged(user)'
+            ],
             attached () {
                 Polymer.RenderStatus.afterNextRender(this, () => {
                     fetch('/assets/projects/projects.json')
                         .then(r => r.json())
                         .then(projects => {
-                            this.categories = Object.keys(projects).map(key => {
+                            categories = Object.keys(projects).map(key => {
                                 return projects[key];
                             });
+                            this._upgradeProjects(categories, this.user);
                         });
                 });
+            },
+            _userChanged (user) {
+                this._upgradeProjects(this.categories, this.user);
+            },
+            _upgradeProjects (categories, user) {
+                if (!categories) {
+                    return;
+                }
+                if (!this.categories) {
+                    this.categories = categories;
+                }
+                if (user && user.profile) {
+                    let profile = user.profile,
+                        kcProgress = profile.stats['make-apps'].progress;
+                    kcProgress = Object.keys(kcProgress).reduce((acc, key) => {
+                        return acc.concat(kcProgress[key].completedStories);
+                    }, []);
+                    categories.forEach((category, catId) => {
+                        if (category.api_progress_tracking.indexOf('make-art') !== -1) {
+                            let artGroup = profile.stats['kano-draw'].groups[category.api_progress_tracking.replace('make-art-', '')];
+                            if (artGroup) {
+                                category.projects.forEach((project, projectId) => {
+                                    this.set(`categories.${catId}.projects.${projectId}.completed`, project.slug <= artGroup.challengeNo);
+                                });
+                            }
+                        } else if (category.api_progress_tracking === 'make-apps') {
+                            category.projects.forEach((project, projectId) => {
+                                this.set(`categories.${catId}.projects.${projectId}.completed`, kcProgress.indexOf(project.slug) !== -1);
+                            });
+                        } else if (category.api_progress_tracking === 'make-minecraft') {
+                            category.projects.forEach((project, projectId) => {
+                                this.set(`categories.${catId}.projects.${projectId}.completed`, project.slug >= profile.stats['make-minecraft'].level);
+                            });
+                        }
+                    });
+                    this.completed = true;
+                } else {
+                    categories.forEach((category, catId) => {
+                        category.projects.forEach((project, projectId) => {
+                            this.set(`categories.${catId}.projects.${projectId}.completed`, false);
+                        });
+                    });
+                    this.completed = true;
+                }
             },
             _computeImageSrc (mode, medium, small) {
                 let size = medium ? 'small' : 'large';

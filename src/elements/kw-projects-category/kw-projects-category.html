@@ -17,6 +17,7 @@
                 color: white;
                 box-sizing: border-box;
                 padding: 27px 0 10px;
+                overflow-y: visible;
             }
             .info {
                 padding: 0 48px;
@@ -37,6 +38,17 @@
             .projects {
                 @apply --layout-horizontal;
                 padding: 0 36px;
+                overflow-y: visible;
+            }
+            .projects>a {
+                position: relative;
+            }
+            .star {
+                position: absolute;
+                right: -5px;
+                bottom: -5px;
+                display: none;
+                transform: translateZ(0) scale(0);
             }
             kw-project-card {
                 margin: 10px 12px 10px 12px;
@@ -116,9 +128,10 @@
                         <kw-project-card image="[[project.image]]" class="project" heading="[[project.title]]">
                             <div class="card-content" hidden$="[[!project.creator]]">by [[project.creator]]</div>
                             <div class="card-actions">
-                                <button>Start</button>
+                                <button>[[_computeButtonLabel(project.completed)]]</button>
                             </div>
                         </kw-project-card>
+                        <iron-image class="star" src="/assets/projects/icons/star-on.svg" width="48" height="48" preload fade hidden$="[[!project.completed]]"></iron-image>
                     </a>
                 </template>
                 <a href$="[[category.done_link]]">
@@ -138,11 +151,50 @@
             properties: {
                 category: {
                     type: Object
+                },
+                animateStars: {
+                    type: Boolean,
+                    value: false
                 }
             },
             observers: [
-                '_colorChanged(category.mode_color)'
+                '_colorChanged(category.mode_color)',
+                '_animateStars(category.*, animateStars)'
             ],
+            _computeButtonLabel (completed) {
+                return completed ? 'Do again' : 'Start';
+            },
+            _animateStars (category, animateStars) {
+                if (this.category) {
+                    this.debounce('animate', () => {
+                        let stars = Polymer.dom(this.root).querySelectorAll('.star'),
+                            delay = 300;
+                        for (let i = 0; i < stars.length; i++) {
+                            if (!stars[i].hasAttribute('hidden')) {
+                                stars[i].style.display = 'block';
+                                if ('animate' in HTMLElement.prototype && animateStars) {
+                                    stars[i].animate([{
+                                        transform: 'translateZ(0) scale(0) rotate(-45deg)'
+                                    }, {
+                                        transform: 'translateZ(0) scale(1) rotate(0deg)'
+                                    }], {
+                                        duration: 450,
+                                        easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
+                                        delay,
+                                        fill: 'forwards'
+                                    });
+                                    delay += 100;
+                                } else {
+                                    stars[i].style.transform = 'translateZ(0)';
+                                }
+                            } else {
+                                stars[i].style.display = 'none';
+                                stars[i].style.transform = 'translateZ(0) scale(0)';
+                            }
+                        }
+                    }, 100);
+                }
+            },
             _colorChanged (color) {
                 this.customStyle['--kw-projects-category-background-color'] = color;
                 this.customStyle['--kw-projects-category-color'] = color === '#EF3442' ? 'white' : '#6e6e6e';

@@ -1,16 +1,25 @@
-<link rel="import" type="" href="../../config.html">
+<link rel="import" href="../../js/config.html">
 <script>
     (function (Kano) {
 
         const resourceMap = {
             'feed': 'share',
-            'stats': 'stats/activity'
+            'stats': 'stats/activity',
+            'session': 'auth/session',
+            'user-by-username': 'users/username/:username',
+            'login': 'auth'
         };
 
         // @polymerBehavior
         Kano.APIClient = {
-            _getUrl (resource) {
-                return `${Kano.World.config.API_URL}/${resourceMap[resource]}`;
+            _getUrl (resource, params={}) {
+                let path = resourceMap[resource];
+
+                Object.keys(params).forEach(key => {
+                    path = path.replace(new RegExp(`:${key}`, 'i'), params[key]);
+                });
+
+                return `${Kano.World.config.API_URL}/${path}`;
             }
         };
     })(window.Kano = window.Kano || {});

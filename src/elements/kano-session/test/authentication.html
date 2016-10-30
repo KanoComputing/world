@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>kano-session test</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../bower_components/web-component-tester/browser.js"></script>
+
+        <link rel="import" href="../kano-session.html">
+    </head>
+    <body>
+
+        <test-fixture id="default">
+            <template>
+                <kano-session></kano-session>
+            </template>
+        </test-fixture>
+
+        <script>
+            suite('<kano-session> authenticated, no session', function() {
+                var session,
+                    sessionFixture,
+                    requestMade;
+
+                setup(function() {
+                    requestMade = false;
+                    sessionFixture = generateSession();
+                    // Fake fetch returning the stub session
+                    window.fetch = function (url, opts) {
+                        requestMade = true;
+                        return Promise.resolve({
+                            json: function () {
+                                return Promise.resolve({
+                                    session: {
+                                        user: {
+                                            username: 'authenticated-user'
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    };
+                    session = fixture('default');
+                });
+
+                test('Request is made and user is populated', function(done) {
+                    session.addEventListener('status-changed', function (v) {
+                        if (v.detail.value === 'authenticated' && requestMade) {
+                            assert.equal(session.user.username, 'authenticated-user');
+                            done();
+                        }
+                    });
+                });
+
+                teardown(function () {
+                    sessionFixture.revert();
+                });
+            });
+
+            function generateSession () {
+                var token = Date.now(),
+                    currentSession = localStorage.getItem('KW_SESSION'),
+                    currentToken = localStorage.getItem('KW_TOKEN');
+
+                localStorage.removeItem('KW_SESSION');
+                localStorage.setItem('KW_TOKEN', JSON.stringify(token.toString()));
+
+                return {
+                    token: token,
+                    revert: function () {
+                        if (currentSession) {
+                            localStorage.setItem('KW_SESSION', currentSession);
+                        }
+                        if (currentToken) {
+                            localStorage.setItem('KW_TOKEN', currentToken);
+                        }
+                    }
+                };
+            }
+        </script>
+    </body>
+</html>

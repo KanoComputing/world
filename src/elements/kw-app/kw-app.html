@@ -4,7 +4,8 @@
 <link rel="import" href="../../bower_components/kano-nav-bar/kano-nav-bar.html">
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 
-<link rel="import" type="" href="../kano-style/typography.html">
+<link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../../js/config.html">
 
 <dom-module id="kw-app">
     <template>
@@ -12,7 +13,7 @@
             :host {
                 display: block;
                 font-family: var(--font-body);
-                @apply --layout-vertical;
+                @apply --layout-vertical-reverse;
             }
             kano-nav-bar {
                 --kano-nav-bar-font-family: var(--font-body);
@@ -55,7 +56,7 @@
         </style>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
-        <kano-nav-bar assets-path="/assets/navbar/" selected-link="[[_computeSelectedLink(route.path)]]" world-root="http://localhost:7000"></kano-nav-bar>
+        <kano-session id="session" user="{{user}}" include-profile></kano-session>
         <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" restamp skip-waiting>
             <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
                 <kw-view-projects>
@@ -74,12 +75,31 @@
                 <kw-view-feed route="{{subroute}}"></kw-view-feed>
             </template>
         </iron-lazy-pages>
+        <kano-nav-bar assets-path="/assets/navbar/"
+                        selected-link="[[_computeSelectedLink(route.path)]]"
+                        world-root="[[config.WORLD_URL]]"
+                        user="[[user]]"
+                        xp="[[user.profile.xp]]"
+                        on-logout="_logout"
+                        on-login="showAuthModal"></kano-nav-bar>
+        <kw-auth-modal id="auth-modal"></kw-auth-modal>
     </template>
     <script>
         Polymer({
             is: 'kw-app',
+            attached () {
+                this.config = Kano.World.config;
+            },
             _computeSelectedLink (path) {
                 return path.split('/')[1];
+            },
+            _logout () {
+                this.$.session.logout();
+            },
+            showAuthModal () {
+                this.importHref('/elements/kw-auth-modal/kw-auth-modal.html', () => {
+                    this.$['auth-modal'].open();
+                });
             }
         });
     </script>
