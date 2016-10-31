@@ -34,16 +34,32 @@ gulp.task('copy', () => {
             'src/js/bootstrap.js',
             'src/manifest.json'
         ], { base: 'src' })
-        .pipe($.if(isConfig, $.htmlReplace(htmlReplaceOptions)))
         .pipe(gulp.dest('www'));
 });
 
-gulp.task('shards', ['copy'], () => {
+gulp.task('backup-config', () => {
+    gulp.src('src/js/config.html', { base: 'src' })
+        .pipe(gulp.dest('.bckp/'));
+});
+
+gulp.task('config', () => {
+    gulp.src('src/js/config.html', { base: 'src' })
+        .pipe($.htmlReplace(htmlReplaceOptions))
+        .pipe(gulp.dest('src/'));
+});
+
+gulp.task('restore-config', () => {
+    gulp.src('.bckp/js/config.html', { base: '.bckp' })
+        .pipe(gulp.dest('src/'));
+});
+
+gulp.task('shards', () => {
     return shards.build({
         shell: 'elements/elements.html',
         endpoints: [
             'elements/kw-view-projects/kw-view-projects.html',
-            'elements/kw-view-feed/kw-view-feed.html'
+            'elements/kw-view-feed/kw-view-feed.html',
+            'elements/kw-auth-modal/kw-auth-modal.html'
         ],
         shared_import: 'elements/shared.html',
         root: 'src',
@@ -76,5 +92,5 @@ gulp.task('polyfill', () => {
 });
 
 gulp.task('build', () => {
-    return runSequence('shards', 'polyfill', 'compress', 'sw');
+    return runSequence('copy', 'backup-config', 'config', 'restore-config', 'shards', 'polyfill', 'compress', 'sw');
 });

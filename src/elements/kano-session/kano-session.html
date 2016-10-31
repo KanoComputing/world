@@ -15,8 +15,7 @@
         // Copies the legacy KW token to the v2 in localStorage
         let legacyToken = localStorage.getItem('KW_TOKEN');
 
-        if (legacyToken) {
-            console.log(legacyToken);
+        if (!!legacyToken && legacyToken !== 'null') {
             localStorage.setItem('KW_TOKENv2', JSON.stringify(legacyToken));
         }
 

@@ -91,6 +91,8 @@
                 margin: 12px;
                 min-width: 200px;
                 @apply --layout-flex;
+                /* Safarix see: https://bugs.webkit.org/show_bug.cgi?id=136041#c2 */
+                flex: 1 0 auto;
             }
             .footer .copyright {
                 color: #6e6e6e;

@@ -251,7 +251,7 @@
                     fetch('/assets/projects/projects.json')
                         .then(r => r.json())
                         .then(projects => {
-                            categories = Object.keys(projects).map(key => {
+                            let categories = Object.keys(projects).map(key => {
                                 return projects[key];
                             });
                             this._upgradeProjects(categories, this.user);

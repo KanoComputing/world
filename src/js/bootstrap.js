@@ -47,9 +47,7 @@ function loadPolyfill (cb) {
     }
 }
 
-function onLoad () {
-    console.log('ready');
-}
+function onLoad () {}
 
 window.addEventListener('load', () => {
     var loader = function () {
