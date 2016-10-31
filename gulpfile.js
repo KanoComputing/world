@@ -60,12 +60,7 @@ gulp.task('compress', () => {
             removeComments: true
         })))
         .pipe($.if(hasExt('css'), $.cssSlam()))
-        .pipe($.if(hasExt('js'), compiler({
-            compilationLevel: 'SIMPLE',
-            outputWrapper: '(function(){\n%output%\n}).call(this)',
-            jsOutputFile: 'output.min.js',
-            polymerPass: true
-        })))
+        .pipe($.if(hasExt('js'), $.babel({ presets: ['es2015'] })))
         .pipe($.if(hasExt('js'), $.uglify()))
         .pipe(gulp.dest('www'));
 });
