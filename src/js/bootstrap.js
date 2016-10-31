@@ -27,7 +27,7 @@ function loadPolyfill (cb) {
         script.src = url;
         script.onload = function () {
             loaded++;
-            if (loaded === scriptsToLoad.length - 1) {
+            if (loaded === scriptsToLoad.length) {
                 cb();
             }
         };

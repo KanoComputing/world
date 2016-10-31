@@ -12,7 +12,7 @@ $.cssSlam = require('css-slam').gulp;
 require('./tasks/sw')(gulp, $);
 
 const htmlReplaceOptions = {
-    config: `<link rel="import" href="./config/${env}.html">`
+    config: `<link rel="import" href="./config/${env}.html">\n`
 };
 
 function hasExt(ext) {
@@ -25,32 +25,28 @@ function isConfig (file) {
     return file.relative.indexOf('js/config.html');
 }
 
+// Move the whole src folder to .tmp. This ensures that the src folder will not be touched
+gulp.task('move-to-tmp', () => {
+    return gulp.src('src/**/*', { base: 'src' })
+        .pipe(gulp.dest('.tmp'));
+});
+
 gulp.task('copy', () => {
     return gulp.src([
-            'src/assets/**/*',
-            'src/css/**/*',
-            'src/favicons/**/*',
-            'src/index.html',
-            'src/js/bootstrap.js',
-            'src/manifest.json'
-        ], { base: 'src' })
+            '.tmp/assets/**/*',
+            '.tmp/css/**/*',
+            '.tmp/favicons/**/*',
+            '.tmp/index.html',
+            '.tmp/js/bootstrap.js',
+            '.tmp/manifest.json'
+        ], { base: '.tmp' })
         .pipe(gulp.dest('www'));
 });
 
-gulp.task('backup-config', () => {
-    gulp.src('src/js/config.html', { base: 'src' })
-        .pipe(gulp.dest('.bckp/'));
-});
-
 gulp.task('config', () => {
-    gulp.src('src/js/config.html', { base: 'src' })
+    return gulp.src('.tmp/js/config.html', { base: '.tmp' })
         .pipe($.htmlReplace(htmlReplaceOptions))
-        .pipe(gulp.dest('src/'));
-});
-
-gulp.task('restore-config', () => {
-    gulp.src('.bckp/js/config.html', { base: '.bckp' })
-        .pipe(gulp.dest('src/'));
+        .pipe(gulp.dest('.tmp/'));
 });
 
 gulp.task('shards', () => {
@@ -62,7 +58,7 @@ gulp.task('shards', () => {
             'elements/kw-auth-modal/kw-auth-modal.html'
         ],
         shared_import: 'elements/shared.html',
-        root: 'src',
+        root: '.tmp',
         dest: 'www'
     });
 });
@@ -82,15 +78,15 @@ gulp.task('compress', () => {
 });
 
 gulp.task('polyfill', () => {
-    gulp.src([
-            'src/bower_components/webcomponentsjs/webcomponents-lite.min.js',
-            'src/bower_components/es6-promise/es6-promise.js',
-            'src/bower_components/fetch/fetch.js'
+    return gulp.src([
+            '.tmp/bower_components/webcomponentsjs/webcomponents-lite.min.js',
+            '.tmp/bower_components/es6-promise/es6-promise.js',
+            '.tmp/bower_components/fetch/fetch.js'
         ])
         .pipe($.uglify())
         .pipe(gulp.dest('www/vendor'));
 });
 
 gulp.task('build', () => {
-    return runSequence('copy', 'backup-config', 'config', 'restore-config', 'shards', 'polyfill', 'compress', 'sw');
+    return runSequence('move-to-tmp', 'copy', 'config', 'shards', 'polyfill', 'compress', 'sw');
 });
