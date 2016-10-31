@@ -1,0 +1,84 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<dom-module id="kw-stat-card">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply --layout-horizontal-reverse;
+                color: #6e6e6e;
+                background: #3e3e3e;
+                border-radius: 4px;
+                z-index: 0;
+                overflow: hidden;
+            }
+            :host(.connected) .icon {
+                background: #44b3e2;
+            }
+            :host(.online) .icon {
+                background: #7fc04b;
+            }
+            :host(.lines) .icon {
+                background: #ff842a;
+            }
+            :host(.creations) .icon {
+                background: #e57273;
+            }
+            .info {
+                @apply --layout-vertical;
+                @apply --layout-center-justified;
+                @apply --layout-flex;
+                padding: 0 10px;
+                overflow: hidden;
+            }
+            .icon {
+                width: 50px;
+                height: 50px;
+                padding: 8px;
+                box-sizing: border-box;
+                @apply --kw-stat-card-image;
+                @apply --layout-vertical;
+            }
+            .icon iron-image {
+                @apply --layout-flex;
+            }
+            h2, p {
+                margin: 0;
+            }
+            h2 {
+                color: white;
+                font-size: 16px;
+                @apply --kw-stat-card-value;
+            }
+        </style>
+        <div class="info">
+            <div id="info">
+                <h2>[[value]]</h2>
+                <p>[[heading]]</p>
+            </div>
+        </div>
+        <div class="icon">
+            <iron-image src="[[iconSrc]]" sizing="contain" preload fade></iron-image>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-stat-card',
+            properties: {
+                heading: {
+                    type: String
+                },
+                value: {
+                    type: String
+                },
+                iconSrc: {
+                    type: String
+                }
+            },
+            getInfoElement () {
+                return this.$.info;
+            }
+        });
+    </script>
+</dom-module>

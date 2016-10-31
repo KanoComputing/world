@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <title>kw-stat-card demo</title>
+
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../kw-stat-card.html">
+        <link rel="import" href="../../kano-style/typography.html">
+
+        <style is="custom-style" include="demo-pages-shared-styles">
+            kw-stat-card {
+                font-family: var(--font-body);
+                --kw-stat-card-image: {
+                    background: #7fc04b;
+                };
+            }
+            kw-stat-card.animated {
+                background: transparent;
+                border-radius: 0px;
+                --kw-stat-card-value: {
+                    color: black;
+                };
+            }
+        </style>
+    </head>
+
+    <body unresolved>
+        <div class="vertical-section-container centered">
+            <h3>Simple stat card</h3>
+            <demo-snippet>
+                <template>
+                    <kw-stat-card heading="Online today" value="34,578" icon-src="https://world.kano.me/assets/icons/stats/online.png"></kw-stat-card>
+                </template>
+            </demo-snippet>
+            <h3>Transparent and animated</h3>
+            <demo-snippet>
+                <template>
+                    <kw-stat-card class="animated" heading="Online today" value="34,578" icon-src="https://world.kano.me/assets/icons/stats/online.png"></kw-stat-card>
+                </template>
+                <script>
+                    document.addEventListener('WebComponentsReady', () => {
+                        if ('animate' in HTMLElement.prototype) {
+                            var card = document.querySelector('.animated'),
+                                infoEl = card.getInfoElement();
+                            infoEl.style.transform = 'translateX(-100%)';
+                            infoEl.animate([{
+                                transform: `translateX(-100%)`
+                            }, {
+                                transform: `translateX(0%)`
+                            }], {
+                                delay: 100,
+                                duration: 400,
+                                easing: 'ease-out',
+                                fill: 'forwards'
+                            });
+                        }
+                    });
+                </script>
+            </demo-snippet>
+    </body>
+</html>

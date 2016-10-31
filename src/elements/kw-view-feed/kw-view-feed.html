@@ -4,6 +4,7 @@
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../kw-share-feed/kw-share-feed.html">
 <link rel="import" href="../kw-share-detail/kw-share-detail.html">
+<link rel="import" href="../kw-stat-card/kw-stat-card.html">
 
 <dom-module id="kw-view-feed">
     <template>
@@ -14,6 +15,7 @@
                 background: #f1f1f1;
                 position: relative;
                 overflow: hidden;
+                min-height: 100vh;
             }
             .content {
                 position: relative;
@@ -57,26 +59,12 @@
                 @apply --layout-around-justified;
                 margin-bottom: 12px;
             }
-            .stat-display {
-                @apply --layout-horizontal-reverse;
-                overflow: hidden;
-            }
-            .stat-display span:nth-of-type(1) {
-                font-weight: bold;
-            }
-            .stat-display>div {
-                @apply --layout-vertical;
-                padding-left: 12px;
-            }
-            .stat-display>iron-image {
-                width: 40px;
-                height: 40px;
-            }
-            .online>iron-image {
-                background: rgb(127, 192, 75);
-            }
-            .lines-written>iron-image {
-                background: rgb(255, 132, 42);
+            kw-stat-card {
+                border-radius: 0px;
+                background: transparent;
+                --kw-stat-card-value: {
+                    color: black;
+                };
             }
             @media screen and (max-width: 1345px) {
                 .promo {
@@ -93,20 +81,8 @@
                 <div class="promo">
                     <div class="follow"></div>
                     <div class="stats">
-                        <div class="stat-display online">
-                            <div>
-                                <span>[[_commaify(stats.total_active_today)]]</span>
-                                <span>Online today</span>
-                            </div>
-                            <iron-image></iron-image>
-                        </div>
-                        <div class="stat-display lines-written">
-                            <div>
-                                <span>[[_commaify(stats.total_lines_of_code)]]</span>
-                                <span>Lines of code</span>
-                            </div>
-                            <iron-image></iron-image>
-                        </div>
+                        <kw-stat-card class="online" heading="Online today" value="[[_commaify(stats.total_active_today)]]"></kw-stat-card>
+                        <kw-stat-card class="lines" heading="Lines of code" value="[[_commaify(stats.total_lines_of_code)]]"></kw-stat-card>
                     </div>
                 </div>
             </div>
@@ -135,31 +111,17 @@
             attached () {
                 this._supportsAnimations = ('animate' in HTMLElement.prototype);
                 Polymer.RenderStatus.afterNextRender(this, () => {
-                    let displays;
-                    fetch(this._getUrl('stats'))
-                        .then(r => r.json())
-                        .then(stats => this.stats = stats);
-
+                    let displays, infoElement;
+                    displays = Polymer.dom(this.root).querySelectorAll('kw-stat-card');
                     if (this._supportsAnimations) {
-                        displays = Polymer.dom(this.root).querySelectorAll('.stat-display>div');
-
                         for (let i = 0; i < displays.length; i++) {
-                            this.transform('translateX(-100%)', displays[i]);
-                            displays[i].animate([{
-                                transform: `translateX(-100%)`
-                            }, {
-                                transform: `translateX(0%)`
-                            }], {
-                                delay: (i * 200) + 100,
-                                duration: 400,
-                                easing: 'ease-out',
-                                fill: 'forwards'
-                            });
+                            infoElement = displays[i].getInfoElement();
+                            this.transform('translateX(-120%)', infoElement);
                         }
                     }
-
-                    
-                    
+                    this.cacheOrAPI(this._getUrl('stats')).then(stats => {
+                        this.stats = stats;
+                    });
                 });
             },
             _commaify (n) {

@@ -66,7 +66,7 @@
             }
         </style>
         <kano-session user="{{user}}" token="{{token}}"></kano-session>
-        <paper-dialog id="modal" opened="{{opened}}" modal>
+        <paper-dialog id="modal" opened="{{opened}}" with-backdrop>
             <iron-pages attr-for-selected="name" selected="[[page]]">
                 <form name="login" class="login" on-submit="_loginSubmit">
                     <h1>Login to Your Account</h1>
@@ -82,9 +82,9 @@
                     <button type="submit" disabled$="[[loading]]">Login</button>
                     <hr>
                     <div class="links">
-                        <a href="">Signup</a>
+                        <a href="/register">Signup</a>
                         <span>-</span>
-                        <a href="">Forgot your password?</a>
+                        <a href="/reset-password">Forgot your password?</a>
                     </div>
                 </form>
                 <div name="register">

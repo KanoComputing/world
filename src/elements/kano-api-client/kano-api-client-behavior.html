@@ -10,6 +10,8 @@
             'login': 'auth'
         };
 
+        let cache = {};
+
         // @polymerBehavior
         Kano.APIClient = {
             _getUrl (resource, params={}) {
@@ -20,6 +22,17 @@
                 });
 
                 return `${Kano.World.config.API_URL}/${path}`;
+            },
+            /**
+             * Holds in memory the responses and returns them instead of calling the endpoint again.
+             * No invalidation is configured, the responses will be the same until the user leaves or refreshes the page
+             */
+            cacheOrAPI (url) {
+                // Populate the cache if not existing 
+                if (!cache[url]) {
+                    cache[url] = fetch(url).then(r => r.json());
+                }
+                return cache[url];
             }
         };
     })(window.Kano = window.Kano || {});

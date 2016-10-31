@@ -5,6 +5,8 @@
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 
 <link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../kw-stat-card/kw-stat-card.html">
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../../js/config.html">
 
 <dom-module id="kw-app">
@@ -14,13 +16,13 @@
                 display: block;
                 font-family: var(--font-body);
                 @apply --layout-vertical-reverse;
+                @apply --layout-end-justified;
             }
             kano-nav-bar {
                 --kano-nav-bar-font-family: var(--font-body);
                 transform: translateZ(0);
             }
-            iron-lazy-pages, iron-lazy-pages>*:not(template) {
-                @apply --layout-flex;
+            iron-lazy-pages>*:not(template) {
                 @apply --layout-vertical;
             }
             .projects-shell {
@@ -53,11 +55,80 @@
             kw-view-feed {
                 background-color: #f1f1f1;
             }
+            .footer {
+                width: 100%;
+                padding: 20px 50px;
+                background: rgb(51, 51, 51);
+                @apply --layout-vertical;
+                box-sizing: border-box;
+            }
+            .footer .nav {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+            .footer .nav hr {
+                border: 0px;
+                border-right: 1px solid rgba(255,255,255,0.15);
+                height: 12px;
+                margin: 0 10px;
+            }
+            .footer .links {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+            }
+            .footer .links a {
+                color: #ccc;
+                text-decoration: none;
+            }
+            .footer .links a:hover {
+                color: #f5f5f5;
+            }
+            .footer .stats {
+                @apply --layout-horizontal;
+                @apply --layout-wrap;
+            }
+            .footer kw-stat-card {
+                margin: 12px;
+                min-width: 200px;
+                @apply --layout-flex;
+            }
+            .footer .copyright {
+                color: #6e6e6e;
+            }
+            @media screen and (max-width: 680px) {
+                .footer {
+                    padding: 20px;
+                }
+                .footer .links {
+                    @apply --layout-vertical;
+                    @apply --layout-center;
+                }
+            }
         </style>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
         <kano-session id="session" user="{{user}}" include-profile></kano-session>
-        <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" restamp skip-waiting>
+        <div class="footer">
+            <div class="stats">
+                <kw-stat-card class="connected" heading="Connected Kanos" value="[[_commaify(stats.total_users)]]" icon-src="/assets/icons/stats/connected.png"></kw-stat-card>
+                <kw-stat-card class="online" heading="Online today" value="[[_commaify(stats.total_active_today)]]" icon-src="/assets/icons/stats/online.png"></kw-stat-card>
+                <kw-stat-card class="lines" heading="Lines of code" value="[[_commaify(stats.total_lines_of_code)]]" icon-src="/assets/icons/stats/lines-of-code.png"></kw-stat-card>
+                <kw-stat-card class="creations" heading="Creations shared" value="[[_commaify(stats.total_shares)]]" icon-src="/assets/icons/stats/shared-games.png"></kw-stat-card>
+            </div>
+            <div class="links">
+                <div class="copyright">© Copyright Kano 2014 — 2016</div>
+                <div class="nav">
+                    <a href="/about">About</a>
+                    <hr>
+                    <a href="/terms-of-use">Terms of use</a>
+                    <hr>
+                    <a href="/privacy-policy">Privacy policy</a>
+                    <hr>
+                    <a href="/faq">F.A.Q.</a>
+                </div>
+            </div>
+        </div>
+        <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" restamp>
             <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
                 <kw-view-projects>
                     <div class="projects-shell">
@@ -85,12 +156,25 @@
         <kw-auth-modal id="auth-modal"></kw-auth-modal>
     </template>
     <script>
+        const catchUrls = ['/projects'];
         Polymer({
             is: 'kw-app',
+            behaviors: [Kano.APIClient],
             attached () {
                 this.config = Kano.World.config;
+                this.cacheOrAPI(this._getUrl('stats')).then(stats => {
+                    this.stats = stats;
+                });
             },
             _computeSelectedLink (path) {
+                let localLink = catchUrls.some(url => {
+                    if (path.indexOf(url) !== -1) {
+                        return true;
+                    }
+                });
+                if (!localLink) {
+                    location.reload();
+                }
                 return path.split('/')[1];
             },
             _logout () {
@@ -100,6 +184,9 @@
                 this.importHref('/elements/kw-auth-modal/kw-auth-modal.html', () => {
                     this.$['auth-modal'].open();
                 });
+            },
+            _commaify (n) {
+                return n.toLocaleString();
             }
         });
     </script>

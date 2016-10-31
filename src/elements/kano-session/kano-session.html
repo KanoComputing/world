@@ -6,11 +6,19 @@
 <dom-module id="kano-session">
     <template>
         <app-localstorage-document id="session" key="KW_SESSION" data="{{session}}"></app-localstorage-document>
-        <app-localstorage-document id="token" key="KW_TOKEN" data="{{token}}"></app-localstorage-document>
+        <app-localstorage-document id="token" key="KW_TOKENv2" data="{{token}}"></app-localstorage-document>
     </template>
     <script>
 
         const MAX_SESSION_LENGTH = 86400;
+
+        // Copies the legacy KW token to the v2 in localStorage
+        let legacyToken = localStorage.getItem('KW_TOKEN');
+
+        if (legacyToken) {
+            console.log(legacyToken);
+            localStorage.setItem('KW_TOKENv2', JSON.stringify(legacyToken));
+        }
 
         // Promise map of the requests that will be made. This allows all instances of `kano-session` to share requests
         let promises = {};
@@ -74,6 +82,8 @@
                 } else {
                     this.status = 'authenticated';
                 }
+                // Sets the legacy token
+                localStorage.setItem('KW_TOKEN', this.token);
             },
             _includeProfileChanged (value, session, token) {
                 if (value && session && token) {

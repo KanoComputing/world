@@ -61,10 +61,10 @@
             function generateSession () {
                 var token = Date.now(),
                     currentSession = localStorage.getItem('KW_SESSION'),
-                    currentToken = localStorage.getItem('KW_TOKEN');
+                    currentToken = localStorage.getItem('KW_TOKENv2');
 
                 localStorage.removeItem('KW_SESSION');
-                localStorage.setItem('KW_TOKEN', JSON.stringify(token.toString()));
+                localStorage.setItem('KW_TOKENv2', JSON.stringify(token.toString()));
 
                 return {
                     token: token,
@@ -73,7 +73,7 @@
                             localStorage.setItem('KW_SESSION', currentSession);
                         }
                         if (currentToken) {
-                            localStorage.setItem('KW_TOKEN', currentToken);
+                            localStorage.setItem('KW_TOKENv2', currentToken);
                         }
                     }
                 };

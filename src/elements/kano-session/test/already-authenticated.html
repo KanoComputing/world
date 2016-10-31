@@ -66,10 +66,10 @@
                         }
                     },
                     currentSession = localStorage.getItem('KW_SESSION'),
-                    currentToken = localStorage.getItem('KW_TOKEN');
+                    currentToken = localStorage.getItem('KW_TOKENv2');
 
                 localStorage.setItem('KW_SESSION', JSON.stringify(session));
-                localStorage.setItem('KW_TOKEN', JSON.stringify(token.toString()));
+                localStorage.setItem('KW_TOKENv2', JSON.stringify(token.toString()));
 
                 return {
                     token: token,
@@ -79,7 +79,7 @@
                             localStorage.setItem('KW_SESSION', currentSession);
                         }
                         if (currentToken) {
-                            localStorage.setItem('KW_TOKEN', currentToken);
+                            localStorage.setItem('KW_TOKENv2', currentToken);
                         }
                     }
                 };

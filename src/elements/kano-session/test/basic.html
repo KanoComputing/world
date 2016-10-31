@@ -50,7 +50,7 @@
                     currentToken = localStorage.getItem('KW_TOKEN');
 
                 localStorage.removeItem('KW_SESSION');
-                localStorage.removeItem('KW_TOKEN');
+                localStorage.removeItem('KW_TOKENv2');
 
                 return {
                     revert: function () {
@@ -58,7 +58,7 @@
                             localStorage.setItem('KW_SESSION', currentSession);
                         }
                         if (currentToken) {
-                            localStorage.setItem('KW_TOKEN', currentToken);
+                            localStorage.setItem('KW_TOKENv2', currentToken);
                         }
                     }
                 };
