@@ -110,7 +110,7 @@
         </style>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
-        <kano-session id="session" user="{{user}}" include-profile></kano-session>
+        <kano-session id="session" user="{{user}}" token="{{token}}" include-profile></kano-session>
         <div class="footer">
             <div class="stats">
                 <kw-stat-card class="connected" heading="Connected Kanos" value="[[_commaify(stats.total_users)]]" icon-src="/assets/icons/stats/connected.png"></kw-stat-card>
@@ -155,7 +155,8 @@
                         user="[[user]]"
                         xp="[[user.profile.xp]]"
                         on-logout="_logout"
-                        on-login="showAuthModal"></kano-nav-bar>
+                        on-login="showAuthModal"
+                        notifications="[[notifications]]"></kano-nav-bar>
         <kw-auth-modal id="auth-modal"></kw-auth-modal>
     </template>
     <script>
@@ -163,11 +164,17 @@
         Polymer({
             is: 'kw-app',
             behaviors: [Kano.APIClient],
+            observers: [
+                '_tokenChanged(token)'
+            ],
             attached () {
                 this.config = Kano.World.config;
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                     this.stats = stats;
                 });
+            },
+            detached () {
+                this._stopNotificationsPolling();
             },
             _computeSelectedLink (path) {
                 let localLink = catchUrls.some(url => {
@@ -190,6 +197,33 @@
             },
             _commaify (n) {
                 return n.toLocaleString();
+            },
+            _startNotificationsPolling () {
+                // Update every 2 minutes
+                this._pollingId = setInterval(this._updateNotifications.bind(this), 120000);
+                // Update notifications right now
+                this._updateNotifications();
+            },
+            _stopNotificationsPolling () {
+                clearInterval(this._pollingId);
+            },
+            _updateNotifications () {
+                let headers = new Headers();
+                headers.append('Authorization', this.token);
+                fetch(this._getUrl('notifications'), {
+                    headers
+                })
+                    .then(r => r.json())
+                    .then(res => {
+                        this.notifications = res.entries;
+                    });
+            },
+            _tokenChanged (token) {
+                if (token) {
+                    this._startNotificationsPolling();
+                } else {
+                    this._stopNotificationsPolling();
+                }
             }
         });
     </script>
