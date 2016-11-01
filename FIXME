@@ -1,0 +1,2 @@
+add min-width 70px to the img of the kano logo in nav-bar // Fix for IE11
+add flex-basis: auto to every flex: 1 in the nav bar // Fix for IE11 and Edge

@@ -21,6 +21,8 @@
             kano-nav-bar {
                 --kano-nav-bar-font-family: var(--font-body);
                 transform: translateZ(0);
+                /* Fix for IE11 */
+                height: 60px;
             }
             iron-lazy-pages>*:not(template) {
                 @apply --layout-vertical;

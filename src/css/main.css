@@ -1,7 +1,8 @@
 html, body, kw-app {
     margin: 0;
     padding: 0;
-    width: 100vw;
+    /* 100% and not 100vw because scrollbar on windows remove width */
+    width: 100%;
     min-height: 100vh;
     background: #f1f1f1;
 }

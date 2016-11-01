@@ -19,37 +19,36 @@ function loadElements (cb) {
 }
 
 function loadPolyfill (cb) {
-    var scriptsToLoad = [],
-        loaded = 0;
-    function loadScript (url) {
-        var script = document.createElement('script');
-
-        script.src = url;
-        script.onload = function () {
-            loaded++;
-            if (loaded === scriptsToLoad.length) {
+    var scriptsToLoad = 0,
+        scriptLoaded = function () {
+            scriptsToLoad--;
+            if (scriptsToLoad === 0) {
                 cb();
             }
         };
-
-        document.head.appendChild(script);
-    }
     if (!webComponentsSupported) {
-        scriptsToLoad.push('/vendor/webcomponents-lite.min.js');
+        scriptsToLoad++;
+        loadScript('/vendor/webcomponents-lite.min.js', scriptLoaded);
     }
     if (!fetchSupported) {
-        scriptsToLoad.push('/vendor/es6-promise.js');
-        scriptsToLoad.push('/vendor/fetch.js');
+        scriptsToLoad++;
+        loadScript('/vendor/es6-promise.js', function () {
+            ES6Promise.polyfill();
+            loadScript('/vendor/fetch.js', scriptLoaded);
+        });
     }
+}
 
-    for (var i = 0; i < scriptsToLoad.length; i++) {
-        loadScript(scriptsToLoad[i]);
-    }
+function loadScript (src, cb) {
+    var script = document.createElement('script');
+    script.onload = cb;
+    script.src = src;
+    document.body.appendChild(script);
 }
 
 function onLoad () {}
 
-window.addEventListener('load', () => {
+window.addEventListener('load', function () {
     var loader = function () {
         loadElements(onLoad);
     };
