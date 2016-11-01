@@ -237,7 +237,7 @@
             ],
             attached () {
                 Polymer.RenderStatus.afterNextRender(this, () => {
-                    fetch('/assets/projects/projects.json')
+                    fetch(this._getPathPrefix() + 'assets/projects/projects.json')
                         .then(r => r.json())
                         .then(projects => {
                             let categories = Object.keys(projects).map(key => {
@@ -246,6 +246,13 @@
                             this._upgradeProjects(categories, this.user);
                         });
                 });
+            },
+            _getPathPrefix () {
+                if (!this.pathPrefix) {
+                    let pathEl = document.head.querySelector('meta[name="path-prefix"]');
+                    this.pathPrefix = pathEl ? pathEl.getAttribute('data-value') : '/';
+                }
+                return this.pathPrefix;
             },
             _userChanged (user) {
                 this._upgradeProjects(this.categories, this.user);
@@ -294,9 +301,9 @@
             _computeImageSrc (mode, medium, small) {
                 let size = medium ? 'small' : 'large';
                 if (small && mode === 'speaker_blue') {
-                    return `/assets/projects/marquee/mobile_pixel_only.jpg`;
+                    return `${this._getPathPrefix()}assets/projects/marquee/mobile_pixel_only.jpg`;
                 }
-                return `/assets/projects/marquee/${mode}_${size}.jpg`;
+                return `${this._getPathPrefix()}assets/projects/marquee/${mode}_${size}.jpg`;
             }
         });
     </script>

@@ -12,17 +12,14 @@ $.cssSlam = require('css-slam').gulp;
 require('./tasks/sw')(gulp, $);
 
 const htmlReplaceOptions = {
-    config: `<link rel="import" href="./config/${env}.html">\n`
+    config: `<link rel="import" href="./config/${env}.html">\n`,
+    path: `<meta name="path-prefix" data-value="/new/">`
 };
 
 function hasExt(ext) {
     return (file) => {
         return file.relative.split('.').pop() === ext;
     };
-}
-
-function isConfig (file) {
-    return file.relative.indexOf('js/config.html');
 }
 
 // Move the whole src folder to .tmp. This ensures that the src folder will not be touched
@@ -44,7 +41,7 @@ gulp.task('copy', () => {
 });
 
 gulp.task('config', () => {
-    return gulp.src('.tmp/js/config.html', { base: '.tmp' })
+    return gulp.src(['.tmp/js/config.html', '.tmp/index.html'], { base: '.tmp' })
         .pipe($.htmlReplace(htmlReplaceOptions))
         .pipe(gulp.dest('.tmp/'));
 });
@@ -64,8 +61,12 @@ gulp.task('shards', () => {
 });
 
 gulp.task('compress', () => {
-    return gulp.src(['www/elements/**/*.html'], { base: 'www' })
-        .pipe($.crisper({ scriptInHead: false }))
+    return gulp.src(['www/index.html', 'www/elements/**/*.html', 'www/assets/**/*.json'], { base: 'www' })
+        .pipe($.if(hasExt('html'), $.crisper({ scriptInHead: false })))
+        .pipe($.replace(/<(.+)(href|src|assets-path|path|content)="\/(.+)"(.*)>/g, '<$1$2="/new/$3"$4>'))
+        .pipe($.replace('url("/assets', 'url("/new/assets'))
+        .pipe($.replace('["/', '["/new/'))
+        .pipe($.if(hasExt('json'), $.replace('"/assets', '"/new/assets')))
         .pipe($.if(hasExt('html'), $.htmlmin({
             collapseWhitespace: true,
             minifyCSS: true,
@@ -87,6 +88,13 @@ gulp.task('polyfill', () => {
         .pipe(gulp.dest('www/vendor'));
 });
 
+gulp.task('rewrite-sw', () => {
+    return gulp.src(['www/sw.js'], { base: 'www' })
+        .pipe($.replace('["/', '["/new/'))
+        .pipe($.uglify())
+        .pipe(gulp.dest('www'));
+});
+
 gulp.task('build', () => {
-    return runSequence('move-to-tmp', 'copy', 'config', 'shards', 'polyfill', 'compress', 'sw');
+    return runSequence('move-to-tmp', 'config', 'copy', 'shards', 'polyfill', 'compress', 'sw', 'rewrite-sw');
 });

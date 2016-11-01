@@ -1,7 +1,8 @@
 var webComponentsSupported = ('registerElement' in document
     && 'import' in document.createElement('link')
     && 'content' in document.createElement('template')),
-    fetchSupported = 'fetch' in window;
+    fetchSupported = 'fetch' in window,
+    pathPrefix = document.head.querySelector('meta[name="path-prefix"]').getAttribute('data-value');
 
 window.Polymer = {
     dom: 'shadow',
@@ -12,7 +13,7 @@ function loadElements (cb) {
     var link = document.createElement('link');
 
     link.rel = 'import';
-    link.href = '/elements/elements.html';
+    link.href = pathPrefix + 'elements/elements.html';
     link.onload = cb;
 
     document.head.appendChild(link);
@@ -28,13 +29,13 @@ function loadPolyfill (cb) {
         };
     if (!webComponentsSupported) {
         scriptsToLoad++;
-        loadScript('/vendor/webcomponents-lite.min.js', scriptLoaded);
+        loadScript(pathPrefix + 'vendor/webcomponents-lite.min.js', scriptLoaded);
     }
     if (!fetchSupported) {
         scriptsToLoad++;
-        loadScript('/vendor/es6-promise.js', function () {
+        loadScript(pathPrefix + 'vendor/es6-promise.js', function () {
             ES6Promise.polyfill();
-            loadScript('/vendor/fetch.js', scriptLoaded);
+            loadScript(pathPrefix + 'vendor/fetch.js', scriptLoaded);
         });
     }
 }
@@ -60,7 +61,7 @@ window.addEventListener('load', function () {
 });
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register(pathPrefix + 'sw.js')
         .then(function () {
             // SW registration successfull
         })
@@ -69,5 +70,5 @@ if ('serviceWorker' in navigator) {
         });
 } else {
     // Add fallback using appcache
-    document.write('<iframe src="/appcache.html" width="0" height="0" style="display: none"></iframe>');
+    document.write('<iframe src="' + pathPrefix + 'appcache.html" width="0" height="0" style="display: none"></iframe>');
 }
