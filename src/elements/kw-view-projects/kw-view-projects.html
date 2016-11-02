@@ -237,8 +237,7 @@
             ],
             attached () {
                 Polymer.RenderStatus.afterNextRender(this, () => {
-                    fetch(this._getPathPrefix() + 'assets/projects/projects.json')
-                        .then(r => r.json())
+                    this.cacheOrAPI(this._getPathPrefix() + 'assets/projects/projects.json')
                         .then(projects => {
                             let categories = Object.keys(projects).map(key => {
                                 return projects[key];

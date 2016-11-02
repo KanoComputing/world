@@ -237,6 +237,8 @@
                 });
                 if (!localLink) {
                     location.reload();
+                    // Hides the pages to make sure no future content is displayed while old KW loads
+                    this.$$('.pages').style.display = 'none';
                 }
                 return path.split('/')[1];
             },
