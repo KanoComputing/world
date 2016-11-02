@@ -247,8 +247,15 @@
             _logout () {
                 this.$.session.logout();
             },
+            _getPathPrefix () {
+                if (!this.pathPrefix) {
+                    let pathEl = document.head.querySelector('meta[name="path-prefix"]');
+                    this.pathPrefix = pathEl ? pathEl.getAttribute('data-value') : '/';
+                }
+                return this.pathPrefix;
+            },
             showAuthModal () {
-                this.importHref('/elements/kw-auth-modal/kw-auth-modal.html', () => {
+                this.importHref(this._getPathPrefix() + 'elements/kw-auth-modal/kw-auth-modal.html', () => {
                     this.$['auth-modal'].open();
                 });
             },
