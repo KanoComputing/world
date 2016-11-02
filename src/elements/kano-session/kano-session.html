@@ -5,8 +5,8 @@
 
 <dom-module id="kano-session">
     <template>
-        <app-localstorage-document id="session" key="KW_SESSION" data="{{session}}" zero-value="[[zeroValue]]"></app-localstorage-document>
-        <app-localstorage-document id="token" key="KW_TOKENv2" data="{{token}}" zero-value="[[zeroValue]]"></app-localstorage-document>
+        <app-localstorage-document id="session" key="KW_SESSION" data="{{session}}"></app-localstorage-document>
+        <app-localstorage-document id="token" key="KW_TOKENv2" data="{{token}}"></app-localstorage-document>
     </template>
     <script>
 
@@ -55,10 +55,6 @@
                     type: String,
                     value: 'initialising',
                     notify: true
-                },
-                zeroValue: {
-                    type: Object,
-                    value: null
                 }
             },
             observers: [
