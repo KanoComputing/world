@@ -50,6 +50,7 @@ gulp.task('shards', () => {
     return shards.build({
         shell: 'elements/elements.html',
         endpoints: [
+            'elements/kw-view-welcome/kw-view-welcome.html',
             'elements/kw-view-projects/kw-view-projects.html',
             'elements/kw-view-feed/kw-view-feed.html',
             'elements/kw-auth-modal/kw-auth-modal.html'

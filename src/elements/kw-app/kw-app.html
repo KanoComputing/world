@@ -134,6 +134,9 @@
             </div>
         </div>
         <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" restamp>
+            <template is="iron-lazy-page" name="welcome" path="/elements/kw-view-welcome/kw-view-welcome.html">
+                <kw-view-welcome></kw-view-welcome>
+            </template>
             <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
                 <kw-view-projects>
                     <div class="projects-shell">
@@ -162,7 +165,10 @@
         <kw-auth-modal id="auth-modal"></kw-auth-modal>
     </template>
     <script>
-        const catchUrls = ['/projects', '/shares'];
+        if (localStorage.getItem("KW_TOKEN") === null || localStorage.getItem("KW_TOKENv2") === null) {
+            history.pushState({}, "welcome", "welcome");
+        }
+        const catchUrls = ['/projects', '/welcome'];
         Polymer({
             is: 'kw-app',
             behaviors: [Kano.APIClient],
@@ -174,6 +180,7 @@
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                     this.stats = stats;
                 });
+                
             },
             detached () {
                 this._stopNotificationsPolling();

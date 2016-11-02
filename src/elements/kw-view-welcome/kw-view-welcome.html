@@ -1,0 +1,184 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+
+<dom-module id="kw-view-welcome">
+    <template>
+        <style>
+            :host {
+                width: 100%;
+                display: flex;
+                @apply --layout-vertical;
+                background: #f1f1f1;
+                min-height: 100vh;
+            }
+            .banner {
+                flex: 4;
+                position: relative;
+                background-color: #493e52;
+                transform: translateZ(0);
+                overflow: hidden;
+                @apply --layout-vertical;
+                @apply --layout-center-center;
+            }
+            .kw-logo {
+                height: 90px;
+                width: 90px;
+                opacity: 0;
+                background-color: transparent;
+                animation: fade-in ease-out 800ms;
+                animation-delay: 40ms;
+                animation-fill-mode: forwards;
+            }
+            .backround-wrapper{
+                display: flex;
+                position: absolute;
+                justify-content: center;
+                align-items: flex-start;
+                top: -2px;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            .background-image {
+                width: 100%;
+                max-width: 1230px;
+                min-width: 870px;
+                transform-origin: center top;
+                animation: breathing 6s infinite ease-in-out;
+            }
+            @keyframes breathing {
+                0% {
+                    transform: scale(0.97);
+                    opacity: 0.9;
+                }
+                60% {
+                    transform: scale(1.0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(0.97);
+                    opacity: 0.9
+                }
+            }
+            @keyframes fade-in {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+            h1 {
+                color: #ffffff;
+                margin: 17px 0 2px;
+                transform: translateZ(0);
+            }
+            h3 {
+                font-size: 18px;
+                color: #999;
+                margin: 5px;
+                transform: translateZ(0);
+            }
+            button {
+                position: relative;
+                background-color: transparent;
+                border: 1px solid white;
+                border-radius: 30px;
+                margin: 30px;
+                padding: 13px 35px;
+                font-size: 15px;
+                color: #ffffff;
+                font-weight: bold;
+                text-transform: uppercase;
+                z-index: 1;
+                transition: all linear 200ms;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #7ac943;
+                border-color: #7ac943;
+            }
+            button:focus {
+                outline: none;
+                background-color: #62b22a;
+                border-color: #62b22a;
+            }
+            .footer {
+                flex: 1.5;
+                margin-top: 30px;
+            }
+            .footer ul{
+                flex: 1;
+                @apply --layout-horizontal;
+                @apply --layout-start;
+                @apply --layout-center-justified;
+                margin: 0 50px;
+                list-style: none;
+            }
+            .footer ul li {
+                flex: 1;
+                color: #999;
+                margin: 0 50px 0; 
+                font-size: 18px;
+                line-height: 26px;
+                position: relative;
+                ax-width: 450px;
+            }
+            .footer ul li:before {
+                content: '\25CF';
+                position: absolute;
+                left: -20px;
+                color: #999;
+            }
+            .footer ul li.middle:before {
+                content: '\25C6';
+                position: absolute;
+                left: -20px;
+                color: #999;
+            }
+            @media screen and (max-width: 980px) {
+                .footer {
+                    flex: 1;
+                    margin-top: 22px;
+                }
+                .footer ul {
+                    margin: 0 20px;
+                 }
+                .footer ul li {
+                    margin: 0 20px;
+                    font-size: 18px;
+                }
+            }
+            @media screen and (max-width: 680px) {
+                .footer ul {
+                    margin: 0 13px;
+                    display: block;
+                 }
+                .footer ul li {
+                    margin: 15px 13px;
+                    font-size: 15px;
+                    line-height: 21px;
+                }
+            }
+            }
+        </style>
+        <div class="banner">
+            <div class="backround-wrapper">
+                <img class="background-image" src="/assets/welcome/radial-lines.svg"/>
+            </div>
+            <iron-image class="kw-logo" src="/assets/welcome/kW-logo.svg" preload fade sizing="contain"></iron-image>
+            <h1>Kano World</h1>
+            <h3>Learn to code. Make amazing things.</h3>
+            <a href="/projects"><button type="button">Get Started</button></a>
+        </div>
+        <div class="footer">
+            <ul>
+                <li>Make your own apps, hack hardware, create unique games, or code works of art</li>
+                <li class="middle">No coding experience required! Learn through step-by-step challenges.</li>
+                <li>Anyone can code. Challenges for coders and makers of all ages and level</li>
+            </ul>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-view-welcome'
+        });
+    </script>
+</dom-module> 
