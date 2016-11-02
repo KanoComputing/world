@@ -12,8 +12,17 @@
                 min-height: 100vh;
                 background: white;
             }
+            @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+                .banner {
+                    height: 500px;
+                    flex: none;
+                }
+                .banner img {
+                    height: 350px;
+                }
+            }
             .banner {
-                flex: 4;
+                flex: 4 0 auto;
                 position: relative;
                 background-color: #493e52;
                 transform: translateZ(0);
