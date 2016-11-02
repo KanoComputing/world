@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/kano-nav-bar/kano-nav-bar.html">
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
@@ -26,7 +27,10 @@
             }
             iron-lazy-pages>*:not(template) {
                 @apply --layout-vertical;
-                min-height: 100vh;
+                min-height: calc(100vh - 60px);
+            }
+            .pages {
+                position: relative;
             }
             .projects-shell {
                 width: 100%;
@@ -100,6 +104,34 @@
             .footer .copyright {
                 color: #6e6e6e;
             }
+            .shell-pages {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
+            .shell-pages>div {
+                min-height: calc(100vh - 60px);
+                /* make sure the shell is under the app */
+                z-index: -1;
+            }
+            .welcome-shell {
+                display: flex;
+                flex-direction: column;
+            }
+            .welcome-banner {
+                flex: 4;
+                background: #493e52;
+            }
+            .welcome-footer {
+                flex: 1.5;
+                background: white;
+            }
+            @media screen and (max-width: 980px) {
+                .welcome-footer {
+                    flex: 1;
+                }
+            }
             @media screen and (max-width: 680px) {
                 .footer {
                     padding: 20px;
@@ -108,6 +140,9 @@
                     @apply --layout-vertical;
                     @apply --layout-center;
                 }
+            }
+            *[hidden] {
+                display: none !important;
             }
         </style>
         <app-location route="{{route}}"></app-location>
@@ -133,27 +168,34 @@
                 </div>
             </div>
         </div>
-        <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" restamp>
-            <template is="iron-lazy-page" name="welcome" path="/elements/kw-view-welcome/kw-view-welcome.html">
-                <kw-view-welcome></kw-view-welcome>
-            </template>
-            <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
-                <kw-view-projects>
-                    <div class="projects-shell">
-                        <div class="masthead">
-                            <div class="speaker"></div>
-                            <div class="camera"></div>
-                            <div class="pixel"></div>
-                        </div>
-                        <div class="category"></div>
-                        <div class="category"></div>
+        <div class="pages">
+            <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages">
+                <div name="welcome" class="welcome-shell">
+                    <div class="welcome-banner"></div>
+                    <div class="welcome-footer"></div>
+                </div>
+                <div name="projects" class="projects-shell">
+                    <div class="masthead">
+                        <div class="speaker"></div>
+                        <div class="camera"></div>
+                        <div class="pixel"></div>
                     </div>
-                </kw-view-projects>
-            </template>
-            <template is="iron-lazy-page" name="shares" path="/elements/kw-view-feed/kw-view-feed.html">
-                <kw-view-feed route="{{subroute}}"></kw-view-feed>
-            </template>
-        </iron-lazy-pages>
+                    <div class="category"></div>
+                    <div class="category"></div>
+                </div>
+            </iron-pages>
+            <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" restamp hide-immediately>
+                <template is="iron-lazy-page" name="welcome" path="/elements/kw-view-welcome/kw-view-welcome.html">
+                    <kw-view-welcome></kw-view-welcome>
+                </template>
+                <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
+                    <kw-view-projects></kw-view-projects>
+                </template>
+                <template is="iron-lazy-page" name="shares" path="/elements/kw-view-feed/kw-view-feed.html">
+                    <kw-view-feed route="{{subroute}}"></kw-view-feed>
+                </template>
+            </iron-lazy-pages>
+        </div>
         <kano-nav-bar assets-path="/assets/navbar/"
                         selected-link="[[_computeSelectedLink(route.path)]]"
                         world-root="[[config.WORLD_URL]]"
