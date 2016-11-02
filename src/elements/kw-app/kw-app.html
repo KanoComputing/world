@@ -238,7 +238,9 @@
                 if (!localLink) {
                     location.reload();
                     // Hides the pages to make sure no future content is displayed while old KW loads
-                    this.$$('.pages').style.display = 'none';
+                    // Prepares the page to look like the loading screen of the old KW
+                    document.body.innerHTML = '';
+                    document.body.style.background = '#333';
                 }
                 return path.split('/')[1];
             },
