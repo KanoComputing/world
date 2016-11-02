@@ -41,7 +41,7 @@ node {
 def deploy_staging() {
     sh 'aws s3 sync ./www s3://new-world-staging.kano.me/new --region eu-west-1 --cache-control "max-age=600" --only-show-errors'
     // Also sync the index.html to the root folder for spa purposes
-    sh 'aws s3 sync ./www/index.html s3://new-world-staging.kano.me --region eu-west-1 --cache-control "max-age=600" --only-show-errors'
+    sh 'aws s3 cp ./www/index.html s3://new-world-staging.kano.me/index.html --region eu-west-1'
 }
 
 def deploy_prod() {
