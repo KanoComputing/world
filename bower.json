@@ -15,7 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "animated-lazy-pages": "paulvarache/animated-lazy-pages",
     "app-route": "PolymerElements/app-route#^0.9.2",
     "app-storage": "PolymerElements/app-storage#^0.9.7",
     "date-util": "paulvarache/date-util",
@@ -32,7 +31,6 @@
     "iron-scroll-threshold": "PolymerElements/iron-scroll-threshold#^1.0.2",
     "iron-selector": "PolymerElements/iron-selector#^1.5.2",
     "kano-nav-bar": "KanoComputing/kano-nav-bar#^1.2.3",
-    "lazy-imports": "Polymer/lazy-imports#^0.0.2",
     "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
     "polymer": "Polymer/polymer#^1.7.0",
     "polymer-filters": "paulvarache/polymer-filters",
