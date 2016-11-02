@@ -64,7 +64,7 @@ gulp.task('shards', () => {
 gulp.task('compress', () => {
     return gulp.src(['www/index.html', 'www/elements/**/*.html', 'www/assets/**/*.json'], { base: 'www' })
         .pipe($.if(hasExt('html'), $.crisper({ scriptInHead: false })))
-        .pipe($.replace(/<[^a](.+)(href|src|assets-path|path|content)="\/(.+)"(.*)>/g, '<$1$2="/new/$3"$4>'))
+        .pipe($.replace(/<([^a])(.+)(href|src|assets-path|path|content)="\/(.+)"(.*)>/g, '<$1$2$3="/new/$4"$5>'))
         .pipe($.replace('url("/assets', 'url("/new/assets'))
         .pipe($.replace('["/', '["/new/'))
         .pipe($.if(hasExt('json'), $.replace('"/assets', '"/new/assets')))
