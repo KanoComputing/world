@@ -210,14 +210,15 @@
                         xp="[[user.profile.xp]]"
                         on-logout="_logout"
                         on-login="showAuthModal"
+                        on-signup="signup"
                         notifications="[[notifications]]"></kano-nav-bar>
         <kw-auth-modal id="auth-modal"></kw-auth-modal>
     </template>
     <script>
         if (localStorage.getItem("KW_TOKEN") === null || localStorage.getItem("KW_TOKENv2") === null) {
-            history.pushState({}, "welcome", "welcome");
+            history.pushState({}, "welcome", "/welcome");
         }
-        const catchUrls = ['/projects', '/welcome'];
+        const catchUrls = [/^\/projects$/, /^\/welcome$/];
         Polymer({
             is: 'kw-app',
             behaviors: [Kano.APIClient],
@@ -235,11 +236,7 @@
                 this._stopNotificationsPolling();
             },
             _computeSelectedLink (path) {
-                let localLink = catchUrls.some(url => {
-                    if (path.indexOf(url) !== -1) {
-                        return true;
-                    }
-                });
+                let localLink = catchUrls.some(url => url.test(path));
                 if (!localLink) {
                     location.reload();
                     // Hides the pages to make sure no future content is displayed while old KW loads
@@ -293,6 +290,9 @@
                 } else {
                     this._stopNotificationsPolling();
                 }
+            },
+            signup () {
+                this.set('route.path', '/register');
             }
         });
     </script>
