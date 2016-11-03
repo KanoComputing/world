@@ -62,5 +62,31 @@
                     </script>
                 </template>
             </demo-snippet>
+            <h3>With no start link</h3>
+            <demo-snippet>
+                <template>
+                    <kw-projects-category id="no-start-link"></kw-projects-category>
+                    <script>
+                        document.addEventListener('WebComponentsReady', function() {
+                            let el = document.querySelector('kw-projects-category#no-start-link');
+
+                            el.category = {
+                                label: 'light',
+                                header: 'Bring lights to life',
+                                mode_color: '#EF3442',
+                                description: 'Create incredible light shows, music visualisers, weather displays, games and more',
+                                projects: [{
+                                    creator: "thedude",
+                                    image: "/assets/projects/icons/light/pixel_2.png",
+                                    link: "https://apps.kano.me/story/pixel_2",
+                                    slug: "pixel_3",
+                                    title: "Why not",
+                                    completed: true
+                                }]
+                            };
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
     </body>
 </html>

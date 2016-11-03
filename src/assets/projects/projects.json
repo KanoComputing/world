@@ -533,7 +533,6 @@
         "header": "Kit Projects",
         "description": "Make your Computer Kit do even more cool things",
         "mode_color": "white",
-        "start_link": "#",
         "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "api_progress_tracking": "kit_projects",
         "projects": [
