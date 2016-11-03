@@ -105,7 +105,6 @@
             .footer .copyright {
                 color: #6e6e6e;
             }
-            iron-lazy-pages,
             .shell-pages {
                 position: absolute;
                 top: 0;
@@ -146,6 +145,12 @@
             *[hidden] {
                 display: none !important;
             }
+            iron-pages {
+                opacity: 0;
+            }
+            iron-pages[unresolved] {
+                opacity: 1;
+            }
         </style>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
@@ -171,7 +176,7 @@
             </div>
         </div>
         <div class="pages">
-            <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages">
+            <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages" unresolved$="[[loadingPage]]">
                 <div name="welcome" class="welcome-shell">
                     <div class="welcome-banner"></div>
                     <div class="welcome-footer"></div>
@@ -186,7 +191,7 @@
                     <div class="category"></div>
                 </div>
             </iron-pages>
-            <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" restamp hide-immediately>
+            <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" loading="{{loadingPage}}" restamp hide-immediately>
                 <template is="iron-lazy-page" name="welcome" path="/elements/kw-view-welcome/kw-view-welcome.html">
                     <kw-view-welcome></kw-view-welcome>
                 </template>

@@ -6,6 +6,9 @@ const shards = require('./tasks/shards');
 const runSequence = require('run-sequence');
 const compiler = require('google-closure-compiler-js').gulp();
 const env = process.env.NODE_ENV || 'development';
+const url = require('url');
+const fs = require('fs');
+const browserSync = require('browser-sync');
 
 $.cssSlam = require('css-slam').gulp;
 
@@ -21,6 +24,29 @@ function hasExt(ext) {
         return file.relative.split('.').pop() === ext;
     };
 }
+
+gulp.task('watch', function() {
+    browserSync.init({
+        server: {
+            baseDir: "./src",
+            middleware: function(req, res, next) {
+                var fileName = url.parse(req.url);
+                fileName = fileName.href.split(fileName.search).join("");
+                var fileExists = fs.existsSync('src' + fileName);
+                if (!fileExists && fileName.indexOf("browser-sync-client") < 0) {
+                    req.url = "/index.html";
+                }
+                return next();
+            }
+        },
+        port: 7000,
+        open: false
+    });
+    return gulp.watch('./src/**/*')
+        .on('change', (e) => {
+            browserSync.reload();
+        });
+});
 
 // Move the whole src folder to .tmp. This ensures that the src folder will not be touched
 gulp.task('move-to-tmp', () => {
