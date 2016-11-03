@@ -3,7 +3,7 @@ node {
     stage('check environment') {
         if (env.BRANCH_NAME=="master" || env.BRANCH_NAME=="jenkins") {
             env.DEV_ENV = "staging"
-        } else if (env.BRANCH_NAME=="prod" || env.BRANCH_NAME=="pre-release") {
+        } else if (env.BRANCH_NAME=="prod") {
             env.DEV_ENV = "production"
         }
         env.NODE_ENV = "${env.DEV_ENV}"
@@ -45,5 +45,7 @@ def deploy_staging() {
 }
 
 def deploy_prod() {
-    // Empty
+    sh 'aws s3 sync ./www s3://new-world.kano.me/new --region us-west-1 --cache-control "max-age=600" --only-show-errors'
+    // Also sync the index.html to the root folder for spa purposes
+    sh 'aws s3 cp ./www/index.html s3://new-world.kano.me/index.html --region us-west-1'
 }
