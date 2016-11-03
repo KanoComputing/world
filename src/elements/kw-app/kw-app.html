@@ -215,9 +215,6 @@
         <kw-auth-modal id="auth-modal"></kw-auth-modal>
     </template>
     <script>
-        if (localStorage.getItem("KW_TOKEN") === null || localStorage.getItem("KW_TOKENv2") === null) {
-            history.pushState({}, "welcome", "/welcome");
-        }
         const catchUrls = [/^\/projects$/, /^\/welcome$/];
         Polymer({
             is: 'kw-app',
