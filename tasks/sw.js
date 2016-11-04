@@ -60,7 +60,7 @@ module.exports = (gulp, $) => {
             }));
     }
 
-    gulp.task('sw', ['appcache'], (cb) => {
+    gulp.task('sw', (cb) => {
         writeServiceWorker(true, cb);
     });
     gulp.task('sw-dev', ['appcache-dev'], (cb) => {
