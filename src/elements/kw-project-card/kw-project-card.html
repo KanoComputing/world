@@ -60,7 +60,10 @@
                 @apply --kw-card-button-focused;
             }
         </style>
-        <iron-image src="[[image]]" sizing="cover" hidden$="[[!image]]" preload fade></iron-image>
+        <!-- Here a hidden attribute would be more fitting, but a bug on Safari 9 crashes the app if the image doesn't have a src -->
+        <template is="dom-if" if="[[image]]">
+            <iron-image src="[[image]]" sizing="cover" preload fade></iron-image>
+        </template>
         <h4 class="title" id="title"></h4>
         <slot></slot>
     </template>

@@ -122,6 +122,12 @@ gulp.task('rewrite-sw', () => {
         .pipe(gulp.dest('www'));
 });
 
+gulp.task('safari-9-support', () => {
+    gulp.src(['www/elements/**/*.js', 'www/vendor/es6-promise/**/*', 'www/vendor/fetch/**/*'], { base: 'www' })
+        .pipe($.replace(/("|')use strict("|');/, ''))
+        .pipe(gulp.dest('www'));
+});
+
 gulp.task('build', () => {
-    return runSequence('move-to-tmp', 'config', 'copy', 'shards', 'polyfill', 'compress', 'sw', 'rewrite-sw');
+    return runSequence('move-to-tmp', 'config', 'copy', 'shards', 'polyfill', 'compress', 'safari-9-support', 'sw', 'rewrite-sw');
 });

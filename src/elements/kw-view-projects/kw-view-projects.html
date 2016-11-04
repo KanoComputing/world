@@ -128,6 +128,8 @@
             .categories {
                 position: relative;
                 @apply --layout-flex;
+                /* Fix for Safari 9 */
+                flex: 1 0 auto;
             }
             @media screen and (max-width: 980px) {
                 .heading {
