@@ -49,7 +49,7 @@ module.exports = (gulp, $) => {
     }
 
     function generateAppcacheManifest(manifest, handleFetch) {
-        var src = handleFetch ? STATIC_FILE_GLOB : [];
+        var src = [];
         return gulp.src(src, { base: 'www' })
             .pipe($.manifest({
                 hash: true,
@@ -60,7 +60,7 @@ module.exports = (gulp, $) => {
             }));
     }
 
-    gulp.task('sw', (cb) => {
+    gulp.task('sw', ['appcache'], (cb) => {
         writeServiceWorker(true, cb);
     });
     gulp.task('sw-dev', ['appcache-dev'], (cb) => {
