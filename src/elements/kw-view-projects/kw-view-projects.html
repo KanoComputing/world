@@ -267,10 +267,13 @@
                 }
                 if (user && user.profile) {
                     let profile = user.profile,
+                        kcProgress = [];
+                    if (profile.stats['make-apps'] && profile.stats['make-apps'].progress) {
                         kcProgress = profile.stats['make-apps'].progress;
-                    kcProgress = Object.keys(kcProgress).reduce((acc, key) => {
-                        return acc.concat(kcProgress[key].completedStories);
-                    }, []);
+                        kcProgress = Object.keys(kcProgress).reduce((acc, key) => {
+                            return acc.concat(kcProgress[key].completedStories);
+                        }, []);
+                    }
                     categories.forEach((category, catId) => {
                         if (category.api_progress_tracking.indexOf('make-art') !== -1) {
                             let artGroup = profile.stats['kano-draw'].groups[category.api_progress_tracking.replace('make-art-', '')];
