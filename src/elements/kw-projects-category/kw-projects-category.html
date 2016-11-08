@@ -4,9 +4,8 @@
 <link rel="import" type="" href="../kw-project-card/kw-project-card.html">
 <link rel="import" type="" href="../kano-carousel/kano-carousel.html">
 
+
 <!--
-
-
 @demo demo/index.html
 -->
 <dom-module id="kw-projects-category">
@@ -43,6 +42,7 @@
             }
             .projects>a {
                 position: relative;
+                margin: 10px 12px;
             }
             .star {
                 position: absolute;
@@ -52,7 +52,6 @@
                 transform: translateZ(0) scale(0);
             }
             kw-project-card {
-                margin: 10px 12px 10px 12px;
                 min-width: 200px;
                 background-color: var(--kw-projects-category-background-color);
                 color: var(--kw-projects-category-color);

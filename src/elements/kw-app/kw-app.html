@@ -39,7 +39,8 @@
             }
             .projects-shell .masthead {
                 @apply --layout-horizontal;
-                height: 265px;
+                height: 350px;
+                background-color: #493e52;
             }
             .projects-shell .masthead .speaker {
                 width: 52%;
@@ -147,6 +148,7 @@
             }
             iron-pages {
                 opacity: 0;
+                pointer-events: none;
             }
             iron-pages[unresolved] {
                 opacity: 1;
@@ -183,9 +185,6 @@
                 </div>
                 <div name="projects" class="projects-shell">
                     <div class="masthead">
-                        <div class="speaker"></div>
-                        <div class="camera"></div>
-                        <div class="pixel"></div>
                     </div>
                     <div class="category"></div>
                     <div class="category"></div>

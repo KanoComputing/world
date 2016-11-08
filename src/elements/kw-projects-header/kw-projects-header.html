@@ -1,0 +1,242 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+
+<link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../kano-style/color.html">
+<link rel="import" type="" href="../kano-carousel/kano-carousel.html">
+<link rel="import" type="" href="../kw-project-card/kw-project-card.html">
+
+<!--
+TODO
+@demo demo/index.html
+-->
+<dom-module id="kw-projects-header">
+    <template>
+        <style>
+            .header {
+                height: 350px;
+                overflow: hidden;
+                /*Corresponding shell div in kw-app needs to match the color scheme*/
+                background-image: url("/assets/projects/marquee/world-projects-banner.svg");
+                background-color: #493e52;
+                background-size: cover;
+                background-position: center bottom;
+            }
+            .info {
+                display: inline-block;
+                margin: 100px 0 0 58px;
+            }
+            .toggle-container {
+                @apply(--layout-vertical);
+                opacity: 0;
+                transform: translateY(100px);
+                transition: 300ms ease-out;
+            }
+            .projects {
+                @apply --layout-horizontal;
+                flex: 1;
+                justify-content: center;
+                padding: 0 36px;
+                overflow-y: visible;
+            }
+            .projects>a {
+                position: relative;
+                margin: 10px 12px;
+            }
+            input[type=checkbox] {
+                display: none;
+            }
+            .info label, .staff-pick-memo {
+                display: inline-block;
+                background-color: var(--color-grey-lighter, #ddd);
+                margin: 18px 0 0 5px;
+                border: 0;
+                border-radius: 50px;
+            }
+            .info label {
+                padding: 10px 20px;
+                font-size: 20px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 300ms ease-out;
+            }
+            .staff-pick-memo {
+                margin: 58px auto 100px;
+                padding: 17px 90px;
+                text-align: center;
+                font-size: 18px;
+                font-weight: 400;
+            }
+            input[type=checkbox]:checked ~ .header {
+                height: 675px;
+            }
+            input[type=checkbox]:checked ~ .header .info label {
+                visibility: hidden;
+                opacity: 0;
+            }
+            input[type=checkbox]:checked ~ .header .toggle-container {
+                transform: translateY(0);
+                opacity: 1;
+                margin-top: -10px;
+            }
+            h3 {
+                position: relative;
+                display: inline-block;
+                color: var(--color-grey-lighter, #ddd);
+                font-size: 42px;
+                font-weight: 400;
+                margin: 0;
+            }
+            .header iron-image {
+                position: absolute;
+                top: -30px;
+                right: -52px;
+                width: 50px;
+                height: 50px;
+            }
+            h6 {
+                color: var(--color-grey-lighter, #ddd);
+                font-size: 24px;
+                font-weight: 500;
+                margin: 0;
+            }
+            .cards-wrapper {
+                @apply(--layout-horizontal);
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            kano-carousel {
+                position: relative;
+                margin: 0px 0;
+            }
+            kw-project-card {
+                background-color: #EF3442;
+                color: white;
+            }
+            kw-project-card .card-actions button {
+                background-color: white;
+                color: black;
+            }
+            .left-button, .right-button {
+                font-family: var(--font-body);
+                position: absolute;
+                top: 0;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.4);
+                color: white;
+                font-size: 40px;
+                font-weight: bold;
+                border: 0;
+                cursor: pointer;
+                padding: 12px;
+            }
+            .left-button:focus, .right-button:focus {
+                outline: none;
+            }
+            .left-button {
+                left: 0;
+            }
+            .right-button {
+                right: 0;
+            }
+            @media screen and (max-width: 980px) {
+                .projects {
+                    padding: 0;
+                }
+            }
+            @media screen and (max-width: 768px) {
+                .cards-wrapper {
+                    flex-wrap: wrap;
+                }
+                h3 {
+                    font-size: 40px;
+                }
+                h6 {
+                    font-size: 18px;
+                }
+                .info {
+                    margin: 65px 0 0;
+                    width: 100%;
+                    text-align: center;
+                }
+                .info label {
+                    font-size: 18px;
+                    margin-left: 0;
+                }
+                .staff-pick-memo {
+                    padding: 17px 15px;
+                    font-size: 15px;
+                }
+                .header iron-image {
+                    position: absolute;
+                    top: -28px;
+                    right: -38px;
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+        </style>
+        <input type="checkbox" id="showhide" on-change="_checkboxChanged">
+        <div class="header">
+            <div id="content">
+                <div class="info">
+                    <h3>Around the world<iron-image src="/assets/projects/marquee/new-coin-icon.svg" sizing="cover" preload fade></iron-image></h3>
+                    <h6>Take an international trip through language, flags and nationalities.</h6>
+                    <label for="showhide">make it</label>
+                </div>
+                <div class="toggle-container">
+                <kano-carousel class="cards-wrapper">
+                    <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                    <div class="projects" slot="content">
+                        <a href="#">
+                            <kw-project-card image="/assets/projects/icons/light/pixel_1.png" class="project" heading="Turn on the lights">
+                                <div class="card-actions">
+                                    <button>Start</button>
+                                </div>
+                            </kw-project-card>
+                        </a>
+                        <a href="#" class="clear-fix">
+                            <kw-project-card image="/assets/projects/icons/light/pixel_1.png" class="project" heading="Turn on the lights">
+                                <div class="card-actions">
+                                    <button>Start</button>
+                                </div>
+                            </kw-project-card>
+                        </a>
+                        <a href="#">
+                            <kw-project-card image="/assets/projects/icons/light/pixel_1.png" class="project" heading="Turn on the lights">
+                                <div class="card-actions">
+                                    <button>Start</button>
+                                </div>
+                            </kw-project-card>
+                        </a>
+                        <a href="#">
+                            <kw-project-card image="/assets/projects/icons/light/pixel_1.png" class="project" heading="Turn on the lights">
+                                <div class="card-actions">
+                                    <button>Start</button>
+                                </div>
+                            </kw-project-card>
+                        </a>
+                    </div>
+                    <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                </kano-carousel>
+                    <h5 class="staff-pick-memo">Remember! Share your creation for the chance to be Staff Picked</h5>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-projects-header',
+            getHeaderContentElement() {
+                return this.$.content;
+            },
+            _checkboxChanged (e) {
+                let target = e.path ? e.path[0] : e.target;
+                if (target.checked) {
+                    this.fire('expand');
+                }
+            }
+        });
+    </script>
+</dom-module>
