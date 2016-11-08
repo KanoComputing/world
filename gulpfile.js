@@ -91,7 +91,7 @@ gulp.task('compress', () => {
     return gulp.src(['www/index.html', 'www/elements/**/*.html', 'www/assets/**/*.json'], { base: 'www' })
         .pipe($.if(hasExt('html'), $.crisper({ scriptInHead: false })))
         // All theses are to support redirection and navigation through the previous version of Kano World 
-        .pipe($.replace(/<([^a])(.+)(href|src|assets-path|path|content)="\/(.+)"(.*)>/g, '<$1$2$3="/new/$4"$5>'))
+        .pipe($.replace(/<([^a])(.+)(href|src|assets-path|path|content|image)="\/(.+)"(.*)>/g, '<$1$2$3="/new/$4"$5>'))
         .pipe($.replace('url("/assets', 'url("/new/assets'))
         .pipe($.replace('["/', '["/new/'))
         .pipe($.if(hasExt('json'), $.replace('"/assets', '"/new/assets')))
