@@ -9,14 +9,15 @@
         <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../kw-share-card.html">
+        <link rel="import" href="../kw-music-share.html">
+
         <link rel="import" href="../../kano-style/typography.html">
-        <link rel="import" href="../../kano-style/button.html">
 
         <style is="custom-style" include="demo-pages-shared-styles">
-            kw-share-card {
-                width: 560px;
-                height: 560px;
+            kw-music-share {
+                width: 520px;
+                height: 200px;
+                font-family: var(--font-body);
             }
             .centered {
                 max-width: 600px !important;
@@ -26,22 +27,16 @@
 
     <body unresolved>
         <div class="vertical-section-container centered">
-            <h3>With no share, renders as a tombstone</h3>
+            <h3>Default</h3>
             <demo-snippet>
                 <template>
-                    <kw-share-card share></kw-share-card>
-                </template>
-            </demo-snippet>
-            <h3>When share is provided</h3>
-            <demo-snippet>
-                <template>
-                    <kw-share-card id="share"></kw-share-card>
+                    <kw-music-share id="share"></kw-music-share>
                     <script>
                         document.addEventListener('WebComponentsReady', function () {
-                            var card = document.querySelector('kw-share-card#share');
+                            var card = document.querySelector('#share');
 
                             card.share = {
-                                title: 'My awesome share',
+                                title: 'My song from outer space',
                                 user: {
                                     username: 'platypusmeister',
                                     avatar: {
@@ -53,11 +48,13 @@
                                 cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
                                 date_created: new Date(),
                                 likes: new Array(27),
-                                comments_count: 5
+                                comments_count: 5,
+                                sample_url: "https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/samples/581dfcd62204b21a7e99049e.oga"
                             }
                         });
                     </script>
                 </template>
             </demo-snippet>
+            
     </body>
 </html>

@@ -14,7 +14,6 @@
     <template>
         <style>
             :host {
-                display: block;
                 height: 250px;
                 width: 250px;
                 color: #6e6e6e;
@@ -27,7 +26,6 @@
                 @apply --kw-share-card;
                 background: white;
                 box-sizing: border-box;
-                padding: 16px;
             }
             :host(:focus) {
                 outline: none;
@@ -38,17 +36,25 @@
                 z-index: 0;
                 width: 100%;
                 background: inherit;
-                border-radius: 4px;
             }
             .top, .bottom {
-                width: 100%;
                 @apply --layout-horizontal;
+                align-self: stretch;
                 min-height: 30px;
-                margin-bottom: 16px;
+                boz-sizing: border-box;
+            }
+            .top {
+                padding: 16px 16px 7px 16px;
             }
             .bottom {
-                margin-top: 16px;
+                padding: 7px 16px 16px 16px;
                 margin-bottom: 0px;
+                @apply --layout-vertical;
+            }
+            .bottom hr {
+                margin: 0;
+                border: 0px;
+                border-bottom: 1px solid lightgrey;
             }
             .share-info {
                 @apply --layout-flex;
@@ -112,7 +118,7 @@
         <div class="top" tombstone$="[[!share]]">
             <iron-image class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
             <div class="share-info">
-                <span class="title">[[share.title]]</span>
+                <span class="title" tombstone$="[[!title]]">[[share.title]]</span>
                 <span class="author">by [[share.user.username]]</span>
             </div>
             <div class="datetime">
@@ -129,6 +135,7 @@
                     <span>[[share.comments_count]] replies</span>
                 </div>
             </div>
+            <hr>
             <div class="actions"></div>
         </div>
     </template>
