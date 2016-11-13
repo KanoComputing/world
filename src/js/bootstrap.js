@@ -4,6 +4,8 @@ var webComponentsSupported = ('registerElement' in document
     fetchSupported = 'fetch' in window,
     pathPrefix = document.head.querySelector('meta[name="path-prefix"]').getAttribute('data-value');
 
+window.dataLayer = [];
+
 window.Polymer = {
     dom: 'shadow',
     lazyRegister: true
