@@ -96,7 +96,7 @@
                 if (this.page === null) {
                     return;
                 }
-                fetch(`${this._getUrl('feed')}?featured=true&page=${this.page}&limit=15`)
+                fetch(`${this._getUrl('feed')}?app_name=make-music&page=${this.page}&limit=15`)
                     .then(r => r.json())
                     .then(r => {
                         r.entries.forEach(share => {
