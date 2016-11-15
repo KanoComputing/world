@@ -117,13 +117,6 @@
         <kano-carousel>
             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
             <div class="projects" slot="content">
-                <a href$="[[category.start_link]]" hidden$="[[!category.start_link]]">
-                    <kw-project-card class="start" heading="Start a new \n[[category.label]] project">
-                        <div class="card-actions">
-                            <button>Start from scratch</button>
-                        </div>
-                    </kw-project-card>
-                </a>
                 <template is="dom-repeat" items="[[category.projects]]" as="project">
                     <a href$="[[project.link]]">
                         <kw-project-card image="[[project.image]]" class="project" heading="[[project.title]]">

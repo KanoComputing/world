@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/kano-nav-bar/kano-nav-bar.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
@@ -177,6 +178,9 @@
                 </div>
             </div>
         </div>
+        <!-- for now modals need to be taken out of stacking context of view elements, see https://github.com/PolymerElements/polymer-starter-kit/issues/154 -->
+        <kw-auth-modal id="auth-modal"></kw-auth-modal>
+        <kw-blank-project-modal id="kw-blank-project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
         <div class="pages">
             <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages" unresolved$="[[loadingPage]]">
                 <div name="welcome" class="welcome-shell">
@@ -195,7 +199,7 @@
                     <kw-view-welcome></kw-view-welcome>
                 </template>
                 <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
-                    <kw-view-projects></kw-view-projects>
+                    <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
                 </template>
                 <template is="iron-lazy-page" name="shares" path="/elements/kw-view-feed/kw-view-feed.html">
                     <kw-view-feed route="{{subroute}}"></kw-view-feed>
@@ -212,13 +216,17 @@
                         on-login="showAuthModal"
                         on-signup="signup"
                         notifications="[[notifications]]"></kano-nav-bar>
-        <kw-auth-modal id="auth-modal"></kw-auth-modal>
     </template>
     <script>
         const catchUrls = [/^\/projects$/, /^\/welcome$/];
         Polymer({
             is: 'kw-app',
             behaviors: [Kano.APIClient],
+            properties: {
+                modalOpened: {
+                    type: Boolean
+                }
+            },
             observers: [
                 '_tokenChanged(token)',
                 '_viewChanged(routeData.page)'
@@ -264,6 +272,11 @@
             showAuthModal () {
                 this.importHref(this._getPathPrefix() + 'elements/kw-auth-modal/kw-auth-modal.html', () => {
                     this.$['auth-modal'].open();
+                });
+            },
+            showProjectModal () {
+                this.importHref(this._getPathPrefix() + 'elements/kw-blank-project-modal/kw-blank-project-modal.html', (e) => {
+                    this.$['kw-blank-project-modal'].open();
                 });
             },
             _commaify (n) {
