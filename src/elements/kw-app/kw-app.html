@@ -7,6 +7,7 @@
 
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
+<link rel="import" href="../kw-share-shell/kw-share-shell.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../../js/config.html">
 
@@ -215,7 +216,7 @@
         <kw-auth-modal id="auth-modal"></kw-auth-modal>
     </template>
     <script>
-        const catchUrls = [/^\/projects$/, /^\/welcome$/];
+        const catchUrls = [/^\/projects$/, /^\/welcome$/,/^\/shares/,/^\/element/];
         Polymer({
             is: 'kw-app',
             behaviors: [Kano.APIClient],

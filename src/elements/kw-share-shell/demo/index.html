@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <title>kano-world-share-card demo</title>
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../kw-share-shell.html">
+    <link rel="import" href="../../kw-share-card/kw-share-card.html">
+    <link rel="import" href="../../kw-share-detail/kw-share-detail.html">
+    <style is="custom-style" include="demo-pages-shared-styles">
+        .centered {
+            max-width: 580px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        body {
+            background-color: #27323A;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="vertical-section-container centered" style="background-color:#27323A">
+        <h3>Basic kw-share-shell demo</h3>
+        <demo-snippet>
+            <template>
+                <kw-share-shell id="share" slotName="share-card">
+                    <div slot="share-card">
+                        <kw-share-card id="share"></kw-share-card>
+                    </div>
+                </kw-share-shell>
+                <h3>Detail Card</h3>
+                <kw-share-shell id="share-detail" slotName="share-detail">
+                    <div slot="share-detail">
+                        <kw-share-detail id="share-detail"></kw-share-detail>
+                    </div>
+                </kw-share-shell>
+                <script>
+                        document.addEventListener('WebComponentsReady', function () {
+                            var card = document.querySelector('kw-share-card#share');
+                            console.log(card);
+                            var cardDetail = document.querySelector('kw-share-detail#share-detail');
+                            card.share = {
+                                title: 'My awesome share',
+                                description:"Please note that the new version does not use deep, and therefore requires you to import the dom-modules in every element that needs to use them.",
+                                user: {
+                                    username: 'platypusmeister',
+                                    avatar: {
+                                        urls: {
+                                            circle: 'https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/578bab1e7457798011f0ce63/avatar-circle.png'
+                                        }
+                                    }
+                                },
+                                cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
+                                date_created: new Date(),
+                                likes: new Array(27),
+                                comments_count: 5
+                            }
+                            cardDetail.share = card.share;
+                        });
+                    </script>
+            </template>
+        </demo-snippet>
+    </div>
+</body>
+
+</html>
