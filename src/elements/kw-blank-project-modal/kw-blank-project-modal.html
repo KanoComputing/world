@@ -239,19 +239,19 @@
                     <button class="close-button-mobile" type="button" on-click="close">Close <div class="close-symbol">&#x00D7;</div></button>
                     <h5>What do you want to build with?</h5>
                     <div class="mode-options">
-                        <a href="https://apps.kano.me/make">
+                        <a href="https://apps.kano.me">
                             <div class="mode">
                                 <iron-image src="/assets/projects/modes/canvas-blank.png" sizing="contain" preload fade alt="Start a new project"></iron-image>
                                 <button type="button" class="mode-button">blank canvas</button>
                             </div>
                         </a>
-                        <a href="https://apps.kano.me/make?mode=lightboard">
+                        <a href="https://apps.kano.me/?mode=lightboard">
                             <div class="mode">
                                 <iron-image src="/assets/projects/modes/canvas-pixel.png" sizing="cover" preload fade alt="Start a new lightboard project"></iron-image>
                                 <button type="button" class="mode-button">pixel kit</button>
                             </div>
                         </a>
-                        <a href="https://apps.kano.me/make?mode=camera">
+                        <a href="https://apps.kano.me/?mode=camera">
                             <div class="mode">
                                 <iron-image src="/assets/projects/modes/canvas-camera.png" sizing="contain" preload fade alt="Start a new camera project"></iron-image>
                                 <button type="button" class="mode-button">camera</button>
@@ -273,7 +273,8 @@
                 }
             },
             attached () {
-                this.ontouchmove = e => {return false;}
+                //remove scroll on touch devices
+                this.ontouchmove = e => {e.preventDefault();}
                 //keep touchmove on modal
                 this.$.modal.addEventListener('touchmove', this.stopPropagation, false);
             },
