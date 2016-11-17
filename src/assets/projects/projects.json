@@ -4,7 +4,6 @@
       "header": "Bring lights to life",
       "description": "Create incredible light shows, music visualisers, weather displays, games and more",
       "mode_color": "#EF3442",
-      "start_link": "https://apps.kano.me/make?mode=lightboard",
       "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
       "api_progress_tracking": "make-apps",
       "projects": [
@@ -78,7 +77,6 @@
       "header": "Amazing camera creations",
       "description": "Make amazing apps, filters and clever rules for the Camera Kit, or your computer’s webcam",
       "mode_color": "#FCE100",
-      "start_link": "https://apps.kano.me/make?mode=camera",
       "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
       "api_progress_tracking": "make-apps",
       "projects": [
@@ -145,7 +143,6 @@
       "header": "Code with sound and build with data",
       "description": "Code music, loops and beats, funny sounds. Teach your computer to speak",
       "mode_color": "white",
-      "start_link": "https://apps.kano.me/make",
       "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
       "api_progress_tracking": "make-apps",
       "projects": [
@@ -198,7 +195,6 @@
         "header": "Incredible art",
         "description": "Bring your art to life with animation",
         "mode_color": "white",
-        "start_link": "https://apps.kano.me/make",
         "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "api_progress_tracking": "make-apps",
         "projects": [
@@ -251,7 +247,6 @@
         "header": "Make Art 101",
         "description": "Code awesome masterpieces. No pen or pad needed",
         "mode_color": "white",
-        "start_link": "https://art.kano.me/playground",
         "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "api_progress_tracking": "make-art-basic",
         "projects": [
@@ -298,7 +293,6 @@
         "header": "Summer Camp",
         "description": "Go to camp and take on these summery challenges",
         "mode_color": "white",
-        "start_link": "https://art.kano.me/playground",
         "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "api_progress_tracking": "make-art-summercamp",
         "projects": [
@@ -435,7 +429,6 @@
         "header": "Make fashion with code",
         "description": "Create these fashionable patterns fit for the catwalk, with fashion designer Oswald Boateng",
         "mode_color": "white",
-        "start_link": "https://art.kano.me/playground",
         "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "api_progress_tracking": "make-art-ozwaldboateng",
         "projects": [
@@ -494,7 +487,6 @@
         "header": "Minecraft",
         "description": "Don’t play Minecraft, hack it. With a few blocks of code, make it do what you want",
         "mode_color": "white",
-        "start_link": "/projects/category/make-minecraft",
         "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "api_progress_tracking": "make-minecraft",
         "projects": [

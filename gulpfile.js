@@ -83,7 +83,8 @@ gulp.task('shards', () => {
             'elements/kw-view-welcome/kw-view-welcome.html',
             'elements/kw-view-projects/kw-view-projects.html',
             'elements/kw-view-feed/kw-view-feed.html',
-            'elements/kw-auth-modal/kw-auth-modal.html'
+            'elements/kw-auth-modal/kw-auth-modal.html',
+            'elements/kw-blank-project-modal/kw-blank-project-modal.html'
         ],
         shared_import: 'elements/shared.html',
         root: '.tmp',

@@ -1,16 +1,13 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kano-style/color.html">
-<link rel="import" type="" href="../kano-carousel/kano-carousel.html">
-<link rel="import" type="" href="../kw-project-card/kw-project-card.html">
+<link rel="import" href="../kano-carousel/kano-carousel.html">
+<link rel="import" href="../kw-project-card/kw-project-card.html">
 
-<!--
-TODO
-@demo demo/index.html
--->
 <dom-module id="kw-projects-header">
     <template>
         <style>
@@ -141,12 +138,42 @@ TODO
             .right-button {
                 right: 0;
             }
+            .new-project-field {
+                box-sizing: border-box;
+                background-color: white;
+                overflow: auto;
+            }
+            .new-project-field h4 {
+                display: flex;
+                justify-content: center;
+                text-align: center;
+                margin: 75px 5px 32px;
+                font-size: 32px;
+                font-weight: 400;
+                color: var(--color-grey-darker, #666);
+            }
+            .new-project-field button {
+                display: block;
+                margin: 0 auto 75px;
+                background-color: #7ac943;
+                color: white;
+                border: none;
+                font-size: 16px;
+                padding: 18px 20px;
+                cursor: pointer;
+            }
             @media screen and (max-width: 980px) {
                 .projects {
                     padding: 0;
                 }
+                .new-project-field h4 {
+                    font-size: 28px;
+                }
+                .new-project-field button {
+                    font-size: 14px;
+                }
             }
-            @media screen and (max-width: 768px) {
+            @media screen and (max-width: 680px) {
                 .cards-wrapper {
                     flex-wrap: wrap;
                 }
@@ -175,6 +202,9 @@ TODO
                     right: -38px;
                     width: 40px;
                     height: 40px;
+                }
+                .new-project-field h4 {
+                    font-size: 24px;
                 }
             }
         </style>
@@ -225,6 +255,10 @@ TODO
                 </div>
             </div>
         </div>
+        <div class="new-project-field">
+            <h4>Start your next project from scratch, <br>or try out the challenges below to earn XP</h4>
+            <button type="button" on-click="_openModal">start a new project</button>
+        </div>
     </template>
     <script>
         Polymer({
@@ -237,6 +271,9 @@ TODO
                 if (target.checked) {
                     this.fire('expand');
                 }
+            },
+            _openModal () {
+                this.fire('show-modal');
             }
         });
     </script>

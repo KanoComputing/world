@@ -1,0 +1,319 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../kano-style/input.html">
+<link rel="import" href="../kano-style/button.html">
+<link rel="import" href="../kano-style/color.html">
+
+<dom-module id="kw-blank-project-modal">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                position:fixed;
+                top:0;
+                /*IE + Edge fix*/
+                _position:absolute;
+                _top:expression(eval(document.body.scrollTop));
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+                @apply --layout-center-justified;
+                @apply --layout-center;
+            }
+            iron-image.background-image {
+                position:fixed;
+                top:50%;
+                /*IE + Edge fix*/
+                _position:absolute;
+                _top:expression(eval(0.5 * document.body.scrollTop));
+                height: 640px;
+                width: 988px;
+                left: 50%;
+                margin-top: -320px;
+                margin-left: -494px;
+            }
+            .dialog-wrapper {
+                position:fixed;
+                top:50%;
+                /*IE + Edge fix*/
+                _position:absolute;
+                _top:expression(eval(0.5 * document.body.scrollTop));
+                height: 276px;
+                width: 586px;
+                left: 50%;
+                margin-top: -138px;
+                margin-left: -294px;
+            }
+            paper-dialog {
+                box-shadow: none;
+                border-radius: 4px;
+                overflow-y: scroll;
+            }
+            paper-dialog .container {
+                display: flex;
+                flex-direction: column;
+                margin: 0 !important;
+                padding: 30px 50px 0;
+            }
+            h5 {
+                text-align: center;
+                font-size: 28px;
+                font-weight: 300;
+                margin: 10px 0 20px;
+            }
+            .mode-options {
+                @apply --layout-horizontal;
+                @apply --layout-center-justified;
+                margin-bottom: 36px;
+            }
+            .mode-options > a {
+                text-decoration: none;
+            }
+            .mode-options > a {
+                width: 150px;
+                height: 150px;
+                margin: 0;
+                padding: 5px;
+                transition: transform 300ms linear;
+            }
+            .mode {
+                width: 100%;
+                height: 100%;
+                @apply --layout-vertical;
+                @apply --layout-start-justified;
+            }
+            .mode-options > a:hover {
+                transform: translateY(-6%);
+            }
+            .mode-options > a:hover .mode-button {
+                background-color: #62b22a;
+            }
+            .mode iron-image {
+                width: 100%;
+                height: 80%;
+                margin-bottom: 5px;
+            }
+            .mode-button {
+                @apply --kano-button;
+                background-color: #7ac943;
+                margin: 0px 11px;
+                padding: 12px 3px;
+                text-transform: none;
+            }
+            .close-button-display {
+                @apply --kano-button;
+                background-color: black;
+                position: absolute;
+                top: -38px;
+                right: 0;
+                border: 0;
+                border-radius: 25px;
+                text-transform: none;
+                font-size: 16px;
+                padding: 8px 15px;
+            }
+            .close-button-mobile {
+                display: none;
+            }
+            .close-symbol {
+                display: inline-block;
+                height: 16px;
+                width: 16px;
+                line-height: 17px;
+                background-color: white;
+                color: black;
+                margin-left: 5px;
+                border: 0;
+                border-radius: 50%;
+                font-family: monospace;
+            }
+            @media screen and (max-width: 980px) {
+                .dialog-wrapper {
+                    width: 450px;
+                    height: 230px;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -125px;
+                    margin-left: -225px;
+                }
+                iron-image.background-image {
+                    height: 480px;
+                    width: 680px;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -240px;
+                    margin-left: -340px;
+                }
+                paper-dialog .container {
+                    padding: 25px 25px 0;
+                }
+               .mode-options {
+                    margin-bottom: 27px;
+               }
+               .mode-options > a {
+                    width: 125px;
+                    height: 125px;
+                    margin: 0;
+                    padding: 3px;
+                }
+                .mode-button {
+                    margin: 0 6px;
+                }
+                h5 {
+                    font-size: 22px;
+                    margin-top: 0;
+                }
+                .close-button-display {
+                    top: -40px;
+                    right: -25px;
+                    font-size: 14px;
+                }
+                @media screen and (max-width: 680px) {
+                :host {
+                    background-color: rgba(0,0,0,0.6);
+                }
+                .dialog-wrapper {
+                    width: 90%;
+                    height: 786px;
+                }
+                iron-image.background-image {
+                    display: none;
+                }
+                paper-dialog {
+                    width: 100%;
+                }
+                .mode-options {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .mode-options:hover {
+                    transform: none;
+                }
+                .mode-options > a {
+                    width: 205px;
+                    height: 205px;
+                    margin-bottom: 38px;
+                }
+                .mode-options > a:hover {
+                    transform: none;
+                    opacity: 1;
+                }
+                .mode-options > a:hover .mode-button {
+                    background-color: #7ac943;
+                }
+                .mode-options > a:active .mode-button {
+                    background-color: #62b22a;
+                }
+                .mode-button {
+                    margin: 0 6px;
+                }
+                .close-button-display {
+                    display: none;
+                }
+                .close-button-mobile {
+                    @apply --kano-button;
+                    display: inline-block;
+                    align-self: flex-end;
+                    background-color: black;
+                    position: relative;
+                    top: -2px;
+                    right: -5px;
+                    border: 0;
+                    border-radius: 25px;
+                    text-transform: none;
+                    font-size: 16px;
+                    margin: 5px 0 20px !important;
+                    padding: 8px 15px !important;
+                }
+            }
+        </style>
+        <iron-image id="overlay" class="background-image" src="/assets/projects/modes/modal-bg-s.svg" sizing="contain" alt="Modal overlay" preload fade>
+        </iron-image>
+        <div class="dialog-wrapper">
+            <button class="close-button-display" type="button" on-click="close">Close <div class="close-symbol">&#x00D7;</div></button>
+            <paper-dialog id="modal" opened="{{opened}}">
+                <div class="container">
+                    <button class="close-button-mobile" type="button" on-click="close">Close <div class="close-symbol">&#x00D7;</div></button>
+                    <h5>What do you want to build with?</h5>
+                    <div class="mode-options">
+                        <a href="https://apps.kano.me">
+                            <div class="mode">
+                                <iron-image src="/assets/projects/modes/canvas-blank.png" sizing="contain" preload fade alt="Start a new project"></iron-image>
+                                <button type="button" class="mode-button">blank canvas</button>
+                            </div>
+                        </a>
+                        <a href="https://apps.kano.me/?mode=lightboard">
+                            <div class="mode">
+                                <iron-image src="/assets/projects/modes/canvas-pixel.png" sizing="cover" preload fade alt="Start a new lightboard project"></iron-image>
+                                <button type="button" class="mode-button">pixel kit</button>
+                            </div>
+                        </a>
+                        <a href="https://apps.kano.me/?mode=camera">
+                            <div class="mode">
+                                <iron-image src="/assets/projects/modes/canvas-camera.png" sizing="contain" preload fade alt="Start a new camera project"></iron-image>
+                                <button type="button" class="mode-button">camera</button>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </paper-dialog>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-blank-project-modal',
+            properties: {
+                opened: {
+                    type: Boolean,
+                    notify: true,
+                    observer: '_modalChanged'
+                }
+            },
+            attached () {
+                //remove scroll on touch devices
+                this.ontouchmove = e => {e.preventDefault();}
+                //keep touchmove on modal
+                this.$.modal.addEventListener('touchmove', this.stopPropagation, false);
+            },
+            detached () {
+                this.$.modal.removeEventListener('touchmove', this.stopPropagation, false);
+            },
+            stopPropagation (e) {
+                e.stopPropagation();
+            },
+            open () {
+                this.$.modal.open();
+                if ('animate' in HTMLElement.prototype) {
+                    this.$.modal.animate({
+                        transform: ['scale(1.2)', 'scale(1)'],
+                        opacity: [0, 1]
+                    }, {
+                        duration: 150,
+                        easing: 'ease-out'
+                    });
+                }
+            },
+            close () {
+                if ('animate' in HTMLElement.prototype) {
+                    this.$.modal.animate({
+                        opacity: [1, 0]
+                    }, {
+                        duration: 100,
+                        easing: 'ease-in'
+                    }).onfinish = () => {
+                        this.$.modal.close();
+                    };
+                } else {
+                    this.$.modal.close();
+                }
+            },
+            //catching all opening/closing
+            _modalChanged (newValue) {
+                document.body.style.overflow = newValue ? "hidden" : "visible";
+            }
+        });
+    </script>
+</dom-module>
