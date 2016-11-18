@@ -29,13 +29,14 @@
             }
             #detail {
                 display: none;
+                height: 100%;
                 @apply --layout-vertical;
             }
             #feed {
                 height: 100%;
                 @apply --layout-horizontal;
             }
-            kw-share-detail, kw-share-feed {
+            kw-share-feed {
                 @apply --layout-flex;
             }
             kw-share-feed {
@@ -146,7 +147,7 @@
 
                         // Animates the detail view to fit the previous share in the list, then hides it
                         to.animate([{
-                            transform: 'translate(0px, 0px) scale(1)',
+                            transform: 'translate(0px, 0px) scale(1, 1)',
                             opacity: 1
                         }, {
                             transform: `translate(${fromRect.left - toRect.left}px, ${fromRect.top - toRect.top}px) scale(${fromRect.width / toRect.width}, ${fromRect.height / toRect.height})`,
@@ -194,7 +195,7 @@
                         transform: `translate(${fromRect.left - toRect.left}px, ${fromRect.top - toRect.top}px) scale(${fromRect.width / toRect.width}, ${fromRect.height / toRect.height})`,
                         opacity: 0
                     }, {
-                        transform: 'translate(0px, 0px) scale(1)',
+                        transform: 'translate(0px, 0px) scale(1, 1)',
                         opacity: 1
                     }], {
                         duration: 200

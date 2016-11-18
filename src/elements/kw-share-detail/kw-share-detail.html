@@ -9,34 +9,93 @@
                 display: block;
                 @apply --layout-vertical;
                 @apply --layout-center;
-            }
-            .detail {
-                width: 650px;
-                height: 500px;
                 background: white;
                 border: 1px solid grey;
                 margin: 10px auto;
             }
-            .detail>iron-image {
+            .details {
+                flex: 1 0 auto;
+                position: relative;
+                display: flex;
+                width: 650px;
+                height: 500px;
+            }
+            .details>iron-image {
+                position: absolute;
+                top: 0;
+                left: 0;
                 width: 100%;
                 height: 100%;
             }
+            #share-container {
+                flex: 1 0 auto;
+                @apply --layout-flex-vertical;
+            }
+            #share-container>* {
+                flex: 1 0 auto;
+            }
+            *[hidden] {
+                display: none !important;
+            }
         </style>
-        <div id="share" class="detail">
-            <iron-image src="[[share.cover_url]]" sizing="cover"></iron-image>
+        <h3>[[share.title]]</h3>
+        <div id="share" class="details">
+            <iron-image src="[[share.cover_url]]" sizing="cover" hidden$="[[detailsLoaded]]"></iron-image>
+            <div id="share-container"></div>
         </div>
     </template>
     <script>
-        Polymer({
-            is: 'kw-share-detail',
-            properties: {
-                share: {
-                    type: Object
+        (function () {
+            const appMapping = {
+                'make-music': 'kw-music-share'
+            };
+
+            Polymer({
+                is: 'kw-share-detail',
+                behaviors: [Polymer.Templatizer],
+                properties: {
+                    share: {
+                        type: Object
+                    }
+                },
+                observers: [
+                    '_shareAppChanged(share.app)'
+                ],
+                getShareElement () {
+                    return this;
+                },
+                _shareAppChanged (shareApp) {
+                    let tagName, templateString, template;
+                    if (!this.share) {
+                        return;
+                    }
+
+                    tagName = appMapping[shareApp] || 'kw-share';
+
+                    this.importHref(`/elements/${tagName}/${tagName}.html`, () => {
+                        templateString = `<${tagName} share="[[share]]"></${tagName}>`;
+                        
+                        template = document.createElement('template');
+
+                        template.innerHTML = templateString;
+
+                        this.templatize(template);
+
+                        if (this.instance) {
+                            while (this.$['share-container'].firstChild) {
+                                this.$['share-container'].removeChild(this.$['share-container'].firstChild);
+                            }
+                        }
+
+                        this.instance = this.stamp({
+                            share: this.share
+                        });
+
+                        this.$['share-container'].appendChild(this.instance.root);
+                        this.detailsLoaded = true;
+                    }, () => {}, true);
                 }
-            },
-            getShareElement () {
-                return this.$.share;
-            }
-        });
+            });
+        })();
     </script>
 </dom-module>
