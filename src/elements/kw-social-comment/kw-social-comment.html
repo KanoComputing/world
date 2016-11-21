@@ -1,7 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
-<dom-module id="kw-view-comment">
+<link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<dom-module id="kw-social-comment">
     <template>
         <style>
              :host {
@@ -120,22 +122,29 @@
                 font-size: 14px;
             }
         </style>
-        <div class="comments" tombstone$="[[!share]]">
+        <div class="comments" tombstone$="[[!comments]]">
             <h3>Be the first to comment!</h3>
             <div class="line"></div>
-            <div class="comment">
-                <div class="commentAvatar"><img src="../../assets/icons/shares/commentAvatar.svg" /></div>
-                <div class="content">
-                    <p><b>Joey Etamity</b>This is a demo comment , as long as you can write to test it a bit with the wrap text!</p>
-                    <span>9:20am, 11th October 2016</span>
-                </div>
-            </div>
+            <iron-scroll-threshold id="threshold" lower-threshold="1000" on-lower-threshold="_loadMoreData">
+                <iron-list items="[[comments]]" as="comment" scroll-target="threshold">
+                    <template>
+                        <div class="comment">
+                            <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
+                            <div class="content">
+                                <p><b>Joey Etamity</b>This is a demo comment , as long as you can write to test it a bit with
+                                    the wrap text!</p>
+                                <span>9:20am, 11th October 2016</span>
+                            </div>
+                        </div>
+                    </template>
+                </iron-list>
+            </iron-scroll-threshold>
             <div class="line"></div>
             <div class="inputcomment">
-                <div class="commentAvatar"><img src="../../assets/icons/shares/commentAvatar.svg" /></div>
+                <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
                 <div class="commentbox">
                     <input type="text" placeholder="Type your message ...">
-                    <button type="submit" class="orangebutton commentbutton" onclick="">comment <img src="../../assets/icons/shares/comment.svg" /></button>
+                    <button type="submit" class="orangebutton commentbutton" onclick="">comment <img src="/assets/icons/shares/comment.svg" /></button>
                 </div>
             </div>
             <p>Remember to be nice</p>
@@ -144,7 +153,8 @@
     </template>
     <script>
         Polymer({
-            is: 'kw-view-comment',
+            is: 'kw-social-comment',
+            behaviors: [Kano.APIClient],
             properties: {
                 comments: {
                     type: Array,
@@ -152,6 +162,19 @@
                         return [];
                     }
                 }
+            },
+            attached () {
+                this.page = 0;
+                this.comments.push({id:123});
+                this.comments.push({id:123});
+                this.comments.push({id:123});
+            },
+            _loadMoreData () {
+                // When we hit the last page
+                if (this.page === null) {
+                    return;
+                }
+
             }
         });
     </script>

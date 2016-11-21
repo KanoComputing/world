@@ -35,6 +35,27 @@
             </template>
         </demo-snippet>
     </div>
+    <script>
+    document.addEventListener('WebComponentsReady', function () {
+                            var card = document.querySelector('kw-view-comment#share');
+
+                            card.comments = {
+                                title: 'My awesome share',
+                                user: {
+                                    username: 'platypusmeister',
+                                    avatar: {
+                                        urls: {
+                                            circle: 'https://pbs.twimg.com/profile_images/613499829608665088/8VPONBWD.jpg'
+                                        }
+                                    }
+                                },
+                                cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
+                                date_created: new Date(),
+                                likes: new Array(27),
+                                comments_count: 5
+                            }
+                        });                
+     </script>
 </body>
 
 </html>
