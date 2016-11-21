@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/date-util/date-util.html">
 <link rel="import" href="../kano-style/typography.html">
-<link rel="import" href="../kw-share-shell/kw-share-shell.html">
+<link rel="import" href="../kano-style/color.html">
 <!--
 
 
@@ -15,8 +15,15 @@
              :host {
                 display: block;
                 @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-justified;
+                overflow: hidden;
+                @apply --kw-share-card;
             }
-            
+            :host(:focus) {
+				outline: none;
+				box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.08);
+			}
             .bottom {
                 @apply --layout-vertical;
                 min-height: 30px;
@@ -100,7 +107,7 @@
             }
             
             .orangebutton {
-                background-color: #FF8413;
+                background-color: #ff842a;
                 border-radius: 5px;
                 width: 79px;
                 height: 32px;
@@ -128,7 +135,7 @@
                 color: transparent;
             }
         </style>
-        <kw-share-shell id$="[[share.slug]]" share="[[share]]">
+        <kw-share-shell share="[[share]]">
             <div slot="share-card">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade tombstone$="[[!share]]"></iron-image>
                 <div class="bottom" tombstone$="[[!share]]">
@@ -150,7 +157,7 @@
                             <p>[[share.description]]</p>
                         </div>
                         <div class="actions">
-                            <button type="submit" class="orangebutton remixbutton" onclick="">remix<img src="../../assets/icons/shares/remix.svg" /></button>
+                            <button class="orangebutton remixbutton" onclick="">remix<img src="../../assets/icons/shares/remix.svg" /></button>
                         </div>
                     </div>
                 </div>
