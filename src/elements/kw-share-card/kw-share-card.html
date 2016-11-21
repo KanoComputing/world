@@ -10,8 +10,15 @@
              :host {
                 display: block;
                 @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-justified;
+                overflow: hidden;
+                @apply --kw-share-card;
             }
-            
+            :host(:focus) {
+				outline: none;
+				box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.08);
+			}
             .bottom {
                 @apply --layout-vertical;
                 min-height: 30px;
