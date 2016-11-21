@@ -3,13 +3,11 @@
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
-<link rel="import" href="../kw-share-card/kw-share-card.html">
-<link rel="import" href="../kw-share-detail/kw-share-detail.html">
 <dom-module id="kw-share-shell">
 	<template>
 		<style>
 			:host {
-				width: 100%;
+				width: 580px;
 				margin: 10px auto;
 				color: #6e6e6e;
 				border: 1px solid #e0e0e0;
@@ -21,7 +19,6 @@
 				@apply --kw-share-card;
 				background: white;
 				box-sizing: border-box;
-				padding: 16px;
 			}
 			
 			#container ::slotted(.foo) {
@@ -42,22 +39,23 @@
 			}
 			
 			.top {
-				width: 100%;
 				@apply --layout-horizontal;
 				min-height: 30px;
-				margin-bottom:å12px;
+				margin-bottom:12px;
+				margin: 16px;
 			}
 			
 			.datetime {
 				@apply --layout-horizontal;
+				@apply --layout-flex;
 				@apply --layout-end;
+				@apply(--layout-end-justified)
 			}
 			
 			.author {
 				@apply --layout-horizontal;
 				@apply --layout-end;
 				min-height: 30px;
-				margin-right: 12px;
 			}
 			
 			.title {
@@ -72,6 +70,7 @@
 				width: 35px;
 				height: 35px;
 				margin-right: 12px;
+
 			}
 			
 			div[tombstone].top .avatar {
@@ -94,22 +93,28 @@
 				background: rgba(0, 0, 0, 0.01);
 				color: transparent;
 			}
+			.shell{
+				width:100%;
+			}
 		</style>
-		<div class="top" tombstone$="[[!share]]">
-			<iron-image position="bottom" class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
+		<div class="shell">
+			<div class="top" tombstone$="[[!share]]">
 			<div class="author">
-				<span>[[share.user.username]]</span>
+								<iron-image position="bottom" class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
+	
+					<span>[[share.user.username]]</span>
+				</div>
+
+				<div class="datetime">
+					<date-util format="dd Mon yyyy" date="[[_createDate(share.date_created)]]"></date-util>
+				</div>
 			</div>
-			<div class="space"></div>
-			<div class="datetime">
-				<date-util format="dd Mon yyyy" date="[[_createDate(share.date_created)]]"></date-util>
+			<div id="container">
+				<slot name="share-card" share=[[share]]> </slot>
 			</div>
-		</div>
-		<div id="container">
-			<slot name="share-card" share=[[share]]> </slot>
-		</div>
-		<div id="container">
-			<slot name="share-detail"> </slot>
+			<div id="container">
+				<slot name="share-detail"> </slot>
+			</div>
 		</div>
 	</template>
 	<script>
@@ -122,9 +127,6 @@
             },
             attached () {
                 this.setAttribute('tabindex', 0);
-            },
-            getCoverElement () {
-                return this.$.cover;
             },
             _createDate (formatted) {
                 return new Date(formatted);

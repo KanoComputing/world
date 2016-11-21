@@ -4,7 +4,6 @@
 <link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../kw-share-card/kw-share-card.html">
-<link rel="import" href="../kw-share-shell/kw-share-shell.html">
 <dom-module id="kw-share-feed">
     <template>
         <style>
@@ -65,20 +64,14 @@
             }
         </style>
         <div class="shell" id="shell">
-            <kw-share-shell id$="[[share.slug]]" share="[[shellShare]]">
-                <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[share]]" on-tap="_selectShare"></kw-share-card>
-            </kw-share-shell>
-            <kw-share-shell id$="[[share.slug]]" share="[[shellShare]]">
-                <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[share]]" on-tap="_selectShare"></kw-share-card>
-            </kw-share-shell>
+            <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[shellShare]]" on-tap="_selectShare"></kw-share-card>
+            <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[shellShare]]" on-tap="_selectShare"></kw-share-card>
         </div>
         <iron-scroll-threshold id="threshold" lower-threshold="1000" on-lower-threshold="_loadMoreData">
             <iron-list items="[[shares]]" as="share" scroll-target="threshold">
                 <template>
                     <div>
-                        <kw-share-shell id$="[[share.slug]]" share="[[share]]">
-                            <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[share]]" on-tap="_selectShare"></kw-share-card>
-                        </kw-share-shell>
+                        <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[share]]" on-tap="_selectShare"></kw-share-card>
                     </div>
                 </template>
             </iron-list>
@@ -109,11 +102,12 @@
                 if (this.page === null) {
                     return;
                 }
-                fetch(`${this._getUrl('feed')}?app_name=make-music&page=${this.page}&limit=15`)
+                fetch(`${this._getUrl('feed')}?page=${this.page}&limit=15`)
                     .then(r => r.json())
                     .then(r => {
                         r.entries.forEach(share => {
                             this.push('shares', share);
+
                         });
                         this.page = r.next;
                         if (!this.populated) {

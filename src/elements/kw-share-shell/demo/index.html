@@ -20,6 +20,107 @@
         body {
             background-color: #27323A;
         }
+        
+        .bottom {
+            width: 100%;
+            @apply --layout-vertical;
+            min-height: 30px;
+            margin-bottom: 16px;
+        }
+        
+        iron-image.cover {
+            @apply --layout-flex;
+            z-index: 0;
+            width: 100%;
+            background: inherit;
+            border-radius: 3px;
+        }
+        
+        .stats {
+            @apply --layout-horizontal;
+            color: #435055;
+            font-size: 12px;
+            margin-top: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .stats .likes,
+        .stats .comments,
+        .stats .shares {
+            padding: 6px;
+        }
+        
+        .bottom .content {
+            @apply --layout-horizontal;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .bottom .content .description {
+            @apply(--layout-flex-3);
+            color: rgba(97, 97, 97, 0.14);
+        }
+        
+        .bottom .content .description h3 {
+            margin: 0;
+            font-size: 16px;
+            line-height: 23px;
+            color: #435055;
+            font-family: "bariol";
+        }
+        
+        .bottom .content .description p {
+            color: #616161;
+            margin-right: 16px;
+            font-family: "bariol";
+            font-weight: normal;
+            font-size: 16px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .bottom .content .actions {
+            width: 25%;
+            @apply --layout-horizontal;
+            @apply(--layout-center);
+            @apply(--layout-end-justified);
+            padding-top: 5%;
+        }
+        
+        .bottom .content .actions button img {
+            position: relative;
+            top: 2px;
+            left: 2px;
+        }
+        
+        .orangebutton {
+            background-color: #FF8413;
+            border-radius: 5px;
+            width: 79px;
+            height: 32px;
+            color: white;
+            border: none;
+        }
+        
+        .remixbutton {
+            width: 79px;
+        }
+        
+        .bottom .line {
+            height: 1px;
+            width: 100%;
+            display: block;
+            background-color: rgba(99, 107, 126, .24);
+        }
+        
+        div[tombstone].bottom .likes,
+        div[tombstone].bottom .comments,
+        div[tombstone].bottom .shares {
+            width: 80px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.01);
+            color: transparent;
+        }
     </style>
 </head>
 
@@ -29,7 +130,33 @@
         <demo-snippet>
             <template>
                 <kw-share-shell id="share">
-                    <kw-share-card id="share" slot="share-card"></kw-share-card>
+                    <div slot="share-card">
+                        <iron-
+                        image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade tombstone$="[[!share]]"></iron-image>
+                        <div class="bottom" tombstone$="[[!share]]">
+                            <div class="stats">
+                                <div class="likes">
+                                    <span><img src="../../../assets/icons/shares/like.svg"> </img>[[share.likes.length]] likes</span>
+                                </div>
+                                <div class="comments">
+                                    <span><img src="../../../assets/icons/shares/comment_b.svg"> </img>[[share.comments_count]] comments</span>
+                                </div>
+                                <div class="shares">
+                                    <span><img src="../../../assets/icons/shares/share.svg"> </img>share</span>
+                                </div>
+                            </div>
+                            <div class="line"></div>
+                            <div class="content">
+                                <div class="description">
+                                    <h3>[[share.title]]</h3>
+                                    <p>[[share.description]]</p>
+                                </div>
+                                <div class="actions">
+                                    <button type="submit" class="orangebutton remixbutton" onclick="">remix<img src="../../../assets/icons/shares/remix.svg" /></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </kw-share-shell>
                 <h3>Detail Card</h3>
                 <kw-share-shell id="detail">
@@ -40,10 +167,8 @@
                 <script>
                         document.addEventListener('WebComponentsReady', function () {
                             var cardshell = document.querySelector('kw-share-shell#share');
-                            var card = document.querySelector('kw-share-card#share');
                             var carddetaillshell = document.querySelector('kw-share-shell#detail');
-                            var cardDetail = document.querySelector('kw-share-detail#detail');
-                            card.share = {
+                            var share = {
                                 title: 'My awesome share',
                                 description:"Please note that the new version does not use deep, and therefore requires you to import the dom-modules in every element that needs to use them.",
                                 user: {
@@ -59,7 +184,8 @@
                                 likes: new Array(27),
                                 comments_count: 5
                             }
-                            cardDetail.share = cardshell.share = carddetaillshell.share = card.share;
+                            console.log(cardshell);
+                           cardshell.share = carddetaillshell.share = share;
                         });
                     </script>
             </template>
