@@ -2,27 +2,29 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
-
-
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../kw-share-card/kw-share-card.html">
-
+<link rel="import" href="../kw-share-shell/kw-share-shell.html">
 <dom-module id="kw-share-feed">
     <template>
         <style>
-            :host {
+             :host {
                 display: block;
                 @apply --layout-vertical;
                 position: relative;
                 overflow: hidden;
             }
-            iron-scroll-threshold, .shell {
+            
+            iron-scroll-threshold,
+            .shell {
                 @apply --layout-flex;
                 @apply --layout-vertical;
             }
+            
             iron-list {
                 @apply --layout-flex;
             }
+            
             .shell {
                 position: absolute;
                 top: 0;
@@ -30,11 +32,13 @@
                 width: 100%;
                 transition: opacity linear 200ms;
             }
-            kw-share-card, .shell .shell-card {
+            
+            kw-share-shell,
+            .shell .shell-card {
                 width: 580px;
-                height: 520px;
                 margin: 10px auto;
             }
+            
             @keyframes fade-in {
                 from {
                     opacity: 0;
@@ -43,12 +47,15 @@
                     opacity: 1;
                 }
             }
-            kw-share-card {
+            
+            kw-share-shell {
                 cursor: pointer;
                 animation: fade-in linear 200ms;
             }
+            
             @media screen and (max-width: 580px) {
-                kw-share-card, .shell .shell-card {
+                kw-share-shell,
+                .shell .shell-card {
                     width: 100%;
                     height: 90vw;
                     margin: 10px auto;
@@ -58,14 +65,20 @@
             }
         </style>
         <div class="shell" id="shell">
-            <kw-share-card share="[[shellShare]]"></kw-share-card>
-            <kw-share-card share="[[shellShare]]"></kw-share-card>
+            <kw-share-shell id$="[[share.slug]]" share="[[shellShare]]">
+                <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[share]]" on-tap="_selectShare"></kw-share-card>
+            </kw-share-shell>
+            <kw-share-shell id$="[[share.slug]]" share="[[shellShare]]">
+                <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[share]]" on-tap="_selectShare"></kw-share-card>
+            </kw-share-shell>
         </div>
         <iron-scroll-threshold id="threshold" lower-threshold="1000" on-lower-threshold="_loadMoreData">
             <iron-list items="[[shares]]" as="share" scroll-target="threshold">
                 <template>
                     <div>
-                        <kw-share-card id$="[[share.slug]]" share="[[share]]" on-tap="_selectShare"></kw-share-card>
+                        <kw-share-shell id$="[[share.slug]]" share="[[share]]">
+                            <kw-share-card id$="[[share.slug]]" slot="share-card" share="[[share]]" on-tap="_selectShare"></kw-share-card>
+                        </kw-share-shell>
                     </div>
                 </template>
             </iron-list>

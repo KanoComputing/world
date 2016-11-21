@@ -1,0 +1,134 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kw-share-card/kw-share-card.html">
+<link rel="import" href="../kw-share-detail/kw-share-detail.html">
+<dom-module id="kw-share-shell">
+	<template>
+		<style>
+			:host {
+				width: 100%;
+				margin: 10px auto;
+				color: #6e6e6e;
+				border: 1px solid #e0e0e0;
+				border-radius: 3px;
+				@apply --layout-vertical;
+				@apply --layout-center;
+				@apply --layout-justified;
+				overflow: hidden;
+				@apply --kw-share-card;
+				background: white;
+				box-sizing: border-box;
+				padding: 16px;
+			}
+			
+			#container ::slotted(.foo) {
+				color: red;
+			
+			}
+			#container{
+				width:100%;
+			}
+			
+			:host(:focus) {
+				outline: none;
+				box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.08);
+			}
+			
+			.space {
+				@apply --layout-flex;
+			}
+			
+			.top {
+				width: 100%;
+				@apply --layout-horizontal;
+				min-height: 30px;
+				margin-bottom:å12px;
+			}
+			
+			.datetime {
+				@apply --layout-horizontal;
+				@apply --layout-end;
+			}
+			
+			.author {
+				@apply --layout-horizontal;
+				@apply --layout-end;
+				min-height: 30px;
+				margin-right: 12px;
+			}
+			
+			.title {
+				@apply --layout-horizontal;
+				@apply --layout-end;
+				color: black;
+				font-weight: bold;
+				margin-right: 12px;
+			}
+			
+			iron-image.avatar {
+				width: 35px;
+				height: 35px;
+				margin-right: 12px;
+			}
+			
+			div[tombstone].top .avatar {
+				border-radius: 50%;
+				background: rgba(0, 0, 0, 0.01);
+				overflow: hidden;
+				z-index: 0;
+			}
+			
+			div[tombstone].top .title {
+				width: 120px;
+				height: 20px;
+				background: rgba(0, 0, 0, 0.03);
+			}
+			
+			div[tombstone].top .author,
+			div[tombstone].top date-util {
+				width: 120px;
+				height: 20px;
+				background: rgba(0, 0, 0, 0.01);
+				color: transparent;
+			}
+		</style>
+		<div class="top" tombstone$="[[!share]]">
+			<iron-image position="bottom" class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
+			<div class="author">
+				<span>[[share.user.username]]</span>
+			</div>
+			<div class="space"></div>
+			<div class="datetime">
+				<date-util format="dd Mon yyyy" date="[[_createDate(share.date_created)]]"></date-util>
+			</div>
+		</div>
+		<div id="container">
+			<slot name="share-card" share=[[share]]> </slot>
+		</div>
+		<div id="container">
+			<slot name="share-detail"> </slot>
+		</div>
+	</template>
+	<script>
+          Polymer({
+            is: 'kw-share-shell',
+            properties: {
+                share: {
+                    type: Object
+                }
+            },
+            attached () {
+                this.setAttribute('tabindex', 0);
+            },
+            getCoverElement () {
+                return this.$.cover;
+            },
+            _createDate (formatted) {
+                return new Date(formatted);
+            }
+		});
+    </script>
+</dom-module>
