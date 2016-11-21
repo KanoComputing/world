@@ -3,7 +3,12 @@
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/date-util/date-util.html">
 <link rel="import" href="../kano-style/typography.html">
-<link rel="import" href="../kw-share-shell/kw-share-shell.html">
+<link rel="import" href="../kano-style/color.html">
+<!--
+
+
+    @demo demo/index.html
+-->
 <dom-module id="kw-share-card">
     <template>
         <style>
@@ -23,14 +28,14 @@
                 @apply --layout-vertical;
                 min-height: 30px;
                 margin-bottom: 16px;
-                margin: 16px;
+                margin:16px;
             }
             
             iron-image.cover {
                 @apply --layout-flex;
                 z-index: 0;
                 width: 100%;
-                height: 480px;
+                height:480px;
                 background: inherit;
                 border-radius: 3px;
             }
@@ -47,19 +52,17 @@
             .stats .shares {
                 height: 20px;
             }
-            
             .stats .likes span,
             .stats .comments span,
-            .stats .shares span {
+            .stats .shares span{
                 padding-right: 16px;
             }
-            
             .stats .likes span img,
             .stats .comments span img,
-            .stats .shares span img {
+            .stats .shares span img{
                 padding-right: 6px;
             }
-            
+
             .bottom .content {
                 @apply --layout-horizontal;
                 margin-top: 16px;
@@ -104,7 +107,7 @@
             }
             
             .orangebutton {
-                background-color: #FF8413;
+                background-color: #ff842a;
                 border-radius: 5px;
                 width: 79px;
                 height: 32px;
@@ -132,7 +135,7 @@
                 color: transparent;
             }
         </style>
-        <kw-share-shell id$="[[share.slug]]" share="[[share]]">
+        <kw-share-shell share="[[share]]">
             <div slot="share-card">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade tombstone$="[[!share]]"></iron-image>
                 <div class="bottom" tombstone$="[[!share]]">
@@ -154,7 +157,7 @@
                             <p>[[share.description]]</p>
                         </div>
                         <div class="actions">
-                            <button type="submit" class="orangebutton remixbutton" onclick="">remix<img src="../../assets/icons/shares/remix.svg" /></button>
+                            <button class="orangebutton remixbutton" onclick="">remix<img src="../../assets/icons/shares/remix.svg" /></button>
                         </div>
                     </div>
                 </div>

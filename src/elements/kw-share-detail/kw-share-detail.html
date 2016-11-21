@@ -105,7 +105,7 @@
 			}
 			
 			.orangebutton {
-				background-color: #FF8413;
+				background-color: #ff842a;
 				border-radius: 5px;
 				width: 79px;
 				height: 32px;
@@ -179,7 +179,7 @@
 				@apply(--layout-flex);
 			}
 		</style>
-		<kw-share-shell id$="[[share.slug]]" share="[[share]]">
+		<kw-share-shell share="[[share]]">
 			<div slot="share-detail">
 				<div id="share" class="detail">
 					<iron-image src="[[share.cover_url]]" sizing="cover"></iron-image>
@@ -205,7 +205,7 @@
 							<p>[[share.description]]</p>
 						</div>
 						<div class="actions">
-							<button type="submit" class="orangebutton remixbutton" onclick="">remix <img src="../../assets/icons/shares/remix.svg" /></button>
+							<button class="orangebutton remixbutton" onclick="">remix <img src="../../assets/icons/shares/remix.svg" /></button>
 						</div>
 					</div>
 					<div class="line"></div>
