@@ -23,10 +23,10 @@
 			
 			#container ::slotted(.foo) {
 				color: red;
-			
 			}
-			#container{
-				width:100%;
+			
+			#container {
+				width: 100%;
 			}
 			
 			:host(:focus) {
@@ -41,7 +41,7 @@
 			.top {
 				@apply --layout-horizontal;
 				min-height: 30px;
-				margin-bottom:12px;
+				margin-bottom: 12px;
 				margin: 16px;
 			}
 			
@@ -70,7 +70,6 @@
 				width: 35px;
 				height: 35px;
 				margin-right: 12px;
-
 			}
 			
 			div[tombstone].top .avatar {
@@ -93,18 +92,17 @@
 				background: rgba(0, 0, 0, 0.01);
 				color: transparent;
 			}
-			.shell{
-				width:100%;
+			
+			.shell {
+				width: 100%;
 			}
 		</style>
 		<div class="shell">
 			<div class="top" tombstone$="[[!share]]">
-			<div class="author">
-								<iron-image position="bottom" class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
-	
+				<div class="author">
+					<iron-image position="bottom" class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
 					<span>[[share.user.username]]</span>
 				</div>
-
 				<div class="datetime">
 					<date-util format="dd Mon yyyy" date="[[_createDate(share.date_created)]]"></date-util>
 				</div>
