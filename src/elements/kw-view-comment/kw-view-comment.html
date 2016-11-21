@@ -1,0 +1,158 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<dom-module id="kw-view-comment">
+    <template>
+        <style>
+             :host {
+                display: block;
+                @apply --layout-vertical;
+                @apply --layout-center;
+            }
+            
+            .orangebutton {
+                background-color: #FF8413;
+                border-radius: 5px;
+                width: 79px;
+                height: 32px;
+                color: white;
+                border: none;
+            }
+            
+            .commentbutton {
+                width: 100px;
+            }
+            
+            .commentbutton img {
+                position: relative;
+                top: 2px;
+                left: 2px;
+            }
+            
+            .comments {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-justified;
+                background-color: #E0E1E4;
+                width: 100%;
+                padding-bottom: 54px;
+            }
+            
+            .comments h3 {
+                color: grey;
+                font-weight: 300;
+                margin: 50px;
+                font-size: 16px;
+                line-height: 43px;
+            }
+            
+            .comments .inputcomment {
+                @apply --layout-horizontal;
+                @apply(--layout-center);
+                width: 80%;
+                margin: 32px;
+            }
+            
+            .commentAvatar {
+                @apply --layout-flex;
+                margin: 16px;
+            }
+            
+            .comments .inputcomment .commentbox {
+                @apply --layout-horizontal;
+                @apply(--layout-center);
+                border-radius: 3px;
+                border: 1px solid #D1D1D1;
+                height: 45px;
+                width: 90%;
+                padding: 8px;
+                background-color: #F4F4F4;
+            }
+            
+            .comments .inputcomment .commentbox input {
+                width: 80%;
+                height: 32px;
+                font-size: 14px;
+                border: none;
+                margin: 8px;
+            }
+            
+            .comments .line {
+                height: 1px;
+                width: 90%;
+                display: block;
+                background-color: white;
+                opacity: 0.2;
+            }
+            
+            .comment {
+                width: 80%;
+                margin: 32px;
+                @apply --layout-horizontal;
+                @apply(--layout-center);
+            }
+            
+            .comment .content {
+                font-size: 16px;
+                font-family: "Bariol";
+                color: #4E4E4E;
+            }
+            
+            .comment .content p b {
+                margin-right: 6px;
+            }
+            
+            .comment .content p {
+                margin-top: 6px;
+                margin-bottom: 6px;
+            }
+            
+            .comment .content span {
+                font-size: 14px;
+                font-family: "Bariol";
+                color: #818181;
+            }
+            
+            .comments p {
+                margin-top: -32px;
+                font-family: "Bariol";
+                color: #818181;
+                font-size: 14px;
+            }
+        </style>
+        <div class="comments" tombstone$="[[!share]]">
+            <h3>Be the first to comment!</h3>
+            <div class="line"></div>
+            <div class="comment">
+                <div class="commentAvatar"><img src="../../assets/icons/shares/commentAvatar.svg" /></div>
+                <div class="content">
+                    <p><b>Joey Etamity</b>This is a demo comment , as long as you can write to test it a bit with the wrap text!</p>
+                    <span>9:20am, 11th October 2016</span>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="inputcomment">
+                <div class="commentAvatar"><img src="../../assets/icons/shares/commentAvatar.svg" /></div>
+                <div class="commentbox">
+                    <input type="text" placeholder="Type your message ...">
+                    <button type="submit" class="orangebutton commentbutton" onclick="">comment <img src="../../assets/icons/shares/comment.svg" /></button>
+                </div>
+            </div>
+            <p>Remember to be nice</p>
+        </div>
+        </kw-share-shell>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-view-comment',
+            properties: {
+                comments: {
+                    type: Array,
+                    value: () => {
+                        return [];
+                    }
+                }
+            }
+        });
+    </script>
+</dom-module>
