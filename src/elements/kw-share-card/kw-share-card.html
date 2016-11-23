@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/date-util/date-util.html">
+<link rel="import" href="../kw-share-shell/kw-share-shell.html">
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kano-style/color.html">
 <!--
@@ -81,12 +82,12 @@
                 margin: 0;
                 font-size: 16px;
                 line-height: 23px;
-                color: #435055;
+                color:var(--color-grey-darker);
                 font-family: "bariol";
             }
             
             .bottom .content .description p {
-                color: #616161;
+                color: var(--color-grey-dark);
                 margin-right: 16px;
                 font-family: "bariol";
                 font-weight: normal;
@@ -110,11 +111,11 @@
             }
             
             .orangebutton {
-                background-color: #ff842a;
+                background-color: var(--color-orange);
                 border-radius: 5px;
                 width: 79px;
                 height: 32px;
-                color: white;
+                color: var(--color-white);
                 border: none;
             }
             
@@ -126,7 +127,7 @@
                 height: 1px;
                 width: 100%;
                 display: block;
-                background-color: rgba(99, 107, 126, .24);
+                background-color: var(--color-grey-mid);
             }
             
             kw-share-shell[tombstone] .bottom .likes,
@@ -138,6 +139,12 @@
                 color: transparent;
                 margin-right:9px;
             }
+
+            kw-share-shell[tombstone] .bottom .likes span img,
+            kw-share-shell[tombstone] .bottom .comments span img,
+            kw-share-shell[tombstone] .bottom .shares span img{
+                display:none;
+            } 
            kw-share-shell[tombstone] .cover{
                 background: rgba(0, 0, 0, 0.05);
                 color: transparent; 
@@ -177,7 +184,7 @@
                             <p>[[share.description]]</p>
                         </div>
                         <div class="actions">
-                            <button class="orangebutton remixbutton" onclick="">remix<img src="/assets/icons/shares/remix.svg" /></button>
+                            <button class="orangebutton remixbutton">remix<img src="/assets/icons/shares/remix.svg" /></button>
                         </div>
                     </div>
                 </div>
