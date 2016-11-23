@@ -247,6 +247,7 @@
         "header": "Weekly challenges",
         "description": "See if you can complete them all!",
         "mode_color": "white",
+        "api_progress_tracking": "",
         "projects": [
             {
                 "title": "Etch-a-sketch",
