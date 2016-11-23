@@ -247,7 +247,6 @@
         "header": "Weekly challenges",
         "description": "See if you can complete them all!",
         "mode_color": "white",
-        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "projects": [
             {
                 "title": "Etch-a-sketch",

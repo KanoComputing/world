@@ -130,7 +130,7 @@
                         <iron-image class="star" src="/assets/projects/icons/star-on.svg" width="48" height="48" preload fade hidden$="[[!project.completed]]"></iron-image>
                     </a>
                 </template>
-                <a href$="[[category.done_link]]">
+                <a href$="[[category.done_link]]" hidden$="[[!category.done_link]]">
                     <kw-project-card class="end" heading="Done all the [[category.label]] challenges? Tell us what you'd like to make next">
                         <div class="card-actions">
                             <button>Request Challenge</button>
