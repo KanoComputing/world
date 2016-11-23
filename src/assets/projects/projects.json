@@ -242,6 +242,38 @@
             }
         ]
     },
+    "weekly_challenges": {
+        "label": "weekly",
+        "header": "Weekly challenges",
+        "description": "See if you can complete them all!",
+        "mode_color": "white",
+        "projects": [
+            {
+                "title": "Etch-a-sketch",
+                "slug": "etch-a-sketch",
+                "link": "https://apps.kano.me/story/etch_a_sketch",
+                "image": "/assets/projects/icons/current-theme-archive/etch_a_sketch.jpg"
+            },
+            {
+                "title": "Flag builder",
+                "slug": "flag-builder",
+                "link": "https://apps.kano.me/story/flag_builder",
+                "image": "/assets/projects/icons/current-theme-archive/flag_builder.jpg"
+            },
+            {
+                "title": "Hello world!",
+                "slug": "hello_world",
+                "link": "https://apps.kano.me/story/hello_world",
+                "image": "/assets/projects/icons/current-theme-archive/hello_world.jpg"
+            },
+            {
+                "title": "Orbit Moon",
+                "slug": "orbit_moon",
+                "link": "https://apps.kano.me/story/orbit_moon",
+                "image": "/assets/projects/icons/current-theme-archive/orbit_moon.jpg"
+            }
+        ]
+    },
     "make_art_101": {
         "label": "art",
         "header": "Make Art 101",

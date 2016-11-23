@@ -15,7 +15,7 @@
                 display: block;
                 color: white;
                 box-sizing: border-box;
-                padding: 27px 0 10px;
+                padding: 72px 0 90px;
                 overflow-y: visible;
                 position: relative;
             }
@@ -25,14 +25,17 @@
                 @apply --kw-projects-category-info;
             }
             .info h4 {
-                font-size: 21px;
+                font-size: 24px;
+                font-weight: 400;
+                color: var(--color-grey-darker, #666);
                 line-height: 110%;
-                margin-bottom: 5px;
+                margin-bottom: 3px;
                 margin-top: 0;
             }
             .info p {
-                font-size: 16px;
-                margin-bottom: 5px;
+                font-size: 18px;
+                color: var(--color-grey-darker, #666);
+                margin-bottom: 30px;
                 margin-top: 0;
             }
             .projects {
@@ -52,7 +55,6 @@
                 transform: translateZ(0) scale(0);
             }
             kw-project-card {
-                min-width: 200px;
                 background-color: var(--kw-projects-category-background-color);
                 color: var(--kw-projects-category-color);
             }
@@ -81,7 +83,7 @@
             @media screen and (max-width: 768px) {
                 .info {
                     text-align: center;
-                    padding: 0;
+                    padding: 0 45px;
                 }
             }
             .left-button, .right-button {
@@ -128,7 +130,7 @@
                         <iron-image class="star" src="/assets/projects/icons/star-on.svg" width="48" height="48" preload fade hidden$="[[!project.completed]]"></iron-image>
                     </a>
                 </template>
-                <a href$="[[category.done_link]]">
+                <a href$="[[category.done_link]]" hidden$="[[!category.done_link]]">
                     <kw-project-card class="end" heading="Done all the [[category.label]] challenges? Tell us what you'd like to make next">
                         <div class="card-actions">
                             <button>Request Challenge</button>
