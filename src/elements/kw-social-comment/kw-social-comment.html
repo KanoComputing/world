@@ -1,8 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../../bower_components/date-util/date-util.html">
 <link rel="import" href="../kano-style/color.html">
 <dom-module id="kw-social-comment">
     <template>
@@ -14,7 +16,7 @@
             }
             
             .orangebutton {
-                background-color:var(--color-orange);
+                background-color: var(--color-orange);
                 border-radius: 5px;
                 width: 79px;
                 height: 32px;
@@ -32,23 +34,23 @@
                 left: 2px;
             }
             
-            .comments {
+            .commentsBox {
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --layout-justified;
-                background-color:var(--color-grey-lightest);
+                background-color: var(--color-grey-lightest);
                 width: 100%;
                 padding-bottom: 54px;
             }
             
-            .comments h3 {
+            .commentsBox h3 {
                 color: var(--color-grey-dark);
                 margin: 50px;
                 font-size: 16px;
                 line-height: 43px;
             }
             
-            .comments .inputcomment {
+            .commentsBox .inputcomment {
                 @apply --layout-horizontal;
                 @apply(--layout-center);
                 width: 80%;
@@ -56,11 +58,12 @@
             }
             
             .commentAvatar {
-                @apply --layout-flex;
-                margin: 16px;
+                @apply --layout-flex-1;
+                margin-left: 16px;
+                margin-right: 16px;
             }
             
-            .comments .inputcomment .commentbox {
+            .commentsBox .inputcomment .commentbox {
                 @apply --layout-horizontal;
                 @apply(--layout-center);
                 border-radius: 3px;
@@ -68,10 +71,10 @@
                 height: 45px;
                 width: 90%;
                 padding: 8px;
-                background-color:var(--color-grey-lightest);
+                background-color: var(--color-grey-lightest);
             }
             
-            .comments .inputcomment .commentbox input {
+            .commentsBox .inputcomment .commentbox input {
                 width: 80%;
                 height: 32px;
                 font-size: 14px;
@@ -79,7 +82,7 @@
                 margin: 8px;
             }
             
-            .comments .line {
+            .commentsBox .line {
                 height: 1px;
                 width: 90%;
                 display: block;
@@ -89,56 +92,56 @@
             
             .comment {
                 width: 80%;
-                margin: 32px;
+                height: 100px;
                 @apply --layout-horizontal;
                 @apply(--layout-center);
             }
             
-            .comment .content {
+            .content {
                 font-size: 16px;
                 font-family: "Bariol";
                 color: var(--color-grey-dark);
+                width: 100%;
             }
             
-            .comment .content p b {
+            .content p b {
                 margin-right: 6px;
             }
             
-            .comment .content p {
+            .content p {
                 margin-top: 6px;
                 margin-bottom: 6px;
             }
             
-            .comment .content span {
+            .content date-util {
                 font-size: 14px;
                 font-family: "Bariol";
                 color: var(--color-grey-dark);
             }
             
-            .comments p {
-                margin-top: -32px;
+            .commentsBox p {
                 font-family: "Bariol";
-                color:  var(--color-grey-dark);
-                font-size: 14px;
+                color: var(--color-grey-dark);
+                font-size: 16px;
+            }
+            
+            iron-scroll-threshold {
+                @apply --layout-flex;
+                @apply --layout-vertical;
             }
         </style>
-        <div class="comments" tombstone$="[[!comments]]">
+        <div class="commentsBox">
             <h3>Be the first to comment!</h3>
             <div class="line"></div>
-            <iron-scroll-threshold id="threshold" lower-threshold="1000" on-lower-threshold="_loadMoreData">
-                <iron-list items="[[comments]]" as="comment" scroll-target="threshold">
-                    <template>
-                        <div class="comment">
-                            <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
-                            <div class="content">
-                                <p><b>Joey Etamity</b>This is a demo comment , as long as you can write to test it a bit with
-                                    the wrap text!</p>
-                                <span>9:20am, 11th October 2016</span>
-                            </div>
-                        </div>
-                    </template>
-                </iron-list>
-            </iron-scroll-threshold>
+            <template is="dom-repeat" items="{{comments}}">
+                <div class="comment">
+                    <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
+                    <div class="content">
+                        <p><b>{{item.author.username}}</b>{{item.text}}</p>
+                        <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(item.date_created)]]"></date-util>
+                    </div>
+                </div>
+            </template>
             <div class="line"></div>
             <div class="inputcomment">
                 <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
@@ -158,23 +161,33 @@
             properties: {
                 comments: {
                     type: Array,
-                    value: () => {
-                        return [];
-                    }
+                    value:[]
+                    
+                },
+                share: {
+                    type: Object
                 }
             },
             attached () {
                 this.page = 0;
-                this.comments.push({id:123});
-                this.comments.push({id:123});
-                this.comments.push({id:123});
+                this.loadData();
             },
-            _loadMoreData () {
+            loadData(){
                 // When we hit the last page
-                if (this.page === null) {
+                if (!Boolean(this.share)) {
                     return;
                 }
-
+                fetch(this._getUrl('comments', { type: this.share.type ,id: this.share.id}))
+                .then(r => r.json())
+                .then(r => {
+                    r.entries.forEach(comment => {
+                        this.push('comments', comment);
+                        });
+                                  
+                    });
+            },
+             _createDate (formatted) {
+                return new Date(formatted);
             }
         });
     </script>

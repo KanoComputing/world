@@ -11,9 +11,11 @@
 				@apply --layout-vertical;
 				@apply --layout-center;
 			}
-			kw-share-shell{
-                width:680px;
-            }
+			
+			kw-share-shell {
+				width: 680px;
+			}
+			
 			.detail {
 				width: 100%;
 				height: 480px;
@@ -37,32 +39,34 @@
 				z-index: 0;
 				background: inherit;
 				border-radius: 3px;
-				margin:12px;
 			}
-            .stats {
-                @apply --layout-horizontal;
-                color: var(--color-grey-dark);
-                font-size: 12px;
-                margin-bottom: 12px;
+			
+			.stats {
+				@apply --layout-horizontal;
+				color: var(--color-grey-dark);
+				font-size: 12px;
+				margin-bottom: 12px;
 				margin-top: 26px;
-            }
-
-	        .stats .likes,
-            .stats .comments,
-            .stats .shares {
-                height: 20px;
-            }
-            .stats .likes span,
-            .stats .comments span,
-            .stats .shares span{
-                padding-right: 16px;
-            }
-            .stats .likes span img,
-            .stats .comments span img,
-            .stats .shares span img{
-                padding-right: 6px;
-            }
-
+			}
+			
+			.stats .likes,
+			.stats .comments,
+			.stats .shares {
+				height: 20px;
+			}
+			
+			.stats .likes span,
+			.stats .comments span,
+			.stats .shares span {
+				padding-right: 16px;
+			}
+			
+			.stats .likes span img,
+			.stats .comments span img,
+			.stats .shares span img {
+				padding-right: 6px;
+			}
+			
 			.bottom .content {
 				@apply --layout-horizontal;
 				margin-top: 16px;
@@ -107,7 +111,7 @@
 			}
 			
 			.orangebutton {
-				background-color:var(--color-orange);
+				background-color: var(--color-orange);
 				border-radius: 5px;
 				width: 79px;
 				height: 32px;
@@ -133,30 +137,33 @@
 				height: 20px;
 				background: var(--color-grey-mid);
 				color: transparent;
-				margin-right:9px;
+				margin-right: 9px;
 			}
-            kw-share-shell[tombstone] .bottom .likes span img,
-            kw-share-shell[tombstone] .bottom .comments span img,
-            kw-share-shell[tombstone] .bottom .shares span img{
-                display:none;
-            } 
-           kw-share-shell[tombstone] .detail .cover{
-                background: rgba(0, 0, 0, 0.1);
-                color: transparent; 
-           }
-           kw-share-shell[tombstone] .content .description h3{
-                width: 240px;
-                height: 20px;
-                background: rgba(0, 0, 0, 0.1);
-                color: transparent;  
-           }
-          kw-share-shell[tombstone] .content .description p{
-                width: 100%;
-                height: 60px;
-                background: rgba(0, 0, 0, 0.1);
-                color: transparent;  
-           }
-
+			
+			kw-share-shell[tombstone] .bottom .likes span img,
+			kw-share-shell[tombstone] .bottom .comments span img,
+			kw-share-shell[tombstone] .bottom .shares span img {
+				display: none;
+			}
+			
+			kw-share-shell[tombstone] .detail .cover {
+				background: rgba(0, 0, 0, 0.1);
+				color: transparent;
+			}
+			
+			kw-share-shell[tombstone] .content .description h3 {
+				width: 240px;
+				height: 20px;
+				background: rgba(0, 0, 0, 0.1);
+				color: transparent;
+			}
+			
+			kw-share-shell[tombstone] .content .description p {
+				width: 100%;
+				height: 60px;
+				background: rgba(0, 0, 0, 0.1);
+				color: transparent;
+			}
 		</style>
 		<kw-share-shell share="[[share]]" tombstone$="[[!share]]">
 			<div slot="share-detail">
@@ -188,7 +195,7 @@
 						</div>
 					</div>
 				</div>
-				<kw-social-comment></kw-social-comment>
+				<kw-social-comment share=[[share]]></kw-social-comment>
 			</div>
 		</kw-share-shell>
 	</template>

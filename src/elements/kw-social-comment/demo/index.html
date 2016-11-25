@@ -9,7 +9,7 @@
     <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../kw-view-comment.html">
+    <link rel="import" href="../kw-social-comment.html">
     <style is="custom-style" include="demo-pages-shared-styles">
         .centered {
             max-width: 620px;
@@ -25,36 +25,18 @@
 
 <body>
     <div class="vertical-section-container centered" style="background-color:#27323A">
-        <h3>Basic kw-view-comment demo</h3>
+        <h3>Basic kw-social-comment demo</h3>
         <demo-snippet>
             <template>
-                <kw-view-comment id="share">
-                </kw-view-comment>
+                <kw-social-comment id="share">
+                </kw-social-comment>
                 <script>
                 </script>
             </template>
         </demo-snippet>
     </div>
     <script>
-    document.addEventListener('WebComponentsReady', function () {
-                            var card = document.querySelector('kw-view-comment#share');
 
-                            card.comments = {
-                                title: 'My awesome share',
-                                user: {
-                                    username: 'platypusmeister',
-                                    avatar: {
-                                        urls: {
-                                            circle: 'https://pbs.twimg.com/profile_images/613499829608665088/8VPONBWD.jpg'
-                                        }
-                                    }
-                                },
-                                cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
-                                date_created: new Date(),
-                                likes: new Array(27),
-                                comments_count: 5
-                            }
-                        });                
      </script>
 </body>
 
