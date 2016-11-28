@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../kano-style/color.html">
 
-<dom-module id="kw-share-buttons">
+<dom-module id="kw-share-stats">
     <template>
         <style>
              :host {
@@ -19,7 +19,17 @@
             .stats .likes,
             .stats .comments,
             .stats .shares {
-                height: 20px;
+                height: 30px;
+                border: none;
+                background-color: white;
+                color: var(--color-grey-darker);
+                cursor: pointer;
+            }
+
+            .stats .likes:focus,
+            .stats .comments:focus,
+            .stats .shares:focus {
+                outline: none;
             }
 
             .stats .likes span,
@@ -53,25 +63,34 @@
         </style>
   
         <div class="stats">
-            <div class="likes">
+            <button class="likes" on-tap="doLikeAction">
                 <span><img src="/assets/icons/shares/like.svg"> </img>[[share.likes.length]] likes</span>
-            </div>
-            <div class="comments">
+            </button>
+            <button class="comments" on-tap="doCommentAction">
                 <span><img src="/assets/icons/shares/comment_b.svg"> </img>[[share.comments_count]] comments</span>
-            </div>
-            <div class="shares">
+            </button>
+            <button class="shares" on-tap="doShareAction">
                 <span><img src="/assets/icons/shares/share.svg"> </img>share</span>
-            </div>
+            </button>
         </div>
       
     </template>
     <script>
         Polymer({
-            is: 'kw-share-buttons',
+            is: 'kw-share-stats',
             properties: {
                 share: {
                     type: Object
                 }
+            },
+            doLikeAction(){
+                
+            },
+            doCommentAction(){
+
+            },
+            doShareAction(){
+
             }
         });
     </script>

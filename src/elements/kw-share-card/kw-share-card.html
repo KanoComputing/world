@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../kw-share-shell/kw-share-shell.html">
-<link rel="import" href="../kw-share-buttons/kw-share-buttons.html">
+<link rel="import" href="../kw-share-stats/kw-share-stats.html">
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kano-style/color.html">
 
@@ -78,7 +78,7 @@
                 margin: 0;
                 font-size: 16px;
                 line-height: 23px;
-                color:var(--color-grey-darker);
+                color: var(--color-grey-darker);
                 font-family: "bariol";
             }
             
@@ -162,7 +162,7 @@
             <div slot="share-card">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
                 <div class="bottom">
-                    <kw-share-buttons share="[[share]]"></kw-share-buttons>
+                    <kw-share-stats share="[[share]]"></kw-share-stats>
                     <div class="line"></div>
                     <div class="content">
                         <div class="description">

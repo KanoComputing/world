@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <title>kano-world-share-card demo</title>
+    <link rel="import" href="../../../bower_components/polymer/polymer.html">
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../kw-share-stats.html">
+    <style is="custom-style" include="demo-pages-shared-styles">
+        .centered {
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="vertical-section-container centered" style="background-color:#27323A">
+        <h3>Basic kw-share-shell demo</h3>
+        <demo-snippet>
+            <template>
+               <kw-share-stats id="stats"> </kw-share-stats>
+                <script>
+                        document.addEventListener('WebComponentsReady', function () {
+                            var cardshell = document.querySelector('kw-share-stats#stats');
+                             var share = {
+                                likes: new Array(27),
+                                comments_count: 5
+                            }
+                           cardshell.share = share;
+                        });
+                    </script>
+            </template>
+        </demo-snippet>
+    </div>
+</body>
+
+</html>
