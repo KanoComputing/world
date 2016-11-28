@@ -2,13 +2,10 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../kw-share-shell/kw-share-shell.html">
+<link rel="import" href="../kw-share-buttons/kw-share-buttons.html">
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kano-style/color.html">
-<!--
 
-
-    @demo demo/index.html
--->
 <dom-module id="kw-share-card">
     <template>
         <style>
@@ -31,7 +28,7 @@
                 @apply --layout-vertical;
                 min-height: 30px;
                 margin-bottom: 16px;
-                margin: 16px;
+                margin: 24px;
             }
             
             iron-image.cover {
@@ -165,17 +162,7 @@
             <div slot="share-card">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
                 <div class="bottom">
-                    <div class="stats">
-                        <div class="likes">
-                            <span><img src="/assets/icons/shares/like.svg"> </img>[[share.likes.length]] likes</span>
-                        </div>
-                        <div class="comments">
-                            <span><img src="/assets/icons/shares/comment_b.svg"> </img>[[share.comments_count]] comments</span>
-                        </div>
-                        <div class="shares">
-                            <span><img src="/assets/icons/shares/share.svg"> </img>share</span>
-                        </div>
-                    </div>
+                    <kw-share-buttons share="[[share]]"></kw-share-buttons>
                     <div class="line"></div>
                     <div class="content">
                         <div class="description">
