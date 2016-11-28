@@ -1,0 +1,194 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../../bower_components/date-util/date-util.html">
+<link rel="import" href="../kano-style/color.html">
+<dom-module id="kw-social-comment">
+    <template>
+        <style>
+             :host {
+                display: block;
+                @apply --layout-vertical;
+                @apply --layout-center;
+            }
+            
+            .orangebutton {
+                background-color: var(--color-orange);
+                border-radius: 5px;
+                width: 79px;
+                height: 32px;
+                color: var(--color-white);
+                border: none;
+            }
+            
+            .commentbutton {
+                width: 100px;
+            }
+            
+            .commentbutton img {
+                position: relative;
+                top: 2px;
+                left: 2px;
+            }
+            
+            .commentsBox {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-justified;
+                background-color: var(--color-grey-lightest);
+                width: 100%;
+                padding-bottom: 54px;
+            }
+            
+            .commentsBox h3 {
+                color: var(--color-grey-dark);
+                margin: 50px;
+                font-size: 16px;
+                line-height: 43px;
+            }
+            
+            .commentsBox .inputcomment {
+                @apply --layout-horizontal;
+                @apply(--layout-center);
+                width: 80%;
+                margin: 32px;
+            }
+            
+            .commentAvatar {
+                @apply --layout-flex-1;
+                margin-left: 16px;
+                margin-right: 16px;
+            }
+            
+            .commentsBox .inputcomment .commentbox {
+                @apply --layout-horizontal;
+                @apply(--layout-center);
+                border-radius: 3px;
+                border: 1px solid var(--color-grey-lighter);
+                height: 45px;
+                width: 90%;
+                padding: 8px;
+                background-color: var(--color-grey-lightest);
+            }
+            
+            .commentsBox .inputcomment .commentbox input {
+                width: 80%;
+                height: 32px;
+                font-size: 14px;
+                border: none;
+                margin: 8px;
+            }
+            
+            .commentsBox .line {
+                height: 1px;
+                width: 90%;
+                display: block;
+                background-color: var(--color-white);
+                opacity: 0.2;
+            }
+            
+            .comment {
+                width: 80%;
+                height: 100px;
+                @apply --layout-horizontal;
+                @apply(--layout-center);
+            }
+            
+            .content {
+                font-size: 16px;
+                font-family: "Bariol";
+                color: var(--color-grey-dark);
+                width: 100%;
+            }
+            
+            .content p b {
+                margin-right: 6px;
+            }
+            
+            .content p {
+                margin-top: 6px;
+                margin-bottom: 6px;
+            }
+            
+            .content date-util {
+                font-size: 14px;
+                font-family: "Bariol";
+                color: var(--color-grey-dark);
+            }
+            
+            .commentsBox p {
+                font-family: "Bariol";
+                color: var(--color-grey-dark);
+                font-size: 16px;
+            }
+            
+            iron-scroll-threshold {
+                @apply --layout-flex;
+                @apply --layout-vertical;
+            }
+        </style>
+        <div class="commentsBox">
+            <h3>Be the first to comment!</h3>
+            <div class="line"></div>
+            <template is="dom-repeat" items="{{comments}}">
+                <div class="comment">
+                    <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
+                    <div class="content">
+                        <p><b>{{item.author.username}}</b>{{item.text}}</p>
+                        <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(item.date_created)]]"></date-util>
+                    </div>
+                </div>
+            </template>
+            <div class="line"></div>
+            <div class="inputcomment">
+                <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
+                <div class="commentbox">
+                    <input type="text" placeholder="Type your message ...">
+                    <button type="submit" class="orangebutton commentbutton" onclick="">comment <img src="/assets/icons/shares/comment.svg" /></button>
+                </div>
+            </div>
+            <p>Remember to be nice</p>
+        </div>
+        </kw-share-shell>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-social-comment',
+            behaviors: [Kano.APIClient],
+            properties: {
+                comments: {
+                    type: Array,
+                    value:[]
+                    
+                },
+                share: {
+                    type: Object
+                }
+            },
+            attached () {
+                this.page = 0;
+                this.loadData();
+            },
+            loadData(){
+                // When we hit the last page
+                if (!Boolean(this.share)) {
+                    return;
+                }
+                fetch(this._getUrl('comments', { type: this.share.type ,id: this.share.id}))
+                .then(r => r.json())
+                .then(r => {
+                    r.entries.forEach(comment => {
+                        this.push('comments', comment);
+                        });
+                                  
+                    });
+            },
+             _createDate (formatted) {
+                return new Date(formatted);
+            }
+        });
+    </script>
+</dom-module>
