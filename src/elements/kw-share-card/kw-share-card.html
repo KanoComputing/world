@@ -109,7 +109,7 @@
                 left: 2px;
             }
             
-            .orangebutton {
+            .orange-button {
                 background-color: var(--color-orange);
                 border-radius: 5px;
                 width: 79px;
@@ -118,7 +118,7 @@
                 border: none;
             }
             
-            .remixbutton {
+            .remix-button {
                 width: 79px;
             }
             
@@ -164,7 +164,7 @@
         <kw-share-shell id="shell" share="[[share]]" tombstone$="[[!share]]">
             <div slot="share-card">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
-                <div class="bottom" tombstone$="[[!share]]">
+                <div class="bottom">
                     <div class="stats">
                         <div class="likes">
                             <span><img src="/assets/icons/shares/like.svg"> </img>[[share.likes.length]] likes</span>
@@ -183,7 +183,7 @@
                             <p>[[share.description]]</p>
                         </div>
                         <div class="actions">
-                            <button class="orangebutton remixbutton">remix<img src="/assets/icons/shares/remix.svg" /></button>
+                            <button class="orange-button remix-button">remix<img src="/assets/icons/shares/remix.svg" /></button>
                         </div>
                     </div>
                 </div>
