@@ -13,7 +13,7 @@
 
         <test-fixture id="default">
             <template>
-                <kw-project-card heading="I am not really\nsecure <a href='http://dodgy.website.com'></a>"></kw-project-card>
+                <kw-project-card></kw-project-card>
             </template>
         </test-fixture>
 
@@ -23,7 +23,17 @@
 
                 setup(function() {
                     card = fixture('default');
+                    card.project = {
+                        title: "I am not really\nsecure <a href='http://dodgy.website.com'></a>",
+                        image: "/assets/projects/icons/light/pixel_1.png",
+                        link: "https://apps.kano.me/story/pixel_1",
+                        slug: "pixel_1",
+                        creator: "kevinmurphy",
+                        completed: false
+                    }
                 });
+
+
 
                 test('check heading security', function() {
                     var headingEl = card.$$('.title');

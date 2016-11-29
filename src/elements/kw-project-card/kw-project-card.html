@@ -116,7 +116,7 @@
                 </div>
         </div>
         <div class="info">
-            <h4 class="title" id="title">[[project.title]]</h4>
+            <h4 class="title" id="title"></h4>
             <p class="card-content" hidden$="[[!project.creator]]">by [[project.creator]]</p>
             <iron-image class="star" id="star" size="cover" src="/assets/projects/icons/star-on.svg" preload fade hidden$="[[!project.completed]]"></iron-image>
         </div>
@@ -145,10 +145,9 @@
                 return this.$.star;
             },
             _headingChanged (value) {
-                console.log('ran');
                 let safeDiv = document.createElement('div');
                 safeDiv.textContent = value;
-                this.$.title.innerHTML = safeDiv.innerHTML.replace('\\n', '<br>');
+                this.$.title.innerHTML = safeDiv.innerHTML.replace('\n', '<br>');
             }
         });
     </script>
