@@ -15,7 +15,7 @@
                 @apply --layout-center;
             }
             
-            .orangebutton {
+            .orange-button {
                 background-color: var(--color-orange);
                 border-radius: 5px;
                 width: 79px;
@@ -24,7 +24,7 @@
                 border: none;
             }
             
-            .commentbutton {
+            .comment-button {
                 width: 100px;
             }
             
@@ -34,7 +34,7 @@
                 left: 2px;
             }
             
-            .commentsBox {
+            .comments-box {
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --layout-justified;
@@ -43,14 +43,14 @@
                 padding-bottom: 54px;
             }
             
-            .commentsBox h3 {
+            .comments-box h3 {
                 color: var(--color-grey-dark);
                 margin: 50px;
                 font-size: 16px;
                 line-height: 43px;
             }
             
-            .commentsBox .inputcomment {
+            .comments-box .inputcomment {
                 @apply --layout-horizontal;
                 @apply(--layout-center);
                 width: 80%;
@@ -63,7 +63,7 @@
                 margin-right: 16px;
             }
             
-            .commentsBox .inputcomment .commentbox {
+            .comments-box .inputcomment .commentbox {
                 @apply --layout-horizontal;
                 @apply(--layout-center);
                 border-radius: 3px;
@@ -74,7 +74,7 @@
                 background-color: var(--color-grey-lightest);
             }
             
-            .commentsBox .inputcomment .commentbox input {
+            .comments-box .inputcomment .commentbox input {
                 width: 80%;
                 height: 32px;
                 font-size: 14px;
@@ -82,7 +82,7 @@
                 margin: 8px;
             }
             
-            .commentsBox .line {
+            .comments-box .line {
                 height: 1px;
                 width: 90%;
                 display: block;
@@ -119,7 +119,7 @@
                 color: var(--color-grey-dark);
             }
             
-            .commentsBox p {
+            .comments-box p {
                 font-family: "Bariol";
                 color: var(--color-grey-dark);
                 font-size: 16px;
@@ -130,7 +130,7 @@
                 @apply --layout-vertical;
             }
         </style>
-        <div class="commentsBox">
+        <div class="comments-box">
             <h3>Be the first to comment!</h3>
             <div class="line"></div>
             <template is="dom-repeat" items="{{comments}}">
@@ -147,7 +147,7 @@
                 <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
                 <div class="commentbox">
                     <input type="text" placeholder="Type your message ...">
-                    <button type="submit" class="orangebutton commentbutton" onclick="">comment <img src="/assets/icons/shares/comment.svg" /></button>
+                    <button type="submit" class="orange-button comment-button" onclick="">comment <img src="/assets/icons/shares/comment.svg" /></button>
                 </div>
             </div>
             <p>Remember to be nice</p>
