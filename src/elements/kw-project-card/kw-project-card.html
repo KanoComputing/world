@@ -147,7 +147,7 @@
             _headingChanged (value) {
                 let safeDiv = document.createElement('div');
                 safeDiv.textContent = value;
-                this.$.title.innerHTML = safeDiv.innerHTML.replace('\n', '<br>');
+                this.$.title.innerHTML = safeDiv.innerHTML.replace(/\n/g, '<br>');
             }
         });
     </script>
