@@ -60,13 +60,13 @@
             }
         </style>
         <div class="stats">
-            <button class="likes" on-tap="doLikeAction">
-                <span><img src="/assets/icons/shares/like.svg"> </img>[[share.likes.length]] likes</span>
+            <button class="likes" on-tap="_onLikeTapped">
+                <span><img src="/assets/icons/shares/like.svg"> </img>[[likes]] likes</span>
             </button>
-            <button class="comments" on-tap="doCommentAction">
-                <span><img src="/assets/icons/shares/comment_b.svg"> </img>[[share.comments_count]] comments</span>
+            <button class="comments" on-tap="_onCommentTapped">
+                <span><img src="/assets/icons/shares/comment_b.svg"> </img>[[comments]] comments</span>
             </button>
-            <button class="shares" on-tap="doShareAction">
+            <button class="shares" on-tap="_onShareTapped">
                 <span><img src="/assets/icons/shares/share.svg"> </img>share</span>
             </button>
         </div>
@@ -75,18 +75,21 @@
         Polymer({
             is: 'kw-share-stats',
             properties: {
-                share: {
-                    type: Object
+                likes: {
+                    type: Number
+                },
+                comments: {
+                    type: Number
                 }
             },
-            doLikeAction(){
-                this.fire("likeAction");
+            _onLikeTapped(){
+                this.fire("like-action");
             },
-            doCommentAction(){
-                this.fire("commentAction");
+            _onCommentTapped(){
+                this.fire("comment-action");
             },
-            doShareAction(){
-                this.fire("shareAction");
+            _onShareTapped(){
+                this.fire("share-action");
             }
         });
     </script>
