@@ -13,7 +13,7 @@ const browserSync = require('browser-sync');
 $.cssSlam = require('css-slam').gulp;
 
 require('./tasks/sw')(gulp, $);
-console.log(env);
+
 const htmlReplaceOptions = {
     config: `<link rel="import" href="./config/${env}.html">\n`,
     path: `<meta name="path-prefix" data-value="/new/">`
