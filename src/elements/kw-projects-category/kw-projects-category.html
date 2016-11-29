@@ -89,9 +89,9 @@
             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
             <div class="projects" slot="content">
                 <template is="dom-repeat" items="[[category.projects]]" as="project">
-                    <kw-project-card project="[[project]]" label="[[_computeButtonLabel(project.completed)]]" class="project"></kw-project-card>
+                    <kw-project-card project="[[project]]" label="[[_computeButtonLabel(project.completed)]]"></kw-project-card>
                 </template>
-                <kw-action-card class="end" header="Done all the [[category.label]] challenges? Tell us what you'd like to make next" label="Request challenge" link="[[category.done_link]]"></kw-action-card>
+                <kw-action-card header="Done all the [[category.label]] challenges? Tell us what you'd like to make next" label="Request challenge" link="[[category.done_link]]"></kw-action-card>
             </div>
             <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
         </kano-carousel>

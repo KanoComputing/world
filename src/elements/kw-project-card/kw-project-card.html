@@ -12,13 +12,12 @@
     <template>
         <style>
             :host {
-                display: block;
+                @apply --layout-vertical;
                 width: 300px;
                 height: 266px;
                 box-shadow: 0 2px 0 0 rgba(0,0,0,0.06);
                 border-radius: 3px;
                 background-color: white;
-                @apply --layout-vertical;
                 overflow: hidden;
                 transform: translateZ(0);
             }
@@ -67,7 +66,7 @@
                 @apply --layout-center-justified;
                 @apply --layout-center;
             }
-            button.action {
+            .action-btn {
                 background-color: rgba(255,255,255,0.7);
                 padding: 11px 23px 10px;
                 font-family: var(--font-body);
@@ -79,7 +78,7 @@
                 transition: all linear 200ms;
                 cursor: pointer;
             }
-            :host a:hover button.action {
+            :host a:hover .action-btn {
                 background-color: #62b22a;
                 border-color: #62b22a;
                 color: white;
@@ -93,6 +92,7 @@
                 margin-top: -22px;
                 display: none;
                 transform: translateZ(0) scale(0);
+                @apply --kw-project-card-star
             }
             [hidden] {
                 display: none !important;
@@ -112,7 +112,7 @@
                     </iron-image>
                 </template>
                 <div class="button-wrapper">
-                    <button type="button" class="action">[[label]]</button>
+                    <div type="button" class="action-btn">[[label]]</div>
                 </div>
         </div>
         <div class="info">
@@ -138,8 +138,17 @@
                     type: String
                 }
             },
+            observers: [
+                '_headingChanged(project.title)'
+            ],
             findTheStar () {
                 return this.$.star;
+            },
+            _headingChanged (value) {
+                console.log('ran');
+                let safeDiv = document.createElement('div');
+                safeDiv.textContent = value;
+                this.$.title.innerHTML = safeDiv.innerHTML.replace('\\n', '<br>');
             }
         });
     </script>
