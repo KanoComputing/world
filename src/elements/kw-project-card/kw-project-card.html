@@ -6,8 +6,6 @@
 <link rel="import" href="../kano-style/button.html">
 
 <!--
-
-
     @demo demo/index.html
 -->
 <dom-module id="kw-project-card">
@@ -15,82 +13,134 @@
         <style>
             :host {
                 display: block;
-                height: 250px;
-                width: 200px;
-                color: #6e6e6e;
+                width: 300px;
+                height: 266px;
                 box-shadow: 0 2px 0 0 rgba(0,0,0,0.06);
                 border-radius: 3px;
+                background-color: white;
                 @apply --layout-vertical;
-                @apply --layout-center;
-                @apply --layout-justified;
                 overflow: hidden;
-                @apply --kw-project-card;
                 transform: translateZ(0);
+            }
+            :host a {
+                @apply --layout-vertical;
+                height: 100%;
+                text-decoration: none;
             }
             :host(.centered) {
                 @apply --layout-center-justified;
             }
-            .title {
-                font-size: 17px;
+            .title, .card-content {
+                color: #5a5a5a;
                 margin: 0;
-                text-align: center;
+                padding: 0px 25px;
+                text-decoration: none;
+            }
+            .title {
+                font-size: 18px;
+                font-weight: bold;
                 @apply --kw-project-card-heading;
             }
-            iron-image {
+            .cover, .cover > iron-image {
+                display: flex;
+                @apply --layout-center-justified;
+                @apply --layout-center;
                 z-index: 0;
                 width: 100%;
-                height: 50%;
-                margin-bottom: 3px;
+                height: 190px;
                 background-color: inherit;
             }
-            .content {
-                text-align: center;
+            .cover {
+                position: relative;
+            }
+            .info {
+                @apply --layout-vertical;
+                @apply --layout-start;
+                @apply --layout-center-justified;
+                flex: 1;
+                min-height: 40px;
+                position: relative;
+            }
+            .button-wrapper {
+                @apply --layout-vertical;
+                @apply --layout-fit;
+                @apply --layout-center-justified;
+                @apply --layout-center;
+            }
+            button.action {
+                background-color: rgba(255,255,255,0.7);
+                padding: 11px 23px 10px;
+                font-family: var(--font-body);
+                font-size: 18px;
+                font-weight: 600;
+                border-radius: 50px;
+                border: 0;
+                color: #5a5a5a;
+                transition: all linear 200ms;
+                cursor: pointer;
+            }
+            :host a:hover button.action {
+                background-color: #62b22a;
+                border-color: #62b22a;
+                color: white;
+            }
+            .star {
+                width: 44px;
+                height: 44px;
+                position: absolute;
+                top: 50%;
+                right: 18px;
+                margin-top: -22px;
+                display: none;
+                transform: translateZ(0) scale(0);
             }
             [hidden] {
                 display: none !important;
             }
-            :host ::slotted(*.card-content) {
-                font-size: 15px;
-                margin: 0;
-            }
-            :host ::slotted(* button) {
-                @apply --kw-card-button;
-            }
-            :host ::slotted(* button:focus) {
-                @apply --kw-card-button-focused;
+            @media screen and (max-width: 680px) {
+                :host {
+                    width: 285px;
+                    height: 253px;
+                }
             }
         </style>
+        <a href$="[[project.link]]">
+        <div class="cover">
         <!-- Here a hidden attribute would be more fitting, but a bug on Safari 9 crashes the app if the image doesn't have a src -->
-        <template is="dom-if" if="[[image]]">
-            <iron-image src="[[image]]" sizing="cover" preload fade></iron-image>
-        </template>
-        <h4 class="title" id="title"></h4>
-        <slot></slot>
+                <template is="dom-if" if="[[project.image]]">
+                    <iron-image src="[[project.image]]" sizing="cover" preload fade>
+                    </iron-image>
+                </template>
+                <div class="button-wrapper">
+                    <button type="button" class="action">[[label]]</button>
+                </div>
+        </div>
+        <div class="info">
+            <h4 class="title" id="title">[[project.title]]</h4>
+            <p class="card-content" hidden$="[[!project.creator]]">by [[project.creator]]</p>
+            <iron-image class="star" id="star" size="cover" src="/assets/projects/icons/star-on.svg" preload fade hidden$="[[!project.completed]]"></iron-image>
+        </div>
+        </a>
     </template>
     <script>
         Polymer({
             is: 'kw-project-card',
             properties: {
-                image: {
-                    type: String,
+                project: {
+                    type: Object,
                     value: null,
-                    observer: '_computeContainerClass'
+                    observer: '_computeLayout'
                 },
-                heading: {
+                label: {
                     type: String,
-                    observer: '_headingChanged'
+                    value: null
                 },
                 color: {
                     type: String
                 }
             },
-            _computeContainerClass (image) {
-                this.toggleClass('centered', !image);
-            },
-            _headingChanged (value) {
-                let safeDiv = document.createElement('div');
-                safeDiv.textContent = value;
-                this.$.title.innerHTML = safeDiv.innerHTML.replace('\\n', '<br>');
+            findTheStar () {
+                return this.$.star;
             }
         });
     </script>
