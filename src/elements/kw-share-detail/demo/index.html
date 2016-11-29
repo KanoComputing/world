@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title>kw-share-detail demo</title>
+
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../kw-share-detail.html">
+        <link rel="import" href="../../kano-style/typography.html">
+        <link rel="import" href="../../kano-style/button.html">
+
+        <style is="custom-style" include="demo-pages-shared-styles">
+            .centered {
+                max-width: 600px !important;
+            }
+            kw-share-detail,
+            .shell .shell-card {
+                width: 580px;
+                margin: 10px auto;
+            }
+            @media screen and (max-width: 580px) {
+                kw-share-detail,
+                .shell .shell-card {
+                    width: 100%;
+                    height: 90vw;
+                    margin: 10px auto;
+                    border-radius: 0;
+                    border: 0;
+                }
+            }
+        </style>
+    </head>
+
+    <body unresolved>
+        <div class="vertical-section-container centered">
+            <h3>With no share, renders as a tombstone</h3>
+            <demo-snippet>
+                <template>
+                    <kw-share-detail share></kw-share-detail>
+                </template>
+            </demo-snippet>
+            <h3>When share is provided</h3>
+            <demo-snippet>
+                <template>
+                    <kw-share-detail id="share"></kw-share-detail>
+                    <script>
+                        document.addEventListener('WebComponentsReady', function () {
+                            var card = document.querySelector('kw-share-detail#share');
+
+                            card.share = {
+                                title: 'My awesome share',
+                                user: {
+                                    username: 'platypusmeister',
+                                    avatar: {
+                                        urls: {
+                                            circle: 'https://pbs.twimg.com/profile_images/613499829608665088/8VPONBWD.jpg'
+                                        }
+                                    }
+                                },
+                                cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
+                                date_created: new Date(),
+                                likes: new Array(27),
+                                comments_count: 5
+                            }
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+    </body>
+</html>
