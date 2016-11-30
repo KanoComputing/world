@@ -28,7 +28,7 @@
                 width: 100px;
             }
             
-            .commentbutton img {
+            .comment-button img {
                 position: relative;
                 top: 2px;
                 left: 2px;
@@ -57,7 +57,7 @@
                 margin: 32px;
             }
             
-            .commentAvatar {
+            .comment-avatar {
                 @apply --layout-flex-1;
                 margin-left: 16px;
                 margin-right: 16px;
@@ -135,7 +135,7 @@
             <div class="line"></div>
             <template is="dom-repeat" items="{{comments}}">
                 <div class="comment">
-                    <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
+                    <div class="comment-avatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
                     <div class="content">
                         <p><b>{{item.author.username}}</b>{{item.text}}</p>
                         <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(item.date_created)]]"></date-util>
@@ -144,7 +144,7 @@
             </template>
             <div class="line"></div>
             <div class="inputcomment">
-                <div class="commentAvatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
+                <div class="comment-avatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
                 <div class="commentbox">
                     <input type="text" placeholder="Type your message ...">
                     <button type="submit" class="orange-button comment-button" onclick="">comment <img src="/assets/icons/shares/comment.svg" /></button>
