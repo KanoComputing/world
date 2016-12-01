@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kw-share-card/kw-share-card.html">
+<link rel="import" href="../kw-share-detail/kw-share-detail.html">
+<dom-module id="kw-share-shell">
+	<template>
+		<style>
+			:host {
+				width: 100%;
+				height: 90vw;
+				margin: 10px auto;
+				border-radius: 0;
+				border: 0;
+			}
+			
+			:host(:focus) {
+				outline: none;
+				box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.08);
+			}
+			
+			.shell {
+				top: 0;
+				left: 0;
+				width: 100%;
+				transition: opacity linear 200ms;
+			}
+		</style>
+
+		<div class="shell" id="shell">
+			<!--<div class="top" tombstone$="[[!share]]">
+				<iron-image position="bottom" class="avatar" src="[[share.user.avatar.urls.circle]]" sizing="contain" preload fade></iron-image>
+				<div class="author">
+					<span>[[share.user.username]]</span>
+				</div>
+				<div class="space"></div>
+				<div class="datetime">
+					<date-util format="dd Mon yyyy" date="[[_createDate(share.date_created)]]"></date-util>
+				</div>
+			</div>-->
+			<slot name="[[slotName]]"> </slot>
+		</div>
+	</template>
+
+	<script>
+          Polymer({
+            is: 'kw-share-shell',
+            properties: {
+                share: {
+                    type: Object
+                },
+				slotName:{
+					type:String,
+					value:"share-card"
+				}
+            },
+            attached () {
+                this.setAttribute('tabindex', 0);
+            },
+            getCoverElement () {
+                return this.$.cover;
+            },
+            _createDate (formatted) {
+                return new Date(formatted);
+            }
+		});
+    </script>
+</dom-module>
