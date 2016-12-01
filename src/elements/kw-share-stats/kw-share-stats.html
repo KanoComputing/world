@@ -1,0 +1,97 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../kano-style/color.html">
+
+<dom-module id="kw-share-stats">
+    <template>
+        <style>
+             :host {
+                display: block;
+            }
+            .stats {
+                @apply --layout-horizontal;
+                color: #435055;
+                font-size: 12px;
+                margin-bottom: 12px;
+                height: 25px;
+            }
+
+            .stats .likes,
+            .stats .comments,
+            .stats .shares {
+                height: 30px;
+                border: none;
+                background-color: white;
+                color: var(--color-grey-darker);
+                cursor: pointer;
+            }
+
+            .stats .likes:focus,
+            .stats .comments:focus,
+            .stats .shares:focus {
+                outline: none;
+            }
+
+            .stats .likes span,
+            .stats .comments span,
+            .stats .shares span{
+                padding-right: 16px;
+            }
+            
+            .stats .likes span img,
+            .stats .comments span img,
+            .stats .shares span img{
+                padding-right: 6px;
+            }
+
+            div.stats[tombstone] .likes,
+            div.stats[tombstone] .comments,
+            div.stats[tombstone] .shares {
+                width: 80px;
+                height: 20px;
+                background: rgba(0, 0, 0, 0.1);
+                color: transparent;
+                margin-right: 9px;
+            }
+
+            div.stats[tombstone] .likes span img,
+            div.stats[tombstone] .comments span img,
+            div.stats[tombstone] .shares span img{
+                display: none;
+            } 
+
+        </style>
+  
+        <div class="stats">
+            <button class="likes" on-tap="doLikeAction">
+                <span><img src="/assets/icons/shares/like.svg"> </img>[[share.likes.length]] likes</span>
+            </button>
+            <button class="comments" on-tap="doCommentAction">
+                <span><img src="/assets/icons/shares/comment_b.svg"> </img>[[share.comments_count]] comments</span>
+            </button>
+            <button class="shares" on-tap="doShareAction">
+                <span><img src="/assets/icons/shares/share.svg"> </img>share</span>
+            </button>
+        </div>
+      
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-share-stats',
+            properties: {
+                share: {
+                    type: Object
+                }
+            },
+            doLikeAction(){
+                
+            },
+            doCommentAction(){
+
+            },
+            doShareAction(){
+
+            }
+        });
+    </script>
+</dom-module>
