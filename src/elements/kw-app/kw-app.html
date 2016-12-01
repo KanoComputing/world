@@ -1,7 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/app-route/app-location.html">
-<link rel="import" href="../../bower_components/kano-nav-bar/kano-nav-bar.html">
+<link rel="import" href="../../bower_components/kano-nav/kano-nav.html">
+<link rel="import" href="../../bower_components/kano-primary-links/kano-primary-links.html">
+<link rel="import" href="../../bower_components/kano-user-menu/kano-user-menu.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
@@ -20,11 +22,11 @@
                 @apply --layout-vertical-reverse;
                 @apply --layout-end-justified;
             }
-            kano-nav-bar {
-                --kano-nav-bar-font-family: var(--font-body);
-                transform: translateZ(0);
-                /* Fix for IE11 */
-                height: 60px;
+            kano-nav {
+                --kano-nav-font-family: var(--font-body);
+            }
+            kano-user-menu {
+                --kano-user-menu-font-family: var(--font-body);
             }
             iron-lazy-pages>*:not(template) {
                 @apply --layout-vertical;
@@ -196,16 +198,25 @@
                 </template>
             </iron-lazy-pages>
         </div>
-        <kano-nav-bar assets-path="/assets/navbar/"
-                        default-avatar="https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/563890fec4d6960800c721f7/avatar-circle.png"
-                        selected-link="[[_computeSelectedLink(route.path)]]"
-                        world-root="[[config.WORLD_URL]]"
-                        user="[[user]]"
-                        xp="[[user.profile.xp]]"
-                        on-logout="_logout"
-                        on-login="showAuthModal"
-                        on-signup="signup"
-                        notifications="[[notifications]]"></kano-nav-bar>
+        <kano-nav assets-path="/assets/navbar/">
+            <kano-primary-links assets-path="/assets/navbar/"
+                                current-site="[[config.WORLD_URL]]"
+                                selected-link="[[_computeSelectedLink(route.path)]]"
+                                slot="primary"
+                                store-root="[[config.STORE_URL]]"
+                                world-root="[[config.WORLD_URL]]">
+                                </kano-primary-links>
+            <kano-user-menu assets-path="/assets/navbar/"
+                            default-avatar="https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/563890fec4d6960800c721f7/avatar-circle.png"
+                            notifications="[[notifications]]"
+                            on-login="showAuthModal"
+                            on-logout="_logout"
+                            on-signup="signup"
+                            slot="right"
+                            user="[[user]]"
+                            xp="[[user.profile.xp]]">
+                            </kano-user-menu>
+        </kano-nav-bar>
     </template>
     <script>
         const catchUrls = [/^\/projects$/, /^\/welcome$/];
@@ -226,7 +237,7 @@
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                     this.stats = stats;
                 });
-                
+
             },
             detached () {
                 this._stopNotificationsPolling();
