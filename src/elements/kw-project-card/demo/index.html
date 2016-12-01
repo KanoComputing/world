@@ -10,72 +10,55 @@
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
         <link rel="import" href="../kw-project-card.html">
-        <link rel="import" href="../../kano-style/typography.html">
-        <link rel="import" href="../../kano-style/button.html">
-
-        <style is="custom-style" include="demo-pages-shared-styles">
-            kw-project-card {
-                font-family: var(--font-body);
-            }
-            kw-project-card.end {
-                --kw-project-card-heading: {
-                    font-weight: 400;
-                };
-            }
-            kw-project-card.start {
-                --kw-project-card: {
-                    background-color: #FCE100;
-                };
-                --kw-project-card-heading: {
-                    font-weight: bold;
-                };
-            }
-            kw-project-card.project {
-                --kw-project-card: {
-                    background-color: #EF3442;
-                    color: white;
-                };
-            }
-            button.white {
-                background-color: white;
-                color: #333;
-            }
-        </style>
+        <style is="custom-style" include="demo-pages-shared-styles"></style>
     </head>
 
     <body unresolved>
         <div class="vertical-section-container centered">
-            <h3>With project</h3>
-            <demo-snippet>
+            <h3 >Project card</h3>
+            <demo-snippet class='no-padding'>
                 <template>
-                    <kw-project-card image="/assets/projects/icons/light/pixel_1.png" class="project" heading="Turn on the light">
-                        <div class="card-content">
-                            <p>by kevinmurphy</p>
-                        </div>
-                        <div class="card-actions">
-                            <button class="white">Start</button>
-                        </div>
-                    </kw-project-card>
-                </template>
-            </demo-snippet>
-            <h3>As start card</h3>
-            <demo-snippet>
-                <template>
-                    <kw-project-card class="start" heading="Start a new camera project">
-                        <div class="card-actions">
-                            <button class="white">Start from scratch</button>
-                        </div>
-                    </kw-project-card>
-                </template>
-            </demo-snippet>
-            <h3>End of list card</h3>
-            <demo-snippet>
-                <template>
-                    <kw-project-card class="end" heading="Done all the light challenges? Tell us what you'd like to make next">
-                        <div class="card-actions">
-                            <button>Request Challenge</button>
-                        </div>
-                    </kw-project-card>
+                    <style is="custom-style">
+                        kw-project-card {
+                            --kw-project-card-star: {
+                              display: block;
+                              transform: none;
+                            };
+                            font-family: var(--font-body);
+                            border: 1px solid #ddd;
+                            margin: 15px 0;
+                        }
+                    </style>
+                    <kw-project-card id="card" label="make it"></kw-project-card>
+                    <kw-project-card id="card2" label="make it"></kw-project-card>
+                    <script>
+                        document.addEventListener('WebComponentsReady', function () {
+                            var card = document.querySelector('#card');
+                            var card2 = document.querySelector('#card2');
+
+                            card.project = {
+                                title: 'Turn on the light',
+                                image: '/assets/projects/icons/light/pixel_1.png',
+                                link: 'https://apps.kano.me/story/pixel_1',
+                                slug: "pixel_1",
+                                creator: "kevinmurphy",
+                                completed: false
+                            }
+
+                            card2.project = {
+                                title: 'Turn on the light',
+                                image: '/assets/projects/icons/light/pixel_1.png',
+                                link: 'https://apps.kano.me/story/pixel_1',
+                                slug: "pixel_1",
+                                creator: "kevinmurphy",
+                                completed: true
+                            }
+                            var cards = [card, card2];
+                            cards.forEach(function(card) {
+                                card.label = card.project.completed ? "make again" : "make it";
+                            });
+                        });
+                    </script>
                 </template>
             </demo-snippet>
     </body>

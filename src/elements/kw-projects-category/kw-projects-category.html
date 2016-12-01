@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" type="" href="../kw-project-card/kw-project-card.html">
+<link rel="import" type="" href="../kw-action-card/kw-action-card.html">
 <link rel="import" type="" href="../kano-carousel/kano-carousel.html">
 
 
@@ -43,47 +44,15 @@
                 padding: 0 36px;
                 overflow-y: visible;
             }
-            .projects>a {
-                position: relative;
-                margin: 10px 12px;
-            }
-            .star {
-                position: absolute;
-                right: -5px;
-                bottom: -5px;
-                display: none;
-                transform: translateZ(0) scale(0);
-            }
-            kw-project-card {
+            kw-project-card, kw-action-card {
                 background-color: var(--kw-projects-category-background-color);
                 color: var(--kw-projects-category-color);
-            }
-            kw-project-card .card-actions button {
-                background-color: var(--kw-projects-category-button-background-color, white);
-                color: var(--kw-projects-category-button-color, rgb(51, 51, 51));
-            }
-            kw-project-card.end {
-                --kw-project-card-heading: {
-                    font-weight: 400;
-                    font-size: 19px;
-                };
-            }
-            kw-project-card.end .card-actions button {
-                background-color: rgb(124, 223, 15);
-                color: white;
-            }
-            @media screen and (max-width: 980px) {
-                .projects {
-                    padding: 0;
-                }
-                .info {
-                    padding-left: 12px;
-                }
+                margin: 10px 12px;
             }
             @media screen and (max-width: 768px) {
                 .info {
                     text-align: center;
-                    padding: 0 45px;
+                    padding: 0 30px;
                 }
             }
             .left-button, .right-button {
@@ -120,23 +89,9 @@
             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
             <div class="projects" slot="content">
                 <template is="dom-repeat" items="[[category.projects]]" as="project">
-                    <a href$="[[project.link]]">
-                        <kw-project-card image="[[project.image]]" class="project" heading="[[project.title]]">
-                            <div class="card-content" hidden$="[[!project.creator]]">by [[project.creator]]</div>
-                            <div class="card-actions">
-                                <button>[[_computeButtonLabel(project.completed)]]</button>
-                            </div>
-                        </kw-project-card>
-                        <iron-image class="star" src="/assets/projects/icons/star-on.svg" width="48" height="48" preload fade hidden$="[[!project.completed]]"></iron-image>
-                    </a>
+                    <kw-project-card project="[[project]]" label="[[_computeButtonLabel(project.completed)]]"></kw-project-card>
                 </template>
-                <a href$="[[category.done_link]]" hidden$="[[!category.done_link]]">
-                    <kw-project-card class="end" heading="Done all the [[category.label]] challenges? Tell us what you'd like to make next">
-                        <div class="card-actions">
-                            <button>Request Challenge</button>
-                        </div>
-                    </kw-project-card>
-                </a>
+                <kw-action-card header="Done all the [[category.label]] challenges? Tell us what you'd like to make next" label="Request challenge" link="[[category.done_link]]"></kw-action-card>
             </div>
             <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
         </kano-carousel>
@@ -158,13 +113,17 @@
                 '_animateStars(category.*, animateStars)'
             ],
             _computeButtonLabel (completed) {
-                return completed ? 'Do again' : 'Start';
+                return completed ? 'make again' : 'make it';
             },
             _animateStars (category, animateStars) {
                 if (this.category) {
                     this.debounce('animate', () => {
-                        let stars = Polymer.dom(this.root).querySelectorAll('.star'),
-                            delay = 300;
+                        let cards = Polymer.dom(this.root).querySelectorAll('kw-project-card'),
+                            delay = 300,
+                            stars = [];
+                        for (let i = 0; i < cards.length; i++) {
+                            stars.push(cards[i].findTheStar());
+                        }
                         for (let i = 0; i < stars.length; i++) {
                             if (!stars[i].hasAttribute('hidden')) {
                                 stars[i].style.display = 'block';
@@ -192,12 +151,12 @@
                 }
             },
             _colorChanged (color) {
-                this.customStyle['--kw-projects-category-background-color'] = color;
-                this.customStyle['--kw-projects-category-color'] = color === '#EF3442' ? 'white' : '#6e6e6e';
-                this.customStyle['--kw-projects-category-button-background-color'] = color === 'white' ? 'rgb(124, 223, 15)' : 'white';
+                this.customStyle['--kw-projects-category-background-color'] = "#ffffff";
+                this.customStyle['--kw-projects-category-color'] = "#5a5a5a";
+                this.customStyle['--kw-projects-category-button-background-color'] = "rgba(255,255,255,0.7)";
                 this.customStyle['--kw-projects-category-button-color'] = color === 'white' ? 'white' : 'rgb(51, 51, 51)';
                 this.updateStyles();
-            }
+            },
         });
     </script>
 </dom-module>

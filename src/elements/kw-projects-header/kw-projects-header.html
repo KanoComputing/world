@@ -23,7 +23,7 @@
             }
             .info {
                 display: inline-block;
-                margin: 100px 0 0 58px;
+                margin: 100px 0 0 60px;
             }
             .toggle-container {
                 @apply(--layout-vertical);
@@ -60,8 +60,13 @@
                 cursor: pointer;
                 transition: 300ms ease-out;
             }
+            .button-wrapper {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+            }
             .staff-pick-memo {
-                margin: 58px auto 100px;
+                margin: 58px 0 100px;
                 padding: 17px 90px;
                 background-color: rgba(255,255,255,0.7);
                 text-align: center;
@@ -102,8 +107,8 @@
                 margin: 0;
             }
             .cards-wrapper {
-                @apply(--layout-horizontal);
-                justify-content: center;
+                @apply --layout-horizontal;
+                @apply --layout-center-justified;
                 flex-wrap: wrap;
             }
             kano-carousel {
@@ -111,8 +116,7 @@
                 margin: 0px 0;
             }
             kw-project-card {
-                background-color: #EF3442;
-                color: white;
+                margin: 10px 12px;
             }
             kw-project-card .card-actions button {
                 background-color: white;
@@ -168,7 +172,7 @@
             @media screen and (min-width: 1240px) {
                 .header {
                     background-size: 65%;
-                }                
+                }
             }
             @media screen and (max-width: 980px) {
                 .header {
@@ -235,31 +239,15 @@
                 <kano-carousel class="cards-wrapper">
                     <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
                     <div class="projects" slot="content">
-                        <a href="https://apps.kano.me/story/autumn_leaves">
-                            <kw-project-card image="/assets/projects/current-theme/autumn_leaves.png" class="project" heading="Autumn Leaves">
-                                <div class="card-actions">
-                                    <button>Start</button>
-                                </div>
-                            </kw-project-card>
-                        </a>
-                        <a href="https://apps.kano.me/story/hot_horse_cold_cow">
-                            <kw-project-card image="/assets/projects/current-theme/hot_horse_cold_cow.png" class="project" heading="Hot horse, cold cow">
-                                <div class="card-actions">
-                                    <button>Start</button>
-                                </div>
-                            </kw-project-card>
-                        </a>
-                        <a href="https://apps.kano.me/story/parade">
-                            <kw-project-card image="/assets/projects/current-theme/parade.png" class="project" heading="Parade">
-                                <div class="card-actions">
-                                    <button>Start</button>
-                                </div>
-                            </kw-project-card>
-                        </a>
+                        <template is="dom-repeat" items="[[projects]]" as="project">
+                            <kw-project-card project="[[project]]" label="make it">
+                        </template>
                     </div>
                     <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
                 </kano-carousel>
+                <div class="button-wrapper">
                     <h5 class="staff-pick-memo">Remember! Share your creation for the chance to be Staff Picked</h5>
+                </div>
                 </div>
             </div>
         </div>
@@ -271,6 +259,30 @@
     <script>
         Polymer({
             is: 'kw-projects-header',
+            properties: {
+                projects: {
+                    type: Array,
+                    value: [{
+                        "title": "Autumn leaves",
+                        "image": "assets/projects/current-theme/autumn_leaves.png",
+                        "link": "https://apps.kano.me/story/autumn_leaves"
+                    }, {
+                        "title": "Hot horse, cold cow",
+                        "image": "assets/projects/current-theme/hot_horse_cold_cow.png",
+                        "link": "https://apps.kano.me/story/hot_horse_cold_cow"
+                    }, {
+                        "title": "Parade",
+                        "image": "assets/projects/current-theme/parade.png",
+                        "link": "https://apps.kano.me/story/parade"
+                    }]
+                }
+            },
+            ready () {
+                this.projects = this.projects.map((project)=> {
+                    project.image = this._getPathPrefix() + project.image;
+                    return project;
+                });
+            },
             getHeaderContentElement() {
                 return this.$.content;
             },
@@ -282,6 +294,13 @@
             },
             _openModal () {
                 this.fire('show-modal');
+            },
+            _getPathPrefix () {
+                if (!this.pathPrefix) {
+                    let pathEl = document.head.querySelector('meta[name="path-prefix"]');
+                    this.pathPrefix = pathEl ? pathEl.getAttribute('data-value') : '/';
+                }
+                return this.pathPrefix;
             }
         });
     </script>
