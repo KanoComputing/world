@@ -1,0 +1,173 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../js/config.html">
+<link rel="import" href="../../kano-style/typography.html">
+
+<dom-module id="kw-view-start">
+    <template>
+        <style>
+            :host {
+                width: 100%;
+                display: flex;
+                @apply --layout-vertical;
+                min-height: 100vh;
+                background: white;
+            }
+            @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+                .banner {
+                    height: 500px;
+                    flex: none;
+                }
+                .banner img {
+                    height: 350px;
+                }
+            }
+            .banner {
+                flex: 4 0 auto;
+                position: relative;
+                background-color: #5a6870;
+                transform: translateZ(0);
+                overflow: hidden;
+                @apply --layout-vertical;
+                @apply --layout-center-center;
+            }
+            .judoka {
+                height: 110px;
+                width: 110px;
+                opacity: 0;
+                background-color: transparent;
+                animation: fade-in ease-out 800ms;
+                animation-delay: 40ms;
+                animation-fill-mode: forwards;
+            }
+            .backround-wrapper{
+                display: flex;
+                position: absolute;
+                background: url(/assets/start/bg-shapes.svg);
+                justify-content: center;
+                align-items: flex-start;
+                top: -2px;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            @keyframes fade-in {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+            h1 {
+                color: #ffffff;
+                margin: 17px 0 2px;
+                transform: translateZ(0);
+                font-size: 27px;
+                text-align: center;
+            }
+            button {
+                position: relative;
+                background-color: transparent;
+                border: none;
+                border-radius: 30px;
+                margin: 30px;
+                padding: 15px 35px;
+                font-family: 
+                font-size: 14px;
+                color: #ffffff;
+                background-color: #23c5ab;
+                font-weight: bold;
+                text-transform: uppercase;
+                z-index: 1;
+                transition: all linear 200ms;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #1fb299;
+            }
+            button:focus {
+                outline: none;
+                background-color: #fff;
+                color: #000;
+            }
+            .footer {
+                flex: 1.5;
+                margin-top: 30px;
+                background: white;
+            }
+            .footer ul{
+                flex: 1;
+                @apply --layout-horizontal;
+                @apply --layout-start;
+                @apply --layout-center-justified;
+                margin: 0 50px;
+                list-style: none;
+            }
+            .footer ul li {
+                flex: 1;
+                color: #666;
+                margin: 0 50px 0; 
+                font-size: 18px;
+                line-height: 26px;
+                position: relative;
+                ax-width: 450px;
+            }
+            .footer ul li:before {
+                content: '\25CF';
+                position: absolute;
+                left: -20px;
+                color: #999;
+            }
+            .footer ul li.middle:before {
+                content: '\25C6';
+                position: absolute;
+                left: -20px;
+                color: #999;
+            }
+            @media screen and (max-width: 980px) {
+                .footer {
+                    flex: 1;
+                    margin-top: 22px;
+                }
+                .footer ul {
+                    margin: 0 20px;
+                 }
+                .footer ul li {
+                    margin: 0 20px;
+                    font-size: 18px;
+                }
+            }
+            @media screen and (max-width: 680px) {
+                .footer ul {
+                    margin: 0 13px;
+                    display: block;
+                 }
+                .footer ul li {
+                    margin: 15px 13px;
+                    font-size: 15px;
+                    line-height: 21px;
+                }
+            }
+        </style>
+        <div class="banner">
+            <div class="backround-wrapper">
+            </div>
+            <iron-image class="judoka" src="/assets/start/judoka.svg" preload fade sizing="contain"></iron-image>
+            <h1>Kano gives you <br> special computer powers.</h1>
+            <a href="[[config.KANO_CODE_URL]]/onboarding"><button type="button">I want superpowers</button></a>
+        </div>
+        <div class="footer">
+            <ul>
+                <li>With Kano you'll learn to make your own apps, hack hardware, create unique games, or code works of art.</li>
+                <li class="middle">No coding experience required. Learn through step-by-step challenges. Anyone can code.</li>
+                <li>Awards and social validation. A bunch of logos and quotes from mighty figures about how great Kano is.</li>
+            </ul>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-view-start',
+            attached () {
+                this.config = Kano.World.config;
+            }
+        });
+    </script>
+</dom-module> 

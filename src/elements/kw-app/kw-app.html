@@ -190,6 +190,9 @@
                 <template is="iron-lazy-page" name="welcome" path="/elements/kw-view-welcome/kw-view-welcome.html">
                     <kw-view-welcome></kw-view-welcome>
                 </template>
+                <template is="iron-lazy-page" name="start" path="/elements/kw-view-start/kw-view-start.html">
+                    <kw-view-start></kw-view-start>
+                </template>
                 <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
                     <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
                 </template>
@@ -219,7 +222,7 @@
         </kano-nav-bar>
     </template>
     <script>
-        const catchUrls = [/^\/projects$/, /^\/welcome$/];
+        const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/];
         Polymer({
             is: 'kw-app',
             behaviors: [Kano.APIClient],
