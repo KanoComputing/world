@@ -82,6 +82,7 @@ gulp.task('shards', () => {
         endpoints: [
             'elements/kw-view-welcome/kw-view-welcome.html',
             'elements/kw-view-projects/kw-view-projects.html',
+            'elements/kw-view-start/kw-view-start.html',
             'elements/kw-view-feed/kw-view-feed.html',
             'elements/kw-auth-modal/kw-auth-modal.html',
             'elements/kw-blank-project-modal/kw-blank-project-modal.html'
