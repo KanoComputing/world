@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../../bower_components/date-util/date-util.html">
 <link rel="import" href="../kano-style/color.html">
+<link rel="import" href="../kano-style/typography.html">
 <dom-module id="kw-share-shell">
 	<template>
 		<style>
@@ -26,11 +27,11 @@
 				box-shadow: 0 3px 0 0 var(--color-grey-mid);
 			}
 			
-			#container ::slotted(.foo) {
+			.container ::slotted(.foo) {
 				color: red;
 			}
 			
-			#container {
+			.container {
 				width: 100%;
 			}
 			
@@ -49,7 +50,7 @@
 				@apply --layout-horizontal;
 				@apply --layout-flex;
 				@apply --layout-end;
-				@apply(--layout-end-justified)
+				@apply --layout-end-justified;
 			}
 			
 			.author {
@@ -107,10 +108,10 @@
 					<date-util format="dd Mon yyyy" date="[[_createDate(share.date_created)]]"></date-util>
 				</div>
 			</div>
-			<div id="container">
-				<slot name="share-card" share=[[share]]> </slot>
+			<div class="container">
+				<slot name="share-card" share="[[share]]"> </slot>
 			</div>
-			<div id="container">
+			<div class="container">
 				<slot name="share-detail"> </slot>
 			</div>
 		</div>

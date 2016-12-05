@@ -57,7 +57,7 @@
         }
         
         .bottom .content .description {
-            @apply(--layout-flex-3);
+            @apply --layout-flex-3;
             color: rgba(97, 97, 97, 0.14);
         }
         
@@ -66,13 +66,13 @@
             font-size: 16px;
             line-height: 23px;
             color: #435055;
-            font-family: "bariol";
+            font-family: var(--font-body);
         }
         
         .bottom .content .description p {
             color: #616161;
             margin-right: 16px;
-            font-family: "bariol";
+            font-family: var(--font-body);
             font-weight: normal;
             font-size: 16px;
             margin-top: 8px;
@@ -82,8 +82,8 @@
         .bottom .content .actions {
             width: 25%;
             @apply --layout-horizontal;
-            @apply(--layout-center);
-            @apply(--layout-end-justified);
+            @apply --layout-center;
+            @apply --layout-end-justified;
             padding-top: 5%;
         }
         
@@ -131,8 +131,7 @@
             <template>
                 <kw-share-shell id="share" share>
                     <div slot="share-card">
-                        <iron-
-                        image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade tombstone$="[[!share]]"></iron-image>
+                        <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade tombstone$="[[!share]]"></iron-image>
                         <div class="bottom">
                             <div class="stats">
                                 <div class="likes">
@@ -159,33 +158,33 @@
                     </div>
                 </kw-share-shell>
                 <h3>with share data</h3>
-                 <kw-share-shell id="detail">
+                <kw-share-shell id="detail">
                     <div slot="share-card">
-                        <iron-
-                        image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade tombstone$="[[!share]]"></iron-image>
-                        <div class="bottom">
-                            <div class="stats">
-                                <div class="likes">
-                                    <span><img src="assets/icons/shares/like.svg"> </img>66 likes</span>
+                        <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade tombstone$="[[!share]]"></iron-image>
+                            <div class="bottom">
+                                <div class="stats">
+                                    <div class="likes">
+                                        <span><img src="assets/icons/shares/like.svg"> </img>66 likes</span>
+                                    </div>
+                                    <div class="comments">
+                                        <span><img src="assets/icons/shares/comment_b.svg"> </img>100 comments</span>
+                                    </div>
+                                    <div class="shares">
+                                        <span><img src="assets/icons/shares/share.svg"> </img>share</span>
+                                    </div>
                                 </div>
-                                <div class="comments">
-                                    <span><img src="assets/icons/shares/comment_b.svg"> </img>100 comments</span>
-                                </div>
-                                <div class="shares">
-                                    <span><img src="assets/icons/shares/share.svg"> </img>share</span>
+                                <div class="line"></div>
+                                <div class="content">
+                                    <div class="description">
+                                        <h3>My awesome share</h3>
+                                        <p>Please note that the new version does not use deep, and therefore requires you to
+                                            import the dom-modules in every element that needs to use them.</p>
+                                    </div>
+                                    <div class="actions">
+                                        <button type="submit" class="orangebutton remixbutton" onclick="">remix<img src="assets/icons/shares/remix.svg" /></button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="line"></div>
-                            <div class="content">
-                                <div class="description">
-                                    <h3>My awesome share</h3>
-                                    <p>Please note that the new version does not use deep, and therefore requires you to import the dom-modules in every element that needs to use them.</p>
-                                </div>
-                                <div class="actions">
-                                    <button type="submit" class="orangebutton remixbutton" onclick="">remix<img src="assets/icons/shares/remix.svg" /></button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </kw-share-shell>
                 <script>
