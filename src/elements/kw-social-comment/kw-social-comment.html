@@ -6,11 +6,11 @@
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../../bower_components/date-util/date-util.html">
 <link rel="import" href="../kano-style/color.html">
+<link rel="import" href="../kano-style/typography.html">
 <dom-module id="kw-social-comment">
     <template>
         <style>
              :host {
-                display: block;
                 @apply --layout-vertical;
                 @apply --layout-center;
             }
@@ -52,7 +52,7 @@
             
             .comments-box .inputcomment {
                 @apply --layout-horizontal;
-                @apply(--layout-center);
+                @apply --layout-center;
                 width: 80%;
                 margin: 32px;
             }
@@ -65,7 +65,7 @@
             
             .comments-box .inputcomment .commentbox {
                 @apply --layout-horizontal;
-                @apply(--layout-center);
+                @apply --layout-center;
                 border-radius: 3px;
                 border: 1px solid var(--color-grey-lighter);
                 height: 45px;
@@ -94,12 +94,12 @@
                 width: 80%;
                 height: 100px;
                 @apply --layout-horizontal;
-                @apply(--layout-center);
+                @apply --layout-center;
             }
             
             .content {
                 font-size: 16px;
-                font-family: "Bariol";
+                font-family: var(--font-body);
                 color: var(--color-grey-dark);
                 width: 100%;
             }
@@ -115,12 +115,12 @@
             
             .content date-util {
                 font-size: 14px;
-                font-family: "Bariol";
+                font-family: var(--font-body);
                 color: var(--color-grey-dark);
             }
             
             .comments-box p {
-                font-family: "Bariol";
+                font-family: var(--font-body);
                 color: var(--color-grey-dark);
                 font-size: 16px;
             }
@@ -128,6 +128,10 @@
             iron-scroll-threshold {
                 @apply --layout-flex;
                 @apply --layout-vertical;
+            }
+            
+            span.bold {
+                font-weight: bold
             }
         </style>
         <div class="comments-box">
@@ -137,7 +141,7 @@
                 <div class="comment">
                     <div class="comment-avatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
                     <div class="content">
-                        <p><b>{{item.author.username}}</b>{{item.text}}</p>
+                        <p><span class="bold">{{item.author.username}}</span>{{item.text}}</p>
                         <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(item.date_created)]]"></date-util>
                     </div>
                 </div>
@@ -146,13 +150,12 @@
             <div class="inputcomment">
                 <div class="comment-avatar"><img src="/assets/icons/shares/commentAvatar.svg" /></div>
                 <div class="commentbox">
-                    <input type="text" placeholder="Type your message ...">
-                    <button type="submit" class="orange-button comment-button" onclick="">comment <img src="/assets/icons/shares/comment.svg" /></button>
+                    <input id="commenttext" type="text" placeholder="Type your message ...">
+                    <button class="orange-button comment-button" on-tap="_tapPostButton">comment <img src="/assets/icons/shares/comment.svg" /></button>
                 </div>
             </div>
             <p>Remember to be nice</p>
         </div>
-        </kw-share-shell>
     </template>
     <script>
         Polymer({
@@ -162,7 +165,6 @@
                 comments: {
                     type: Array,
                     value:[]
-                    
                 },
                 share: {
                     type: Object
@@ -170,21 +172,10 @@
             },
             attached () {
                 this.page = 0;
-                this.loadData();
             },
-            loadData(){
-                // When we hit the last page
-                if (!Boolean(this.share)) {
-                    return;
-                }
-                fetch(this._getUrl('comments', { type: this.share.type ,id: this.share.id}))
-                .then(r => r.json())
-                .then(r => {
-                    r.entries.forEach(comment => {
-                        this.push('comments', comment);
-                        });
-                                  
-                    });
+            _tapPostButton(){
+                var commenttext = this.$.commenttext.value;
+                this.fire("post-comment",{text:commenttext});
             },
              _createDate (formatted) {
                 return new Date(formatted);
