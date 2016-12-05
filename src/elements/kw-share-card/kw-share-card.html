@@ -9,7 +9,6 @@
     <template>
         <style>
              :host {
-                display: block;
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --layout-justified;
@@ -49,7 +48,7 @@
             }
             
             .bottom .content .description {
-                @apply(--layout-flex-3);
+                @apply --layout-flex-3;
                 color: rgba(97, 97, 97, 0.14);
             }
             
@@ -58,13 +57,13 @@
                 font-size: 16px;
                 line-height: 23px;
                 color: var(--color-grey-darker);
-                font-family: "bariol";
+                font-family: var(--font-body);
             }
             
             .bottom .content .description p {
                 color: var(--color-grey-dark);
                 margin-right: 16px;
-                font-family: "bariol";
+                font-family: var(--font-body);
                 font-weight: normal;
                 font-size: 16px;
                 margin-top: 8px;
@@ -74,8 +73,8 @@
             .bottom .content .actions {
                 width: 25%;
                 @apply --layout-horizontal;
-                @apply(--layout-center);
-                @apply(--layout-end-justified);
+                @apply --layout-center;
+                @apply --layout-end-justified;
                 padding-top: 5%;
             }
             
@@ -152,7 +151,7 @@
                 }
             },
             attached () {
-                this.setAttribute('tabindex', 0);
+                
             },
             getCoverElement () {
                 return this.$.shell;
