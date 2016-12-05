@@ -5,12 +5,11 @@
 <link rel="import" href="../kw-share-stats/kw-share-stats.html">
 <link rel="import" href="../kw-social-comment/kw-social-comment.html">
 <link rel="import" href="../kano-style/color.html">
-
+<link rel="import" href="../kano-style/typography.html">
 <dom-module id="kw-share-detail">
 	<template>
 		<style>
 			:host {
-				display: block;
 				@apply --layout-vertical;
 				@apply --layout-center;
 				background: white;
@@ -50,7 +49,7 @@
 			}
 			
 			.bottom .content .description {
-				@apply(--layout-flex-3);
+				@apply --layout-flex-3;
 				color: var(--color-grey-dark);
 			}
 			
@@ -59,13 +58,13 @@
 				font-size: 16px;
 				line-height: 23px;
 				color: var(--color-grey-darker);
-				font-family: "bariol";
+				font-family: var(--font-body);
 			}
 			
 			.bottom .content .description p {
 				color: var(--color-grey-dark);
 				margin-right: 16px;
-				font-family: "bariol";
+				font-family: var(--font-body);
 				font-weight: normal;
 				font-size: 16px;
 				margin-top: 8px;
@@ -75,8 +74,8 @@
 			.bottom .content .actions {
 				width: 25%;
 				@apply --layout-horizontal;
-				@apply(--layout-center);
-				@apply(--layout-end-justified);
+				@apply --layout-center;
+				@apply --layout-end-justified;
 				padding-top: 5%;
 			}
 			
@@ -157,7 +156,7 @@
 						<div class="line"></div>
 						<kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]"></kw-share-stats>
 					</div>
-					<kw-social-comment share=[[share]]></kw-social-comment>
+					<kw-social-comment share="[[share]]"></kw-social-comment>
 				</div>
 			</div>
 		</kw-share-shell>
