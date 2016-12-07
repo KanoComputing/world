@@ -139,7 +139,7 @@
 		</style>
 		<kw-share-shell id="shell" share="[[share]]" tombstone$="[[!share]]">
 			<h3>[[share.title]]</h3>
-			<div slot="share-detail">
+			<div slot="share-slot">
 				<div id="share" class="details">
 					<iron-image src="[[share.cover_url]]" sizing="cover" hidden$="[[detailsLoaded]]"></iron-image>
 					<div id="share-container"></div>
@@ -150,7 +150,7 @@
 								<p>[[share.description]]</p>
 							</div>
 							<div class="actions">
-								<button class="orange-button remix-button">remix<img src="/assets/icons/shares/remix.svg" /></button>
+								<button on-tap="_onTapRemix" class="orange-button remix-button">remix<img src="/assets/icons/shares/remix.svg" /></button>
 							</div>
 						</div>
 						<div class="line"></div>
@@ -181,6 +181,9 @@
                 getShareElement () {
                     return this;
                 },
+				_onTapRemix(){
+					this.fire("remix-action");
+				},
                 _shareAppChanged (shareApp) {
                     let tagName, templateString, template;
                     if (!this.share) {
