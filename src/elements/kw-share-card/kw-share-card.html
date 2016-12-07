@@ -124,7 +124,7 @@
             }
         </style>
         <kw-share-shell id="shell" share="[[share]]" tombstone$="[[!share]]">
-            <div slot="share-card">
+            <div slot="share-slot">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
                 <div class="bottom">
                     <kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]"></kw-share-stats>
@@ -135,7 +135,7 @@
                             <p>[[share.description]]</p>
                         </div>
                         <div class="actions">
-                            <button class="orange-button remix-button">remix<img src="/assets/icons/shares/remix.svg" /></button>
+                            <button on-tap="_onTapRemix" class="orange-button remix-button">remix<img src="/assets/icons/shares/remix.svg" /></button>
                         </div>
                     </div>
                 </div>
@@ -150,8 +150,8 @@
                     type: Object
                 }
             },
-            attached () {
-                
+            _onTapRemix(){
+                this.fire("remix-action");
             },
             getCoverElement () {
                 return this.$.shell;
