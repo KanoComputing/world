@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/iron-scroll-threshold/iron-scroll-threshold.html">
 <link rel="import" href="../../bower_components/date-util/date-util.html">
 <link rel="import" href="../kano-style/color.html">
@@ -71,6 +72,7 @@
 				width: 35px;
 				height: 35px;
 				margin-right: 12px;
+				border-radius: 50%;
 			}
 			
 			div[tombstone].top .avatar {
@@ -109,10 +111,7 @@
 				</div>
 			</div>
 			<div class="container">
-				<slot name="share-card" share="[[share]]"> </slot>
-			</div>
-			<div class="container">
-				<slot name="share-detail"> </slot>
+				<slot name="share-slot"> </slot>
 			</div>
 		</div>
 	</template>
@@ -123,9 +122,6 @@
                 share: {
                     type: Object
                 }
-            },
-            attached () {
-                this.setAttribute('tabindex', 0);
             },
             _createDate (formatted) {
                 return new Date(formatted);
