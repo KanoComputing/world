@@ -66,10 +66,11 @@
                 margin-left: 16px;
                 margin-right: 16px;
             }
-
-            .comment-avatar img {
-                max-height: 35px;
-                max-width : 35px;
+            
+            iron-image {
+                height: 35px;
+                width: 35px;
+                border-radius: 50%;
             }
             
             .comments-box .input-comment .comment-box {
@@ -140,11 +141,13 @@
             }
         </style>
         <div class="comments-box">
-            <h3 hidden$="{{_computeHidden(comments)}}">Be the first to comment!</h3>
+            <h3 hidden$="{{_computeHiddenHint(comments)}}">Be the first to comment!</h3>
             <div class="line"></div>
-            <template is="dom-repeat" items="{{comments}}">
+            <template is="dom-repeat" items="{{comments}}" as="item" >
                 <div class="comment">
-                    <div class="comment-avatar"><img src="{{_getAvatar(item)}}" /></div>
+                    <div class="comment-avatar">
+                        <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{item.author.avatar.urls.circle}}"></iron-image>
+                    </div>
                     <div class="content">
                         <p><span class="bold">{{item.author.username}}</span>{{item.text}}</p>
                         <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(item.date_created)]]"></date-util>
@@ -153,7 +156,9 @@
             </template>
             <div class="line"></div>
             <div class="input-comment">
-                <div class="comment-avatar"><img src="{{_getAvatar(item)}}" /></div>
+                <div class="comment-avatar">
+                    <iron-image preload placeholder="https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/563890fec4d6960800c721f7/avatar-circle.png" fade sizing="contain"></iron-image>
+                </div>
                 <div class="comment-box">
                     <input id="comment" type="text" placeholder="Type your message ...">
                     <button class="orange-button comment-button" on-tap="_tapPostButton">comment <img src="/assets/icons/shares/comment.svg" /></button>
@@ -171,11 +176,8 @@
                     value:[]
                 }
             },
-             _computeHidden(){
+             _computeHiddenHint(){
                  return this.comments.length > 0;
-            },
-            _getAvatar(item){
-                return item.author.avatar.urls.circle || "/assets/icons/shares/commentAvatar.svg";
             },
             attached () {
             },
