@@ -123,6 +123,9 @@
                     type: Object
                 }
             },
+			attached(){
+				this.setAttribute('tabindex', 0);
+			},
             _createDate (formatted) {
                 return new Date(formatted);
             }
