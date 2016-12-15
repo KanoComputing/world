@@ -15,15 +15,16 @@
                 height: 350px;
                 overflow: hidden;
                 /*Shell div in kw-app to match this*/
-                background-image: url("/assets/projects/current-theme/thanksgiving.svg");
-                background-color: #493e52;
-                background-size: 80%;
+                background-image: url("/assets/projects/current-theme/kano-world-winter-warmer.svg");
+                background-color: #FF4C4C;
+                background-size: 61%;
                 background-repeat: no-repeat;
                 background-position: right bottom;
             }
             .info {
                 display: inline-block;
                 margin: 100px 0 0 60px;
+                color: #fff;
             }
             .toggle-container {
                 @apply(--layout-vertical);
@@ -54,10 +55,12 @@
             }
             .info label {
                 padding: 11px 23px 10px;
-                background-color: var(--color-grey-lighter, #ddd);
-                font-size: 18px;
+                background-color: #fff;
+                font-size: 16px;
+                color: #FF4C4C;
                 font-weight: 600;
                 cursor: pointer;
+                text-transform: uppercase;
                 transition: 300ms ease-out;
             }
             .button-wrapper {
@@ -88,20 +91,22 @@
             h3 {
                 position: relative;
                 display: inline-block;
-                color: var(--color-grey-lighter, #ddd);
                 font-size: 42px;
-                font-weight: 400;
                 margin: 0;
             }
-            .header iron-image {
+            .header iron-image.coin-icon {
                 position: absolute;
                 top: -30px;
                 right: -52px;
                 width: 50px;
                 height: 50px;
             }
+            .header iron-image.dropdown-triangle {
+                width: 11px;
+                height: 11px;
+                margin: 0 0 1px 10px;
+            }
             h6 {
-                color: var(--color-grey-lighter, #ddd);
                 font-size: 24px;
                 font-weight: 500;
                 margin: 0;
@@ -169,14 +174,15 @@
                 padding: 14px 20px;
                 cursor: pointer;
             }
-            @media screen and (min-width: 1240px) {
+            @media screen and (min-width: 1600px) {
                 .header {
-                    background-size: 65%;
+                    background-size: 54%;
                 }
             }
             @media screen and (max-width: 980px) {
                 .header {
-                    background-size: 100%;
+                    background-position: 136% bottom;
+                    background-size: 68%;
                 }
                 .projects {
                     padding: 0;
@@ -187,10 +193,9 @@
             }
             @media screen and (max-width: 680px) {
                 .header {
-                    background-size: 130%;
-
+                    background-size: 80%;
                 }
-                .header iron-image {
+                .header iron-image.coin-icon {
                     position: absolute;
                     top: -28px;
                     right: -38px;
@@ -231,9 +236,9 @@
         <div class="header">
             <div id="content">
                 <div class="info">
-                    <h3>Code Thanksgiving<iron-image src="/assets/projects/current-theme/new-coin-icon.svg" sizing="cover" preload fade></iron-image></h3>
-                    <h6>Check out these challenges to make the holiday extra special</h6>
-                    <label for="showhide">make it</label>
+                    <h3>Winter Warmers<iron-image class="coin-icon" src="/assets/projects/current-theme/new-coin-icon.svg" sizing="cover" preload fade></iron-image></h3>
+                    <h6>Time to wrap up warm and code some festive fun</h6>
+                    <label for="showhide">See challenges<iron-image class="dropdown-triangle" src="/assets/projects/current-theme/button-chevron.svg" sizing="contain" preload fade></iron-image></label>
                 </div>
                 <div class="toggle-container">
                 <kano-carousel class="cards-wrapper">
@@ -263,17 +268,21 @@
                 projects: {
                     type: Array,
                     value: [{
-                        "title": "Autumn leaves",
-                        "image": "assets/projects/current-theme/autumn_leaves.png",
-                        "link": "https://apps.kano.me/story/autumn_leaves"
+                        "title": "Code tree",
+                        "image": "assets/projects/current-theme/code_tree.png",
+                        "link": "https://apps.kano.me/story/code_tree"
                     }, {
-                        "title": "Hot horse, cold cow",
-                        "image": "assets/projects/current-theme/hot_horse_cold_cow.png",
-                        "link": "https://apps.kano.me/story/hot_horse_cold_cow"
+                        "title": "Robo wrapper",
+                        "image": "assets/projects/current-theme/robo_wrapper.png",
+                        "link": "https://apps.kano.me/story/robo_wrapper"
                     }, {
-                        "title": "Parade",
-                        "image": "assets/projects/current-theme/parade.png",
-                        "link": "https://apps.kano.me/story/parade"
+                        "title": "Snow day",
+                        "image": "assets/projects/current-theme/snow_day.png",
+                        "link": "https://apps.kano.me/story/snow_day"
+                    }, {
+                        "title": "Sound hat",
+                        "image": "assets/projects/current-theme/sound_hat.png",
+                        "link": "https://apps.kano.me/story/sound_hat"
                     }]
                 }
             },

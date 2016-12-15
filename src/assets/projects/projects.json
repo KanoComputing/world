@@ -272,6 +272,24 @@
                 "slug": "orbit_moon",
                 "link": "https://apps.kano.me/story/orbit_moon",
                 "image": "/assets/projects/icons/current-theme-archive/orbit_moon.jpg"
+            },
+            {
+                "title": "Autumn leaves",
+                "slug": "autumn_leaves",
+                "link": "https://apps.kano.me/story/autumn_leaves",
+                "image": "/assets/projects/icons/current-theme-archive/autumn_leaves.png"
+            },
+            {
+                "title": "Hot horse, cold cow",
+                "slug": "hot_horse_cold_cow",
+                "link": "https://apps.kano.me/story/hot_horse_cold_cow",
+                "image": "/assets/projects/icons/current-theme-archive/hot_horse_cold_cow.png"
+            },
+            {
+                "title": "Parade",
+                "slug": "parade",
+                "link": "https://apps.kano.me/story/parade",
+                "image": "/assets/projects/icons/current-theme-archive/parade.png"
             }
         ]
     },

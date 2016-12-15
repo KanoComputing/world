@@ -36,10 +36,10 @@ some elements and style it as you wish.
             flex: 1 0;
             display: flex;
         }
-        #viewport.desktop {
+        #viewport.non-touch {
             overflow: hidden;
         }
-        #viewport.mobile {
+        #viewport.touch {
             overflow-x: scroll;
             -webkit-overflow-scrolling: touch;
             -ms-scroll-chaining: chained;
@@ -56,17 +56,17 @@ some elements and style it as you wish.
         }
     </style>
     <template>
-        <div class$="button-slot [[applyHiddenClass(mode, buttonsNeeded)]]" on-tap="_leftTap">
+        <div class$="button-slot [[applyHiddenClass(isTouch, buttonsNeeded)]]" on-tap="_leftTap">
             <slot name="left-button"></slot>
         </div>
-        <div id="viewport" class$="{{mode}}"
+        <div id="viewport" class$="{{applyOverflowVisibility(isTouch)}}"
              on-mousedown="dragStart" on-mousemove="dragMove"
              on-mouseup="dragStop" on-mouseout="dragCancel">
             <div id="content" class$="{{applyEaseClass(moving)}}">
                 <slot name="content"></slot>
             </div>
         </div>
-        <div class$="button-slot [[applyHiddenClass(mode, buttonsNeeded)]]" on-tap="_rightTap">
+        <div class$="button-slot [[applyHiddenClass(isTouch, buttonsNeeded)]]" on-tap="_rightTap">
             <slot name="right-button"></slot>
         </div>
     </template>
@@ -85,10 +85,11 @@ some elements and style it as you wish.
                     value: false,
                     notify: true
                 },
-                mode: {
-                    type: String,
-                    value: 'desktop',
-                    notify: true
+                isTouch: {
+                    type: Boolean,
+                    value: false,
+                    notify: true,
+                    observer: '_updateUI'
                 },
                 withMouseScroll: {
                     type: Boolean,
@@ -190,33 +191,44 @@ some elements and style it as you wish.
                 }
                 return '';
             },
-            applyHiddenClass (mode, buttonsNeeded) {
-                if (mode !== 'mobile' && buttonsNeeded) {
+            applyHiddenClass (isTouch, buttonsNeeded) {
+                if (!isTouch && buttonsNeeded) {
                     return '';
                 } else {
                     return 'hidden';
                 }
             },
-            ready () {
-                if (('ontouchstart' in window) ||
-                    (navigator.maxTouchPoints > 0) ||
-                    (navigator.msMaxTouchPoints > 0)) {
-                    this.mode = 'mobile';
+            applyOverflowVisibility (isTouch) {
+                return isTouch ? 'touch' : 'non-touch'
+            },
+            _updateUI () {
+                if (this.isTouch) {
+                    this.removeListeners();
                 }
+            },
+            removeListeners () {
+                window.removeEventListener('resize', this.enforceBoundaries);
+                this.removeEventListener('mouseover', this.onMouseOver);
+                this.removeEventListener('mouseout', this.onMouseOut);
+            },
+            applyTouchBehaviour () {
+                this.isTouch = true;
+                window.removeEventListener('touchstart', this.applyTouchBehaviour);
+            },
+            created () {
+                this.applyTouchBehaviour = this.applyTouchBehaviour.bind(this);
             },
             attached () {
-                if (this.mode === 'desktop') {
-                    window.addEventListener('resize',
-                                            this.enforceBoundaries.bind(this));
-                    this.addEventListener('mouseover', this.onMouseOver.bind(this));
-                    this.addEventListener('mouseout', this.onMouseOut.bind(this));
-                }
+                window.addEventListener('resize',
+                        this.enforceBoundaries.bind(this));
+                this.addEventListener('mouseover', this.onMouseOver.bind(this));
+                this.addEventListener('mouseout', this.onMouseOut.bind(this));
+                //update carousel behaviour on touch devices
+                window.addEventListener('touchstart', this.applyTouchBehaviour);
             },
             detached () {
-                if (this.mode === 'desktop') {
-                    window.removeEventListener('resize', this.enforceBoundaries);
-                    this.removeEventListener('mouseover', this.onMouseOver);
-                    this.removeEventListener('mouseout', this.onMouseOut);
+                if (!this.isTouch) {
+                    this.removeListeners();
                 }
             }
         });

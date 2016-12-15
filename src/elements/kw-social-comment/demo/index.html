@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <title>kano-world-share-card demo</title>
+    <link rel="import" href="../../../bower_components/polymer/polymer.html">
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../kw-social-comment.html">
+    <style is="custom-style" include="demo-pages-shared-styles">
+        .centered {
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        body {
+            background-color: #27323A;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="vertical-section-container centered" style="background-color:#27323A">
+        <h3>Basic kw-social-comment demo</h3>
+        <demo-snippet>
+            <template>
+                <kw-social-comment>
+                </kw-social-comment>
+            </template>
+        </demo-snippet>
+        <h3>With content</h3>
+        <demo-snippet>
+            <template>
+                <kw-social-comment id="share-comment">
+                </kw-social-comment>
+                <script>
+                        document.addEventListener('WebComponentsReady', function () {
+                            var comment = document.querySelector('#share-comment');
+                            comment.comments = [{
+                                        "id": "58262de8ad13b7c061ecd390",
+                                        "author": {
+                                            "id": "581fb7aead13b7c061e68fd6",
+                                            "username": "kittytacoLOL",
+                                            "admin_level": 0,
+                                            "joined": "2016-11-06T23:07:26.846Z",
+                                            "avatar": {
+                                                "urls": {
+                                                    "circle": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/581fb7aead13b7c061e68fd6/avatar-circle.png",
+                                                    "landscape": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/581fb7aead13b7c061e68fd6/avatar-landscape.png",
+                                                    "character": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/581fb7aead13b7c061e68fd6/avatar-character.png"
+                                                },
+                                                "generator": {
+                                                    "character": [
+                                                        "judoka",
+                                                        {
+                                                            "judoka-hair": "Hair_Long_Dark_Brown",
+                                                            "judoka-headwear": "judoka-headwear-none",
+                                                            "judoka-belts": "judoka-belts-candy",
+                                                            "judoka-skins": "Skin_Sand",
+                                                            "judoka-stickers": "Sticker_Code",
+                                                            "judoka-suits": "judoka-suit-santa",
+                                                            "judoka-hats": "judoka-hats-none",
+                                                            "judoka-accessories": "judoka-accessories-none",
+                                                            "judoka-scarves": "judoka-scarves-none",
+                                                            "judoka-faces": "Face_Wiggly"
+                                                        }
+                                                    ],
+                                                    "version": 2,
+                                                    "environment": [
+                                                        "all",
+                                                        "dojo"
+                                                    ]
+                                                }
+                                            },
+                                            "kanoClub": null,
+                                            "birthDate": null,
+                                            "buckets": [
+                                            ]
+                                        },
+                                        "text": "B)",
+                                        "date_created": "2016-11-11T20:45:28.546Z",
+                                        "flags": [
+                                        ],
+                                        "spam": false,
+                                        "meta": {
+                                        }
+                                    },
+                                    {
+                                        "id": "5825df5a3f29f41e084e1f0e",
+                                        "author": {
+                                            "id": "5683bf2b6d7d9c5a322a93b9",
+                                            "username": "SuperFlatNinja",
+                                            "admin_level": 0,
+                                            "joined": "2015-12-30T11:25:31.094Z",
+                                            "avatar": {
+                                                "urls": {
+                                                    "circle": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5683bf2b6d7d9c5a322a93b9/avatar-circle.png",
+                                                    "landscape": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5683bf2b6d7d9c5a322a93b9/avatar-landscape.png",
+                                                    "character": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5683bf2b6d7d9c5a322a93b9/avatar-character.png"
+                                                },
+                                                "generator": {
+                                                    "character": [
+                                                        "judoka",
+                                                        {
+                                                            "judoka-hair": "Hair_Black",
+                                                            "judoka-headwear": "judoka-headwear-shades",
+                                                            "judoka-belts": "Belt_Orange",
+                                                            "judoka-suits": "Suit_Dark",
+                                                            "judoka-stickers": "Sticker_Code",
+                                                            "judoka-faces": "Face_Cutey",
+                                                            "judoka-skins": "Skin_Orange"
+                                                        }
+                                                    ],
+                                                    "version": 2,
+                                                    "environment": [
+                                                        "all",
+                                                        "dojo"
+                                                    ]
+                                                }
+                                            },
+                                            "kanoClub": null,
+                                            "birthDate": null,
+                                            "buckets": [
+                                            ]
+                                        },
+                                        "text": "cool",
+                                        "date_created": "2016-11-11T15:10:18.553Z",
+                                        "flags": [
+                                        ],
+                                        "spam": false,
+                                        "meta": {
+                                        }
+                                    },
+                                    {
+                                        "id": "582263a8bc15adcf0e54d591",
+                                        "author": {
+                                            "id": "5771a2049d86d5394c931a9e",
+                                            "username": "mav1o1",
+                                            "admin_level": 0,
+                                            "joined": "2016-06-27T22:00:36.004Z",
+                                            "avatar": {
+                                                "urls": {
+                                                    "circle": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5771a2049d86d5394c931a9e/avatar-circle.png",
+                                                    "landscape": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5771a2049d86d5394c931a9e/avatar-landscape.png",
+                                                    "character": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5771a2049d86d5394c931a9e/avatar-character.png"
+                                                },
+                                                "generator": {
+                                                    "character": [
+                                                        "judoka",
+                                                        {
+                                                            "judoka-hair": "Hair_Light_Blond",
+                                                            "judoka-headwear": "judoka-headwear-none",
+                                                            "judoka-belts": "Belt_Green",
+                                                            "judoka-skins": "Skin_Pale",
+                                                            "judoka-stickers": "Sticker_Summer_Camp_survived",
+                                                            "judoka-suits": "Suit_Green",
+                                                            "judoka-hats": "judoka-hats-none",
+                                                            "judoka-accessories": "judoka-accessories-none",
+                                                            "judoka-scarves": "judoka-scarves-none",
+                                                            "judoka-faces": "Face_Happy"
+                                                        }
+                                                    ],
+                                                    "version": 2,
+                                                    "environment": [
+                                                        "all",
+                                                        "dojo"
+                                                    ]
+                                                }
+                                            },
+                                            "kanoClub": null,
+                                            "birthDate": null,
+                                            "buckets": [
+                                            ]
+                                        },
+                                        "text": "plz staff pick or like my art",
+                                        "date_created": "2016-11-08T23:45:44.915Z",
+                                        "flags": [
+                                        ],
+                                        "spam": false,
+                                        "meta": {
+                                        }
+                                    },
+                                    {
+                                        "id": "582108fc13486cca0e6cfc76",
+                                        "author": {
+                                            "id": "581fb7aead13b7c061e68fd6",
+                                            "username": "kittytacoLOL",
+                                            "admin_level": 0,
+                                            "joined": "2016-11-06T23:07:26.846Z",
+                                            "avatar": {
+                                                "urls": {
+                                                    "circle": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/581fb7aead13b7c061e68fd6/avatar-circle.png",
+                                                    "landscape": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/581fb7aead13b7c061e68fd6/avatar-landscape.png",
+                                                    "character": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/581fb7aead13b7c061e68fd6/avatar-character.png"
+                                                },
+                                                "generator": {
+                                                    "character": [
+                                                        "judoka",
+                                                        {
+                                                            "judoka-hair": "Hair_Long_Dark_Brown",
+                                                            "judoka-headwear": "judoka-headwear-none",
+                                                            "judoka-belts": "judoka-belts-candy",
+                                                            "judoka-skins": "Skin_Sand",
+                                                            "judoka-stickers": "Sticker_Code",
+                                                            "judoka-suits": "judoka-suit-santa",
+                                                            "judoka-hats": "judoka-hats-none",
+                                                            "judoka-accessories": "judoka-accessories-none",
+                                                            "judoka-scarves": "judoka-scarves-none",
+                                                            "judoka-faces": "Face_Wiggly"
+                                                        }
+                                                    ],
+                                                    "version": 2,
+                                                    "environment": [
+                                                        "all",
+                                                        "dojo"
+                                                    ]
+                                                }
+                                            },
+                                            "kanoClub": null,
+                                            "birthDate": null,
+                                            "buckets": [
+                                            ]
+                                        },
+                                        "text": "SO CUTE ;p",
+                                        "date_created": "2016-11-07T23:06:36.243Z",
+                                        "flags": [
+                                        ],
+                                        "spam": false,
+                                        "meta": {
+                                        }
+                                    },
+                                    {
+                                        "id": "581fc59bbc15adcf0e5214da",
+                                        "author": {
+                                            "id": "57bb81d07263fcc22fb56e12",
+                                            "username": "henaudyey",
+                                            "admin_level": 0,
+                                            "joined": "2016-08-22T22:50:56.172Z",
+                                            "avatar": {
+                                                "urls": {
+                                                    "circle": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/57bb81d07263fcc22fb56e12/avatar-circle.png",
+                                                    "landscape": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/57bb81d07263fcc22fb56e12/avatar-landscape.png",
+                                                    "character": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/57bb81d07263fcc22fb56e12/avatar-character.png"
+                                                },
+                                                "generator": {
+                                                    "character": [
+                                                        "judoka",
+                                                        {
+                                                            "judoka-hair": "Hair_Long_Dark_Brown",
+                                                            "judoka-headwear": "judoka-headwear-none",
+                                                            "judoka-belts": "Belt_Cyan",
+                                                            "judoka-skins": "Skin_Pale",
+                                                            "judoka-stickers": "Sticker_Note",
+                                                            "judoka-suits": "Suit_Pink",
+                                                            "judoka-hats": "judoka-hats-antlers",
+                                                            "judoka-accessories": "judoka-accessories-binoculars",
+                                                            "judoka-scarves": "judoka-scarves-none",
+                                                            "judoka-faces": "Face_Cutey"
+                                                        }
+                                                    ],
+                                                    "version": 2,
+                                                    "environment": [
+                                                        "all",
+                                                        "jungle"
+                                                    ]
+                                                }
+                                            },
+                                            "kanoClub": null,
+                                            "birthDate": null,
+                                            "buckets": [
+                                            ]
+                                        },
+                                        "text": "dumb!",
+                                        "date_created": "2016-11-07T00:06:51.686Z",
+                                        "flags": [
+                                        ],
+                                        "spam": false,
+                                        "meta": {
+                                        }
+                                    },
+                                    {
+                                        "id": "581b698bfaa40c425c4e049b",
+                                        "author": {
+                                            "id": "580e398bd95084bc0ed35d6b",
+                                            "username": "schitwood",
+                                            "admin_level": 0,
+                                            "joined": "2016-10-24T16:40:43.962Z",
+                                            "avatar": {
+                                                "urls": {
+                                                    "circle": null,
+                                                    "landscape": null,
+                                                    "character": null
+                                                },
+                                                "generator": null
+                                            },
+                                            "kanoClub": null,
+                                            "birthDate": null,
+                                            "buckets": [
+                                            ]
+                                        },
+                                        "text": "hi",
+                                        "date_created": "2016-11-03T16:44:59.561Z",
+                                        "flags": [
+                                        ],
+                                        "spam": false,
+                                        "meta": {
+                                        }
+                                    },
+                                    {
+                                        "id": "581b6983faa40c425c4e0498",
+                                        "author": {
+                                            "id": "580e398bd95084bc0ed35d6b",
+                                            "username": "schitwood",
+                                            "admin_level": 0,
+                                            "joined": "2016-10-24T16:40:43.962Z",
+                                            "avatar": {
+                                                "urls": {
+                                                    "circle": null,
+                                                    "landscape": null,
+                                                    "character": null
+                                                },
+                                                "generator": null
+                                            },
+                                            "kanoClub": null,
+                                            "birthDate": null,
+                                            "buckets": [
+                                            ]
+                                        },
+                                        "text": "cool",
+                                        "date_created": "2016-11-03T16:44:51.792Z",
+                                        "flags": [
+                                        ],
+                                        "spam": false,
+                                        "meta": {
+                                        }
+                                    },
+                                    {
+                                        "id": "581b63b59f526a19082ae1f3",
+                                        "author": {
+                                            "id": "5704cc75bd4317c66e7c8ed7",
+                                            "username": "Rumple-stilt-skins",
+                                            "admin_level": 0,
+                                            "joined": "2016-04-06T08:44:37.570Z",
+                                            "avatar": {
+                                                "urls": {
+                                                    "circle": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5704cc75bd4317c66e7c8ed7/avatar-circle.png",
+                                                    "landscape": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5704cc75bd4317c66e7c8ed7/avatar-landscape.png",
+                                                    "character": "https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/5704cc75bd4317c66e7c8ed7/avatar-character.png"
+                                                },
+                                                "generator": {
+                                                    "character": [
+                                                        "judoka",
+                                                        {
+                                                            "judoka-hair": "Hair_Light_Blond",
+                                                            "judoka-headwear": "judoka-headwear-none",
+                                                            "judoka-belts": "Belt_Blue",
+                                                            "judoka-skins": "Skin_Warm",
+                                                            "judoka-stickers": "Sticker__Summercamp_Bird",
+                                                            "judoka-suits": "Suit_Dark",
+                                                            "judoka-hats": "judoka-hats-antlers",
+                                                            "judoka-accessories": "judoka-accessories-none",
+                                                            "judoka-scarves": "judoka-scarves-none",
+                                                            "judoka-faces": "Face_Cutey"
+                                                        }
+                                                    ],
+                                                    "version": 2,
+                                                    "environment": [
+                                                        "all",
+                                                        "camp_survived"
+                                                    ]
+                                                }
+                                            },
+                                            "kanoClub": null,
+                                            "birthDate": null,
+                                            "buckets": [
+                                            ]
+                                        },
+                                        "text": "Ohhhh!!!!!!!!!!!!!!!!!!!!!:)",
+                                        "date_created": "2016-11-03T16:20:05.768Z",
+                                        "flags": [
+                                        ],
+                                        "spam": false,
+                                        "meta": {
+                                        }
+                                    }
+                                ];
+                            
+
+                        });
+                    </script>
+            </template>
+        </demo-snippet>
+    </div>
+    <script>
+
+     </script>
+</body>
+
+</html>
