@@ -246,10 +246,12 @@
                 this._stopNotificationsPolling();
             },
             _viewChanged (view) {
-                window.dataLayer.push({
-                    'event'            : 'virtualPageView',
-                    'virtualPageTitle' : document.title,
-                    'virtualPageURL'   : window.location.pathname
+                this.debounce('viewChanged', () => {
+                    window.dataLayer.push({
+                        'event'            : 'virtualPageView',
+                        'virtualPageTitle' : document.title,
+                        'virtualPageURL'   : window.location.pathname
+                    });
                 });
             },
             _computeSelectedLink (path) {
