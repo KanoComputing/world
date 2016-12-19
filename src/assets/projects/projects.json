@@ -283,7 +283,8 @@
                 "title": "Hello world!",
                 "slug": "hello_world",
                 "link": "https://apps.kano.me/story/hello_world",
-                "image": "/assets/projects/icons/current-theme-archive/hello_world.jpg"
+                "image": "/assets/projects/icons/current-theme-archive/hello_world.jpg",
+                "dependencies": ["text-to-speech"]
             },
             {
                 "title": "Orbit Moon",
