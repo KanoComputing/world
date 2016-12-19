@@ -12,63 +12,72 @@
               "slug": "pixel_1",
               "creator": "kevinmurphy",
               "link": "https://apps.kano.me/story/pixel_1",
-              "image": "/assets/projects/icons/light/pixel_1.png"
+              "image": "/assets/projects/icons/light/pixel_1.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Light loops",
               "slug": "pixel_2",
               "creator": "arif",
               "link": "https://apps.kano.me/story/pixel_2",
-              "image": "/assets/projects/icons/light/pixel_2.png"
+              "image": "/assets/projects/icons/light/pixel_2.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Shhhhh!",
               "slug": "pixel_shhh",
               "creator": "mikegreer",
               "link": "https://apps.kano.me/story/pixel_shhh",
-              "image": "/assets/projects/icons/light/pixel_shh.png"
+              "image": "/assets/projects/icons/light/pixel_shh.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Clap flash",
               "slug": "pixel_clap",
               "creator": "cptncake",
               "link": "https://apps.kano.me/story/pixel_clap",
-              "image": "/assets/projects/icons/light/pixel_clap_flash.png"
+              "image": "/assets/projects/icons/light/pixel_clap_flash.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Color mix lights",
               "slug": "pixel_4",
               "creator": "Angeliki",
               "link": "https://apps.kano.me/story/light/pixel_4",
-              "image": "/assets/projects/icons/light/pixel_color.png"
+              "image": "/assets/projects/icons/light/pixel_color.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Clap clock",
               "slug": "pixel_clap_clock",
               "creator": "Brandon",
               "link": "https://apps.kano.me/story/pixel_clap_clock",
-              "image": "/assets/projects/icons/light/pixel_clap_clock.png"
+              "image": "/assets/projects/icons/light/pixel_clap_clock.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Light beats",
               "slug": "pixel_light_beats",
               "creator": "Hicks",
               "link": "https://apps.kano.me/story/pixel_light_beats",
-              "image": "/assets/projects/icons/light/pixel_music.png"
+              "image": "/assets/projects/icons/light/pixel_music.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Sound meter",
               "slug": "pixels_music",
               "creator": "Emily",
               "link": "https://apps.kano.me/story/pixels_music",
-              "image": "/assets/projects/icons/light/pixel_music.png"
+              "image": "/assets/projects/icons/light/pixel_music.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Marian Hill visualizer",
               "slug": "pixels_marian_hill",
               "creator": "marian_hill",
               "link": "http://apps.kano.me/story/pixels_marian_hill",
-              "image": "/assets/projects/icons/light/pixel_marian_hill.png"
+              "image": "/assets/projects/icons/light/pixel_marian_hill.png",
+              "dependencies": ["microphone"]
           }
       ]
   },
@@ -85,56 +94,64 @@
               "slug": "camera_clap",
               "creator": "mikegreer",
               "link": "https://apps.kano.me/story/camera_clap",
-              "image": "/assets/projects/icons/camera/clap_to_snap.png"
+              "image": "/assets/projects/icons/camera/clap_to_snap.png",
+              "dependencies": ["camera"]
           },
           {
               "title": "Black and white",
               "slug": "camera_bw",
               "creator": "kevinmurphy",
               "link": "https://apps.kano.me/story/camera_bw",
-              "image": "/assets/projects/icons/camera/camera_bw_filter.png"
+              "image": "/assets/projects/icons/camera/camera_bw_filter.png",
+              "dependencies": ["camera"]
           },
           {
               "title": "Color filter",
               "slug": "camera_recolor",
               "creator": "Brandon",
               "link": "https://apps.kano.me/story/camera_recolor",
-              "image": "/assets/projects/icons/camera/filter.png"
+              "image": "/assets/projects/icons/camera/filter.png",
+              "dependencies": ["camera"]
           },
           {
               "title": "Potato head",
               "slug": "camera_potato_head",
               "creator": "arif",
               "link": "https://apps.kano.me/story/camera_potato_head",
-              "image": "/assets/projects/icons/camera/camera_potato_head.png"
+              "image": "/assets/projects/icons/camera/camera_potato_head.png",
+              "dependencies": ["camera"]
           },
           {
               "title": "Anger cam",
               "slug": "camera_anger",
               "creator": "Dominique",
               "link": "https://apps.kano.me/story/camera_anger",
-              "image": "/assets/projects/icons/camera/camera_anger.png"
+              "image": "/assets/projects/icons/camera/camera_anger.png",
+              "dependencies": ["camera"]
           },
           {
               "title": "Selfie Kaleidoscope",
               "slug": "camera_kaleidoscope",
               "creator": "lukeumber",
               "link": "https://apps.kano.me/story/camera_kaleidoscope",
-              "image": "/assets/projects/icons/camera/camera_kaleidoscope.png"
+              "image": "/assets/projects/icons/camera/camera_kaleidoscope.png",
+              "dependencies": ["camera"]
           },
           {
               "title": "Minecraft yourself",
               "slug": "camera_minecraft_yourself",
               "creator": "nvs",
               "link": "https://apps.kano.me/story/camera_minecraft_yourself",
-              "image": "/assets/projects/icons/camera/minecraft_yourself.png"
+              "image": "/assets/projects/icons/camera/minecraft_yourself.png",
+              "dependencies": ["camera"]
           },
           {
               "title": "Gif factory",
               "slug": "camera_gif_factory",
               "creator": "cptncake",
               "link": "https://apps.kano.me/story/camera_gif_factory",
-              "image": "/assets/projects/icons/camera/gif_factory.png"
+              "image": "/assets/projects/icons/camera/gif_factory.png",
+              "dependencies": ["camera"]
           }
       ]
   },
@@ -165,7 +182,8 @@
               "slug": "talking_clock",
               "creator": "Liviavs",
               "link": "https://apps.kano.me/story/talking_clock",
-              "image": "/assets/projects/icons/data_and_sound/talking_clock.png"
+              "image": "/assets/projects/icons/data_and_sound/talking_clock.png",
+              "dependencies": ["microphone"]
           },
           {
               "title": "Draw sound",
