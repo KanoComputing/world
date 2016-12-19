@@ -201,7 +201,7 @@
                 <div class="tombstone"></div>
             </div>
             <template is="dom-if" if="[[completed]]">
-                <template is="dom-repeat" items="[[categories]]" as="category">
+                <template is="dom-repeat" items="[[categories]]" as="category" filter="_checkCategoryDependencies">
                     <kw-projects-category category="[[category]]" animate-stars="[[!index]]"></kw-projects-category>
                 </template>
             </template>
@@ -213,6 +213,9 @@
             is: 'kw-view-projects',
             behaviors: [Kano.APIClient],
             properties: {
+                availableDependencies: {
+                    type: Array
+                },
                 categories: {
                     type: Array
                 }
@@ -230,6 +233,7 @@
                             this._upgradeProjects(categories, this.user);
                         });
                 });
+                this._checkAvailableDependencies();
             },
             _applyRolldown () {
                 let headerContent = this.$.header.getHeaderContentElement();
@@ -255,7 +259,7 @@
                 let userAgent = window.navigator.userAgent;
                 return userAgent.indexOf('armv6l') !== -1 || userAgent.indexOf('armv7l') !== -1;
             },
-            _availableDependencies () {
+            _checkAvailableDependencies () {
                 let availableDependencies = [];
                 if (!this._isPi()) {
                     availableDependencies = [
@@ -264,37 +268,29 @@
                         'text-to-speech'
                     ];
                 }
-                return availableDependencies;
+                this.set('availableDependencies', availableDependencies);
             },
-            _checkDependencies (categories) {
-                let availableDependencies = this._availableDependencies(),
-                    filteredCategories = [];
-                categories.forEach((category) => {
-                    let availableProjects = category.projects.filter((project) => {
-                        let allDependenciesAvailable = true;
-                        if (project.dependencies) {
-                            project.dependencies.forEach((dependency) => {
-                                if (availableDependencies.indexOf(dependency) === -1) {
-                                    allDependenciesAvailable = false;
-                                };
-                            });
-                        }
-                        return allDependenciesAvailable;
-                    });
-                    if (availableProjects.length) {
-                        category.projects = availableProjects;
-                        filteredCategories.push(category);
+            _checkCategoryDependencies (category) {
+                let availableProjects = category.projects.filter((project) => {
+                    let allDependenciesAvailable = true;
+                    if (project.dependencies) {
+                        project.dependencies.forEach((dependency) => {
+                            if (this.availableDependencies.indexOf(dependency) === -1) {
+                                allDependenciesAvailable = false;
+                            };
+                        });
                     }
+                    return allDependenciesAvailable;
                 });
-                return filteredCategories;
+                category.projects = availableProjects;
+                return category.projects.length > 0;
             },
             _upgradeProjects (categories, user) {
                 if (!categories) {
                     return;
                 }
-                let filteredCategories = this._checkDependencies(categories);
                 if (!this.categories) {
-                    this.categories = filteredCategories;
+                    this.categories = categories;
                 }
                 if (user && user.profile) {
                     let profile = user.profile,
@@ -305,29 +301,29 @@
                             return acc.concat(kcProgress[key].completedStories);
                         }, []);
                     }
-                    filteredCategories.forEach((category, catId) => {
+                    categories.forEach((category, catId) => {
                         if (category.api_progress_tracking.indexOf('make-art') !== -1) {
                             let artGroup = profile.stats['kano-draw'].groups[category.api_progress_tracking.replace('make-art-', '')];
                             if (artGroup) {
                                 category.projects.forEach((project, projectId) => {
-                                    this.set(`filteredCategories.${catId}.projects.${projectId}.completed`, project.slug <= artGroup.challengeNo);
+                                    this.set(`categories.${catId}.projects.${projectId}.completed`, project.slug <= artGroup.challengeNo);
                                 });
                             }
                         } else if (category.api_progress_tracking === 'make-apps') {
                             category.projects.forEach((project, projectId) => {
-                                this.set(`filteredCategories.${catId}.projects.${projectId}.completed`, kcProgress.indexOf(project.slug) !== -1);
+                                this.set(`categories.${catId}.projects.${projectId}.completed`, kcProgress.indexOf(project.slug) !== -1);
                             });
                         } else if (category.api_progress_tracking === 'make-minecraft') {
                             category.projects.forEach((project, projectId) => {
-                                this.set(`filteredCategories.${catId}.projects.${projectId}.completed`, project.slug >= profile.stats['make-minecraft'].level);
+                                this.set(`categories.${catId}.projects.${projectId}.completed`, project.slug >= profile.stats['make-minecraft'].level);
                             });
                         }
                     });
                     this.completed = true;
                 } else {
-                    filteredCategories.forEach((category, catId) => {
+                    categories.forEach((category, catId) => {
                         category.projects.forEach((project, projectId) => {
-                            this.set(`filteredCategories.${catId}.projects.${projectId}.completed`, false);
+                            this.set(`categories.${catId}.projects.${projectId}.completed`, false);
                         });
                     });
                     this.completed = true;
