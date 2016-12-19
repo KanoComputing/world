@@ -150,7 +150,7 @@
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
         <kano-session id="session" user="{{user}}" token="{{token}}" include-profile></kano-session>
-        <div class="footer">
+        <div class="footer" hidden$="[[simplePage]]">
             <div class="stats">
                 <kw-stat-card class="connected" heading="Connected Kanos" value="[[_commaify(stats.total_users)]]" icon-src="/assets/icons/stats/connected.png"></kw-stat-card>
                 <kw-stat-card class="online" heading="Online today" value="[[_commaify(stats.total_active_today)]]" icon-src="/assets/icons/stats/online.png"></kw-stat-card>
@@ -191,7 +191,7 @@
                     <kw-view-welcome></kw-view-welcome>
                 </template>
                 <template is="iron-lazy-page" name="start" path="/elements/kw-view-start/kw-view-start.html">
-                    <kw-view-start></kw-view-start>
+                    <kw-view-start class="simple-page" on-login="showAuthModal"></kw-view-start>
                 </template>
                 <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
                     <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
@@ -201,7 +201,7 @@
                 </template>
             </iron-lazy-pages>
         </div>
-        <kano-nav assets-path="/assets/navbar/">
+        <kano-nav assets-path="/assets/navbar/" hidden$="[[simplePage]]">
             <kano-primary-links assets-path="/assets/navbar/"
                                 current-site="[[config.WORLD_URL]]"
                                 selected-link="[[_computeSelectedLink(route.path)]]"
@@ -219,7 +219,7 @@
                             user="[[user]]"
                             xp="[[user.profile.xp]]">
                             </kano-user-menu>
-        </kano-nav-bar>
+        </kano-nav>
     </template>
     <script>
         const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/];
@@ -233,7 +233,8 @@
             },
             observers: [
                 '_tokenChanged(token)',
-                '_viewChanged(routeData.page)'
+                '_viewChanged(routeData.page)',
+                '_computeNavbar(routeData.page)'
             ],
             attached () {
                 this.config = Kano.World.config;
@@ -245,7 +246,7 @@
             detached () {
                 this._stopNotificationsPolling();
             },
-            _viewChanged (view) {
+            _viewChanged () {
                 this.debounce('viewChanged', () => {
                     window.dataLayer.push({
                         'event'            : 'virtualPageView',
@@ -253,6 +254,11 @@
                         'virtualPageURL'   : window.location.pathname
                     });
                 });
+            },
+            _computeNavbar (view) {
+                if (view === 'start') {
+                    this.simplePage = true;
+                }
             },
             _computeSelectedLink (path) {
                 let localLink = catchUrls.some(url => url.test(path));
@@ -317,7 +323,7 @@
             },
             signup () {
                 this.set('route.path', '/register');
-            }
+            },
         });
     </script>
 </dom-module>
