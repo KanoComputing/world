@@ -145,6 +145,7 @@
                     body: formData
                 })
                     .then(r => {
+                        this.loading = false;
                         if (r.ok) {
                             return r.json()
                                 .then(res => {
