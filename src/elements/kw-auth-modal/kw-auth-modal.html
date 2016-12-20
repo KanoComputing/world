@@ -145,8 +145,8 @@
                     body: formData
                 })
                     .then(r => {
+                        this.loading = false;
                         if (r.ok) {
-                            this.loading = false;
                             return r.json()
                                 .then(res => {
                                     this.set('user', res.session.user);
