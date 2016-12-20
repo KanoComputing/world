@@ -1,0 +1,38 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../kano-style/color.html">
+
+<dom-module id="kano-step">
+    <template>
+        <style>
+            :host {
+                @apply --layout-vertical-reverse;
+                @apply --layout-center;
+                position: relative;
+            }
+            :host ::slotted(*) {
+                position: absolute;
+                bottom: -50%;
+                left: 50%;
+            }
+        </style>
+            <slot name="label">
+            </slot>
+    </template>
+    <script>
+        Polymer({
+            is: 'kano-step',
+            properties: {
+                state: {
+                    type: String,
+                    value: null,
+                    reflectToAttribute: true
+                }
+            }
+        });
+    </script>
+</dom-module>

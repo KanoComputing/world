@@ -79,9 +79,9 @@
                 if (!this.session || this._hasExpired()) {
                     this._retrieveSession();
                 } else {
+                    this.set('user', this.session.user);
                     this.status = 'authenticated';
                 }
-
                 if (!token) {
                     localStorage.removeItem('KW_TOKEN');
                 } else {

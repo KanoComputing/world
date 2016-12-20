@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../../js/config.html">
 <link rel="import" href="../kano-style/typography.html">
 
@@ -11,7 +12,6 @@
                 background-color: #263A48;
             }
             .banner {
-                flex: 4;
                 position: relative;
                 background-color: #263A48;
                 background-size: contain;
@@ -91,9 +91,7 @@
                 position: absolute;
                 opacity: 0;
                 background-color: transparent;
-                animation: fade-in ease-out 800ms, float ease-in-out 3s infinite;
-                animation-delay: 40ms;
-                animation-fill-mode: forwards;
+                animation: 800ms ease-out 40ms forwards fade-in, 3s ease-in-out infinite float;
             }
             .judoka-background {
                 height: 85%;
@@ -138,7 +136,6 @@
                 color: #000;
             }
             .intro-slides {
-                flex: 1;
                 @apply --layout-horizontal;
                 @apply --layout-center;
                 @apply --layout-center-justified;
@@ -257,6 +254,7 @@
                 100% {transform: translateY(0);}
             }
         </style>
+        <kano-session id="session" user="{{user}}"></kano-session>
         <div class="banner">
         <div class="background-left">
         </div>
@@ -311,11 +309,19 @@
     <script>
         Polymer({
             is: 'kw-view-start',
+            observers: [
+                '_userSet(user)',
+            ],
             attached () {
                 this.config = Kano.World.config;
             },
             _login () {
                 this.fire('login');
+            },
+            _userSet (user) {
+                if (user) {
+                    this.fire('show-projects');
+                }
             }
         });
     </script>
