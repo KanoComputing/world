@@ -6,6 +6,7 @@
 <link rel="import" href="../kw-projects-category/kw-projects-category.html">
 <link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kano-projects-listing/kano-projects-listing-behavior.html">
 
 <dom-module id="kw-view-projects">
     <template>
@@ -201,7 +202,7 @@
                 <div class="tombstone"></div>
             </div>
             <template is="dom-if" if="[[completed]]">
-                <template is="dom-repeat" items="[[categories]]" as="category" filter="_checkCategoryDependencies">
+                <template is="dom-repeat" items="[[categories]]" as="category" filter="checkCategoryDependencies">
                     <kw-projects-category category="[[category]]" animate-stars="[[!index]]"></kw-projects-category>
                 </template>
             </template>
@@ -211,11 +212,11 @@
     <script>
         Polymer({
             is: 'kw-view-projects',
-            behaviors: [Kano.APIClient],
+            behaviors: [
+                Kano.APIClient,
+                Kano.ProjectsListingBehavior
+            ],
             properties: {
-                availableDependencies: {
-                    type: Array
-                },
                 categories: {
                     type: Array
                 }
@@ -233,7 +234,6 @@
                             this._upgradeProjects(categories, this.user);
                         });
                 });
-                this._checkAvailableDependencies();
             },
             _applyRolldown () {
                 let headerContent = this.$.header.getHeaderContentElement();
@@ -254,36 +254,6 @@
             },
             _userChanged (user) {
                 this._upgradeProjects(this.categories, this.user);
-            },
-            _isPi () {
-                let userAgent = window.navigator.userAgent;
-                return userAgent.indexOf('armv6l') !== -1 || userAgent.indexOf('armv7l') !== -1;
-            },
-            _checkAvailableDependencies () {
-                let availableDependencies = [];
-                if (!this._isPi()) {
-                    availableDependencies = [
-                        'camera',
-                        'microphone',
-                        'text-to-speech'
-                    ];
-                }
-                this.set('availableDependencies', availableDependencies);
-            },
-            _checkCategoryDependencies (category) {
-                let availableProjects = category.projects.filter((project) => {
-                    let allDependenciesAvailable = true;
-                    if (project.dependencies) {
-                        project.dependencies.forEach((dependency) => {
-                            if (this.availableDependencies.indexOf(dependency) === -1) {
-                                allDependenciesAvailable = false;
-                            };
-                        });
-                    }
-                    return allDependenciesAvailable;
-                });
-                category.projects = availableProjects;
-                return category.projects.length > 0;
             },
             _upgradeProjects (categories, user) {
                 if (!categories) {

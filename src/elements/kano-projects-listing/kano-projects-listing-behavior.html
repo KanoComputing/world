@@ -1,0 +1,66 @@
+<link rel="import" href="../../js/config.html">
+<script>
+    (function (Kano) {
+
+        window.dataLayer = window.dataLayer || [];
+
+        // @polymerBehavior
+        Kano.ProjectsListingBehavior = {
+            properties: {
+                availableDependencies: {
+                    type: Array,
+                    value: [
+                        'camera',
+                        'microphone',
+                        'text-to-speech'
+                    ]
+                }
+            },
+            attached () {
+                this.checkAvailableDependencies();
+            },
+            /**
+             * Generic function to check whether the user is using a Kano Kit
+             */
+            _isPi () {
+                let userAgent = window.navigator.userAgent;
+                return userAgent.indexOf('armv6l') !== -1 || userAgent.indexOf('armv7l') !== -1;
+            },
+            /**
+             * Check whether the user is using a Computer Kit
+             *
+             * If not, return a full list of available dependencies
+             */
+            checkAvailableDependencies () {
+                if (this._isPi()) {
+                    let availableDependencies = [];
+                    this.set('availableDependencies', availableDependencies);
+                }
+            },
+            /**
+             * Check whether projects in a category have all their
+             * dependencies met
+             *
+             * @param {Object} category
+             */
+            checkCategoryDependencies (category) {
+                let availableProjects = category.projects.filter((project) => {
+                    return this.checkProjectDependencies(project);
+                });
+                category.projects = availableProjects;
+                return category.projects.length > 0;
+            },
+            /**
+             * Check whether a project has all its dependencies met
+             *
+             * @param {Object} project
+             */
+            checkProjectDependencies (project) {
+                return !project.dependencies || project.dependencies.every((dependency) => {
+                    return this.availableDependencies.indexOf(dependency) !== -1;
+                });
+            }
+        };
+
+    })(window.Kano = window.Kano || {});
+</script>
