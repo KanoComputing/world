@@ -81,7 +81,7 @@
                 margin: auto 10px;
             }
             .project-group-info {
-                @apply(--layout-vertical);
+                @apply --layout-vertical;
                 text-align: left;
                 margin: 0 0 10px 25px;
             }
@@ -138,25 +138,25 @@
             /*TODO refactor*/
             .step-icon.current a,
             .step-icon.done a,
-            kano-step:first-child .step-icon:not(.done) a{
+            kano-step:first-child .step-icon:not(.done) a {
                 pointer-events: auto;
             }
             .step-icon.done {
                 background-image: url("/assets/projects/simple-progress/tick-circle.svg");
             }
-            kano-step:nth-last-child(2) .step-icon {
+            kano-step:last-child .step-icon {
                 background-image: url("/assets/projects/simple-progress/lock-circle-large.svg");
                 background-size: 70%;
                 width: 120px;
                 height: 120px;
             }
-            kano-step:nth-last-child(2) .step-icon.current {
+            kano-step:last-child .step-icon.current {
                 background-image: url("/assets/projects/simple-progress/make-button-big.svg");
                 background-size: 70%;
                 width: 120px;
                 height: 84px;
             }
-            kano-step:nth-last-child(2) .step-icon.done {
+            kano-step:last-child .step-icon.done {
                 background-image: url("/assets/projects/simple-progress/complete-row.svg");
                 background-size: 70%;
                 background-position: bottom;
@@ -239,17 +239,64 @@
                         </div>
                         <kano-carousel>
                             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
-                                <div id="speaker-puzzles" class="step-display" slot="content">
-                                    <template is="dom-repeat" items="[[projects.speakerIntro]]">
-                                        <kano-step vertical>
-                                            <div slot="icon">
-                                                    <div class="step-icon">
-                                                        <a href$="[[config.KANO_CODE_URL]]/story/[[item]]"></a>
-                                                    </div>
-                                            </div>
-                                            <div slot="label">[[_calculateLabel(index, projects.speakerIntro)]]</div>
-                                        </kano-step>
-                                    </template>
+                                <div id="speaker_puzzles" class="step-display" slot="content">
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_hello"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">1</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_cannot_think"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">2</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_code_me_loop"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_sound"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">4</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_sound_loop"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">5</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_button_trigger""></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">6</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_drum_machine"></a>
+                                                </div>
+                                        </div>
+                                        <!-- passing empty string to avoid UI issues for now -->
+                                        <div slot="label"></div>
+                                    </kano-step>
                                 </div>
                             <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
                         </kano-carousel>
@@ -265,16 +312,55 @@
                         <kano-carousel>
                             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
                                 <div id="pixel_puzzles" class="step-display" slot="content">
-                                    <template is="dom-repeat" items="[[projects.pixelIntro]]">
-                                        <kano-step vertical>
-                                            <div slot="icon">
-                                                <a href$="[[config.KANO_CODE_URL]]/story[[item]]">
-                                                    <div class="step-icon"></div>
-                                                </a>
-                                            </div>
-                                            <div slot="label">[[_calculateLabel(index, projects.pixelIntro)]]</div>
-                                        </kano-step>
-                                    </template>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_lights_on"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">1</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_color_picker"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">2</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_color_random_loop"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_point"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">4</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_emoji"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">5</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop"></a>
+                                                </div>
+                                        </div>
+                                        <!-- passing empty string to avoid UI issues for now -->
+                                        <div slot="label"></div>
+                                    </kano-step>
                                 </div>
                             <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
                         </kano-carousel>
@@ -288,17 +374,56 @@
                         </div>
                         <kano-carousel>
                             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
-                                <div id="screen-puzzles" class="step-display" slot="content">
-                                    <template is="dom-repeat" items="[[projects.screenIntro]]">
-                                        <kano-step vertical>
-                                            <div slot="icon">
-                                                <a href$="[[config.KANO_CODE_URL]]/story/[[item]]">
-                                                    <div class="step-icon"></div>
-                                                </a>
-                                            </div>
-                                            <div slot="label">[[_calculateLabel(index, projects.screenIntro)]]</div>
-                                        </kano-step>
-                                    </template>
+                                <div id="screen_puzzles" class="step-display" slot="content">
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_draw_pixel"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">1</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_pixel_flood"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">2</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_pixels"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_squares"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">4</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_circles"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">5</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_circles_loop"></a>
+                                                </div>
+                                        </div>
+                                        <!-- passing empty string to avoid UI issues for now -->
+                                        <div slot="label"></div>
+                                    </kano-step>
                                 </div>
                             <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
                         </kano-carousel>
@@ -316,20 +441,6 @@
             behaviors: [
                 Kano.ProjectsListingBehavior
             ],
-            properties: {
-                projects: {
-                    type: Object,
-                    value: 
-                        {
-                            speakerIntro: ["speaker_hello", "speaker_cannot_think", "speaker_code_me_loop",
-                                    "speaker_sound", "speaker_sound_loop", "speaker_button_trigger", "speaker_drum_machine"],
-                            pixelIntro: ["pixel_lights_on", "pixel_color_picker", "pixel_color_random_loop",
-                                    "pixel_point", "pixel_emoji", "pixel_colorful_point_loop"],
-                            screenIntro: ["screen_draw_pixel", "screen_pixel_flood", "screen_colorful_pixels",
-                                "screen_colorful_squares", "screen_colorful_circles", "screen_colorful_circles_loop"]
-                        }
-                }
-            },
             observers: [
                 '_computeProgress(user)'
             ],
@@ -351,13 +462,6 @@
                         }
                     }) 
                 }
-            },
-            _calculateLabel (index, array) {
-                //TODO something else instead of passing an empty string to avoid alignment issues
-                if (array.length - 1 === index) {
-                    return ''
-                }
-                return index + 1
             },
             _openModal () {
                 this.fire('show-modal');
