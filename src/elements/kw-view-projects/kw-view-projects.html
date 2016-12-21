@@ -6,6 +6,7 @@
 <link rel="import" href="../kw-projects-category/kw-projects-category.html">
 <link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kano-projects-listing/kano-projects-listing-behavior.html">
 
 <dom-module id="kw-view-projects">
     <template>
@@ -201,17 +202,20 @@
                 <div class="tombstone"></div>
             </div>
             <template is="dom-if" if="[[completed]]">
-                <template is="dom-repeat" items="[[categories]]" as="category">
+                <template is="dom-repeat" items="[[categories]]" as="category" filter="checkCategoryDependencies">
                     <kw-projects-category category="[[category]]" animate-stars="[[!index]]"></kw-projects-category>
                 </template>
             </template>
-            
+
         </div>
     </template>
     <script>
         Polymer({
             is: 'kw-view-projects',
-            behaviors: [Kano.APIClient],
+            behaviors: [
+                Kano.APIClient,
+                Kano.ProjectsListingBehavior
+            ],
             properties: {
                 categories: {
                     type: Array

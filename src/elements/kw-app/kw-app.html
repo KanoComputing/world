@@ -193,7 +193,7 @@
                     <kw-view-welcome></kw-view-welcome>
                 </template>
                 <template is="iron-lazy-page" name="start" path="/elements/kw-view-start/kw-view-start.html">
-                    <kw-view-start class="simple-page" on-login="showAuthModal" on-show-projects="redirectToProjects"></kw-view-start>
+                    <kw-view-start class="simple-page" on-login="showAuthModal"></kw-view-start>
                 </template>
                 <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
                     <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
@@ -240,6 +240,7 @@
                 '_tokenChanged(token)',
                 '_userChanged(user)',
                 '_viewChanged(routeData.page)',
+                '_viewChanged(routeData.page)',
                 '_computeNavbar(routeData.page)'
             ],
             attached () {
@@ -248,6 +249,7 @@
                     this.stats = stats;
                 });
                 this.checkUserDevice();
+
             },
             detached () {
                 this._stopNotificationsPolling();
@@ -319,6 +321,9 @@
                     });
             },
             _tokenChanged (token) {
+                if (this.routeData.page === "start" && token) {
+                    this.set('route.path', '/projects');
+                }
                 if (token) {
                     this._startNotificationsPolling();
                 } else {

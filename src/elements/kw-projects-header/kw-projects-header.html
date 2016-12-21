@@ -9,6 +9,8 @@
 <link rel="import" href="../kano-carousel/kano-carousel.html">
 <link rel="import" href="../kano-step/kano-step.html">
 <link rel="import" href="../../js/config.html">
+<link rel="import" href="../kano-projects-listing/kano-projects-listing-behavior.html">
+
 
 <dom-module id="kw-projects-header">
     <template>
@@ -19,15 +21,16 @@
                 text-align: center;
                 background-color: #263A48;
                 color: #fff;
-                padding: 30px 10px 40px;
+                padding: 30px 0 40px;
             }
             h3 {
                 font-size: 38px;
-                margin: 0;
+                margin: 0 20px;
+                line-height: 35px;
             }
             h4 {
                 font-size: 18px;
-                margin: 0;
+                margin: 10px 0 0 0;
                 padding-bottom: 20px;
                 font-weight: normal;
             }
@@ -52,13 +55,17 @@
             .project-groups {
                 @apply --layout-vertical;
                 @apply --layout-start-justified;
+                width: 100%;
+                max-width: 840px;
             }
             .project-group {
                 margin-bottom: 10px;
+                position: relative;
             }
             .project-group iron-image {
                 width: 150px;
                 height: 90px;
+                margin-top: 5px;
             }
             .project-group iron-image.pixel {
                 width: 159px;
@@ -71,7 +78,7 @@
             .project-group-header {
                 @apply --layout-horizontal;
                 @apply --layout-center;
-                margin-bottom: -10px;
+                margin: auto 10px;
             }
             .project-group-info {
                 @apply(--layout-vertical);
@@ -97,14 +104,21 @@
                 height: 120px;
             }
             .step-icon {
+                background-image: url("/assets/projects/simple-progress/lock-circle.svg");
+                background-color: #263A48;
                 background-size: 64%;
                 background-repeat: no-repeat;
                 background-position: center;
-                background-color: #263A48;
-                background-image: url("/assets/projects/simple-progress/lock-circle.svg");
                 flex: 1;
                 height: 60px;
                 width: 60px;
+            }
+            .step-icon a {
+                /*a to take icon's dimension and disable link by default*/
+                display: flex;
+                flex: 1;
+                height: 100%;
+                pointer-events: none;
             }
             kano-step:first-child .step-icon:not(.done) {
                 background-image: url("/assets/projects/simple-progress/make-button.svg");
@@ -120,6 +134,12 @@
                 background-size: 82%;
                 width: 110px;
                 height: 60px;
+            }
+            /*TODO refactor*/
+            .step-icon.current a,
+            .step-icon.done a,
+            kano-step:first-child .step-icon:not(.done) a{
+                pointer-events: auto;
             }
             .step-icon.done {
                 background-image: url("/assets/projects/simple-progress/tick-circle.svg");
@@ -143,13 +163,6 @@
                 width: 120px;
                 height: 120px;
                 padding-top: 20px;
-            }
-            kano-carousel {
-                position: relative;
-                margin: 0px 0;
-                @apply --layout-horizontal;
-                @apply --layout-center-justified;
-                flex-wrap: wrap;
             }
             .left-button, .right-button {
                 font-family: var(--font-body);
@@ -198,8 +211,6 @@
                 padding: 14px 20px;
                 cursor: pointer;
             }
-            @media screen and (min-width: 1600px) {
-            }
             @media screen and (max-width: 980px) {
                 .new-project-field button {
                     font-size: 14px;
@@ -226,15 +237,15 @@
                                 <h4>The power to make your computer speak</h4>
                             </div>
                         </div>
-                        <kano-carousel class="cards-wrapper">
+                        <kano-carousel>
                             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
-                                <div id="fake_group2" class="step-display" slot="content">
+                                <div id="speaker-puzzles" class="step-display" slot="content">
                                     <template is="dom-repeat" items="[[projects.speakerIntro]]">
                                         <kano-step vertical>
                                             <div slot="icon">
-                                                <a href$="[[config.KANO_CODE_URL]]/[[item]]">
-                                                    <div class="step-icon"></div>
-                                                </a>
+                                                    <div class="step-icon">
+                                                        <a href$="[[config.KANO_CODE_URL]]/story/[[item]]"></a>
+                                                    </div>
                                             </div>
                                             <div slot="label">[[_calculateLabel(index, projects.speakerIntro)]]</div>
                                         </kano-step>
@@ -251,18 +262,22 @@
                                 <h4>The power to control light</h4>
                             </div>
                         </div>
-                        <div id="fake_group" class="step-display">
-                            <template is="dom-repeat" items="[[projects.pixelIntro]]">
-                                <kano-step vertical>
-                                    <div slot="icon">
-                                        <a href$="[[config.KANO_CODE_URL]]/[[item]]">
-                                            <div class="step-icon"></div>
-                                        </a>
-                                    </div>
-                                    <div slot="label">[[_calculateLabel(index, projects.pixelIntro)]]</div>
-                                </kano-step>
-                            </template>
-                        </div>
+                        <kano-carousel>
+                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                                <div id="pixel_puzzles" class="step-display" slot="content">
+                                    <template is="dom-repeat" items="[[projects.pixelIntro]]">
+                                        <kano-step vertical>
+                                            <div slot="icon">
+                                                <a href$="[[config.KANO_CODE_URL]]/story[[item]]">
+                                                    <div class="step-icon"></div>
+                                                </a>
+                                            </div>
+                                            <div slot="label">[[_calculateLabel(index, projects.pixelIntro)]]</div>
+                                        </kano-step>
+                                    </template>
+                                </div>
+                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                        </kano-carousel>
                     </div>
                     <div class="project-group">
                         <div class="project-group-header">
@@ -271,18 +286,22 @@
                                 <h4>The power to draw</h4>
                             </div>
                         </div>
-                        <div id="fake_group3" class="step-display">
-                            <template is="dom-repeat" items="[[projects.screenIntro]]">
-                                <kano-step vertical>
-                                    <div slot="icon">
-                                        <a href$="[[config.KANO_CODE_URL]]/[[item]]">
-                                            <div class="step-icon"></div>
-                                        </a>
-                                    </div>
-                                    <div slot="label">[[_calculateLabel(index, projects.screenIntro)]]</div>
-                                </kano-step>
-                            </template>
-                        </div>
+                        <kano-carousel>
+                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                                <div id="screen-puzzles" class="step-display" slot="content">
+                                    <template is="dom-repeat" items="[[projects.screenIntro]]">
+                                        <kano-step vertical>
+                                            <div slot="icon">
+                                                <a href$="[[config.KANO_CODE_URL]]/story/[[item]]">
+                                                    <div class="step-icon"></div>
+                                                </a>
+                                            </div>
+                                            <div slot="label">[[_calculateLabel(index, projects.screenIntro)]]</div>
+                                        </kano-step>
+                                    </template>
+                                </div>
+                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                        </kano-carousel>
                     </div>
                 </div>
         </div>
@@ -294,6 +313,9 @@
     <script>
         Polymer({
             is: 'kw-projects-header',
+            behaviors: [
+                Kano.ProjectsListingBehavior
+            ],
             properties: {
                 projects: {
                     type: Object,
@@ -306,10 +328,6 @@
                             screenIntro: ["screen_draw_pixel", "screen_pixel_flood", "screen_colorful_pixels",
                                 "screen_colorful_squares", "screen_colorful_circles", "screen_colorful_circles_loop"]
                         }
-                },
-                completedStories: {
-                    type: Array,
-                    value: []
                 }
             },
             observers: [
@@ -319,7 +337,7 @@
                 this.config = Kano.World.config;
             },
             _computeProgress (user) {
-                if (user.profile && user.profile.stats['make-apps'] && user.profile.stats['make-apps'].progress) {
+                if (user && user.profile && user.profile.stats['make-apps'] && user.profile.stats['make-apps'].progress) {
                     Polymer.dom(this.root).querySelectorAll('.step-display').forEach((el) => {
                         if (user.profile.stats['make-apps'].progress[el.id]) {
                             let steps = el.querySelectorAll('.step-icon');
@@ -330,28 +348,12 @@
                                     steps[i].classList.add("done");
                                 }
                             }
-                        } else {
-                            //user progress not present
                         }
                     }) 
                 }
             },
-            _getUserProgress (user) {
-                if (user && user.profile && user.profile) {
-                    let profile = user.profile;
-                    if (profile.stats['make-apps'] && profile.stats['make-apps'].progress && profile.stats['make-apps'].progress['fake_group']) {
-                        this.completedStories = profile.stats['make-apps'].progress['fake_group'].completedStories;
-                    }
-                }
-            },
-            _getPathPrefix () {
-                if (!this.pathPrefix) {
-                    let pathEl = document.head.querySelector('meta[name="path-prefix"]');
-                    this.pathPrefix = pathEl ? pathEl.getAttribute('data-value') : '/';
-                }
-                return this.pathPrefix;
-            },
             _calculateLabel (index, array) {
+                //TODO something else instead of passing an empty string to avoid alignment issues
                 if (array.length - 1 === index) {
                     return ''
                 }

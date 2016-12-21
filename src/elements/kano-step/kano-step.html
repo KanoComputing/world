@@ -14,6 +14,7 @@
                 @apply --layout-vertical;
                 @apply --layout-center-justified;
             }
+            /*for the current use in projects header with dom-repeat this is changed to nth-last-child, TODO refactor for general use*/
             :host(:nth-last-child(2)) .line.last, 
             :host(:first-child) .line.first {
                 visibility: hidden;
@@ -54,14 +55,7 @@
     </template>
     <script>
         Polymer({
-            is: 'kano-step',
-            properties: {
-                state: {
-                    type: String,
-                    value: null,
-                    reflectToAttribute: true
-                }
-            }
+            is: 'kano-step'
         });
     </script>
 </dom-module>
