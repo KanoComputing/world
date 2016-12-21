@@ -561,32 +561,74 @@
         "api_progress_tracking": "make-minecraft",
         "projects": [
             {
-                "title": "Code Minecraft",
+                "title": "Namify",
                 "slug": 1,
-                "description": "Learn the power of the Make button.",
+                "description": "The power to make your name appear in blocks",
                 "link": "/projects/category/make-minecraft",
-                "image": "/assets/projects/icons/minecraft/minecraft_1.png"
+                "image": "/assets/projects/icons/minecraft/namify.png"
             },
             {
-                "title": "Diamond Floor",
+                "title": "Pow Pow Shelter",
                 "slug": 2,
-                "description": "Create a whole floor made of nothing but diamond!",
+                "description": "Make an instant shelter with the tap of a key. Pow!",
                 "link": "/projects/category/make-minecraft",
-                "image": "/assets/projects/icons/minecraft/minecraft_2.png"
+                "image": "/assets/projects/icons/minecraft/pow-pow-shelter.png"
             },
             {
-                "title": "Floating Water Cube",
+                "title": "Holey-Moley",
                 "slug": 3,
-                "description": "Build a huge hovering block of water",
+                "description": "Learn the power to mine large chunks of the world",
                 "link": "/projects/category/make-minecraft",
-                "image": "/assets/projects/icons/minecraft/minecraft_3.png"
+                "image": "/assets/projects/icons/minecraft/holey-moley.png"
             },
             {
-                "title": "Shady Tunnels",
+                "title": "Whammy Walk",
                 "slug": 4,
-                "description": "You're on your journey to becoming the master builder. It's tunnel time...",
+                "description": "Make a path appear wherever you walk or jump",
                 "link": "/projects/category/make-minecraft",
-                "image": "/assets/projects/icons/minecraft/minecraft_4.png"
+                "image": "/assets/projects/icons/minecraft/whammy-walk.png"
+            },
+            {
+                "title": "Teleportation",
+                "slug": 5,
+                "description": "No more walking. Teleport around the world instead",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/teleportation.png"
+            },
+            {
+                "title": "Boombastic",
+                "slug": 6,
+                "description": "Summon a line of TNT and watch it go boom",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/boombastic.png"
+            },
+            {
+                "title": "Color Flurry",
+                "slug": 7,
+                "description": "Spawn random colored blocks in crazy patterns",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/boombastic.png"
+            },
+            {
+                "title": "Powermid",
+                "slug": 8,
+                "description": "The power to spawn giant pyramids with waterfalls",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/powermid.png"
+            },
+            {
+                "title": "TreeMendous",
+                "slug": 9,
+                "description": "The power over nature. Grow a spectacular tree instantly",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/treemendous.png"
+            },
+            {
+                "title": "Lava Sphere",
+                "slug": 10,
+                "description": "Make a lava-filled sphere appear before your eyes",
+                "link": "/projects/category/make-minecraft",
+                "image": "/assets/projects/icons/minecraft/lava-sphere.png"
             }
         ]
     },
