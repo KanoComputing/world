@@ -1,195 +1,225 @@
 {
-  "light": {
-      "label": "light",
-      "header": "Bring lights to life",
-      "description": "Create incredible light shows, music visualisers, weather displays, games and more",
-      "mode_color": "#EF3442",
-      "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
-      "api_progress_tracking": "make-apps",
-      "projects": [
-          {
-              "title": "Turn on the lights",
-              "slug": "pixel_1",
-              "creator": "kevinmurphy",
-              "link": "https://apps.kano.me/story/pixel_1",
-              "image": "/assets/projects/icons/light/pixel_1.png"
-          },
-          {
-              "title": "Light loops",
-              "slug": "pixel_2",
-              "creator": "arif",
-              "link": "https://apps.kano.me/story/pixel_2",
-              "image": "/assets/projects/icons/light/pixel_2.png"
-          },
-          {
-              "title": "Shhhhh!",
-              "slug": "pixel_shhh",
-              "creator": "mikegreer",
-              "link": "https://apps.kano.me/story/pixel_shhh",
-              "image": "/assets/projects/icons/light/pixel_shh.png"
-          },
-          {
-              "title": "Clap flash",
-              "slug": "pixel_clap",
-              "creator": "cptncake",
-              "link": "https://apps.kano.me/story/pixel_clap",
-              "image": "/assets/projects/icons/light/pixel_clap_flash.png"
-          },
-          {
-              "title": "Color mix lights",
-              "slug": "pixel_4",
-              "creator": "Angeliki",
-              "link": "https://apps.kano.me/story/light/pixel_4",
-              "image": "/assets/projects/icons/light/pixel_color.png"
-          },
-          {
-              "title": "Clap clock",
-              "slug": "pixel_clap_clock",
-              "creator": "Brandon",
-              "link": "https://apps.kano.me/story/pixel_clap_clock",
-              "image": "/assets/projects/icons/light/pixel_clap_clock.png"
-          },
-          {
-              "title": "Light beats",
-              "slug": "pixel_light_beats",
-              "creator": "Hicks",
-              "link": "https://apps.kano.me/story/pixel_light_beats",
-              "image": "/assets/projects/icons/light/pixel_music.png"
-          },
-          {
-              "title": "Sound meter",
-              "slug": "pixels_music",
-              "creator": "Emily",
-              "link": "https://apps.kano.me/story/pixels_music",
-              "image": "/assets/projects/icons/light/pixel_music.png"
-          },
-          {
-              "title": "Marian Hill visualizer",
-              "slug": "pixels_marian_hill",
-              "creator": "marian_hill",
-              "link": "http://apps.kano.me/story/pixels_marian_hill",
-              "image": "/assets/projects/icons/light/pixel_marian_hill.png"
-          }
-      ]
-  },
-  "camera": {
-      "label": "camera",
-      "header": "Amazing camera creations",
-      "description": "Make amazing apps, filters and clever rules for the Camera Kit, or your computer’s webcam",
-      "mode_color": "#FCE100",
-      "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
-      "api_progress_tracking": "make-apps",
-      "projects": [
-          {
-              "title": "Clap to snap",
-              "slug": "camera_clap",
-              "creator": "mikegreer",
-              "link": "https://apps.kano.me/story/camera_clap",
-              "image": "/assets/projects/icons/camera/clap_to_snap.png"
-          },
-          {
-              "title": "Black and white",
-              "slug": "camera_bw",
-              "creator": "kevinmurphy",
-              "link": "https://apps.kano.me/story/camera_bw",
-              "image": "/assets/projects/icons/camera/camera_bw_filter.png"
-          },
-          {
-              "title": "Color filter",
-              "slug": "camera_recolor",
-              "creator": "Brandon",
-              "link": "https://apps.kano.me/story/camera_recolor",
-              "image": "/assets/projects/icons/camera/filter.png"
-          },
-          {
-              "title": "Potato head",
-              "slug": "camera_potato_head",
-              "creator": "arif",
-              "link": "https://apps.kano.me/story/camera_potato_head",
-              "image": "/assets/projects/icons/camera/camera_potato_head.png"
-          },
-          {
-              "title": "Anger cam",
-              "slug": "camera_anger",
-              "creator": "Dominique",
-              "link": "https://apps.kano.me/story/camera_anger",
-              "image": "/assets/projects/icons/camera/camera_anger.png"
-          },
-          {
-              "title": "Selfie Kaleidoscope",
-              "slug": "camera_kaleidoscope",
-              "creator": "lukeumber",
-              "link": "https://apps.kano.me/story/camera_kaleidoscope",
-              "image": "/assets/projects/icons/camera/camera_kaleidoscope.png"
-          },
-          {
-              "title": "Minecraft yourself",
-              "slug": "camera_minecraft_yourself",
-              "creator": "nvs",
-              "link": "https://apps.kano.me/story/camera_minecraft_yourself",
-              "image": "/assets/projects/icons/camera/minecraft_yourself.png"
-          },
-          {
-              "title": "Gif factory",
-              "slug": "camera_gif_factory",
-              "creator": "cptncake",
-              "link": "https://apps.kano.me/story/camera_gif_factory",
-              "image": "/assets/projects/icons/camera/gif_factory.png"
-          }
-      ]
-  },
-  "data_and_sound": {
-      "label": "sound",
-      "header": "Code with sound and build with data",
-      "description": "Code music, loops and beats, funny sounds. Teach your computer to speak",
-      "mode_color": "white",
-      "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
-      "api_progress_tracking": "make-apps",
-      "projects": [
-          {
-              "title": "Funny soundboard",
-              "slug": "funny_soundboard",
-              "creator": "Skjoldan",
-              "link": "https://apps.kano.me/story/funny_soundboard",
-              "image": "/assets/projects/icons/data_and_sound/sounds.png"
-          },
-          {
-              "title": "Space tracker",
-              "slug": "space_tracker",
-              "creator": "Hicks",
-              "link": "https://apps.kano.me/story/space_tracker",
-              "image": "/assets/projects/icons/data_and_sound/data_space.png"
-          },
-          {
-              "title": "Talking clock",
-              "slug": "talking_clock",
-              "creator": "Liviavs",
-              "link": "https://apps.kano.me/story/talking_clock",
-              "image": "/assets/projects/icons/data_and_sound/talking_clock.png"
-          },
-          {
-              "title": "Draw sound",
-              "slug": "draw_sound",
-              "creator": "Angeliki",
-              "link": "https://apps.kano.me/story/draw_sound",
-              "image": "/assets/projects/icons/data_and_sound/draw_sound.png"
-          },
-          {
-              "title": "Sports round",
-              "slug": "sports_round",
-              "creator": "R.cocetta",
-              "link": "https://apps.kano.me/story/sports_round",
-              "image": "/assets/projects/icons/data_and_sound/data_sports.png"
-          },
-          {
-              "title": "Scratch DJ",
-              "slug": "scratch_dj",
-              "creator": "Aaronhinchion",
-              "link": "https://apps.kano.me/story/scratch_dj",
-              "image": "/assets/projects/icons/data_and_sound/sound_dj.png"
-          }
-      ]
-   },
+    "weekly_challenges": {
+        "label": "christmas",
+        "header": "Code the holidays",
+        "description": "Time to wrap up warm and code some festive fun",
+        "mode_color": "white",
+        "api_progress_tracking": "make-apps",
+        "projects": [
+            {
+                "title": "Code tree",
+                "image": "assets/projects/current-theme/code_tree.png",
+                "link": "https://apps.kano.me/story/code_tree"
+            },
+            {
+                "title": "Robo wrapper",
+                "image": "assets/projects/current-theme/robo_wrapper.png",
+                "link": "https://apps.kano.me/story/robo_wrapper"
+            },
+            {
+                "title": "Snow day",
+                "image": "assets/projects/current-theme/snow_day.png",
+                "link": "https://apps.kano.me/story/snow_day"
+            },
+            {
+                "title": "Sound hat",
+                "image": "assets/projects/current-theme/sound_hat.png",
+                "link": "https://apps.kano.me/story/sound_hat",
+                "dependencies": ["microphone"]
+            }
+        ]
+    },
+    "light": {
+        "label": "light",
+        "header": "Bring lights to life",
+        "description": "Create incredible light shows, music visualisers, weather displays, games and more",
+        "mode_color": "#EF3442",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-apps",
+        "projects": [
+            {
+                "title": "Turn on the lights",
+                "slug": "pixel_1",
+                "creator": "kevinmurphy",
+                "link": "https://apps.kano.me/story/pixel_1",
+                "image": "/assets/projects/icons/light/pixel_1.png"
+            },
+            {
+                "title": "Light loops",
+                "slug": "pixel_2",
+                "creator": "arif",
+                "link": "https://apps.kano.me/story/pixel_2",
+                "image": "/assets/projects/icons/light/pixel_2.png"
+            },
+            {
+                "title": "Shhhhh!",
+                "slug": "pixel_shhh",
+                "creator": "mikegreer",
+                "link": "https://apps.kano.me/story/pixel_shhh",
+                "image": "/assets/projects/icons/light/pixel_shh.png"
+            },
+            {
+                "title": "Clap flash",
+                "slug": "pixel_clap",
+                "creator": "cptncake",
+                "link": "https://apps.kano.me/story/pixel_clap",
+                "image": "/assets/projects/icons/light/pixel_clap_flash.png"
+            },
+            {
+                "title": "Color mix lights",
+                "slug": "pixel_4",
+                "creator": "Angeliki",
+                "link": "https://apps.kano.me/story/light/pixel_4",
+                "image": "/assets/projects/icons/light/pixel_color.png"
+            },
+            {
+                "title": "Clap clock",
+                "slug": "pixel_clap_clock",
+                "creator": "Brandon",
+                "link": "https://apps.kano.me/story/pixel_clap_clock",
+                "image": "/assets/projects/icons/light/pixel_clap_clock.png"
+            },
+            {
+                "title": "Light beats",
+                "slug": "pixel_light_beats",
+                "creator": "Hicks",
+                "link": "https://apps.kano.me/story/pixel_light_beats",
+                "image": "/assets/projects/icons/light/pixel_music.png"
+            },
+            {
+                "title": "Sound meter",
+                "slug": "pixels_music",
+                "creator": "Emily",
+                "link": "https://apps.kano.me/story/pixels_music",
+                "image": "/assets/projects/icons/light/pixel_music.png"
+            },
+            {
+                "title": "Marian Hill visualizer",
+                "slug": "pixels_marian_hill",
+                "creator": "marian_hill",
+                "link": "http://apps.kano.me/story/pixels_marian_hill",
+                "image": "/assets/projects/icons/light/pixel_marian_hill.png"
+            }
+        ]
+    },
+    "camera": {
+        "label": "camera",
+        "header": "Amazing camera creations",
+        "description": "Make amazing apps, filters and clever rules for the Camera Kit, or your computer’s webcam",
+        "mode_color": "#FCE100",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-apps",
+        "projects": [
+            {
+                "title": "Clap to snap",
+                "slug": "camera_clap",
+                "creator": "mikegreer",
+                "link": "https://apps.kano.me/story/camera_clap",
+                "image": "/assets/projects/icons/camera/clap_to_snap.png"
+            },
+            {
+                "title": "Black and white",
+                "slug": "camera_bw",
+                "creator": "kevinmurphy",
+                "link": "https://apps.kano.me/story/camera_bw",
+                "image": "/assets/projects/icons/camera/camera_bw_filter.png"
+            },
+            {
+                "title": "Color filter",
+                "slug": "camera_recolor",
+                "creator": "Brandon",
+                "link": "https://apps.kano.me/story/camera_recolor",
+                "image": "/assets/projects/icons/camera/filter.png"
+            },
+            {
+                "title": "Potato head",
+                "slug": "camera_potato_head",
+                "creator": "arif",
+                "link": "https://apps.kano.me/story/camera_potato_head",
+                "image": "/assets/projects/icons/camera/camera_potato_head.png"
+            },
+            {
+                "title": "Anger cam",
+                "slug": "camera_anger",
+                "creator": "Dominique",
+                "link": "https://apps.kano.me/story/camera_anger",
+                "image": "/assets/projects/icons/camera/camera_anger.png"
+            },
+            {
+                "title": "Selfie Kaleidoscope",
+                "slug": "camera_kaleidoscope",
+                "creator": "lukeumber",
+                "link": "https://apps.kano.me/story/camera_kaleidoscope",
+                "image": "/assets/projects/icons/camera/camera_kaleidoscope.png"
+            },
+            {
+                "title": "Minecraft yourself",
+                "slug": "camera_minecraft_yourself",
+                "creator": "nvs",
+                "link": "https://apps.kano.me/story/camera_minecraft_yourself",
+                "image": "/assets/projects/icons/camera/minecraft_yourself.png"
+            },
+            {
+                "title": "Gif factory",
+                "slug": "camera_gif_factory",
+                "creator": "cptncake",
+                "link": "https://apps.kano.me/story/camera_gif_factory",
+                "image": "/assets/projects/icons/camera/gif_factory.png"
+            }
+        ]
+    },
+    "data_and_sound": {
+        "label": "sound",
+        "header": "Code with sound and build with data",
+        "description": "Code music, loops and beats, funny sounds. Teach your computer to speak",
+        "mode_color": "white",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-apps",
+        "projects": [
+            {
+                "title": "Funny soundboard",
+                "slug": "funny_soundboard",
+                "creator": "Skjoldan",
+                "link": "https://apps.kano.me/story/funny_soundboard",
+                "image": "/assets/projects/icons/data_and_sound/sounds.png"
+            },
+            {
+                "title": "Space tracker",
+                "slug": "space_tracker",
+                "creator": "Hicks",
+                "link": "https://apps.kano.me/story/space_tracker",
+                "image": "/assets/projects/icons/data_and_sound/data_space.png"
+            },
+            {
+                "title": "Talking clock",
+                "slug": "talking_clock",
+                "creator": "Liviavs",
+                "link": "https://apps.kano.me/story/talking_clock",
+                "image": "/assets/projects/icons/data_and_sound/talking_clock.png"
+            },
+            {
+                "title": "Draw sound",
+                "slug": "draw_sound",
+                "creator": "Angeliki",
+                "link": "https://apps.kano.me/story/draw_sound",
+                "image": "/assets/projects/icons/data_and_sound/draw_sound.png"
+            },
+            {
+                "title": "Sports round",
+                "slug": "sports_round",
+                "creator": "R.cocetta",
+                "link": "https://apps.kano.me/story/sports_round",
+                "image": "/assets/projects/icons/data_and_sound/data_sports.png"
+            },
+            {
+                "title": "Scratch DJ",
+                "slug": "scratch_dj",
+                "creator": "Aaronhinchion",
+                "link": "https://apps.kano.me/story/scratch_dj",
+                "image": "/assets/projects/icons/data_and_sound/sound_dj.png"
+            }
+        ]
+    },
     "drawing": {
         "label": "art",
         "header": "Incredible art",
@@ -247,7 +277,7 @@
         "header": "Weekly challenges",
         "description": "See if you can complete them all!",
         "mode_color": "white",
-        "api_progress_tracking": "",
+        "api_progress_tracking": "make-apps",
         "projects": [
             {
                 "title": "Etch-a-sketch",

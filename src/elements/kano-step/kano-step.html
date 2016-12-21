@@ -10,18 +10,47 @@
     <template>
         <style>
             :host {
-                @apply --layout-vertical-reverse;
-                @apply --layout-center;
                 position: relative;
+                @apply --layout-vertical;
+                @apply --layout-center-justified;
             }
-            :host ::slotted(*) {
-                position: absolute;
-                bottom: -50%;
-                left: 50%;
+            :host(:nth-last-child(2)) .line.last, 
+            :host(:first-child) .line.first {
+                visibility: hidden;
+            }
+            :host .label::slotted(*) {
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                height: 30px;
+            }
+            .step {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+            .line {
+                @apply --layout-flex;
+                height: 2px;
+                background-color: #fff;
+                margin-bottom: 30px;
+            }
+            :host(:first-child) .line {
+                left: 10px;
+            }
+            :host(:last-child) .line {
+                left: -10px;
+            }
+            .center {
+                @apply --layout-vertical;
             }
         </style>
-            <slot name="label">
-            </slot>
+            <div class="step">
+                <div class="line first"></div>
+                <div class="center">
+                    <slot name="icon" class="icon"></slot>
+                    <slot name="label" class="label"></slot>
+                </div>
+                <div class="line last"></div>
+            </div>
     </template>
     <script>
         Polymer({
