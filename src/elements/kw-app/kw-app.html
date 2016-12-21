@@ -331,6 +331,7 @@
                 }
             },
             _userChanged (user) {
+                console.log(user);
                 this.debounce('userChanged', () => {
                     if (user) {
                         this.dispatchTrackingEvent({

@@ -1,29 +1,30 @@
 {
-    "weekly_challenges": {
-        "label": "christmas",
+    "christmas_challenges": {
+        "label": "Christmas",
         "header": "Code the holidays",
         "description": "Time to wrap up warm and code some festive fun",
         "mode_color": "white",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "api_progress_tracking": "make-apps",
         "projects": [
             {
                 "title": "Code tree",
-                "image": "assets/projects/current-theme/code_tree.png",
+                "image": "/assets/projects/icons/christmas/code_tree.png",
                 "link": "https://apps.kano.me/story/code_tree"
             },
             {
                 "title": "Robo wrapper",
-                "image": "assets/projects/current-theme/robo_wrapper.png",
+                "image": "/assets/projects/icons/christmas/robo_wrapper.png",
                 "link": "https://apps.kano.me/story/robo_wrapper"
             },
             {
                 "title": "Snow day",
-                "image": "assets/projects/current-theme/snow_day.png",
+                "image": "/assets/projects/icons/christmas/snow_day.png",
                 "link": "https://apps.kano.me/story/snow_day"
             },
             {
                 "title": "Sound hat",
-                "image": "assets/projects/current-theme/sound_hat.png",
+                "image": "/assets/projects/icons/christmas/sound_hat.png",
                 "link": "https://apps.kano.me/story/sound_hat",
                 "dependencies": ["microphone"]
             }
@@ -295,6 +296,7 @@
         "header": "Weekly challenges",
         "description": "See if you can complete them all!",
         "mode_color": "white",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
         "api_progress_tracking": "make-apps",
         "projects": [
             {
