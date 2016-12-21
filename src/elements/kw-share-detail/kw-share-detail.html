@@ -182,7 +182,8 @@
                 return this;
             },
             _onTapRemix() {
-                this.fire("remix-action");
+                var pathname = window.location.pathname.replace('/shares/','/remix/');
+                window.location.href = Kano.World.config.APP_URL + pathname;
             },
             _shareAppChanged(shareApp) {
                 let tagName, templateString, template;
