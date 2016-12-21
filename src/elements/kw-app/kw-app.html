@@ -248,6 +248,7 @@
                     this.stats = stats;
                 });
                 this.checkUserDevice();
+
             },
             detached () {
                 this._stopNotificationsPolling();
@@ -321,6 +322,9 @@
                     });
             },
             _tokenChanged (token) {
+                if (this.routeData.page === "start" && token) {
+                    this.set('route.path', '/projects');
+                }
                 if (token) {
                     this._startNotificationsPolling();
                 } else {
@@ -343,7 +347,7 @@
             },
             signup () {
                 this.set('route.path', '/register');
-            },
+            }
         });
     </script>
 </dom-module>
