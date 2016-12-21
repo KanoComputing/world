@@ -7,6 +7,7 @@
 <link rel="import" href="../kano-style/color.html">
 <link rel="import" href="../kano-carousel/kano-carousel.html">
 <link rel="import" href="../kw-project-card/kw-project-card.html">
+<link rel="import" href="../kano-projects-listing/kano-projects-listing-behavior.html">
 
 <dom-module id="kw-projects-header">
     <template>
@@ -244,7 +245,7 @@
                 <kano-carousel class="cards-wrapper">
                     <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
                     <div class="projects" slot="content">
-                        <template is="dom-repeat" items="[[projects]]" as="project">
+                        <template is="dom-repeat" items="[[projects]]" as="project" filter="checkProjectDependencies">
                             <kw-project-card project="[[project]]" label="make it">
                         </template>
                     </div>
@@ -264,6 +265,9 @@
     <script>
         Polymer({
             is: 'kw-projects-header',
+            behaviors: [
+                Kano.ProjectsListingBehavior
+            ],
             properties: {
                 projects: {
                     type: Array,
@@ -282,7 +286,8 @@
                     }, {
                         "title": "Sound hat",
                         "image": "assets/projects/current-theme/sound_hat.png",
-                        "link": "https://apps.kano.me/story/sound_hat"
+                        "link": "https://apps.kano.me/story/sound_hat",
+                        "dependencies": ["microphone"]
                     }]
                 }
             },
