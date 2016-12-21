@@ -195,7 +195,7 @@
         <iron-media-query query="(max-width: 980px)" query-matches="{{mediumViewport}}"></iron-media-query>
         <iron-media-query query="(max-width: 768px)" query-matches="{{smallViewport}}"></iron-media-query>
         <kano-session user="{{user}}" token="{{token}}" include-profile></kano-session>
-        <kw-projects-header id="header" on-expand="_applyRolldown"></kw-projects-header>
+        <kw-projects-header id="header"></kw-projects-header>
         <div class="categories">
             <div id="tombstones">
                 <div class="tombstone"></div>
@@ -234,16 +234,6 @@
                             this._upgradeProjects(categories, this.user);
                         });
                 });
-            },
-            _applyRolldown () {
-                let headerContent = this.$.header.getHeaderContentElement();
-                this.transform('translateY(-350px)');
-                headerContent.style.transform = 'translateY(350px)';
-                this.$.header.getBoundingClientRect();
-                this.style.transition = 'transform 500ms ease-out';
-                headerContent.style.transition = 'transform 500ms ease-out';
-                headerContent.style.transform = 'translateY(0px)';
-                this.transform('translateY(0px)');
             },
             _getPathPrefix () {
                 if (!this.pathPrefix) {

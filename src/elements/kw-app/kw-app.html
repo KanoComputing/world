@@ -11,6 +11,7 @@
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../kano-tracking/kano-tracking-behavior.html">
 <link rel="import" href="../../js/config.html">
 
@@ -43,8 +44,8 @@
             }
             .projects-shell .masthead {
                 @apply --layout-horizontal;
-                height: 350px;
-                background-color: #FF4C4C;
+                height: 820px;
+                background-color: #263A48;
             }
             .projects-shell .project-launch {
                 background-color: #fff;
@@ -238,7 +239,6 @@
             observers: [
                 '_tokenChanged(token)',
                 '_userChanged(user)',
-                '_viewChanged(routeData.page)'
                 '_viewChanged(routeData.page)',
                 '_computeNavbar(routeData.page)'
             ],
@@ -263,9 +263,7 @@
                 });
             },
             _computeNavbar (view) {
-                if (view === 'start') {
-                    this.simplePage = true;
-                }
+                this.simplePage = view === 'start'
             },
             _computeSelectedLink (path) {
                 let localLink = catchUrls.some(url => url.test(path));
@@ -347,6 +345,9 @@
             },
             signup () {
                 this.set('route.path', '/register');
+            },
+            redirectToProjects () {
+                this.set('route.path', '/projects');
             }
         });
     </script>

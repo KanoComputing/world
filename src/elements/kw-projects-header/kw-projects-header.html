@@ -5,30 +5,37 @@
 
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kano-style/color.html">
+<link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../kano-carousel/kano-carousel.html">
-<link rel="import" href="../kw-project-card/kw-project-card.html">
+<link rel="import" href="../kano-step/kano-step.html">
+<link rel="import" href="../../js/config.html">
 <link rel="import" href="../kano-projects-listing/kano-projects-listing-behavior.html">
+
 
 <dom-module id="kw-projects-header">
     <template>
         <style>
             .header {
-                height: 350px;
-                overflow: hidden;
-                /*Shell div in kw-app to match this*/
-                background-image: url("/assets/projects/current-theme/kano-world-winter-warmer.svg");
-                background-color: #FF4C4C;
-                background-size: 61%;
-                background-repeat: no-repeat;
-                background-position: right bottom;
-            }
-            .info {
-                display: inline-block;
-                margin: 100px 0 0 60px;
+                @apply --layout-vertical;
+                @apply --layout-center;
+                text-align: center;
+                background-color: #263A48;
                 color: #fff;
+                padding: 30px 0 40px;
+            }
+            h3 {
+                font-size: 38px;
+                margin: 0 20px;
+                line-height: 35px;
+            }
+            h4 {
+                font-size: 18px;
+                margin: 10px 0 0 0;
+                padding-bottom: 20px;
+                font-weight: normal;
             }
             .toggle-container {
-                @apply(--layout-vertical);
+                @apply --layout-vertical;
                 opacity: 0;
                 transform: translateY(100px);
                 transition: 300ms ease-out;
@@ -40,93 +47,122 @@
                 padding: 0 36px;
                 overflow-y: visible;
             }
-            .projects>a {
+            .projects > a {
                 position: relative;
                 margin: 10px 12px;
                 text-decoration: none;
             }
-            input[type=checkbox] {
-                display: none;
-            }
-            .info label, .staff-pick-memo {
-                display: inline-block;
-                margin: 18px 0 0 5px;
-                border: 0;
-                border-radius: 50px;
-            }
-            .info label {
-                padding: 11px 23px 10px;
-                background-color: #fff;
-                font-size: 16px;
-                color: #FF4C4C;
-                font-weight: 600;
-                cursor: pointer;
-                text-transform: uppercase;
-                transition: 300ms ease-out;
-            }
-            .button-wrapper {
+            .project-groups {
                 @apply --layout-vertical;
-                @apply --layout-center;
-                @apply --layout-center-justified;
+                @apply --layout-start-justified;
+                width: 100%;
+                max-width: 840px;
             }
-            .staff-pick-memo {
-                margin: 58px 0 100px;
-                padding: 17px 90px;
-                background-color: rgba(255,255,255,0.7);
-                text-align: center;
-                font-size: 18px;
-                font-weight: 400;
-            }
-            input[type=checkbox]:checked ~ .header {
-                height: 675px;
-            }
-            input[type=checkbox]:checked ~ .header .info label {
-                visibility: hidden;
-                opacity: 0;
-            }
-            input[type=checkbox]:checked ~ .header .toggle-container {
-                transform: translateY(0);
-                opacity: 1;
-                margin-top: -10px;
-            }
-            h3 {
+            .project-group {
+                margin-bottom: 10px;
                 position: relative;
-                display: inline-block;
-                font-size: 42px;
-                margin: 0;
             }
-            .header iron-image.coin-icon {
-                position: absolute;
-                top: -30px;
-                right: -52px;
-                width: 50px;
-                height: 50px;
+            .project-group iron-image {
+                width: 150px;
+                height: 90px;
+                margin-top: 5px;
             }
-            .header iron-image.dropdown-triangle {
-                width: 11px;
-                height: 11px;
-                margin: 0 0 1px 10px;
+            .project-group iron-image.pixel {
+                width: 159px;
+                height: 118px;
             }
-            h6 {
-                font-size: 24px;
-                font-weight: 500;
-                margin: 0;
+            .project-group iron-image.screen {
+                width: 150px;
+                height: 117px;
             }
-            .cards-wrapper {
+            .project-group-header {
                 @apply --layout-horizontal;
-                @apply --layout-center-justified;
-                flex-wrap: wrap;
+                @apply --layout-center;
+                margin: auto 10px;
             }
-            kano-carousel {
-                position: relative;
-                margin: 0px 0;
+            .project-group-info {
+                @apply --layout-vertical;
+                text-align: left;
+                margin: 0 0 10px 25px;
             }
-            kw-project-card {
-                margin: 10px 12px;
+            .project-group-info h4 {
+                font-size: 18px;
+                margin: 0;
+                padding-top: 30px;
+                font-weight: normal;
             }
-            kw-project-card .card-actions button {
-                background-color: white;
-                color: black;
+            .project-group-info p {
+                font-size: 16px;
+                margin: 0;
+            }
+            .step-display {
+                @apply --layout-horizontal;
+                height: 120px;
+            }
+            kano-step {
+                min-width: 120px;
+                height: 120px;
+            }
+            .step-icon {
+                background-image: url("/assets/projects/simple-progress/lock-circle.svg");
+                background-color: #263A48;
+                background-size: 64%;
+                background-repeat: no-repeat;
+                background-position: center;
+                flex: 1;
+                height: 60px;
+                width: 60px;
+            }
+            .step-icon a {
+                /*a to take icon's dimension and disable link by default*/
+                display: flex;
+                flex: 1;
+                height: 100%;
+                pointer-events: none;
+            }
+            kano-step:first-child .step-icon:not(.done) {
+                background-image: url("/assets/projects/simple-progress/make-button.svg");
+                background-size: 82%;
+                width: 110px;
+                height: 60px;
+            }
+            .step-icon.locked {
+                background-image: url("/assets/projects/simple-progress/lock-circle.svg");
+            }
+            .step-icon.current {
+                background-image: url("/assets/projects/simple-progress/make-button.svg");
+                background-size: 82%;
+                width: 110px;
+                height: 60px;
+            }
+            /*TODO refactor*/
+            .step-icon.current a,
+            .step-icon.done a,
+            kano-step:first-child .step-icon:not(.done) a {
+                pointer-events: auto;
+            }
+            .step-icon.done {
+                background-image: url("/assets/projects/simple-progress/tick-circle.svg");
+            }
+            kano-step:last-child .step-icon {
+                background-image: url("/assets/projects/simple-progress/lock-circle-large.svg");
+                background-size: 70%;
+                width: 120px;
+                height: 120px;
+            }
+            kano-step:last-child .step-icon.current {
+                background-image: url("/assets/projects/simple-progress/make-button-big.svg");
+                background-size: 70%;
+                width: 120px;
+                height: 84px;
+            }
+            kano-step:last-child .step-icon.done {
+                background-image: url("/assets/projects/simple-progress/complete-row.svg");
+                background-size: 70%;
+                background-position: bottom;
+                width: 120px;
+                height: 120px;
+                padding-top: 20px;
             }
             .left-button, .right-button {
                 font-family: var(--font-body);
@@ -175,56 +211,12 @@
                 padding: 14px 20px;
                 cursor: pointer;
             }
-            @media screen and (min-width: 1600px) {
-                .header {
-                    background-size: 54%;
-                }
-            }
             @media screen and (max-width: 980px) {
-                .header {
-                    background-position: 136% bottom;
-                    background-size: 68%;
-                }
-                .projects {
-                    padding: 0;
-                }
                 .new-project-field button {
                     font-size: 14px;
                 }
             }
             @media screen and (max-width: 680px) {
-                .header {
-                    background-size: 80%;
-                }
-                .header iron-image.coin-icon {
-                    position: absolute;
-                    top: -28px;
-                    right: -38px;
-                    width: 40px;
-                    height: 40px;
-                }
-                .cards-wrapper {
-                    flex-wrap: wrap;
-                }
-                h3 {
-                    font-size: 40px;
-                }
-                h6 {
-                    font-size: 18px;
-                }
-                .info {
-                    margin: 65px 0 0;
-                    width: 100%;
-                    text-align: center;
-                }
-                .info label {
-                    font-size: 16px;
-                    margin-left: 0;
-                }
-                .staff-pick-memo {
-                    padding: 17px 32px;
-                    font-size: 15px;
-                }
                 .new-project-field h4 {
                     padding: 23px 25px 13px;
                 }
@@ -233,29 +225,210 @@
                 }
             }
         </style>
-        <input type="checkbox" id="showhide" on-change="_checkboxChanged">
+        <kano-session id="session" user="{{user}}" include-profile></kano-session>
         <div class="header">
-            <div id="content">
-                <div class="info">
-                    <h3>Winter Warmers<iron-image class="coin-icon" src="/assets/projects/current-theme/new-coin-icon.svg" sizing="cover" preload fade></iron-image></h3>
-                    <h6>Time to wrap up warm and code some festive fun</h6>
-                    <label for="showhide">See challenges<iron-image class="dropdown-triangle" src="/assets/projects/current-theme/button-chevron.svg" sizing="contain" preload fade></iron-image></label>
-                </div>
-                <div class="toggle-container">
-                <kano-carousel class="cards-wrapper">
-                    <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
-                    <div class="projects" slot="content">
-                        <template is="dom-repeat" items="[[projects]]" as="project" filter="checkProjectDependencies">
-                            <kw-project-card project="[[project]]" label="make it">
-                        </template>
+                <h3>Level up your coding powers</h3>
+                <h4>Write your first lines of code to control your speaker</h4>
+                <div class="project-groups">
+                    <div class="project-group">
+                        <div class="project-group-header">
+                            <iron-image src="/assets/projects/simple-progress/hello.svg" preload fade sizing="contain"></iron-image>
+                            <div class="project-group-info">
+                                <h4>The power to make your computer speak</h4>
+                            </div>
+                        </div>
+                        <kano-carousel>
+                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                                <div id="speaker_puzzles" class="step-display" slot="content">
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_hello"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">1</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_cannot_think"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">2</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_code_me_loop"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_sound"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">4</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_sound_loop"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">5</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_button_trigger""></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">6</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/speaker_drum_machine"></a>
+                                                </div>
+                                        </div>
+                                        <!-- passing empty string to avoid UI issues for now -->
+                                        <div slot="label"></div>
+                                    </kano-step>
+                                </div>
+                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                        </kano-carousel>
                     </div>
-                    <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
-                </kano-carousel>
-                <div class="button-wrapper">
-                    <h5 class="staff-pick-memo">Remember! Share your creation for the chance to be Staff Picked</h5>
+                    <div class="project-group">
+                        <div class="project-group-header">
+                            <iron-image src="/assets/projects/modes/canvas-pixel.png" class="pixel" preload fade sizing="contain">
+                            </iron-image>
+                            <div class="project-group-info">
+                                <h4>The power to control light</h4>
+                            </div>
+                        </div>
+                        <kano-carousel>
+                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                                <div id="pixel_puzzles" class="step-display" slot="content">
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_lights_on"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">1</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_color_picker"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">2</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_color_random_loop"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_point"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">4</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_emoji"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">5</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop"></a>
+                                                </div>
+                                        </div>
+                                        <!-- passing empty string to avoid UI issues for now -->
+                                        <div slot="label"></div>
+                                    </kano-step>
+                                </div>
+                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                        </kano-carousel>
+                    </div>
+                    <div class="project-group">
+                        <div class="project-group-header">
+                            <iron-image src="/assets/projects/simple-progress/screen.svg" class="screen" preload fade sizing="contain"></iron-image>
+                            <div class="project-group-info">
+                                <h4>The power to draw</h4>
+                            </div>
+                        </div>
+                        <kano-carousel>
+                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                                <div id="screen_puzzles" class="step-display" slot="content">
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_draw_pixel"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">1</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_pixel_flood"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">2</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_pixels"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_squares"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">4</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_circles"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">5</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_circles_loop"></a>
+                                                </div>
+                                        </div>
+                                        <!-- passing empty string to avoid UI issues for now -->
+                                        <div slot="label"></div>
+                                    </kano-step>
+                                </div>
+                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                        </kano-carousel>
+                    </div>
                 </div>
-                </div>
-            </div>
         </div>
         <div class="new-project-field">
             <h4>Start your next project from scratch, <br>or try out the challenges below to earn XP</h4>
@@ -268,54 +441,31 @@
             behaviors: [
                 Kano.ProjectsListingBehavior
             ],
-            properties: {
-                projects: {
-                    type: Array,
-                    value: [{
-                        "title": "Code tree",
-                        "image": "assets/projects/current-theme/code_tree.png",
-                        "link": "https://apps.kano.me/story/code_tree"
-                    }, {
-                        "title": "Robo wrapper",
-                        "image": "assets/projects/current-theme/robo_wrapper.png",
-                        "link": "https://apps.kano.me/story/robo_wrapper"
-                    }, {
-                        "title": "Snow day",
-                        "image": "assets/projects/current-theme/snow_day.png",
-                        "link": "https://apps.kano.me/story/snow_day"
-                    }, {
-                        "title": "Sound hat",
-                        "image": "assets/projects/current-theme/sound_hat.png",
-                        "link": "https://apps.kano.me/story/sound_hat",
-                        "dependencies": ["microphone"]
-                    }]
-                }
+            observers: [
+                '_computeProgress(user)'
+            ],
+            attached () {
+                this.config = Kano.World.config;
             },
-            ready () {
-                this.projects = this.projects.map((project)=> {
-                    project.image = this._getPathPrefix() + project.image;
-                    return project;
-                });
-            },
-            getHeaderContentElement() {
-                return this.$.content;
-            },
-            _checkboxChanged (e) {
-                let target = e.path ? e.path[0] : e.target;
-                if (target.checked) {
-                    this.fire('expand');
+            _computeProgress (user) {
+                if (user && user.profile && user.profile.stats['make-apps'] && user.profile.stats['make-apps'].progress) {
+                    Polymer.dom(this.root).querySelectorAll('.step-display').forEach((el) => {
+                        if (user.profile.stats['make-apps'].progress[el.id]) {
+                            let steps = el.querySelectorAll('.step-icon');
+                            for (let i = 0, len = steps.length; i < len; i++) {
+                                if (i === user.profile.stats['make-apps'].progress[el.id].completedStories.length - 1) {
+                                    steps[i].classList.add("current");
+                                } else if (i < user.profile.stats['make-apps'].progress[el.id].completedStories.length - 1) {
+                                    steps[i].classList.add("done");
+                                }
+                            }
+                        }
+                    }) 
                 }
             },
             _openModal () {
                 this.fire('show-modal');
             },
-            _getPathPrefix () {
-                if (!this.pathPrefix) {
-                    let pathEl = document.head.querySelector('meta[name="path-prefix"]');
-                    this.pathPrefix = pathEl ? pathEl.getAttribute('data-value') : '/';
-                }
-                return this.pathPrefix;
-            }
         });
     </script>
 </dom-module>
