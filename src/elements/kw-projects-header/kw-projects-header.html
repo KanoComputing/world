@@ -456,6 +456,9 @@
             _computeProgress (user) {
                 if (user && user.profile && user.profile.stats['make-apps'] && user.profile.stats['make-apps'].progress) {
                     this._updateProgress(user.profile.stats['make-apps'].progress);
+                } else {
+                    //remove all additional classes if user has logged out
+                    Polymer.dom(this.root).querySelectorAll('.step-icon').forEach(el => el.className = 'step-icon');
                 }
             },
             _openModal () {
