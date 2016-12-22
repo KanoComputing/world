@@ -31,7 +31,9 @@
              */
             checkAvailableDependencies () {
                 if (this._isPi()) {
-                    let availableDependencies = [];
+                    let availableDependencies = [
+                        'text-to-speech'
+                    ];
                     this.set('availableDependencies', availableDependencies);
                 }
             },
