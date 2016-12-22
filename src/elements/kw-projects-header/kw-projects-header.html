@@ -446,25 +446,35 @@
             attached () {
                 this.config = Kano.World.config;
             },
+            ready () {
+                let storedProgress = localStorage.getItem('progress');
+                if (storedProgress) {
+                    storedProgress = JSON.parse(storedProgress);
+                    this._updateProgress(storedProgress);
+                }
+            },
             _computeProgress (user) {
                 if (user && user.profile && user.profile.stats['make-apps'] && user.profile.stats['make-apps'].progress) {
-                    Polymer.dom(this.root).querySelectorAll('.step-display').forEach((el) => {
-                        if (user.profile.stats['make-apps'].progress[el.id]) {
-                            let steps = el.querySelectorAll('.step-icon');
-                            for (let i = 0, len = steps.length; i < len; i++) {
-                                if (i < user.profile.stats['make-apps'].progress[el.id].completedStories.length) {
-                                    steps[i].classList.add("done");
-                                } else if (i === user.profile.stats['make-apps'].progress[el.id].completedStories.length) {
-                                    steps[i].classList.add("current");
-                                }
-                            }
-                        }
-                    }) 
+                    this._updateProgress(user.profile.stats['make-apps'].progress);
                 }
             },
             _openModal () {
                 this.fire('show-modal');
             },
+            _updateProgress (progress) {
+                Polymer.dom(this.root).querySelectorAll('.step-display').forEach((el) => {
+                    if (progress[el.id]) {
+                        let steps = el.querySelectorAll('.step-icon');
+                        for (let i = 0, len = steps.length; i < len; i++) {
+                            if (i < progress[el.id].completedStories.length) {
+                                steps[i].classList.add("done");
+                            } else if (i === progress[el.id].completedStories.length) {
+                                steps[i].classList.add("current");
+                            }
+                        }
+                    }
+                })
+            }
         });
     </script>
 </dom-module>
