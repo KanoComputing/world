@@ -43,16 +43,14 @@
                 "slug": "pixel_1",
                 "creator": "kevinmurphy",
                 "link": "https://apps.kano.me/story/pixel_1",
-                "image": "/assets/projects/icons/light/pixel_1.png",
-                "dependencies": ["microphone"]
+                "image": "/assets/projects/icons/light/pixel_1.png"
             },
             {
                 "title": "Light loops",
                 "slug": "pixel_2",
                 "creator": "arif",
                 "link": "https://apps.kano.me/story/pixel_2",
-                "image": "/assets/projects/icons/light/pixel_2.png",
-                "dependencies": ["microphone"]
+                "image": "/assets/projects/icons/light/pixel_2.png"
             },
             {
                 "title": "Shhhhh!",
@@ -75,8 +73,7 @@
                 "slug": "pixel_4",
                 "creator": "Angeliki",
                 "link": "https://apps.kano.me/story/light/pixel_4",
-                "image": "/assets/projects/icons/light/pixel_color.png",
-                "dependencies": ["microphone"]
+                "image": "/assets/projects/icons/light/pixel_color.png"
             },
             {
                 "title": "Clap clock",
@@ -213,15 +210,15 @@
                 "slug": "talking_clock",
                 "creator": "Liviavs",
                 "link": "https://apps.kano.me/story/talking_clock",
-                "image": "/assets/projects/icons/data_and_sound/talking_clock.png",
-                "dependencies": ["microphone"]
+                "image": "/assets/projects/icons/data_and_sound/talking_clock.png"
             },
             {
                 "title": "Draw sound",
                 "slug": "draw_sound",
                 "creator": "Angeliki",
                 "link": "https://apps.kano.me/story/draw_sound",
-                "image": "/assets/projects/icons/data_and_sound/draw_sound.png"
+                "image": "/assets/projects/icons/data_and_sound/draw_sound.png",
+                "dependencies": ["microphone"]
             },
             {
                 "title": "Sports round",
