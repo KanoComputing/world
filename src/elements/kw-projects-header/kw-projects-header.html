@@ -25,13 +25,12 @@
             }
             h3 {
                 font-size: 38px;
-                margin: 0 20px;
+                margin: 40px 20px 0;
                 line-height: 35px;
             }
             h4 {
                 font-size: 18px;
-                margin: 10px 0 0 0;
-                padding-bottom: 20px;
+                margin: 10px 0 40px 0;
                 font-weight: normal;
             }
             .toggle-container {
@@ -64,16 +63,7 @@
             }
             .project-group iron-image {
                 width: 150px;
-                height: 90px;
-                margin-top: 5px;
-            }
-            .project-group iron-image.pixel {
-                width: 159px;
                 height: 118px;
-            }
-            .project-group iron-image.screen {
-                width: 150px;
-                height: 117px;
             }
             .project-group-header {
                 @apply --layout-horizontal;
@@ -142,7 +132,7 @@
                 pointer-events: auto;
             }
             .step-icon.done {
-                background-image: url("/assets/projects/simple-progress/tick-circle.svg");
+                background-image: url("/assets/projects/simple-progress/star.svg");
             }
             kano-step:last-child .step-icon {
                 background-image: url("/assets/projects/simple-progress/lock-circle-large.svg");
@@ -227,12 +217,12 @@
         </style>
         <kano-session id="session" user="{{user}}" include-profile></kano-session>
         <div class="header">
-                <h3>Level up your coding powers</h3>
-                <h4>Write your first lines of code to control your speaker</h4>
+                <h3>Kano gives you coding powers</h3>
+                <h4>The more challenges you do, the more powerful you'll become</h4>
                 <div class="project-groups">
                     <div class="project-group">
                         <div class="project-group-header">
-                            <iron-image src="/assets/projects/simple-progress/hello.svg" preload fade sizing="contain"></iron-image>
+                            <iron-image src="/assets/projects/simple-progress/speaker.png" preload fade sizing="contain"></iron-image>
                             <div class="project-group-info">
                                 <h4>The power to make your computer speak</h4>
                             </div>
@@ -303,7 +293,77 @@
                     </div>
                     <div class="project-group">
                         <div class="project-group-header">
-                            <iron-image src="/assets/projects/modes/canvas-pixel.png" class="pixel" preload fade sizing="contain">
+                            <iron-image src="/assets/projects/simple-progress/screen.png" class="screen" preload fade sizing="contain"></iron-image>
+                            <div class="project-group-info">
+                                <h4>The power over your computer's screen</h4>
+                            </div>
+                        </div>
+                        <kano-carousel>
+                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                                <div id="screen_puzzles" class="step-display" slot="content">
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_draw_pixel"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">1</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_pixel_flood"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">2</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_subpixels"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_shapes"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_stars"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">3</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_space_sticker"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">4</div>
+                                    </kano-step>
+                                    <kano-step vertical>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_space_scene"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">5</div>
+                                    </kano-step>
+                                </div>
+                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                        </kano-carousel>
+                    </div>
+                    <div class="project-group">
+                        <div class="project-group-header">
+                            <iron-image src="/assets/projects/simple-progress/pixel.png" class="pixel" preload fade sizing="contain">
                             </iron-image>
                             <div class="project-group-info">
                                 <h4>The power to control light</h4>
@@ -356,69 +416,6 @@
                                         <div slot="icon">
                                                 <div class="step-icon">
                                                     <a href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop"></a>
-                                                </div>
-                                        </div>
-                                        <!-- passing empty string to avoid UI issues for now -->
-                                        <div slot="label"></div>
-                                    </kano-step>
-                                </div>
-                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
-                        </kano-carousel>
-                    </div>
-                    <div class="project-group">
-                        <div class="project-group-header">
-                            <iron-image src="/assets/projects/simple-progress/screen.svg" class="screen" preload fade sizing="contain"></iron-image>
-                            <div class="project-group-info">
-                                <h4>The power to draw</h4>
-                            </div>
-                        </div>
-                        <kano-carousel>
-                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
-                                <div id="screen_puzzles" class="step-display" slot="content">
-                                    <kano-step vertical>
-                                        <div slot="icon">
-                                                <div class="step-icon">
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_draw_pixel"></a>
-                                                </div>
-                                        </div>
-                                        <div slot="label">1</div>
-                                    </kano-step>
-                                    <kano-step vertical>
-                                        <div slot="icon">
-                                                <div class="step-icon">
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_pixel_flood"></a>
-                                                </div>
-                                        </div>
-                                        <div slot="label">2</div>
-                                    </kano-step>
-                                    <kano-step vertical>
-                                        <div slot="icon">
-                                                <div class="step-icon">
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_pixels"></a>
-                                                </div>
-                                        </div>
-                                        <div slot="label">3</div>
-                                    </kano-step>
-                                    <kano-step vertical>
-                                        <div slot="icon">
-                                                <div class="step-icon">
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_squares"></a>
-                                                </div>
-                                        </div>
-                                        <div slot="label">4</div>
-                                    </kano-step>
-                                    <kano-step vertical>
-                                        <div slot="icon">
-                                                <div class="step-icon">
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_circles"></a>
-                                                </div>
-                                        </div>
-                                        <div slot="label">5</div>
-                                    </kano-step>
-                                    <kano-step vertical>
-                                        <div slot="icon">
-                                                <div class="step-icon">
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_circles_loop"></a>
                                                 </div>
                                         </div>
                                         <!-- passing empty string to avoid UI issues for now -->
