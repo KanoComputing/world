@@ -446,19 +446,20 @@
             attached () {
                 this.config = Kano.World.config;
             },
-            ready () {
-                let storedProgress = localStorage.getItem('progress');
-                if (storedProgress) {
-                    storedProgress = JSON.parse(storedProgress);
-                    this._updateProgress(storedProgress);
-                }
-            },
             _computeProgress (user) {
                 if (user && user.profile && user.profile.stats['make-apps'] && user.profile.stats['make-apps'].progress) {
                     this._updateProgress(user.profile.stats['make-apps'].progress);
                 } else {
                     //remove all additional classes if user has logged out
                     Polymer.dom(this.root).querySelectorAll('.step-icon').forEach(el => el.className = 'step-icon');
+                    this._computeStoredProgress();
+                }
+            },
+            _computeStoredProgress () {
+                let storedProgress = localStorage.getItem('progress');
+                if (storedProgress) {
+                    storedProgress = JSON.parse(storedProgress);
+                    this._updateProgress(storedProgress);
                 }
             },
             _openModal () {
