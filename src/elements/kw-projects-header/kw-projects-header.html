@@ -453,10 +453,10 @@
                         if (user.profile.stats['make-apps'].progress[el.id]) {
                             let steps = el.querySelectorAll('.step-icon');
                             for (let i = 0, len = steps.length; i < len; i++) {
-                                if (i === user.profile.stats['make-apps'].progress[el.id].completedStories.length - 1) {
-                                    steps[i].classList.add("current");
-                                } else if (i < user.profile.stats['make-apps'].progress[el.id].completedStories.length - 1) {
+                                if (i < user.profile.stats['make-apps'].progress[el.id].completedStories.length) {
                                     steps[i].classList.add("done");
+                                } else if (i === user.profile.stats['make-apps'].progress[el.id].completedStories.length) {
+                                    steps[i].classList.add("current");
                                 }
                             }
                         }
