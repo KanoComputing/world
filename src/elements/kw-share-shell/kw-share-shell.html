@@ -28,35 +28,35 @@
             box-shadow: 0 3px 0 0 var(--color-grey-mid);
         }
         
-        .container {
+        :host .container {
             width: 100%;
         }
         
-        .space {
+        :host .space {
             @apply --layout-flex;
         }
         
-        .top {
+        :host .top {
             @apply --layout-horizontal;
             min-height: 30px;
             margin-bottom: 12px;
             margin: 16px;
         }
         
-        .datetime {
+        :host .datetime {
             @apply --layout-horizontal;
             @apply --layout-flex;
             @apply --layout-end;
             @apply --layout-end-justified;
         }
         
-        .author {
+        :host .author {
             @apply --layout-horizontal;
             @apply --layout-end;
             min-height: 30px;
         }
         
-        .title {
+        :host .title {
             @apply --layout-horizontal;
             @apply --layout-end;
             color: var(--color-grey-dark);
@@ -64,35 +64,35 @@
             margin-right: 12px;
         }
         
-        iron-image.avatar {
+        :host iron-image.avatar {
             width: 35px;
             height: 35px;
             margin-right: 12px;
             border-radius: 50%;
         }
         
-        div[tombstone].top .avatar {
+        :host div[tombstone].top .avatar {
             border-radius: 50%;
             background: var(--color-grey-mid);
             overflow: hidden;
             z-index: 0;
         }
         
-        div[tombstone].top .title {
+        :host div[tombstone].top .title {
             width: 120px;
             height: 20px;
             background: var(--color-grey-mid);
         }
         
-        div[tombstone].top .author,
-        div[tombstone].top date-util {
+        :host div[tombstone].top .author,
+        :host div[tombstone].top date-util {
             width: 120px;
             height: 20px;
             background: var(--color-grey-mid);
             color: transparent;
         }
         
-        .shell {
+        :host .shell {
             width: 100%;
         }
         </style>
