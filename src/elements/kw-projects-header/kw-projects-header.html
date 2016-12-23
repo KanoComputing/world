@@ -325,7 +325,7 @@
                                                     <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_shapes"></a>
                                                 </div>
                                         </div>
-                                        <div slot="label">3</div>
+                                        <div slot="label">4</div>
                                     </kano-step>
                                     <kano-step vertical>
                                         <div slot="icon">
@@ -333,7 +333,7 @@
                                                     <a href$="[[config.KANO_CODE_URL]]/story/screen_stars"></a>
                                                 </div>
                                         </div>
-                                        <div slot="label">3</div>
+                                        <div slot="label">5</div>
                                     </kano-step>
                                     <kano-step vertical>
                                         <div slot="icon">
@@ -341,7 +341,7 @@
                                                     <a href$="[[config.KANO_CODE_URL]]/story/screen_space_sticker"></a>
                                                 </div>
                                         </div>
-                                        <div slot="label">4</div>
+                                        <div slot="label">6</div>
                                     </kano-step>
                                     <kano-step vertical>
                                         <div slot="icon">
@@ -349,7 +349,7 @@
                                                     <a href$="[[config.KANO_CODE_URL]]/story/screen_space_scene"></a>
                                                 </div>
                                         </div>
-                                        <div slot="label">5</div>
+                                        <div slot="label"></div>
                                     </kano-step>
                                 </div>
                             <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
@@ -436,19 +436,20 @@
             attached () {
                 this.config = Kano.World.config;
             },
-            ready () {
-                let storedProgress = localStorage.getItem('progress');
-                if (storedProgress) {
-                    storedProgress = JSON.parse(storedProgress);
-                    this._updateProgress(storedProgress);
-                }
-            },
             _computeProgress (user) {
                 if (user && user.profile && user.profile.stats['make-apps'] && user.profile.stats['make-apps'].progress) {
                     this._updateProgress(user.profile.stats['make-apps'].progress);
                 } else {
                     //remove all additional classes if user has logged out
                     Polymer.dom(this.root).querySelectorAll('.step-icon').forEach(el => el.className = 'step-icon');
+                    this._computeStoredProgress();
+                }
+            },
+            _computeStoredProgress () {
+                let storedProgress = localStorage.getItem('progress');
+                if (storedProgress) {
+                    storedProgress = JSON.parse(storedProgress);
+                    this._updateProgress(storedProgress);
                 }
             },
             _openModal () {

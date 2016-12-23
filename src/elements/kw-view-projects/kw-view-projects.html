@@ -263,10 +263,11 @@
                     }
                     categories.forEach((category, catId) => {
                         if (category.api_progress_tracking.indexOf('make-art') !== -1) {
-                            let artGroup = profile.stats['kano-draw'].groups[category.api_progress_tracking.replace('make-art-', '')];
-                            if (artGroup) {
+                            let artGroups = profile.stats['kano-draw'].groups,
+                                currentArtGroup = artGroups ? artGroups[category.api_progress_tracking.replace('make-art-', '')] : null;
+                            if (currentArtGroup) {
                                 category.projects.forEach((project, projectId) => {
-                                    this.set(`categories.${catId}.projects.${projectId}.completed`, project.slug <= artGroup.challengeNo);
+                                    this.set(`categories.${catId}.projects.${projectId}.completed`, project.slug <= currentArtGroup.challengeNo);
                                 });
                             }
                         } else if (category.api_progress_tracking === 'make-apps') {
