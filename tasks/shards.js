@@ -196,7 +196,7 @@ function build(opts) {
         .then(r => {
             rimraf.sync(opts.workdir);
         }).catch(e => {
-            console.log(e);
+            throw e;
         });
 }
 

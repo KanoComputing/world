@@ -5,7 +5,7 @@ var swPrecache = require('sw-precache'),
 
 module.exports = (gulp, $) => {
     const MANIFEST_NAME = 'world.manifest',
-          APP_ROUTES = ['/projects', '/shares'],
+          APP_ROUTES = [],
           // Cache everything except the assets folder. but include the svg files as they are quite small
           STATIC_FILE_GLOB = [
               'www/*',
