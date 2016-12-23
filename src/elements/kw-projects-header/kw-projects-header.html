@@ -70,16 +70,12 @@
                 @apply --layout-center;
                 margin: auto 10px;
             }
-            .project-group-info {
-                @apply --layout-vertical;
-                text-align: left;
-                margin: 0 0 10px 25px;
-            }
-            .project-group-info h4 {
+            .project-group-header h4 {
+                flex: 1;
                 font-size: 18px;
-                margin: 0;
-                padding-top: 30px;
                 font-weight: normal;
+                text-align: left;
+                margin: 30px 0 10px 25px;
             }
             .project-group-info p {
                 font-size: 16px;
@@ -225,9 +221,7 @@
                     <div class="project-group">
                         <div class="project-group-header">
                             <iron-image src="/assets/projects/simple-progress/speaker.png" preload fade sizing="contain"></iron-image>
-                            <div class="project-group-info">
-                                <h4>The power to make your computer speak</h4>
-                            </div>
+                            <h4>The power to make your computer speak</h4>
                         </div>
                         <kano-carousel>
                             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
@@ -296,9 +290,7 @@
                     <div class="project-group">
                         <div class="project-group-header">
                             <iron-image src="/assets/projects/simple-progress/screen.png" class="screen" preload fade sizing="contain"></iron-image>
-                            <div class="project-group-info">
-                                <h4>The power over your computer's screen</h4>
-                            </div>
+                            <h4>The power over your computer's screen</h4>
                         </div>
                         <kano-carousel>
                             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
@@ -367,9 +359,7 @@
                         <div class="project-group-header">
                             <iron-image src="/assets/projects/simple-progress/pixel.png" class="pixel" preload fade sizing="contain">
                             </iron-image>
-                            <div class="project-group-info">
-                                <h4>The power to control light</h4>
-                            </div>
+                            <h4>The power to control light</h4>
                         </div>
                         <kano-carousel>
                             <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
