@@ -16,11 +16,11 @@
             margin: 10px auto;
         }
         
-        kw-share-shell {
+        :host kw-share-shell {
             width: 100%;
         }
         
-        .details {
+        :host .details {
             @apply --layout-vertical;
             @apply --layout-center;
             flex: 1 0 auto;
@@ -29,7 +29,7 @@
             height: 480px;
         }
         
-        .details>iron-image {
+        :host .details>iron-image {
             position: absolute;
             top: 0;
             left: 0;
@@ -37,23 +37,23 @@
             height: 100%;
         }
         
-        .bottom {
+        :host .bottom {
             @apply --layout-vertical;
             margin: 16px;
             width: 90%;
         }
         
-        .bottom .content {
+        :host .bottom .content {
             @apply --layout-horizontal;
             height: 250px;
         }
         
-        .bottom .content .description {
+        :host .bottom .content .description {
             @apply --layout-flex-3;
             color: var(--color-grey-dark);
         }
         
-        .bottom .content .description h3 {
+        :host .bottom .content .description h3 {
             margin: 0;
             font-size: 16px;
             line-height: 23px;
@@ -61,7 +61,7 @@
             font-family: var(--font-body);
         }
         
-        .bottom .content .description p {
+        :host .bottom .content .description p {
             color: var(--color-grey-dark);
             margin-right: 16px;
             font-family: var(--font-body);
@@ -71,7 +71,7 @@
             margin-bottom: 8px;
         }
         
-        .bottom .content .actions {
+        :host .bottom .content .actions {
             width: 25%;
             @apply --layout-horizontal;
             @apply --layout-center;
@@ -79,13 +79,13 @@
             padding-top: 5%;
         }
         
-        .bottom .content .actions button img {
+        :host .bottom .content .actions button img {
             position: relative;
             top: 2px;
             left: 2px;
         }
         
-        .orange-button {
+        :host .orange-button {
             background-color: var(--color-orange);
             border-radius: 5px;
             width: 79px;
@@ -94,16 +94,16 @@
             border: none;
         }
         
-        .remix-button {
+        :host .remix-button {
             width: 79px;
         }
         
-        #share-container {
+        :host #share-container {
             flex: 1 0 auto;
             @apply --layout-flex-vertical;
         }
         
-        #share-container>* {
+        :host #share-container>* {
             flex: 1 0 auto;
         }
         
@@ -111,26 +111,26 @@
             display: none !important;
         }
         
-        kw-share-shell[tombstone] .detail .cover {
+        :host kw-share-shell[tombstone] .detail .cover {
             background: rgba(0, 0, 0, 0.1);
             color: transparent;
         }
         
-        kw-share-shell[tombstone] .content .description h3 {
+        :host kw-share-shell[tombstone] .content .description h3 {
             width: 240px;
             height: 20px;
             background: rgba(0, 0, 0, 0.1);
             color: transparent;
         }
         
-        kw-share-shell[tombstone] .content .description p {
+        :host kw-share-shell[tombstone] .content .description p {
             width: 100%;
             height: 60px;
             background: rgba(0, 0, 0, 0.1);
             color: transparent;
         }
         
-        .bottom .line {
+        :host .bottom .line {
             height: 1px;
             width: 100%;
             display: block;
