@@ -441,7 +441,11 @@
                     this._updateProgress(user.profile.stats['make-apps'].progress);
                 } else {
                     //remove all additional classes if user has logged out
-                    Polymer.dom(this.root).querySelectorAll('.step-icon').forEach(el => el.className = 'step-icon');
+                    Polymer.dom(this.root).querySelectorAll('.step-icon').forEach((el) => {
+                        el.classList.remove('done');
+                        el.classList.remove('locked');
+                        el.classList.remove('current');
+                    });
                     this._computeStoredProgress();
                 }
             },
