@@ -6,6 +6,7 @@
 <link rel="import" href="../kw-projects-category/kw-projects-category.html">
 <link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kano-projects-listing/kano-projects-listing-behavior.html">
 
 <dom-module id="kw-view-projects">
     <template>
@@ -194,24 +195,27 @@
         <iron-media-query query="(max-width: 980px)" query-matches="{{mediumViewport}}"></iron-media-query>
         <iron-media-query query="(max-width: 768px)" query-matches="{{smallViewport}}"></iron-media-query>
         <kano-session user="{{user}}" token="{{token}}" include-profile></kano-session>
-        <kw-projects-header id="header" on-expand="_applyRolldown"></kw-projects-header>
+        <kw-projects-header id="header"></kw-projects-header>
         <div class="categories">
             <div id="tombstones">
                 <div class="tombstone"></div>
                 <div class="tombstone"></div>
             </div>
             <template is="dom-if" if="[[completed]]">
-                <template is="dom-repeat" items="[[categories]]" as="category">
+                <template is="dom-repeat" items="[[categories]]" as="category" filter="checkCategoryDependencies">
                     <kw-projects-category category="[[category]]" animate-stars="[[!index]]"></kw-projects-category>
                 </template>
             </template>
-            
+
         </div>
     </template>
     <script>
         Polymer({
             is: 'kw-view-projects',
-            behaviors: [Kano.APIClient],
+            behaviors: [
+                Kano.APIClient,
+                Kano.ProjectsListingBehavior
+            ],
             properties: {
                 categories: {
                     type: Array
@@ -230,16 +234,6 @@
                             this._upgradeProjects(categories, this.user);
                         });
                 });
-            },
-            _applyRolldown () {
-                let headerContent = this.$.header.getHeaderContentElement();
-                this.transform('translateY(-350px)');
-                headerContent.style.transform = 'translateY(350px)';
-                this.$.header.getBoundingClientRect();
-                this.style.transition = 'transform 500ms ease-out';
-                headerContent.style.transition = 'transform 500ms ease-out';
-                headerContent.style.transform = 'translateY(0px)';
-                this.transform('translateY(0px)');
             },
             _getPathPrefix () {
                 if (!this.pathPrefix) {
@@ -269,10 +263,11 @@
                     }
                     categories.forEach((category, catId) => {
                         if (category.api_progress_tracking.indexOf('make-art') !== -1) {
-                            let artGroup = profile.stats['kano-draw'].groups[category.api_progress_tracking.replace('make-art-', '')];
-                            if (artGroup) {
+                            let artGroups = profile.stats['kano-draw'].groups,
+                                currentArtGroup = artGroups ? artGroups[category.api_progress_tracking.replace('make-art-', '')] : null;
+                            if (currentArtGroup) {
                                 category.projects.forEach((project, projectId) => {
-                                    this.set(`categories.${catId}.projects.${projectId}.completed`, project.slug <= artGroup.challengeNo);
+                                    this.set(`categories.${catId}.projects.${projectId}.completed`, project.slug <= currentArtGroup.challengeNo);
                                 });
                             }
                         } else if (category.api_progress_tracking === 'make-apps') {

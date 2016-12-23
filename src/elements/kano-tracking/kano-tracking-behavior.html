@@ -1,0 +1,44 @@
+<link rel="import" href="../../js/config.html">
+<script>
+    (function (Kano) {
+
+        window.dataLayer = window.dataLayer || [];
+
+        // @polymerBehavior
+        Kano.TrackingBehavior = {
+            /**
+             * Check whether the user is using a Kano Kit
+             */
+            checkUserDevice () {
+                let type = this.isPi() ? 'paid' : 'free';
+                this.dispatchTrackingEvent({
+                    userType: type
+                });
+            },
+            /**
+             * Wrapper for dispatching events to GTM datalayer
+             *
+             * @param {Object || String} trackingEvent
+             */
+            dispatchTrackingEvent (trackingEvent) {
+                let payload = trackingEvent;
+                if (trackingEvent !== Object(trackingEvent)) {
+                    payload = {
+                        event: trackingEvent
+                    };
+                }
+                window.dataLayer.push(payload);
+            },
+            /**
+             * Generic function to check whether the user is using a Kano Kit
+             *
+             * note: not currently fullproof
+             */
+            isPi() {
+                let userAgent = window.navigator.userAgent;
+                return userAgent.indexOf('armv6l') !== -1 || userAgent.indexOf('armv7l') !== -1;
+            }
+        };
+
+    })(window.Kano = window.Kano || {});
+</script>

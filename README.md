@@ -10,7 +10,7 @@ A good way to start working on the project is to run:
 ## Development
 
 To allow the fastest onboarding possible on this project, no build task is necessary to make it run.
-Just starting a webserver with the folder `src` as root and a SPA strategy will allow you to run the website.
+Just starting a [webserver](https://www.npmjs.com/package/local-web-server) with the folder `src` as root and a SPA strategy will allow you to run the website.
 
 For convenience sake, a gulp task `watch` was created. It uses browser sync and reload the pages everytime a change is made.
 

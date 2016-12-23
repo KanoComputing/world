@@ -1,0 +1,326 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../js/config.html">
+<link rel="import" href="../kano-style/typography.html">
+
+<dom-module id="kw-view-start">
+    <template>
+        <style>
+            :host {
+                background-color: #263A48;
+            }
+            .banner {
+                flex: 4;
+                position: relative;
+                background-color: #263A48;
+                background-size: contain;
+                background-position: bottom;
+                background-repeat: no-repeat;
+                transform: translateZ(0);
+                overflow: hidden;
+                padding: 35px 0 25px;
+                @apply --layout-vertical;
+                @apply --layout-center-center;
+            }
+            .background-left, .background-right {
+                position: absolute;
+                width: 50%;
+                height: 100%;
+                background-size: 60%;
+                background-repeat: no-repeat;
+            }
+            .background-left {
+                top: 0;
+                left: 0;
+                background-image: url("/assets/start/kano-hero-left.png");
+                background-position: 0% 100%;
+            }
+            .background-right {
+                top: 0;
+                right: 0;
+                background-image: url("/assets/start/kano-hero-right.png");
+                background-position: 100% 100%;
+            }
+            .kano-logo {
+                position: absolute;
+                top: 30px;
+                left: 40px;
+                width: 100px;
+                height: 50px;
+            }
+            .login-container {
+                position: absolute;
+                top: 30px;
+                right: 40px;
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+            .login-container p.login {
+                color: rgba(255,255,255,0.7);
+                margin: 0 0 0 8px;
+                cursor: pointer;
+            }
+            .login-container p.login:hover {
+                color: rgba(255,255,255,1);
+            }
+            .login-container p {
+                color: #9CB6C8;
+                margin: 0 10px 0 0;
+            }
+            .login-lock-img {
+                width: 13px;
+                height: 15px;
+            }
+            .background-wrapper {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;;
+            }
+            .logo-wrapper {
+                position: relative;
+                width: 400px;
+                height: 400px;
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;;
+            }
+            .judoka {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+                background-color: transparent;
+                animation: fade-in ease-out 800ms, float ease-in-out 3s infinite;
+                animation-delay: 40ms;
+                animation-fill-mode: forwards;
+            }
+            .judoka-background {
+                height: 85%;
+                width: 85%;
+                position: absolute;
+                top: 30px;
+                left: 30px;
+                animation: 25s linear infinite spin;
+            }
+            h1 {
+                color: #ffffff;
+                margin: 17px 0 0;
+                transform: translateZ(0);
+                font-size: 40px;
+                padding: 0 10px;
+                margin-top: 0;
+                text-align: center;
+            }
+            .action {
+                margin: 20px;
+            }
+            .action button {
+                position: relative;
+                background-color: transparent;
+                border: none;
+                border-radius: 30px;
+                padding: 15px 35px;
+                font-family: 
+                font-size: 14px;
+                color: #fff;
+                background-color: #fe8233;
+                font-weight: bold;
+                text-transform: uppercase;
+                z-index: 1;
+                transition: all linear 200ms;
+                cursor: pointer;
+            }
+            .action button:hover {
+                background-color: #fd621e;
+            }
+            .action button:focus {
+                outline: none;
+                background-color: #fff;
+                color: #000;
+            }
+            .intro-slides {
+                flex: 1;
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                padding: 38px 40px 0;
+                background: white;
+            }
+            .intro-slide {
+                width: 275px;
+                height: 250px;
+                padding: 10px 40px;
+                text-align: center;
+            }
+            .intro-slide h3 {
+                font-size: 22px;
+                color: #616161;
+                margin: 16px 0 5px;
+                white-space: nowrap;
+            }
+            .intro-slide p {
+                font-size: 16px;
+                line-height: 25px;
+                color: #9C9C9C;
+                padding: 0 5px;
+                margin: 0;
+            }
+            .slide-cover {
+                width: 100%;
+                height: 37%;
+            }
+            .footer {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+                background-color: #fff;
+                padding: 20px 40px;
+                font-size: 14px;
+                color: #9C9C9C;
+            }
+            .footer a {
+                color: #9C9C9C;
+                font-weight: bold;
+                text-decoration: none;
+            }
+            .footer a:hover {
+                color: #B6B6B6;
+            }
+            .footer .nav {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+            .footer .nav hr {
+                border: 0;
+                border-right: 1px solid rgba(255,255,255,.15);
+                height: 12px;
+                margin: 0 10px;
+            }
+            @media screen and (max-width: 980px) {
+                .background-left, .background-right {
+                    background-size: 70%;
+                }
+                .intro-slides {
+                    padding: 36px 20px 6px;
+                }
+                .intro-slide {
+                    width: 220px;
+                    height: 200px;
+                    padding: 10px;
+                }
+                .intro-slide h3 {
+                    margin-top: 5px;
+                }
+            }
+            @media screen and (max-width: 680px) {
+                .kano-logo {
+                    top: 10px;
+                    left: 10px;
+                    width: 84px;
+                    height: 42px;
+                }
+                .login-container {
+                    top: 10px;
+                    right: 10px;
+                }
+                .login-container p:not(.login) {
+                    display: none;
+                }
+                .logo-wrapper {
+                    width: 300px;
+                    height: 300px;
+                }
+                h1 {
+                font-size: 34px;
+                }
+                .intro-slides {
+                    @apply --layout-vertical;
+                }
+                .footer {
+                    padding: 15px 20px;
+                    @apply --layout-vertical-reverse;
+                    @apply --layout-center;
+                }
+                .footer .nav {
+                    padding: 10px 0;
+                }
+            }
+            @keyframes fade-in {
+                from {opacity: 0;}
+                to {opacity: 1;}
+            }
+            @keyframes spin {
+                0% {transform: rotate(0deg);}
+                100% {transform: rotate(360deg);}
+            }
+            @keyframes float {
+                0% {transform: translateY(0);}
+                50% {transform: translateY(-0.3rem);}
+                100% {transform: translateY(0);}
+            }
+        </style>
+        <div class="banner">
+        <div class="background-left">
+        </div>
+        <div class="background-right">
+        </div>
+            <img class="kano-logo" src="/assets/start/kano-logo.svg" preload fade sizing="cover">
+            <div class="login-container">
+                <p>Already have powers?</p>
+                <iron-image class="login-lock-img" src="/assets/start/kano-login-lock.svg" preload fade sizing="cover"></iron-image>
+                <p class="login" on-tap="_login">Sign in</p>
+            </div>
+            <div class="background-wrapper">
+                <div class="logo-wrapper">
+                    <iron-image class="judoka-background" src="/assets/start/hero-judoka-bg.svg" preload fade sizing="contain"></iron-image>
+                    <iron-image class="judoka" src="/assets/start/hero-judoka.svg" preload fade sizing="contain">
+                    </iron-image>
+                </div>
+                <h1>Kano gives you coding superpowers</h1>
+                <a href$="[[config.KANO_CODE_URL]]/onboarding" class="action"><button type="button">I want superpowers!</button></a>
+            </div>
+        </div>
+        <div class="intro-slides">
+            <div class="intro-slide">
+                <iron-image class="slide-cover" src="/assets/start/start-kano-make.png" preload fade sizing="contain"></iron-image>
+                <h3>Make, code, hack</h3>
+                <p>Make apps, hack hardware, create games or code works of art</p>
+            </div>
+            <div class="intro-slide">
+                <iron-image class="slide-cover" src="/assets/start/start-kano-code.png" preload fade sizing="contain"></iron-image>
+                <h3>Learn code</h3>
+                <p>No coding experience required! <br> Learn through step-by-step challenges</p>
+            </div>
+            <div class="intro-slide">
+                <iron-image class="slide-cover" src="/assets/start/start-kano-world.png" preload fade sizing="contain"></iron-image>
+                <h3>Endless fun</h3>
+                <p>Share and learn from a cool community and remix your friends' ideas</p>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="copyright">© Copyright Kano 2014 — 2016</div>
+            <div class="nav">
+                <a href="/about">About</a>
+                <hr>
+                <a href="/terms-of-use">Terms of use</a>
+                <hr>
+                <a href="/privacy-policy">Privacy policy</a>
+                <hr>
+                <a href="/faq">F.A.Q.</a>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kw-view-start',
+            attached () {
+                this.config = Kano.World.config;
+            },
+            _login () {
+                this.fire('login');
+            }
+        });
+    </script>
+</dom-module> 

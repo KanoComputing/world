@@ -14,7 +14,7 @@ node {
     }
 
     stage('clean') {
-        sh "rm -rf app/bower_components"
+        sh "rm -rf src/bower_components"
         sh "bower cache clean"
     }
 
