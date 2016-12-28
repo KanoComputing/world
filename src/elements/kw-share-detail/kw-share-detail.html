@@ -1,101 +1,261 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
-
+<link rel="import" href="../kw-share-shell/kw-share-shell.html">
+<link rel="import" href="../kw-share-stats/kw-share-stats.html">
+<link rel="import" href="../kw-social-comment/kw-social-comment.html">
+<link rel="import" href="../kano-style/color.html">
+<link rel="import" href="../kano-style/typography.html">
 <dom-module id="kw-share-detail">
     <template>
         <style>
-            :host {
-                display: block;
-                @apply --layout-vertical;
-                @apply --layout-center;
-                background: white;
-                border: 1px solid grey;
-                margin: 10px auto;
-            }
-            .details {
-                flex: 1 0 auto;
-                position: relative;
-                display: flex;
-                width: 650px;
-                height: 500px;
-            }
-            .details>iron-image {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-            #share-container {
-                flex: 1 0 auto;
-                @apply --layout-flex-vertical;
-            }
-            #share-container>* {
-                flex: 1 0 auto;
-            }
-            *[hidden] {
-                display: none !important;
-            }
+        :host {
+            @apply --layout-vertical;
+            @apply --layout-center;
+            background: white;
+            margin: 10px auto;
+        }
+        
+        :host kw-share-shell {
+            width: 100%;
+        }
+        
+        :host .details {
+            @apply --layout-vertical;
+            @apply --layout-center;
+            flex: 1 0 auto;
+            display: flex;
+            width: 100%;
+            height: 480px;
+        }
+        
+        :host .details>iron-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        :host .bottom {
+            @apply --layout-vertical;
+            margin: 16px;
+            width: 90%;
+        }
+        
+        :host .bottom .content {
+            @apply --layout-horizontal;
+            height: 250px;
+        }
+        
+        :host .bottom .content .description {
+            @apply --layout-flex-3;
+            color: var(--color-grey-dark);
+        }
+        
+        :host .bottom .content .description h3 {
+            margin: 0;
+            font-size: 16px;
+            line-height: 23px;
+            color: var(--color-grey-darker);
+            font-family: var(--font-body);
+        }
+        
+        :host .bottom .content .description p {
+            color: var(--color-grey-dark);
+            margin-right: 16px;
+            font-family: var(--font-body);
+            font-weight: normal;
+            font-size: 16px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        
+        :host .bottom .content .actions {
+            width: 25%;
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            @apply --layout-end-justified;
+            padding-top: 5%;
+        }
+        
+        :host .bottom .content .actions button img {
+            position: relative;
+            top: 2px;
+            left: 2px;
+        }
+        
+        :host .orange-button {
+            background-color: var(--color-orange);
+            border-radius: 5px;
+            width: 79px;
+            height: 32px;
+            color: var(--color-white);
+            border: none;
+        }
+        
+        :host .remix-button {
+            width: 79px;
+        }
+        
+        :host #share-container {
+            flex: 1 0 auto;
+            @apply --layout-flex-vertical;
+        }
+        
+        :host #share-container>* {
+            flex: 1 0 auto;
+        }
+        
+        *[hidden] {
+            display: none !important;
+        }
+        
+        :host kw-share-shell[tombstone] .detail .cover {
+            background: rgba(0, 0, 0, 0.1);
+            color: transparent;
+        }
+        
+        :host kw-share-shell[tombstone] .content .description h3 {
+            width: 240px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            color: transparent;
+        }
+        
+        :host kw-share-shell[tombstone] .content .description p {
+            width: 100%;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.1);
+            color: transparent;
+        }
+        
+        :host .bottom .line {
+            height: 1px;
+            width: 100%;
+            display: block;
+            background-color: var(--color-grey-mid);
+        }
         </style>
-        <h3>[[share.title]]</h3>
-        <div id="share" class="details">
-            <iron-image src="[[share.cover_url]]" sizing="cover" hidden$="[[detailsLoaded]]"></iron-image>
-            <div id="share-container"></div>
-        </div>
+        <kw-share-shell id="shell" share="[[share]]" tombstone$="[[!share]]">
+            <h3>[[share.title]]</h3>
+            <div slot="share-slot">
+                <div id="share" class="details">
+                    <iron-image src="[[share.cover_url]]" sizing="cover" hidden$="[[detailsLoaded]]"></iron-image>
+                    <div id="share-container"></div>
+                    <div class="bottom">
+                        <div class="content">
+                            <div class="description">
+                                <h3>[[share.title]]</h3>
+                                <p>[[share.description]]</p>
+                            </div>
+                            <div class="actions" hidden$="[[_computeAction(share.app)]]">
+                                <button on-tap="_onTapRemix" class="orange-button remix-button">remix<img src="/assets/icons/shares/remix.svg" /></button>
+                            </div>
+                        </div>
+                        <div class="line"></div>
+                        <kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]"></kw-share-stats>
+                    </div>
+                    <kw-social-comment share="[[share]]"></kw-social-comment>
+                </div>
+            </div>
+        </kw-share-shell>
     </template>
     <script>
-        (function () {
-            const appMapping = {
-                'make-music': 'kw-music-share'
-            };
+    (function() {
+        const appMapping = {
+            'make-music': 'kw-music-share'
+        };
 
-            Polymer({
-                is: 'kw-share-detail',
-                behaviors: [Polymer.Templatizer],
-                properties: {
-                    share: {
-                        type: Object
-                    }
-                },
-                observers: [
-                    '_shareAppChanged(share.app)'
-                ],
-                getShareElement () {
-                    return this;
-                },
-                _shareAppChanged (shareApp) {
-                    let tagName, templateString, template;
-                    if (!this.share) {
-                        return;
-                    }
-
-                    tagName = appMapping[shareApp] || 'kw-share';
-
-                    this.importHref(`/elements/${tagName}/${tagName}.html`, () => {
-                        templateString = `<${tagName} share="[[share]]"></${tagName}>`;
-                        
-                        template = document.createElement('template');
-
-                        template.innerHTML = templateString;
-
-                        this.templatize(template);
-
-                        if (this.instance) {
-                            while (this.$['share-container'].firstChild) {
-                                this.$['share-container'].removeChild(this.$['share-container'].firstChild);
-                            }
-                        }
-
-                        this.instance = this.stamp({
-                            share: this.share
-                        });
-
-                        this.$['share-container'].appendChild(this.instance.root);
-                        this.detailsLoaded = true;
-                    }, () => {}, true);
+        Polymer({
+            is: 'kw-share-detail',
+            behaviors: [Polymer.Templatizer],
+            properties: {
+                share: {
+                    type: Object
                 }
-            });
-        })();
+            },
+            observers: [
+                '_shareAppChanged(share.app)'
+            ],
+            getShareElement() {
+                return this;
+            },
+            _computeAction(appType) {
+                switch (appType) {
+                    case 'kano-draw':
+                    case 'make-apps':
+                    case 'make-adventures':
+                    case 'make-pong':
+                        return false;
+                        break;
+                    case 'make-music':
+                    case 'make-snake':
+                    case 'make-light':
+                    case 'make-minecraft':
+                        return true;
+                        break;
+                    default:
+                        return true;
+                        break;
+                }
+            },
+            _onTapRemix() {
+                var url = '';
+                var item = this.share;
+                var appType = item.app;
+                switch (appType) {
+                    case 'kano-draw':
+                        url = Kano.World.config.KANO_MAKEART_URL + (item.id ? '/share/' + item.id : '/');
+                        break;
+                    case 'make-apps':
+                        var pathname = window.location.pathname.replace('/shares/', '/remix/');
+                        url = Kano.World.config.KANO_CODE_URL + pathname;
+                        break;
+                    case 'make-adventures':
+                        url = Kano.World.config.KANO_ADVENTURES_URL + (item.id ? '/shared/' + item.id : '/');
+                        break;
+                    case 'make-pong':
+                        url = 'http://play-pong.kano.me' + (item.id ? '?project=' + item.id : '/')
+                        break;
+                    default:
+                        break;
+                }
+
+                window.location.href = url;
+            },
+            _shareAppChanged(shareApp) {
+                let tagName, templateString, template;
+                if (!this.share) {
+                    return;
+                }
+
+                tagName = appMapping[shareApp] || 'kw-share';
+
+                this.importHref(`/elements/${tagName}/${tagName}.html`, () => {
+                    templateString = `<${tagName} share="[[share]]"></${tagName}>`;
+
+                    template = document.createElement('template');
+
+                    template.innerHTML = templateString;
+
+                    this.templatize(template);
+
+                    if (this.instance) {
+                        while (this.$['share-container'].firstChild) {
+                            this.$['share-container'].removeChild(this.$['share-container'].firstChild);
+                        }
+                    }
+
+                    this.instance = this.stamp({
+                        share: this.share
+                    });
+
+                    this.$['share-container'].appendChild(this.instance.root);
+                    this.detailsLoaded = true;
+                }, () => {}, true);
+            }
+        });
+    })();
     </script>
 </dom-module>
