@@ -68,6 +68,9 @@
                     </div>
                 </template>
             </iron-list>
+            <div>
+                <kw-share-card share tombstone></kw-share-card>
+            </div>
         </iron-scroll-threshold>
     </template>
     <script>
@@ -112,7 +115,11 @@
                 this.selectedShare = e.model.get('share');
             },
             getSelectedShareElement () {
-                return this.$$(`#${this.selectedShare.slug}`).getCoverElement();
+                let selectedShare = this.$$(`#${this.selectedShare.slug}`);
+                if (!selectedShare) {
+                    return null;
+                }
+                return selectedShare.getCoverElement();
             }
         });
     </script>

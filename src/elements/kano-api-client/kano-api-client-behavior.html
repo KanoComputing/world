@@ -4,11 +4,14 @@
 
         const resourceMap = {
             'feed': 'share',
+            'share-by-slug': 'share/slug/:slug',
+            'share-comments': 'comments/share/:id',
             'stats': 'stats/activity',
             'session': 'auth/session',
             'user-by-username': 'users/username/:username',
             'login': 'auth',
-            'notifications': 'notifications'
+            'notifications': 'notifications',
+            'post-comment': 'comments'
         };
 
         let cache = {};

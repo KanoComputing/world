@@ -18,58 +18,49 @@
                 width: 100%;
                 padding-bottom: 54px;
             }
-
             :host([tombstone]) * {
                 visibility: hidden;
             }
-            
             [hidden] {
                 display: none !important;
             }
-
             .comment-button {
                 position: absolute;
                 right: 14px;
                 bottom: 6px;
                 @apply --kano-icon-button;
             }
-
             .comment-button:focus {
                 outline: none;
                 background: #ec6400;
             }
-
             .comment-button img {
                 margin-left: 3px;
                 margin-top: 2px;
             }
-            
             h3 {
                 color: var(--color-grey-dark);
                 font-size: 16px;
                 line-height: 43px;
                 font-family: var(--font-body);
+                display: none;
             }
-            
             .input-comment {
                 @apply --layout-horizontal;
                 @apply --layout-center;
                 width: 80%;
                 margin: 32px;
             }
-            
             .comment-avatar {
                 @apply --layout-flex-1;
                 margin-left: 16px;
                 margin-right: 16px;
             }
-            
             iron-image {
                 height: 35px;
                 width: 35px;
                 border-radius: 50%;
             }
-            
             .input-comment .comment-box {
                 position: relative;
                 @apply --layout-horizontal;
@@ -79,7 +70,6 @@
                 width: 90%;
                 background: white;
             }
-
             .input-comment .comment-box::after {
                 position: absolute;
                 left: -8px;
@@ -93,7 +83,6 @@
                 background: linear-gradient(45deg, white 0%,white 51%,transparent 52%, transparent 100%);
                 transform: rotate(45deg);
             }
-            
             .input-comment .comment-box iron-autogrow-textarea {
                 font-size: 14px;
                 width: 100%;
@@ -103,59 +92,47 @@
                     padding: 14px 7px;
                 };
             }
-            
             .comment {
                 width: 80%;
                 height: 100px;
                 @apply --layout-horizontal;
                 @apply --layout-center;
             }
-            
+            .comment.optimistic {
+                opacity: 0.6;
+            }
             .content {
                 font-size: 16px;
                 font-family: var(--font-body);
                 color: var(--color-grey-dark);
                 width: 100%;
             }
-            
             .content p b {
                 margin-right: 6px;
             }
-            
             .content p {
                 margin-top: 6px;
                 margin-bottom: 6px;
             }
-            
             .content date-util {
                 font-size: 14px;
                 font-family: var(--font-body);
                 color: var(--color-grey-dark);
             }
-            
             p {
                 font-family: var(--font-body);
                 color: var(--color-grey-dark);
                 font-size: 16px;
             }
-            
             span.bold {
                 font-weight: bold;
                 margin-right: 5px;
             }
+            h3[shown] {
+                display: block;
+            }
         </style>
-        <h3 hidden$="{{_computeHiddenHint(comments)}}">Be the first to comment!</h3>
-        <template is="dom-repeat" items="{{comments}}" as="comment">
-            <div class="comment">
-                <div class="comment-avatar">
-                    <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
-                </div>
-                <div class="content">
-                    <p><span class="bold">{{comment.author.username}}</span>{{comment.text}}</p>
-                    <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(comment.date_created)]]"></date-util>
-                </div>
-            </div>
-        </template>
+        <h3 shown$="[[!comments.length]]">Be the first to comment!</h3>
         <div class="input-comment">
             <div class="comment-avatar">
                 <iron-image preload placeholder="https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/563890fec4d6960800c721f7/avatar-circle.png" fade sizing="contain"></iron-image>
@@ -164,13 +141,24 @@
                 <iron-autogrow-textarea id="comment"
                                         placeholder="Type your message ..."
                                         max-rows="7"></iron-autogrow-textarea>
-                <button class="orange-button comment-button" on-tap="_tapPostButton">
+                <button class="orange-button comment-button" on-tap="_commentButtonTapped">
                     <span>comment</span>
                     <img src="/assets/icons/shares/comment.svg" />
                 </button>
             </div>
         </div>
         <p>Remember to be nice</p>
+        <template is="dom-repeat" items="{{comments}}" as="comment">
+            <div class$="comment [[_computeOptimisticClass(comment.optimistic)]]">
+                <div class="comment-avatar">
+                    <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
+                </div>
+                <div class="content">
+                    <p><span class="bold">{{comment.author.username}}</span><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
+                    <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(comment.date_created)]]"></date-util>
+                </div>
+            </div>
+        </template>
     </template>
     <script>
         Polymer({
@@ -178,20 +166,26 @@
             properties: {
                 comments: {
                     type: Array,
-                    value:[]
+                    value: null
                 }
-            },
-             _computeHiddenHint(){
-                 return this.comments.length > 0;
-            },
-            attached () {
-            },
-            _tapPostButton(){
-                var commentText = this.$.comment.value;
-                this.fire("post-comment",{text:commentText});
             },
             _createDate (formatted) {
                 return new Date(formatted);
+            },
+            _commentButtonTapped () {
+                this.fire('post-comment', { value: this.$.comment.value });
+                this.$.comment.value = '';
+            },
+            _computeOptimisticClass (optimistic) {
+                return optimistic ? 'optimistic' : '';
+            },
+            _isHintHidden (e) {
+                return true;
+            },
+            _lb (value) {
+                let safeDiv = document.createElement('div');
+                safeDiv.textContent = value;
+                return safeDiv.innerHTML.replace(/\n/g, '<br>');
             }
         });
     </script>

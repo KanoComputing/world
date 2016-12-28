@@ -93,7 +93,6 @@
         
         :host #share-container {
             @apply --layout-flex;
-            @apply --layout-vertical;
             width: 100%;
             padding: 0px 16px;
             min-height: var(--kw-share-detail-player-height, 320px);
@@ -102,7 +101,8 @@
         }
         
         :host #share-container>* {
-            @apply --layout-flex;
+            width: 100%;
+            height: 100%;
         }
         
         *[hidden] {
@@ -161,7 +161,7 @@
                     </div>
                     <kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]" tombstone$="[[!share]]"></kw-share-stats>
                 </div>
-                <kw-social-comment share="[[share]]" tombstone$="[[!share]]"></kw-social-comment>
+                <kw-social-comment comments="[[share.comments]]" tombstone$="[[!share]]"></kw-social-comment>
             </div>
         </kw-share-shell>
     </template>
@@ -176,7 +176,8 @@
             behaviors: [Polymer.Templatizer],
             properties: {
                 share: {
-                    type: Object
+                    type: Object,
+                    value: null
                 }
             },
             observers: [
