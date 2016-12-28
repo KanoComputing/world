@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <title>kano-world-share-card demo</title>
+    <link rel="import" href="../../../bower_components/polymer/polymer.html">
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../kw-share-shell.html">
+    <link rel="import" href="../../kano-style/typography.html">
+    <style is="custom-style" include="demo-pages-shared-styles">
+        .centered {
+            max-width: 620px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        body {
+            background-color: #27323A;
+        }
+        
+        .bottom {
+            width: 100%;
+            @apply --layout-vertical;
+            min-height: 30px;
+            margin-bottom: 16px;
+        }
+        
+        iron-image.cover {
+            @apply --layout-flex;
+            z-index: 0;
+            width: 100%;
+            background: inherit;
+            border-radius: 3px;
+        }
+        
+        .stats {
+            @apply --layout-horizontal;
+            color: #435055;
+            font-size: 12px;
+            margin-top: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .stats .likes,
+        .stats .comments,
+        .stats .shares {
+            padding: 6px;
+        }
+        
+        .bottom .content {
+            @apply --layout-horizontal;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .bottom .content .description {
+            @apply --layout-flex-3;
+            color: rgba(97, 97, 97, 0.14);
+        }
+        
+        .bottom .content .description h3 {
+            margin: 0;
+            font-size: 16px;
+            line-height: 23px;
+            color: #435055;
+            font-family: var(--font-body);
+        }
+        
+        .bottom .content .description p {
+            color: #616161;
+            margin-right: 16px;
+            font-family: var(--font-body);
+            font-weight: normal;
+            font-size: 16px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .bottom .content .actions {
+            width: 25%;
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            @apply --layout-end-justified;
+            padding-top: 5%;
+        }
+        
+        .bottom .content .actions button img {
+            position: relative;
+            top: 2px;
+            left: 2px;
+        }
+        
+        .orangebutton {
+            background-color: #FF8413;
+            border-radius: 5px;
+            width: 79px;
+            height: 32px;
+            color: white;
+            border: none;
+        }
+        
+        .remixbutton {
+            width: 79px;
+        }
+        
+        .bottom .line {
+            height: 1px;
+            width: 100%;
+            display: block;
+            background-color: rgba(99, 107, 126, .24);
+        }
+        
+        div[tombstone].bottom .likes,
+        div[tombstone].bottom .comments,
+        div[tombstone].bottom .shares {
+            width: 80px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.01);
+            color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="vertical-section-container centered" style="background-color:#27323A">
+        <h3>Basic kw-share-shell demo</h3>
+        <demo-snippet>
+            <template>
+                <h3>with share data</h3>
+                <kw-share-shell id="detail">
+                    <div slot="share-slot">
+                    </div>
+                </kw-share-shell>
+                <script>
+                        document.addEventListener('WebComponentsReady', function () {
+                            var shell = document.querySelector('kw-share-shell#detail');
+                            var share = {
+                                title: 'My awesome share',
+                                description:"Please note that the new version does not use deep, and therefore requires you to import the dom-modules in every element that needs to use them.",
+                                user: {
+                                    username: 'platypusmeister',
+                                    avatar: {
+                                        urls: {
+                                            circle: 'https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/578bab1e7457798011f0ce63/avatar-circle.png'
+                                        }
+                                    }
+                                },
+                                cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
+                                date_created: new Date(),
+                                likes: new Array(27),
+                                comments_count: 5
+                            }
+                        
+                           shell.share = share;
+                        });
+                    </script>
+            </template>
+        </demo-snippet>
+    </div>
+</body>
+
+</html>
