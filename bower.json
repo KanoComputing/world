@@ -37,6 +37,7 @@
     "polymer": "Polymer/polymer#^1.7.0",
     "polymer-filters": "paulvarache/polymer-filters",
     "web-component-tester": "^4.3.5",
-    "webcomponentsjs": "webcomponents/webcomponentsjs"
+    "webcomponentsjs": "webcomponents/webcomponentsjs",
+    "paper-button": "PolymerElements/paper-button#^1.0.14"
   }
 }

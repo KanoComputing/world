@@ -4,70 +4,61 @@
 <dom-module id="kw-share-stats">
     <template>
         <style>
-             :host {
+            :host {
                 display: block;
             }
-            
-            .stats {
+            button {
                 @apply --layout-horizontal;
-                color: #435055;
-                font-size: 12px;
-                height: 25px;
-            }
-            
-            .stats .likes,
-            .stats .comments,
-            .stats .shares {
+                @apply --layout-baseline;
+                margin-right: 16px;
                 height: 30px;
                 border: none;
                 background-color: white;
                 color: var(--color-grey-darker);
                 cursor: pointer;
+                border-radius: 3px;
             }
-            
-            .stats .likes:focus,
-            .stats .comments:focus,
-            .stats .shares:focus {
+            button:focus {
                 outline: none;
+                background-color: rgba(0, 0, 0, 0.05);
             }
-            
-            .stats .likes span,
-            .stats .comments span,
-            .stats .shares span {
-                padding-right: 16px;
+            .stats {
+                @apply --layout-horizontal;
+                color: #435055;
+                font-size: 12px;
             }
-            
-            .stats .likes span img,
-            .stats .comments span img,
-            .stats .shares span img {
-                padding-right: 6px;
+            img {
+                margin-right: 6px;
             }
-            
-            div.stats[tombstone] .likes,
-            div.stats[tombstone] .comments,
-            div.stats[tombstone] .shares {
-                width: 80px;
-                height: 20px;
-                background: rgba(0, 0, 0, 0.1);
+            :host([tombstone]) button {
+                pointer-events: none;
+            }
+            :host([tombstone]) button span {
                 color: transparent;
-                margin-right: 9px;
+                background: var(--color-grey-lightest);
+                padding-left: 20px;
             }
-            
-            div.stats[tombstone] .likes span img,
-            div.stats[tombstone] .comments span img,
-            div.stats[tombstone] .shares span img {
+            :host([tombstone]) button img {
+                opacity: 0.05;
+            }
+            :host([tombstone]) button .number {
                 display: none;
             }
         </style>
         <div class="stats">
             <button class="likes" on-tap="_onLikeTapped">
-                <span><img src="/assets/icons/shares/like.svg"> </img>[[likes]] likes</span>
+                <img src="/assets/icons/shares/like.svg" />
+                <span class="number">[[likes]]</span>
+                <span>&nbsp;likes</span>
             </button>
             <button class="comments" on-tap="_onCommentTapped">
-                <span><img src="/assets/icons/shares/comment_b.svg"> </img>[[comments]] comments</span>
+                <img src="/assets/icons/shares/comment_b.svg" />
+                <span class="number">[[comments]]</span>
+                <span>&nbsp;comments</span>
             </button>
             <button class="shares" on-tap="_onShareTapped">
-                <span><img src="/assets/icons/shares/share.svg"> </img>share</span>
+                <img src="/assets/icons/shares/share.svg" />
+                <span>share</span>
             </button>
         </div>
     </template>
@@ -83,13 +74,13 @@
                 }
             },
             _onLikeTapped(){
-                this.fire("like-action");
+                this.fire('like-action');
             },
             _onCommentTapped(){
-                this.fire("comment-action");
+                this.fire('comment-action');
             },
             _onShareTapped(){
-                this.fire("share-action");
+                this.fire('share-action');
             }
         });
     </script>

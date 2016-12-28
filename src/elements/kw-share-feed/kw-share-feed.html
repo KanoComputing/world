@@ -57,8 +57,8 @@
             }
         </style>
         <div class="shell" id="shell">
-            <kw-share-card share="[[shellShare]]"></kw-share-card>
-            <kw-share-card share="[[shellShare]]"></kw-share-card>
+            <kw-share-card share tombstone></kw-share-card>
+            <kw-share-card share tombstone></kw-share-card>
         </div>
         <iron-scroll-threshold id="threshold" lower-threshold="1000" on-lower-threshold="_loadMoreData">
             <iron-list items="[[shares]]" as="share" scroll-target="threshold">
@@ -88,14 +88,13 @@
             },
             attached () {
                 this.page = 0;
-                this.shellShare = null;
             },
             _loadMoreData () {
                 // When we hit the last page
                 if (this.page === null) {
                     return;
                 }
-                fetch(`${this._getUrl('feed')}?app_name=make-music&page=${this.page}&limit=15`)
+                fetch(`${this._getUrl('feed')}?feature=true&page=${this.page}&limit=15`)
                     .then(r => r.json())
                     .then(r => {
                         r.entries.forEach(share => {
