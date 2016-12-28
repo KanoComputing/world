@@ -78,15 +78,7 @@
             }
             
             .remix-button {
-                @apply --layout-horizontal;
-                @apply --layout-center;
-                @apply --layout-center-justified;
-                background-color: var(--color-orange);
-                border-radius: 5px;
-                color: var(--color-white);
-                border: none;
-                padding: 9px 12px;
-                cursor: pointer;
+                @apply --kano-icon-button;
             }
 
             .remix-button img {
@@ -159,7 +151,7 @@
                 this.fire("remix-action");
             },
             getCoverElement () {
-                return this.$.shell;
+                return this;
             },
             _createDate (formatted) {
                 return new Date(formatted);

@@ -70,7 +70,12 @@
             }
         </style>
         <div class="top">
-            <iron-image position="bottom" class="avatar" src="[[avatarSrc]]" sizing="contain" preload fade></iron-image>
+            <iron-image class="avatar"
+                        placeholder="https://s3-eu-west-1.amazonaws.com/world.kano.me.staging/users/avatars/563890fec4d6960800c721f7/avatar-circle.png"
+                        src="[[avatarSrc]]"
+                        sizing="contain"
+                        preload
+                        fade></iron-image>
             <span class="author">[[username]]</span>
             <div class="datetime">
                 <date-util format="dd Mon yyyy" date="[[_createDate(date)]]"></date-util>

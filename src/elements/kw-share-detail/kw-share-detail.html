@@ -10,10 +10,7 @@
     <template>
         <style>
         :host {
-            @apply --layout-vertical;
-            @apply --layout-center;
-            background: white;
-            margin: 10px auto;
+            display: block
         }
         
         :host kw-share-shell {
@@ -23,10 +20,8 @@
         :host .details {
             @apply --layout-vertical;
             @apply --layout-center;
-            flex: 1 0 auto;
             display: flex;
             width: 100%;
-            height: 480px;
         }
         
         :host .details>iron-image {
@@ -39,18 +34,26 @@
         
         :host .bottom {
             @apply --layout-vertical;
+            @apply --layout-self-stretch;
             margin: 16px;
-            width: 90%;
+        }
+
+        .content {
+            border-top: 1px solid var(--color-grey-mid);
+            padding: 20px 2px;
+        }
+
+        kw-share-stats {
+            border-top: 1px solid var(--color-grey-mid);
         }
         
         :host .bottom .content {
             @apply --layout-horizontal;
-            height: 250px;
         }
         
         :host .bottom .content .description {
-            @apply --layout-flex-3;
             color: var(--color-grey-dark);
+            @apply --layout-flex;
         }
         
         :host .bottom .content .description h3 {
@@ -79,85 +82,86 @@
             padding-top: 5%;
         }
         
-        :host .bottom .content .actions button img {
-            position: relative;
-            top: 2px;
-            left: 2px;
+        .remix-button {
+            @apply --kano-icon-button;
         }
-        
-        :host .orange-button {
-            background-color: var(--color-orange);
-            border-radius: 5px;
-            width: 79px;
-            height: 32px;
-            color: var(--color-white);
-            border: none;
-        }
-        
-        :host .remix-button {
-            width: 79px;
+
+        .remix-button img {
+            margin-left: 3px;
+            margin-top: 2px;
         }
         
         :host #share-container {
-            flex: 1 0 auto;
-            @apply --layout-flex-vertical;
+            @apply --layout-flex;
+            @apply --layout-vertical;
+            width: 100%;
+            padding: 0px 16px;
+            min-height: var(--kw-share-detail-player-height, 320px);
+            height: var(--kw-share-detail-player-height, 320px);
+            box-sizing: border-box;
         }
         
         :host #share-container>* {
-            flex: 1 0 auto;
+            @apply --layout-flex;
         }
         
         *[hidden] {
             display: none !important;
         }
+
+        :host([tombstone]) .remix-button {
+            color: transparent;
+            opacity: 0.7;
+            background: var(--color-grey-lightest);
+            pointer-events: none;
+        }
         
-        :host kw-share-shell[tombstone] .detail .cover {
-            background: rgba(0, 0, 0, 0.1);
+        :host([tombstone]) .detail .cover {
+            background: var(--color-grey-lightest);
             color: transparent;
         }
         
-        :host kw-share-shell[tombstone] .content .description h3 {
-            width: 240px;
+        :host([tombstone]) .content .description h3 {
+            width: 200px;
             height: 20px;
-            background: rgba(0, 0, 0, 0.1);
+            background: var(--color-grey-lightest);
             color: transparent;
         }
         
-        :host kw-share-shell[tombstone] .content .description p {
+        :host([tombstone]) .content .description p {
             width: 100%;
-            height: 60px;
-            background: rgba(0, 0, 0, 0.1);
+            height: 30px;
+            background: var(--color-grey-lightest);
             color: transparent;
         }
         
-        :host .bottom .line {
-            height: 1px;
+        kw-social-comment {
             width: 100%;
-            display: block;
-            background-color: var(--color-grey-mid);
         }
         </style>
-        <kw-share-shell id="shell" share="[[share]]" tombstone$="[[!share]]">
-            <h3>[[share.title]]</h3>
-            <div slot="share-slot">
-                <div id="share" class="details">
-                    <iron-image src="[[share.cover_url]]" sizing="cover" hidden$="[[detailsLoaded]]"></iron-image>
-                    <div id="share-container"></div>
-                    <div class="bottom">
-                        <div class="content">
-                            <div class="description">
-                                <h3>[[share.title]]</h3>
-                                <p>[[share.description]]</p>
-                            </div>
-                            <div class="actions" hidden$="[[_computeAction(share.app)]]">
-                                <button on-tap="_onTapRemix" class="orange-button remix-button">remix<img src="/assets/icons/shares/remix.svg" /></button>
-                            </div>
+        <kw-share-shell id="shell"
+                        avatar-src="[[share.user.avatar.urls.circle]]"
+                        username="[[share.user.username]]"
+                        date="[[share.date_created]]"
+                        tombstone$="[[!share]]">
+            <div id="share" class="details">
+                <div id="share-container"></div>
+                <div class="bottom">
+                    <div class="content">
+                        <div class="description">
+                            <h3>[[share.title]]</h3>
+                            <p>[[share.description]]</p>
                         </div>
-                        <div class="line"></div>
-                        <kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]"></kw-share-stats>
+                        <div class="actions" hidden$="[[_computeAction(share.app)]]">
+                            <button on-tap="_onTapRemix" class="remix-button">
+                                <span>remix</span>
+                                <img src="/assets/icons/shares/remix.svg" />
+                            </button>
+                        </div>
                     </div>
-                    <kw-social-comment share="[[share]]"></kw-social-comment>
+                    <kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]" tombstone$="[[!share]]"></kw-share-stats>
                 </div>
+                <kw-social-comment share="[[share]]" tombstone$="[[!share]]"></kw-social-comment>
             </div>
         </kw-share-shell>
     </template>
@@ -182,6 +186,7 @@
                 return this;
             },
             _computeAction(appType) {
+                return false;
                 switch (appType) {
                     case 'kano-draw':
                     case 'make-apps':

@@ -7,51 +7,64 @@
         <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
         <link rel="import" href="../kw-share-detail.html">
         <link rel="import" href="../../kano-style/typography.html">
         <link rel="import" href="../../kano-style/button.html">
         <style is="custom-style" include="demo-pages-shared-styles">
-        .centered {
-            max-width: 600px !important;
-        }
+            .centered {
+                max-width: 600px !important;
+            }
+            kw-share-detail {
+                --kw-share-detail-player-height: 320px;
+            }
         </style>
     </head>
 
     <body unresolved>
         <div class="vertical-section-container centered">
-            <h3>With no share, renders as a tombstone</h3>
-            <demo-snippet>
-                <template>
-                    <kw-share-detail share></kw-share-detail>
-                </template>
-            </demo-snippet>
             <h3>When share is provided</h3>
             <demo-snippet>
                 <template>
+                    <paper-button id="toggle">Toggle tombstone</paper-button>
                     <kw-share-detail id="share"></kw-share-detail>
                     <script>
-                    document.addEventListener('WebComponentsReady', function() {
-                        var card = document.querySelector('kw-share-detail#share');
+                        document.addEventListener('WebComponentsReady', function () {
+                            var card = document.getElementById('share'),
+                                button = document.getElementById('toggle');
 
-                        card.share = {
-                            title: 'My awesome share',
-                            user: {
-                                username: 'platypusmeister',
-                                avatar: {
-                                    urls: {
-                                        circle: 'https://pbs.twimg.com/profile_images/613499829608665088/8VPONBWD.jpg'
-                                    }
+                            card.share = SHARE;
+
+                            button.addEventListener('click', () => {
+                                card.share = card.share ? null : SHARE;
+                                if (card.share) {
+                                    card.removeAttribute('tombstone');
+                                } else {
+                                    card.setAttribute('tombstone', true);
                                 }
-                            },
-                            cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
-                            date_created: new Date(),
-                            likes: new Array(27),
-                            comments_count: 5
-                        }
-                    });
+                            });
+                        });
                     </script>
                 </template>
             </demo-snippet>
+        </div>
+        <script>
+            const SHARE = {
+                title: 'My awesome share',
+                description: 'A share I made and I\'m proud of it',
+                user: {
+                    username: 'platypusmeister',
+                    avatar: {
+                        urls: {
+                            circle: 'https://pbs.twimg.com/profile_images/613499829608665088/8VPONBWD.jpg'
+                        }
+                    }
+                },
+                cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
+                date_created: new Date(),
+                likes: new Array(27),
+                comments_count: 5
+            };
+        </script>
     </body>
-
 </html>

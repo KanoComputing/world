@@ -31,6 +31,7 @@
                 display: none;
                 height: 100%;
                 @apply --layout-vertical;
+                @apply --layout-center;
             }
             #feed {
                 height: 100%;
@@ -67,6 +68,23 @@
                     color: black;
                 };
             }
+            .back-button {
+                margin: 20px 0px;
+                background: black;
+                color: white;
+                border: 0px;
+                padding: 7px 12px;
+                border-radius: 50px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+            kw-share-detail {
+                width: 100%;
+                --kw-share-detail-player-height: 320px;
+            }
+            .details {
+                width: 480px;
+            }
             @media screen and (max-width: 1345px) {
                 .promo {
                     display: none;
@@ -82,13 +100,22 @@
                 <div class="promo">
                     <div class="follow"></div>
                     <div class="stats">
-                        <kw-stat-card class="online" heading="Online today" value="[[_commaify(stats.total_active_today)]]"></kw-stat-card>
-                        <kw-stat-card class="lines" heading="Lines of code" value="[[_commaify(stats.total_lines_of_code)]]"></kw-stat-card>
+                        <kw-stat-card class="online"
+                                        heading="Online today"
+                                        value="[[_commaify(stats.total_active_today)]]"
+                                        icon-src="https://world.kano.me/assets/icons/stats/online.png"></kw-stat-card>
+                        <kw-stat-card class="lines"
+                                        heading="Lines of code"
+                                        value="[[_commaify(stats.total_lines_of_code)]]"
+                                        icon-src="https://world.kano.me/assets/icons/stats/lines-of-code.png"></kw-stat-card>
                     </div>
                 </div>
             </div>
             <div id="detail">
-                <kw-share-detail share="[[selectedShare]]"></kw-share-detail>
+                <div class="details">
+                    <button type="button" class="back-button" on-tap="_backToFeed">Back to feed</button>
+                    <kw-share-detail share="[[selectedShare]]"></kw-share-detail>
+                </div>
             </div>
         </div>
     </template>
@@ -122,6 +149,21 @@
                     }
                     this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                         this.stats = stats;
+                        if (this._supportsAnimations) {
+                            for (let i = 0; i < displays.length; i++) {
+                                infoElement = displays[i].getInfoElement();
+                                infoElement.animate([{
+                                    transform: `translateX(-120%)`
+                                }, {
+                                    transform: `translateX(0%)`
+                                }], {
+                                    delay: 100,
+                                    duration: 400,
+                                    easing: 'ease-out',
+                                    fill: 'forwards'
+                                });
+                            }
+                        }
                     });
                 });
             },
@@ -229,6 +271,9 @@
                 } else {
                     this._showDetail();
                 }
+            },
+            _backToFeed () {
+                this.set('route.path', '');
             }
         });
     </script>
