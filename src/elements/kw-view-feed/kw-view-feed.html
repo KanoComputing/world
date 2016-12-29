@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
 
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../kw-share-feed/kw-share-feed.html">
@@ -84,10 +85,35 @@
             }
             kw-share-detail {
                 width: 100%;
-                --kw-share-detail-player-height: 320px;
+                --kw-share-detail-player-height: 360px;
             }
             .details {
-                width: 640px;
+                width: 680px;
+            }
+            @media screen and (max-width: 680px) {
+                .details {
+                    width: 100%;
+                }
+                kw-share-detail {
+                    --kw-share-shell: {
+                        border-radius: 0px;
+                        border-right: 0px;
+                        border-left: 0px;
+                    };
+                }
+                .back-button {
+                    margin-left: 20px;
+                }
+            }
+            @media screen and (max-width: 580px) {
+                kw-share-feed {
+                    width: 100%;
+                    --kw-share-shell: {
+                        border-radius: 0px;
+                        border-right: 0px;
+                        border-left: 0px;
+                    };
+                }
             }
             @media screen and (max-width: 1345px) {
                 .promo {
@@ -98,6 +124,8 @@
                 }
             }
         </style>
+        <iron-media-query query="(max-width: 680px)" query-matches="{{detailQueryMatches}}"></iron-media-query>
+        <iron-media-query query="(max-width: 580px)" query-matches="{{feedQueryMatches}}"></iron-media-query>
         <kano-session token="{{token}}" user="{{user}}"></kano-session>
         <app-route route="{{route}}" pattern="/:slug" data="{{routeData}}"></app-route>
         <div class="content">
@@ -143,7 +171,8 @@
                 }
             },
             observers: [
-                '_routeChanged(route.path)'
+                '_routeChanged(route.path)',
+                '_queryMatchesChanged(detailQueryMatches, feedQueryMatches)'
             ],
             attached () {
                 this._supportsAnimations = ('animate' in HTMLElement.prototype);
@@ -175,6 +204,9 @@
                         }
                     });
                 });
+            },
+            _queryMatchesChanged () {
+                this.updateStyles();
             },
             _commaify (n) {
                 return n.toLocaleString();

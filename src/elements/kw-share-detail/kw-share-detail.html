@@ -9,135 +9,135 @@
 <dom-module id="kw-share-detail">
     <template>
         <style>
-        :host {
-            display: block
-        }
-        
-        :host kw-share-shell {
-            width: 100%;
-        }
-        
-        :host .details {
-            @apply --layout-vertical;
-            @apply --layout-center;
-            display: flex;
-            width: 100%;
-        }
-        
-        :host .details>iron-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        :host .bottom {
-            @apply --layout-vertical;
-            @apply --layout-self-stretch;
-            margin: 16px;
-        }
+            :host {
+                display: block
+            }
+            
+            :host kw-share-shell {
+                width: 100%;
+            }
+            
+            :host .details {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                display: flex;
+                width: 100%;
+            }
+            
+            :host .details>iron-image {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            
+            :host .bottom {
+                @apply --layout-vertical;
+                @apply --layout-self-stretch;
+                margin: 16px;
+            }
 
-        .content {
-            border-top: 1px solid var(--color-grey-mid);
-            padding: 20px 2px;
-        }
+            .content {
+                border-top: 1px solid var(--color-grey-mid);
+                padding: 20px 2px;
+            }
 
-        kw-share-stats {
-            border-top: 1px solid var(--color-grey-mid);
-        }
-        
-        :host .bottom .content {
-            @apply --layout-horizontal;
-        }
-        
-        :host .bottom .content .description {
-            color: var(--color-grey-dark);
-            @apply --layout-flex;
-        }
-        
-        :host .bottom .content .description h3 {
-            margin: 0;
-            font-size: 16px;
-            line-height: 23px;
-            color: var(--color-grey-darker);
-            font-family: var(--font-body);
-        }
-        
-        :host .bottom .content .description p {
-            color: var(--color-grey-dark);
-            margin-right: 16px;
-            font-family: var(--font-body);
-            font-weight: normal;
-            font-size: 16px;
-            margin-top: 8px;
-            margin-bottom: 8px;
-        }
-        
-        :host .bottom .content .actions {
-            width: 25%;
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            @apply --layout-end-justified;
-            padding-top: 5%;
-        }
-        
-        .remix-button {
-            @apply --kano-icon-button;
-        }
+            kw-share-stats {
+                border-top: 1px solid var(--color-grey-mid);
+            }
+            
+            :host .bottom .content {
+                @apply --layout-horizontal;
+            }
+            
+            :host .bottom .content .description {
+                color: var(--color-grey-dark);
+                @apply --layout-flex;
+            }
+            
+            :host .bottom .content .description h3 {
+                margin: 0;
+                font-size: 16px;
+                line-height: 23px;
+                color: var(--color-grey-darker);
+                font-family: var(--font-body);
+            }
+            
+            :host .bottom .content .description p {
+                color: var(--color-grey-dark);
+                margin-right: 16px;
+                font-family: var(--font-body);
+                font-weight: normal;
+                font-size: 16px;
+                margin-top: 8px;
+                margin-bottom: 8px;
+            }
+            
+            :host .bottom .content .actions {
+                width: 25%;
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-end-justified;
+                padding-top: 5%;
+            }
+            
+            .remix-button {
+                @apply --kano-icon-button;
+            }
 
-        .remix-button img {
-            margin-left: 3px;
-            margin-top: 2px;
-        }
-        
-        :host #share-container {
-            @apply --layout-flex;
-            width: 100%;
-            padding: 0px 16px;
-            min-height: var(--kw-share-detail-player-height, 320px);
-            height: var(--kw-share-detail-player-height, 320px);
-            box-sizing: border-box;
-        }
-        
-        :host #share-container>* {
-            width: 100%;
-            height: 100%;
-        }
-        
-        *[hidden] {
-            display: none !important;
-        }
+            .remix-button img {
+                margin-left: 3px;
+                margin-top: 2px;
+            }
+            
+            :host #share-container {
+                @apply --layout-flex;
+                width: 100%;
+                padding: 0px 16px;
+                min-height: var(--kw-share-detail-player-height, 320px);
+                height: var(--kw-share-detail-player-height, 320px);
+                box-sizing: border-box;
+            }
+            
+            :host #share-container>* {
+                width: 100%;
+                height: 100%;
+            }
+            
+            *[hidden] {
+                display: none !important;
+            }
 
-        :host([tombstone]) .remix-button {
-            color: transparent;
-            opacity: 0.7;
-            background: var(--color-grey-lightest);
-            pointer-events: none;
-        }
-        
-        :host([tombstone]) .detail .cover {
-            background: var(--color-grey-lightest);
-            color: transparent;
-        }
-        
-        :host([tombstone]) .content .description h3 {
-            width: 200px;
-            height: 20px;
-            background: var(--color-grey-lightest);
-            color: transparent;
-        }
-        
-        :host([tombstone]) .content .description p {
-            width: 100%;
-            height: 30px;
-            background: var(--color-grey-lightest);
-            color: transparent;
-        }
-        
-        kw-social-comment {
-            width: 100%;
-        }
+            :host([tombstone]) .remix-button {
+                color: transparent;
+                opacity: 0.7;
+                background: var(--color-grey-lightest);
+                pointer-events: none;
+            }
+            
+            :host([tombstone]) .detail .cover {
+                background: var(--color-grey-lightest);
+                color: transparent;
+            }
+            
+            :host([tombstone]) .content .description h3 {
+                width: 200px;
+                height: 20px;
+                background: var(--color-grey-lightest);
+                color: transparent;
+            }
+            
+            :host([tombstone]) .content .description p {
+                width: 100%;
+                height: 30px;
+                background: var(--color-grey-lightest);
+                color: transparent;
+            }
+            
+            kw-social-comment {
+                width: 100%;
+            }
         </style>
         <kw-share-shell id="shell"
                         avatar-src="[[share.user.avatar.urls.circle]]"
@@ -168,7 +168,8 @@
     <script>
     (function() {
         const appMapping = {
-            'make-music': 'kw-music-share'
+            'make-music': 'kw-music-share',
+            'kano-draw': 'kw-art-share',
         };
 
         Polymer({

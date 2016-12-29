@@ -1,0 +1,140 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../../bower_components/prism-element/prism-highlighter.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<script src="../../bower_components/prism/components/prism-coffeescript.js"></script>
+
+<link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../kano-style/color.html">
+
+<dom-module id="kw-art-share">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply --layout-horizontal;
+                overflow: hidden;
+            }
+            marked-element {
+                flex: 1 1 auto;
+                background-color: #605864;
+                border-left: 1px solid #524558;
+                overflow: auto;
+                padding-left: 1em;
+            }
+            .markdown-html {
+                background-color: #605864;
+                color: #fff;
+            }
+            .markdown-html .token.number {
+                color: #58d6fa;
+            }
+            .markdown-html .token.keyword {
+                color: #8a7d91;
+            }
+            .markdown-html .token.title {
+                color: #ff842a;
+            }
+            .markdown-html .token.string {
+                color: #e95c5a;
+            }
+            .markdown-html .token.punctuation,
+            .markdown-html .token.operator {
+                color: #9bce64;
+            }
+            button {
+                display: none;
+                width: calc(var(--kw-share-detail-player-height) - 40px);
+                height: 40px;
+                border: 0px;
+                font-size: 18px;
+                cursor: pointer;
+                font-family: var(--font-body);
+                background: var(--color-orange);
+                color: white;
+            }
+            button:focus {
+                outline: none;
+                background: #ec6400;
+            }
+            iron-image {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                min-height: var(--kw-share-detail-player-height);
+                min-width: var(--kw-share-detail-player-height);
+            }
+            @media screen and (max-width: 680px) {
+                :host {
+                    @apply --layout-vertical;
+                    @apply --layout-center;
+                }
+                marked-element {
+                    @apply --layout-self-stretch;
+                }
+                iron-image {
+                    width: 100%;
+                    height: auto;
+                    flex: 1 0 auto;
+                    min-height: auto;
+                    min-width: auto;
+                }
+                button {
+                    display: block;
+                }
+                button.code {
+                    width: 100%;
+                }
+                #image:not(.selected),
+                #code:not(.selected) {
+                    display: none !important;
+                }
+            }
+        </style>
+        <prism-highlighter ></prism-highlighter>
+        <iron-image id="image" src="[[share.cover_url]]" sizing="contain" preload fade></iron-image>
+        <marked-element id="code" markdown="[[mdCode]]">
+            <div class="markdown-html"></div>
+        </marked-element>
+        <button id="toggle" type="button" on-tap="_toggleCodeView">[[_computeButtonLabel(state)]]</button>
+    </template>
+    <script>
+        Polymer({
+            is:'kw-art-share',
+            properties: {
+                share: {
+                    type: Object,
+                    observer: '_shareChanged'
+                }
+            },
+            observers: [
+                '_stateChanged(state)'
+            ],
+            attached () {
+                this.state = 'image';
+            },
+            _shareChanged () {
+                let attachment = this.share.attachment_url;
+                if (attachment) {
+                    fetch(attachment)
+                        .then(r => r.text())
+                        .then(code => {
+                            this.code = code;
+                            this.mdCode = '```coffeescript\n' + code + '\n```';
+                        });
+                }
+            },
+            _toggleCodeView () {
+                this.state = this.state === 'image' ? 'code' : 'image';
+            },
+            _stateChanged (state) {
+                this.toggleClass('selected', this.state === 'image', this.$.image);
+                this.toggleClass('selected', this.state === 'code', this.$.code);
+                this.toggleClass('code', this.state === 'code', this.$.toggle);
+            },
+            _computeButtonLabel (state) {
+                return state === 'image' ? 'See the code' : 'Back';
+            }
+        });
+    </script>
+</dom-module>
