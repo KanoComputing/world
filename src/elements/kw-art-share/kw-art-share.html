@@ -2,9 +2,8 @@
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <link rel="import" href="../../bower_components/prism-element/prism-highlighter.html">
+<link rel="import" href="./highlight-theme.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<script src="../../bower_components/prism/components/prism-coffeescript.js"></script>
-
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kano-style/color.html">
 
@@ -42,10 +41,11 @@
             .markdown-html .token.punctuation,
             .markdown-html .token.operator {
                 color: #9bce64;
+                background: transparent;
             }
             button {
                 display: none;
-                width: calc(var(--kw-share-detail-player-height) - 40px);
+                width: calc(var(--kw-share-detail-player-height, 320px) - 40px);
                 height: 40px;
                 border: 0px;
                 font-size: 18px;
@@ -61,8 +61,10 @@
             iron-image {
                 @apply --layout-vertical;
                 @apply --layout-center;
-                min-height: var(--kw-share-detail-player-height);
-                min-width: var(--kw-share-detail-player-height);
+                height: var(--kw-share-detail-player-height, 320px);
+                width: var(--kw-share-detail-player-height, 320px);
+                min-height: var(--kw-share-detail-player-height, 320px);
+                min-width: var(--kw-share-detail-player-height, 320px);
             }
             @media screen and (max-width: 680px) {
                 :host {

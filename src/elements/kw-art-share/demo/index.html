@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>kw-auth-modal demo</title>
+
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../kw-art-share.html">
+        <link rel="import" href="../../kano-style/typography.html">
+
+        <style is="custom-style" include="demo-pages-shared-styles">
+            kw-art-share {
+                width: 680px;
+                height: 320px;
+            }
+        </style>
+    </head>
+
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>List of cards with two buttons as controls</h3>
+            <demo-snippet>
+                <template>
+                    <kw-art-share id="share"></kw-art-share>
+                    <script>
+                        document.addEventListener('WebComponentsReady', function () {
+                            var view = document.getElementById('share');
+
+                            view.share = {
+                                cover_url: 'https://s3-eu-west-1.amazonaws.com/world.kano.me.staging/share-items/covers/5864f78f613260265343da2b.png',
+                                attachment_url: 'https://s3-eu-west-1.amazonaws.com/world.kano.me.staging/share-items/attachments/5864f78f613260265343da2b.draw'
+                            };
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+    </body>
+</html>
