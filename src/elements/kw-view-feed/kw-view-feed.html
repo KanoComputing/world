@@ -1,10 +1,13 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
 
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../kw-share-feed/kw-share-feed.html">
 <link rel="import" href="../kw-share-detail/kw-share-detail.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
+<link rel="import" href="../kano-session/kano-session.html">
 
 <dom-module id="kw-view-feed">
     <template>
@@ -31,6 +34,8 @@
                 display: none;
                 height: 100%;
                 @apply --layout-vertical;
+                @apply --layout-center;
+                overflow: auto;
             }
             #feed {
                 height: 100%;
@@ -67,6 +72,49 @@
                     color: black;
                 };
             }
+            .back-button {
+                margin: 20px 0px;
+                background: black;
+                color: white;
+                border: 0px;
+                padding: 7px 12px;
+                border-radius: 50px;
+                cursor: pointer;
+                font-size: 16px;
+                font-family: var(--font-body);
+            }
+            kw-share-detail {
+                width: 100%;
+                --kw-share-detail-player-height: 360px;
+            }
+            .details {
+                width: 680px;
+            }
+            @media screen and (max-width: 680px) {
+                .details {
+                    width: 100%;
+                }
+                kw-share-detail {
+                    --kw-share-shell: {
+                        border-radius: 0px;
+                        border-right: 0px;
+                        border-left: 0px;
+                    };
+                }
+                .back-button {
+                    margin-left: 20px;
+                }
+            }
+            @media screen and (max-width: 580px) {
+                kw-share-feed {
+                    width: 100%;
+                    --kw-share-shell: {
+                        border-radius: 0px;
+                        border-right: 0px;
+                        border-left: 0px;
+                    };
+                }
+            }
             @media screen and (max-width: 1345px) {
                 .promo {
                     display: none;
@@ -76,19 +124,34 @@
                 }
             }
         </style>
+        <iron-media-query query="(max-width: 680px)" query-matches="{{detailQueryMatches}}"></iron-media-query>
+        <iron-media-query query="(max-width: 580px)" query-matches="{{feedQueryMatches}}"></iron-media-query>
+        <kano-session token="{{token}}" user="{{user}}"></kano-session>
+        <app-route route="{{route}}" pattern="/:slug" data="{{routeData}}"></app-route>
         <div class="content">
             <div id="feed">
-                <kw-share-feed selected-share="{{selectedShare}}"></kw-share-feed>
+                <kw-share-feed id="share-feed" selected-share="{{selectedShare}}"></kw-share-feed>
                 <div class="promo">
                     <div class="follow"></div>
                     <div class="stats">
-                        <kw-stat-card class="online" heading="Online today" value="[[_commaify(stats.total_active_today)]]"></kw-stat-card>
-                        <kw-stat-card class="lines" heading="Lines of code" value="[[_commaify(stats.total_lines_of_code)]]"></kw-stat-card>
+                        <kw-stat-card class="online"
+                                        heading="Online today"
+                                        value="[[_commaify(stats.total_active_today)]]"
+                                        icon-src="https://world.kano.me/assets/icons/stats/online.png"></kw-stat-card>
+                        <kw-stat-card class="lines"
+                                        heading="Lines of code"
+                                        value="[[_commaify(stats.total_lines_of_code)]]"
+                                        icon-src="https://world.kano.me/assets/icons/stats/lines-of-code.png"></kw-stat-card>
                     </div>
                 </div>
             </div>
             <div id="detail">
-                <kw-share-detail share="[[selectedShare]]"></kw-share-detail>
+                <div class="details">
+                    <button type="button" class="back-button" on-tap="_backToFeed">Back to feed</button>
+                    <kw-share-detail share="[[selectedShare]]"
+                                        tombstone$="[[!selectedShare]]"
+                                        on-post-comment="_onPostComment"></kw-share-detail>
+                </div>
             </div>
         </div>
     </template>
@@ -103,11 +166,13 @@
                 },
                 selectedShare: {
                     type: Object,
+                    value: null,
                     observer: '_selectedShareChanged'
                 }
             },
             observers: [
-                '_routeChanged(route.path)'
+                '_routeChanged(route.path)',
+                '_queryMatchesChanged(detailQueryMatches, feedQueryMatches)'
             ],
             attached () {
                 this._supportsAnimations = ('animate' in HTMLElement.prototype);
@@ -122,8 +187,26 @@
                     }
                     this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                         this.stats = stats;
+                        if (this._supportsAnimations) {
+                            for (let i = 0; i < displays.length; i++) {
+                                infoElement = displays[i].getInfoElement();
+                                infoElement.animate([{
+                                    transform: `translateX(-120%)`
+                                }, {
+                                    transform: `translateX(0%)`
+                                }], {
+                                    delay: 100,
+                                    duration: 400,
+                                    easing: 'ease-out',
+                                    fill: 'forwards'
+                                });
+                            }
+                        }
                     });
                 });
+            },
+            _queryMatchesChanged () {
+                this.updateStyles();
             },
             _commaify (n) {
                 return n.toLocaleString();
@@ -133,7 +216,18 @@
                     return new Promise((resolve, reject) => {
                         let from = this.$$('kw-share-feed').getSelectedShareElement(),
                             to = this.$$('kw-share-detail').getShareElement(),
-                            fromRect, toRect;
+                            fromRect, toRect, timing, animation;
+
+                        if (!from) {
+                            this.$.feed.style.display = 'flex';
+                            this.$.detail.style.display = 'none';
+                            return resolve();
+                        }
+
+                        timing = {
+                            duration: 200,
+                            easing: 'linear'
+                        };
 
                         // Display the feed view
                         this.$.feed.style.display = 'flex';
@@ -146,27 +240,28 @@
                         to.style.transformOrigin = 'top left';
 
                         // Animates the detail view to fit the previous share in the list, then hides it
-                        to.animate([{
+                        animation = to.animate([{
                             transform: 'translate(0px, 0px) scale(1, 1)',
                             opacity: 1
                         }, {
                             transform: `translate(${fromRect.left - toRect.left}px, ${fromRect.top - toRect.top}px) scale(${fromRect.width / toRect.width}, ${fromRect.height / toRect.height})`,
                             opacity: 0
-                        }], {
-                            duration: 200
-                        }).onfinish = () => {
+                        }], timing);
+                        
+                        animation.onfinish = () => {
                             this.$.detail.style.display = 'none';
+                            this.$.feed.style.display = 'flex';
                             resolve();
                         };
 
+                        this.$.detail.animate({
+                            opacity: [1, 0]
+                        }, timing);
+
                         // Fade in the feed view
-                        this.$.feed.animate([{
-                            opacity: 0
-                        }, {
-                            opacity: 1
-                        }], {
-                            duration: 200
-                        });
+                        animation = this.$.feed.animate({
+                            opacity: [0, 1]
+                        }, timing);
                     });
                 } else {
                     this.$.feed.style.display = 'flex';
@@ -178,7 +273,12 @@
                 if (this.selectedShare && this._supportsAnimations) {
                     let from = this.$$('kw-share-feed').getSelectedShareElement(),
                         to = this.$$('kw-share-detail').getShareElement(),
-                        fromRect, toRect;
+                        fromRect, toRect, timing, animation;
+
+                    timing = {
+                        duration: 200,
+                        easing: 'linear'
+                    };
 
                     // Display the detail view
                     this.$.detail.style.display = 'flex';
@@ -197,19 +297,20 @@
                     }, {
                         transform: 'translate(0px, 0px) scale(1, 1)',
                         opacity: 1
-                    }], {
-                        duration: 200
-                    });
+                    }], timing);
+
+                    this.$.detail.animate({
+                        opacity: [0, 1]
+                    }, timing);
 
                     // Fade out the feed view
-                    this.$.feed.animate([{
-                        opacity: 1
-                    }, {
-                        opacity: 0
-                    }], {
-                        duration: 200
-                    }).onfinish = () => {
+                    animation = this.$.feed.animate({
+                        opacity: [1, 0]
+                    }, timing);
+                    
+                    animation.onfinish = () => {
                         this.$.feed.style.display = 'none';
+                        this.$.detail.style.display = 'flex';
                     };
                 } else {
                     this.$.feed.style.display = 'none';
@@ -223,12 +324,72 @@
             },
             _routeChanged (path) {
                 if (path === '') {
+                    if (!this.$['share-feed'].shares || this.$['share-feed'].shares.length) {
+                        this.$['share-feed']._loadMoreData();
+                    }
                     this._showFeed().then(() => {
                         this.selectedShare = null;
                     });
                 } else {
+                    if (!this.selectedShare) {
+                        this._loadIndividualShare();
+                    } else {
+                        this._getShareComment(this.selectedShare.id).then(comments => {
+                            this.set('selectedShare.comments', comments);
+                        });
+                    }
                     this._showDetail();
                 }
+            },
+            _backToFeed () {
+                this.set('route.path', '');
+            },
+            _loadIndividualShare () {
+                let slug;
+                if (!this.routeData) {
+                    return;
+                }
+                slug = this.routeData.slug;
+
+                this.cacheOrAPI(this._getUrl('share-by-slug', { slug })).then(res => {
+                    this.selectedShare = res.item;
+                    this._getShareComment(this.selectedShare.id).then(comments => {
+                        this.set('selectedShare.comments', comments);
+                    });
+                });
+            },
+            _getShareComment (id) {
+                return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
+            },
+            _onPostComment (e) {
+                let commentBody = e.detail.value,
+                    requestBody = {
+                        item_id: this.selectedShare.id,
+                        type: 'share',
+                        text: commentBody
+                    },
+                    requestHeaders = new Headers(),
+                    optimisticComment = {
+                        author: this.user,
+                        text: commentBody,
+                        date_created: new Date(),
+                        optimistic: true
+                    };
+                this.unshift('selectedShare.comments', optimisticComment);
+
+                requestHeaders.append('Content-Type', 'application/json');
+                requestHeaders.append('Authorization', this.token);
+
+                fetch(this._getUrl('post-comment'), {
+                    method: 'POST',
+                    headers: requestHeaders,
+                    body: JSON.stringify(requestBody)
+                }).then(r => r.json())
+                    .then(res => {
+                        if (res.success) {
+                            this.set('selectedShare.comments.0.optimistic', false);
+                        }
+                    });
             }
         });
     </script>

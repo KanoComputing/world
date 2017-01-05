@@ -9,6 +9,7 @@
         <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
         <link rel="import" href="../kw-share-card.html">
         <link rel="import" href="../../kano-style/typography.html">
         <link rel="import" href="../../kano-style/button.html">
@@ -25,35 +26,45 @@
             <h3>With no share, renders as a tombstone</h3>
             <demo-snippet>
                 <template>
-                    <kw-share-card share></kw-share-card>
-                </template>
-            </demo-snippet>
-            <h3>When share is provided</h3>
-            <demo-snippet>
-                <template>
+                    <paper-button id="toggle">Toggle tombstone</paper-button>
                     <kw-share-card id="share"></kw-share-card>
                     <script>
                         document.addEventListener('WebComponentsReady', function () {
-                            var card = document.querySelector('kw-share-card#share');
+                            var card = document.getElementById('share'),
+                                button = document.getElementById('toggle');
 
-                            card.share = {
-                                title: 'My awesome share',
-                                user: {
-                                    username: 'platypusmeister',
-                                    avatar: {
-                                        urls: {
-                                            circle: 'https://pbs.twimg.com/profile_images/613499829608665088/8VPONBWD.jpg'
-                                        }
-                                    }
-                                },
-                                cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
-                                date_created: new Date(),
-                                likes: new Array(27),
-                                comments_count: 5
-                            }
+                            card.share = SHARE;
+
+                            button.addEventListener('click', () => {
+                                card.share = card.share ? null : SHARE;
+                                if (card.share) {
+                                    card.removeAttribute('tombstone');
+                                } else {
+                                    card.setAttribute('tombstone', true);
+                                }
+                            });
                         });
                     </script>
                 </template>
             </demo-snippet>
+        </div>
+        <script>
+            const SHARE = {
+                title: 'My awesome share',
+                description: 'A share I made and I\'m proud of it',
+                user: {
+                    username: 'platypusmeister',
+                    avatar: {
+                        urls: {
+                            circle: 'https://pbs.twimg.com/profile_images/613499829608665088/8VPONBWD.jpg'
+                        }
+                    }
+                },
+                cover_url: 'http://vignette2.wikia.nocookie.net/adventuretimewithfinnandjake/images/0/0b/Blush.jpg/revision/latest',
+                date_created: new Date(),
+                likes: new Array(27),
+                comments_count: 5
+            };
+        </script>
     </body>
 </html>

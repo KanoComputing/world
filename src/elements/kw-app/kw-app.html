@@ -15,6 +15,10 @@
 <link rel="import" href="../../js/config.html">
 
 <dom-module id="kw-app">
+    <link rel="lazy-import" href="/elements/kw-view-welcome/kw-view-welcome.html" group="welcome">
+    <link rel="lazy-import" href="/elements/kw-view-start/kw-view-start.html" group="start">
+    <link rel="lazy-import" href="/elements/kw-view-projects/kw-view-projects.html" group="projects">
+    <link rel="lazy-import" href="/elements/kw-view-feed/kw-view-feed.html" group="shares">
     <template>
         <style>
             :host {
@@ -147,11 +151,14 @@
             iron-pages[unresolved] {
                 opacity: 1;
             }
+            .footer[page="shares"] {
+                display: none !important;
+            }
         </style>
         <app-location route="{{route}}"></app-location>
         <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
         <kano-session id="session" user="{{user}}" token="{{token}}" include-profile></kano-session>
-        <div class="footer" hidden$="[[simplePage]]">
+        <div class="footer" hidden$="[[simplePage]]" page$="[[routeData.page]]">
             <div class="stats">
                 <kw-stat-card class="connected" heading="Connected Kanos" value="[[_commaify(stats.total_users)]]" icon-src="/assets/icons/stats/connected.png"></kw-stat-card>
                 <kw-stat-card class="online" heading="Online today" value="[[_commaify(stats.total_active_today)]]" icon-src="/assets/icons/stats/online.png"></kw-stat-card>
@@ -223,7 +230,7 @@
         </kano-nav>
     </template>
     <script>
-        const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/];
+        const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/, /^\/shares/];
         Polymer({
             is: 'kw-app',
             behaviors: [

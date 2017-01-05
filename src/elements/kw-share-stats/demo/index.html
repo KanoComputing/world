@@ -9,6 +9,7 @@
     <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
     <link rel="import" href="../kw-share-stats.html">
     <style is="custom-style" include="demo-pages-shared-styles">
 
@@ -16,11 +17,27 @@
 </head>
 
 <body>
-    <div class="vertical-section-container">
+    <div class="vertical-section-container centered">
         <h3>Basic kw-share-stats demo</h3>
         <demo-snippet>
+            <h3>Simple demo</h3>
             <template>
+                <paper-button id="toggle">Toggle tombstone</paper-button>
                <kw-share-stats id="stats" likes="100" comments="204"> </kw-share-stats>
+               <script>
+                   document.addEventListener('WebComponentsReady', function () {
+                        var stats = document.getElementById('stats'),
+                            button = document.getElementById('toggle');
+
+                        button.addEventListener('click', () => {
+                            if (stats.hasAttribute('tombstone')) {
+                                stats.removeAttribute('tombstone');
+                            } else {
+                                stats.setAttribute('tombstone', true);
+                            }
+                        });
+                    });
+               </script>
             </template>
         </demo-snippet>
     </div>
