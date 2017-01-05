@@ -250,7 +250,7 @@
                         
                         animation.onfinish = () => {
                             this.$.detail.style.display = 'none';
-                            this.$.feed.style.position = 'flex';
+                            this.$.feed.style.display = 'flex';
                             resolve();
                         };
 
@@ -378,7 +378,7 @@
                 this.unshift('selectedShare.comments', optimisticComment);
 
                 requestHeaders.append('Content-Type', 'application/json');
-                requestHeaders.append('AUthorization', this.token);
+                requestHeaders.append('Authorization', this.token);
 
                 fetch(this._getUrl('post-comment'), {
                     method: 'POST',
