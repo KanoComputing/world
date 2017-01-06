@@ -11,27 +11,49 @@
         <style>
             :host {
                 position: relative;
-                @apply --layout-vertical;
                 @apply --layout-center-justified;
             }
-            :host(:last-child) .line.last, 
+            :host([horizontal]) {
+                @apply --layout-vertical;
+            }
+            :host([vertical]) {
+                @apply --layout-horizontal;
+            }
+            .step {
+                @apply --layout-center;
+            }
+            :host([horizontal]) .step {
+                @apply --layout-horizontal;
+            }
+            :host([vertical]) .step {
+                @apply --layout-vertical;
+                height: 100%;
+            }
+            :host .label-container {
+                position: absolute;
+                @apply --layout-center-justified;
+            }
+            :host([horizontal]) .label-container {
+                @apply --layout-horizontal;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+            }
+            :host([vertical]) .label-container {
+                @apply --layout-vertical;
+                top: 0;
+                right: 0;
+                height: 100%;
+            }
+            :host(:last-child) .line.last,
             :host(:first-child) .line.first {
                 visibility: hidden;
             }
-            :host .label::slotted(*) {
-                @apply --layout-center;
-                @apply --layout-center-justified;
-                height: 30px;
-            }
-            .step {
-                @apply --layout-horizontal;
-                @apply --layout-center;
-            }
             .line {
                 @apply --layout-flex;
-                height: 2px;
-                background-color: #fff;
-                margin-bottom: 30px;
+                min-height: 2px;
+                min-width: 2px;
+                background-color: var(--kano-step-line-color, #000);
             }
             :host(:first-child) .line {
                 left: 10px;
@@ -39,17 +61,14 @@
             :host(:last-child) .line {
                 left: -10px;
             }
-            .center {
-                @apply --layout-vertical;
-            }
         </style>
             <div class="step">
                 <div class="line first"></div>
-                <div class="center">
-                    <slot name="icon" class="icon"></slot>
-                    <slot name="label" class="label"></slot>
-                </div>
+                <slot name="icon"></slot>
                 <div class="line last"></div>
+            </div>
+            <div class="label-container">
+                <slot name="label"></slot>
             </div>
     </template>
     <script>
