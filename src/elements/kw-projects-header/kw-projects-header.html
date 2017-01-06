@@ -11,7 +11,6 @@
 <link rel="import" href="../../js/config.html">
 <link rel="import" href="../kano-projects-listing/kano-projects-listing-behavior.html">
 
-
 <dom-module id="kw-projects-header">
     <template>
         <style>
@@ -100,37 +99,14 @@
                 height: 60px;
                 width: 60px;
             }
-            .step-icon a {
-                display: flex;
-                flex: 1;
-                height: 100%;
-                /*disabling link by default*/
-                pointer-events: none;
-            }
-            .step-icon.current a,
-            .step-icon.done a,
-            kano-step:first-child .step-icon a {
-                pointer-events: auto;
-            }
-            .step-icon.locked {
-                background-image: url("/assets/projects/simple-progress/lock-circle.svg");
-            }
-            kano-step:first-child .step-icon:not(.done) {
-                background-image: url("/assets/projects/simple-progress/make-button.svg");
-                background-size: 82%;
-                width: 110px;
-                height: 60px;
-            }
+            kano-step:first-child .step-icon:not(.done),
             .step-icon.current {
                 background-image: url("/assets/projects/simple-progress/make-button.svg");
                 background-size: 82%;
                 width: 110px;
-                height: 60px;
             }
             .step-icon.done {
                 background-image: url("/assets/projects/simple-progress/star.svg");
-                height: 60px;
-                width: 60px;
             }
             kano-step:last-child .step-icon {
                 background-image: url("/assets/projects/simple-progress/lock-circle-large.svg");
@@ -140,16 +116,11 @@
             }
             kano-step:last-child .step-icon.current {
                 background-image: url("/assets/projects/simple-progress/make-button-big.svg");
-                background-size: 70%;
-                width: 120px;
                 height: 84px;
             }
             kano-step:last-child .step-icon.done {
                 background-image: url("/assets/projects/simple-progress/complete-row.svg");
-                background-size: 70%;
                 background-position: bottom;
-                width: 120px;
-                height: 120px;
                 padding-top: 20px;
             }
             .left-button, .right-button {
@@ -164,6 +135,18 @@
                 border: 0;
                 cursor: pointer;
                 padding: 12px;
+            }
+            .step-icon a {
+                display: flex;
+                flex: 1;
+                height: 100%;
+                /*disabling link by default*/
+                pointer-events: none;
+            }
+            .step-icon.current a,
+            .step-icon.done a,
+            kano-step:first-child .step-icon a {
+                pointer-events: auto;
             }
             .left-button:focus, .right-button:focus {
                 outline: none;
@@ -438,7 +421,6 @@
                     //reset icons if user is logged out
                     Polymer.dom(this.root).querySelectorAll('.step-icon').forEach((el) => {
                         el.classList.remove('done');
-                        el.classList.remove('locked');
                         el.classList.remove('current');
                     });
                     this._computeStoredProgress();
