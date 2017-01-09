@@ -253,19 +253,13 @@
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                     this.stats = stats;
                 });
-                this.checkUserDevice();
-
             },
             detached () {
                 this._stopNotificationsPolling();
             },
             _viewChanged () {
                 this.debounce('viewChanged', () => {
-                    this.dispatchTrackingEvent({
-                        'event'            : 'virtualPageView',
-                        'virtualPageTitle' : document.title,
-                        'virtualPageURL'   : window.location.pathname
-                    });
+                    this.dispatchVirtualPageView(document.title, window.location.pathname);
                 });
             },
             _computeNavbar (view) {
@@ -338,14 +332,9 @@
             _userChanged (user) {
                 this.debounce('userChanged', () => {
                     if (user) {
-                        this.dispatchTrackingEvent({
-                            account: true,
-                            visitType: 'Logged in'
-                        });
+                        this.updateVisitType('Logged in');
                     } else {
-                        this.dispatchTrackingEvent({
-                            visitType: 'Logged out'
-                        });
+                        this.updateVisitType('Logged out');
                     }
                 });
             },
