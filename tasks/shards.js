@@ -52,7 +52,8 @@ let nodeCache = {};
 
 function getDependencies (filePath, ignoreLazy) {
     let lazyReg = /<link.*rel="(lazy-)?import".*>/gi,
-        importReg = /<link.*rel="import".*>/gi;
+        importReg = /<link.*rel="import".*>/gi,
+        commentReg = /<\!--[\s\S]*-->/gi;
     if (nodeCache[filePath]) {
         let copy = nodeCache[filePath].map(file => {
             return Object.assign({}, file);
@@ -66,12 +67,13 @@ function getDependencies (filePath, ignoreLazy) {
                 console.log(`Could not read '${filePath}'`);
                 return resolve([]);
             }
-            let content = file.toString(),
+            let content = file.toString().replace(commentReg),
                 importRegex = ignoreLazy ? importReg : lazyReg,
                 imports = content.match(importRegex),
                 fileRegex,
                 files,
                 tasks;
+
             if (!imports) {
                 return resolve([]);
             }
@@ -294,7 +296,7 @@ function vulcanizeLazy (endpoint) {
         }
         return info;
     }).then(info => {
-        return new Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {
             let vulcan, vulcanOptions;
 
             vulcanOptions = {
@@ -369,7 +371,7 @@ function build(opts) {
             });
         });
     }).catch(err => {
-        throw e;
+        throw err;
     });
 }
 
