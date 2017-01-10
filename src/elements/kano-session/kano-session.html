@@ -84,6 +84,7 @@
                 }
                 if (!token) {
                     localStorage.removeItem('KW_TOKEN');
+                    this.set('user', null);
                 } else {
                     // Sets the legacy token
                     localStorage.setItem('KW_TOKEN', this.token);
