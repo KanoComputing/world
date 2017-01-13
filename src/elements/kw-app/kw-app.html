@@ -9,7 +9,7 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/lazy-imports/lazy-imports.html">
 
-<link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../kano-tracking/kano-tracking-behavior.html">
@@ -209,7 +209,7 @@
                     <kw-view-welcome></kw-view-welcome>
                 </template>
                 <template is="iron-lazy-page" name="start" path="/elements/kw-view-start/kw-view-start.html">
-                    <kw-view-start class="simple-page" on-login="showAuthModal"></kw-view-start>
+                    <kw-view-start class="simple-page" on-login="openLogin"></kw-view-start>
                 </template>
                 <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
                     <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
@@ -327,6 +327,16 @@
                     });
                 }
             },
+            showProjectModal () {
+                if (loadedImports['project-modal']) {
+                    this.$['project-modal'].open();
+                } else {
+                    this.importLazyGroup('project-modal').then(()=> {
+                        loadedImports['project-modal'] = true;
+                        this.$['project-modal'].open();
+                    });
+                }
+            },
             _commaify (n) {
                 return n.toLocaleString();
             },
@@ -370,7 +380,7 @@
                 });
             },
             _onLogin (e) {
-                // this.token = e.detail.token;
+                this.token = e.detail.token;
                 e.detail.user.notifications = [];
             },
             _authSuccess () {
