@@ -42,6 +42,7 @@
     "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#^1.0.14",
     "marked-element": "PolymerElements/marked-element#^1.2.0",
     "prism-element": "PolymerElements/prism-highlighter#^1.2.0",
-    "lazy-imports": "Polymer/lazy-imports#^0.0.2"
+    "lazy-imports": "Polymer/lazy-imports#^0.0.2",
+    "web-components": "git@github.com:KanoComputing/web-components.git"
   }
 }
