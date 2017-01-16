@@ -65,7 +65,9 @@ gulp.task('copy', () => {
             '.tmp/favicons/**/*',
             '.tmp/index.html',
             '.tmp/js/bootstrap.js',
-            '.tmp/manifest.json'
+            '.tmp/manifest.json',
+            '.tmp/bower_components/web-components/kano-style/fonts/*'
+
         ], { base: '.tmp' })
         .pipe(gulp.dest('www'));
 });
