@@ -7,8 +7,9 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/lazy-imports/lazy-imports.html">
 
-<link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <link rel="import" href="../kano-tracking/kano-tracking-behavior.html">
@@ -19,8 +20,9 @@
     <link rel="lazy-import" href="/elements/kw-view-start/kw-view-start.html" group="start">
     <link rel="lazy-import" href="/elements/kw-view-projects/kw-view-projects.html" group="projects">
     <link rel="lazy-import" href="/elements/kw-view-feed/kw-view-feed.html" group="shares">
-    <link rel="lazy-import" href="/elements/kw-auth-modal/kw-auth-modal.html" group="modals">
-    <link rel="lazy-import" href="/elements/kw-blank-project-modal/kw-blank-project-modal.html" group="modals">
+    <link rel="lazy-import" href="../kw-music-share/kw-music-share.html" group="kw-music-share">
+    <link rel="lazy-import" href="/elements/kw-blank-project-modal/kw-blank-project-modal.html" group="project-modal">
+    <link rel="lazy-import" href="../../bower_components/web-components/kano-auth/kano-auth.html" group="auth-modal">
     <template>
         <style>
             :host {
@@ -181,8 +183,14 @@
             </div>
         </div>
         <!-- for now modals need to be taken out of the stacking context of view elements because of overlay issues, see https://github.com/PolymerElements/polymer-starter-kit/issues/154 -->
-        <kw-auth-modal id="auth-modal"></kw-auth-modal>
-        <kw-blank-project-modal id="kw-blank-project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
+        <kano-auth id="auth"
+                   on-login="_onLogin"
+                   world-url="{{config.WORLD_URL}}"
+                   api-url="{{config.API_URL}}"
+                   assets-path="/assets"
+                   on-success="_authSuccess"
+                   on-cancel="_authCancelled"></kano-auth>
+        <kw-blank-project-modal id="project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
         <div class="pages">
             <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages" unresolved$="[[loadingPage]]">
                 <div name="welcome" class="welcome-shell">
@@ -201,7 +209,7 @@
                     <kw-view-welcome></kw-view-welcome>
                 </template>
                 <template is="iron-lazy-page" name="start" path="/elements/kw-view-start/kw-view-start.html">
-                    <kw-view-start class="simple-page" on-login="showAuthModal"></kw-view-start>
+                    <kw-view-start class="simple-page" on-login="openLogin"></kw-view-start>
                 </template>
                 <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
                     <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
@@ -222,9 +230,9 @@
             <kano-user-menu assets-path="/assets/navbar/"
                             default-avatar="https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/563890fec4d6960800c721f7/avatar-circle.png"
                             notifications="[[notifications]]"
-                            on-login="showAuthModal"
+                            on-login="openLogin"
                             on-logout="_logout"
-                            on-signup="signup"
+                            on-signup="openSignup"
                             slot="right"
                             user="[[user]]"
                             xp="[[user.profile.xp]]"
@@ -234,12 +242,15 @@
         </kano-nav>
     </template>
     <script>
+    (function() {
         const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/];
+        const loadedImports = {};
         Polymer({
             is: 'kw-app',
             behaviors: [
+                Polymer.LazyImportsBehavior,
                 Kano.APIClient,
-                Kano.TrackingBehavior,
+                Kano.TrackingBehavior
             ],
             properties: {
                 modalOpened: {
@@ -290,15 +301,43 @@
                 }
                 return this.pathPrefix;
             },
-            showAuthModal () {
-                this.importHref(this._getPathPrefix() + 'elements/kw-auth-modal/kw-auth-modal.html', () => {
-                    this.$['auth-modal'].open();
-                });
+            openLogin (e) {
+                if (e && e.detail) {
+                    this.authCallbacks = e.detail;
+                }
+                this.authCallbacks = this.authCallbacks || {};
+                if (loadedImports['auth-modal']) {
+                    this.$.auth.open('login');
+                } else {
+                    this.importLazyGroup('auth-modal').then(()=> {
+                        loadedImports['auth-modal'] = true;
+                        this.$.auth.open('login');
+                    });
+                }
+            },
+            openSignup (e) {
+                if (e && e.detail) {
+                    this.authCallbacks = e.detail;
+                }
+                this.authCallbacks = this.authCallbacks || {};
+                if (loadedImports['auth-modal']) {
+                    this.$.auth.open('signup');
+                } else {
+                    this.importLazyGroup('auth-modal').then(()=> {
+                        loadedImports['auth-modal'] = true;
+                        this.$.auth.open('signup');
+                    });
+                }
             },
             showProjectModal () {
-                this.importHref(this._getPathPrefix() + 'elements/kw-blank-project-modal/kw-blank-project-modal.html', (e) => {
-                    this.$['kw-blank-project-modal'].open();
-                });
+                if (loadedImports['project-modal']) {
+                    this.$['project-modal'].open();
+                } else {
+                    this.importLazyGroup('project-modal').then(()=> {
+                        loadedImports['project-modal'] = true;
+                        this.$['project-modal'].open();
+                    });
+                }
             },
             _commaify (n) {
                 return n.toLocaleString();
@@ -342,12 +381,26 @@
                     }
                 });
             },
-            signup () {
-                this.set('route.path', '/register');
+            _onLogin (e) {
+                this.token = e.detail.token;
+                e.detail.user.notifications = [];
+            },
+            _authSuccess () {
+                if (this.authCallbacks && this.authCallbacks.onSuccess) {
+                    this.authCallbacks.onSuccess.call();
+                    this.set('authCallbacks', null);
+                }
+            },
+            _authCancelled () {
+                if (this.authCallbacks && this.authCallbacks.onCancel) {
+                    this.authCallbacks.onCancel.call();
+                    this.set('authCallbacks', null);
+                }
             },
             redirectToProjects () {
                 this.set('route.path', '/projects');
             }
         });
+    })();
     </script>
 </dom-module>

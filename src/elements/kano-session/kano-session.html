@@ -84,10 +84,13 @@
                 }
                 if (!token) {
                     localStorage.removeItem('KW_TOKEN');
+
+                    localStorage.removeItem('KW_TOKENv2');
                     this.set('user', null);
+
                 } else {
-                    // Sets the legacy token
                     localStorage.setItem('KW_TOKEN', this.token);
+                    localStorage.setItem('KW_TOKENv2', this.token);
                 }
             },
             _includeProfileChanged (value, session, token) {
