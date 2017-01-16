@@ -5,6 +5,12 @@ var webComponentsSupported = ('registerElement' in document
     pathPrefix = document.head.querySelector('meta[name="path-prefix"]').getAttribute('data-value');
 
 window.dataLayer = [];
+window.dataLayer.push({
+    originalLocation: document.location.protocol + '//' +
+                      document.location.hostname +
+                      document.location.pathname +
+                      document.location.search
+});
 
 window.Polymer = {
     dom: 'shadow',
