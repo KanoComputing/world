@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/web-components/kano-particle-burst/kano-particle-burst.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/color.html">
 <dom-module id="kw-share-stats">
     <template>
@@ -27,8 +28,17 @@
                 color: #435055;
                 font-size: 12px;
             }
-            img {
+            :host .icon {
                 margin-right: 6px;
+            }
+            :host .liked .icon--like .icon-fill {
+                fill: #000000;
+            }
+            :host .likes.default .icon--like .icon-fill {
+                fill: #000000;
+            }
+            :host .likes.liked .icon--like .icon-fill {
+                fill: #e95c5a;
             }
             :host([tombstone]) button {
                 pointer-events: none;
@@ -46,18 +56,38 @@
             }
         </style>
         <div class="stats">
-            <button class="likes" on-tap="_onLikeTapped">
-                <img src="/assets/icons/shares/like.svg">
+            <button class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
+                <kano-particle-burst number-particles="30"
+                                     gravity="0.3"
+                                     particle-decay="0.02"
+                                     max-particle-size="15">
+                    <svg class="icon icon--like" width="14px" height="12px" viewBox="0 0 14 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <title>Like Heart</title>
+                        <g id="like-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g class="icon-fill" id="like-2" transform="translate(-398.000000, -861.000000)">
+                                <g id="like-3" transform="translate(373.000000, 150.000000)">
+                                    <g id="like-4" transform="translate(23.000000, 592.000000)">
+                                        <g id="like-5" transform="translate(2.000000, 118.000000)">
+                                            <g id="like-6">
+                                                <path d="M7.02095667,12.7004486 C6.72739428,12.7004486 6.47151136,12.6006262 6.25302671,12.4007001 C4.20511974,10.5215071 2.47580108,8.76097637 1.06507071,7.1191078 C0.559209853,6.60734195 0.231623472,6.00784481 0.0817491876,5.32089758 C-0.0681250967,4.63423153 -0.0118870914,3.95375167 0.250182014,3.27945798 C0.506064938,2.61781785 0.918289518,2.0807449 1.48629337,1.66880151 C2.04839224,1.25685812 2.66644792,1.02881301 3.3407416,0.985228554 C4.01475409,0.941644099 4.65783569,1.07267865 5.26970518,1.37833221 C5.88157468,1.68454815 6.35903535,2.1369829 6.70264956,2.73619885 C6.77744611,2.86132841 6.88345475,2.92347141 7.02095667,2.92347141 C7.15817741,2.92347141 7.26446724,2.86132841 7.33926378,2.73619885 C7.70762272,2.09339845 8.24778876,1.6125635 8.95948072,1.29425639 C9.44650184,1.06930437 9.96445387,0.963295732 10.5138992,0.975668093 C11.0633445,0.988321644 11.5689242,1.11317002 12.0312006,1.3504944 C12.4929146,1.58753759 12.8801133,1.89037925 13.1922342,2.25873819 C13.760238,2.93303187 14.0287745,3.75410675 13.9975624,4.72168163 C13.9725365,5.68307033 13.6168311,6.5072383 12.9301651,7.19390435 C11.4255173,8.91703683 9.71166404,10.6528229 7.78888664,12.4007001 C7.57012079,12.6006262 7.31423787,12.7004486 7.02095667,12.7004486" id="like-7"></path>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </kano-particle-burst>
                 <span class="number">[[likes]]</span>
                 <span>&nbsp;likes</span>
             </button>
             <button class="comments" on-tap="_onCommentTapped">
-                <img src="/assets/icons/shares/comment_b.svg">
+                <img class="icon" src="/assets/icons/shares/comment_b.svg">
                 <span class="number">[[comments]]</span>
                 <span>&nbsp;comments</span>
             </button>
             <button class="shares" on-tap="_onShareTapped">
-                <img src="/assets/icons/shares/share.svg">
+                <img class="icon" src="/assets/icons/shares/share.svg">
                 <span>share</span>
             </button>
         </div>
@@ -69,17 +99,32 @@
                 likes: {
                     type: Number
                 },
+                liked: {
+                    observer: '_checkLike',
+                    type: Boolean
+                },
                 comments: {
                     type: Number
                 }
             },
-            _onLikeTapped(){
-                this.fire('like-action');
+            _checkLike (update, previous) {
+                let updated = update && (previous === false);
+                if (updated) {
+                    let childElement = Polymer.dom(this.root).querySelector('kano-particle-burst');
+                    childElement.fire('fireAnimation');
+                }
             },
-            _onCommentTapped(){
+            _computeLikeClass (liked) {
+                return `likes ${liked ? "liked" : "default"}`;
+            },
+            _onLikeTapped (e) {
+                e.stopPropagation();
+                this.fire('like-action', !this.liked);
+            },
+            _onCommentTapped () {
                 this.fire('comment-action');
             },
-            _onShareTapped(){
+            _onShareTapped () {
                 this.fire('share-action');
             }
         });

@@ -216,7 +216,7 @@
                     <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
                 </template>
                 <template is="iron-lazy-page" name="shares" path="/elements/kw-view-feed/kw-view-feed.html">
-                    <kw-view-feed route="{{subroute}}"></kw-view-feed>
+                    <kw-view-feed route="{{subroute}}" on-login="openLogin"></kw-view-feed>
                 </template>
             </iron-lazy-pages>
         </div>
@@ -244,7 +244,7 @@
     </template>
     <script>
     (function() {
-        const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/];
+        const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/, /^\/shares$/];
         const loadedImports = {};
         Polymer({
             is: 'kw-app',
