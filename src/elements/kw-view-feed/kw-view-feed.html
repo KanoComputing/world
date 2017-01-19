@@ -150,7 +150,8 @@
                     <button type="button" class="back-button" on-tap="_backToFeed">Back to feed</button>
                     <kw-share-detail share="[[selectedShare]]"
                                         tombstone$="[[!selectedShare]]"
-                                        on-post-comment="_onPostComment"></kw-share-detail>
+                                        on-post-comment="_onPostComment"
+                                        on-load-comment="_loadMoreData" ></kw-share-detail>
                 </div>
             </div>
         </div>
@@ -334,15 +335,14 @@
                     if (!this.selectedShare) {
                         this._loadIndividualShare();
                     } else {
-                        this._getShareComment(this.selectedShare.id).then(comments => {
-                            this.set('selectedShare.comments', comments);
-                        });
+                        this._getMoreComment(this.selectedShare.id, 0);
                     }
                     this._showDetail();
                 }
             },
             _backToFeed () {
                 this.set('route.path', '');
+                this.set('selectedShare.comments', []); 
             },
             _loadIndividualShare () {
                 let slug;
@@ -353,16 +353,48 @@
 
                 this.cacheOrAPI(this._getUrl('share-by-slug', { slug })).then(res => {
                     this.selectedShare = res.item;
-                    this._getShareComment(this.selectedShare.id).then(comments => {
-                        this.set('selectedShare.comments', comments);
-                    });
+                    this._getMoreComment(this.selectedShare.id, 0);
                 });
+            },
+            _loadMoreData (e) {
+                var card = e.detail;
+                console.log(card.id);
+                if (!card.id || !card.page) {
+                    return;
+                }
+                this._getMoreComment(card.id, card.page);
+                console.log(card.id, card.page);
+            },
+            _getMoreComment (id, page) {
+                if (!id) {
+                    return;
+                }
+                var path = this._getUrl('share-comments',{id}) + '?feature=true&page=' + page + '&limit=3';
+                fetch(path)
+                    .then(r => r.json())
+                    .then(r => {
+                        this.set('selectedShare.pageNumber', r.next);
+                        if (page === 0 ){
+                            this.set('selectedShare.comments', r.entries); 
+                        } else {
+                            r.entries.forEach(item => {
+                                this.push('selectedShare.comments', item); 
+                            })
+                        }
+                        
+                
+                    });
             },
             _getShareComment (id) {
                 return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
             },
             _onPostComment (e) {
+                if (!this.user) {
+                    this.fire('login');
+                    return;
+                }
                 let commentBody = e.detail.value,
+                retry = e.detail.retry,
                     requestBody = {
                         item_id: this.selectedShare.id,
                         type: 'share',
@@ -373,10 +405,13 @@
                         author: this.user,
                         text: commentBody,
                         date_created: new Date(),
-                        optimistic: true
+                        optimistic: true,
+                        error: ''
                     };
-                this.unshift('selectedShare.comments', optimisticComment);
-
+                if (!retry) {
+                    this.unshift('selectedShare.comments', optimisticComment);
+                }
+              
                 requestHeaders.append('Content-Type', 'application/json');
                 requestHeaders.append('Authorization', this.token);
 
@@ -389,6 +424,9 @@
                         if (res.success) {
                             this.set('selectedShare.comments.0.optimistic', false);
                         }
+                    }).catch(error => {
+                        console.log('request failed', error);
+                        this.set('selectedShare.comments.0.error', true);
                     });
             }
         });

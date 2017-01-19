@@ -89,7 +89,11 @@
             }
             
             .remix-button {
-                @apply --kano-icon-button;
+               @apply --kano-button;
+                background: var(--color-orange);
+                right: 5px;
+                bottom: 5px;
+                padding: 10px;
             }
 
             .remix-button img {
@@ -167,7 +171,7 @@
                     </div>
                     <kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]" tombstone$="[[!share]]"></kw-share-stats>
                 </div>
-                <kw-social-comment comments="[[share.comments]]" tombstone$="[[!share]]"></kw-social-comment>
+                <kw-social-comment id="comments" comments="[[share.comments]]" page-number="[[share.pageNumber]]" item-id="[[share.id]]" tombstone$="[[!share]]"></kw-social-comment>
             </div>
         </kw-share-shell>
     </template>
@@ -244,7 +248,6 @@
                 if (!this.share) {
                     return;
                 }
-
                 tagName = appMapping[this.share.app] || 'kw-share';
 
                 if (this.instance) {
