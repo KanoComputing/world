@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../kw-share-shell/kw-share-shell.html">
 <link rel="import" href="../kw-share-stats/kw-share-stats.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
@@ -124,7 +125,7 @@
                         username="[[share.user.username]]"
                         date="[[share.date_created]]"
                         tombstone$="[[!share]]">
-            <div>
+            <div class="shell-inner">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
                 <div class="bottom">
                     <kw-share-stats likes="[[numberOfLikes]]"
@@ -164,7 +165,8 @@
                     value: 0
                 },
                 share: {
-                    type: Object
+                    type: Object,
+                    notify: true
                 }
             },
             observers: [
@@ -178,6 +180,8 @@
                             return like.user === this.user.id;
                         })
                         this.set('liked', liked);
+                    } else {
+                        this.set('liked', false);
                     }
                 }
             },
@@ -195,6 +199,7 @@
             _toggleLike (e, liked) {
                 let method = liked ? 'POST' : 'DELETE';
                 if (this.user) {
+                    this.set('liked', liked);
                     let headers = new Headers({
                         'Authorization': this.token,
                         'Content-Type': 'application/json'
@@ -206,7 +211,6 @@
                     .then((response) => response.json())
                     .then((response) => {
                         if (response.success) {
-                            this.set('liked', liked);
                             if (response.item) {
                                 this.push('share.likes', response.item);
                             } else {

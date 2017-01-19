@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <title>kw-particle-burst demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../bower_components/iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+
+    <link rel="import" href="../kw-particle-burst.html">
+    <link rel="import" href="kw-particle-burst-demo.html">
+    <link rel="import" href="particle-fountain-demo.html">
+    <link rel="import" href="particle-big-love-demo.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+        .party-bus{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .party-bus h1{
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: 10px;
+            font-size: 64px;
+            margin: 0;
+            font-family: "helvetica-neue", helvetica, arial, sans-serif;
+        }
+        .fountain-container{
+            height: 100px;
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fountain-settings{
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            border: 1px solid #f0f0f0;
+            padding: 40px;
+            text-align: center;
+            font-family: "helvetica-neue", helvetica, arial, sans-serif;
+            font-size: 10px;
+            margin-top: 70px;
+        }
+        paper-slider.fountain{
+            --paper-slider-active-color: #ff9933;
+            --paper-slider-knob-color: #ffBB11;
+            --paper-slider-container-color: #333;
+        }
+    </style>
+  </head>
+  <body>
+      <!-- <div class="vertical-section-container centered"> -->
+          <div class="party-bus">
+              <h1>balloon</h1>
+              <kw-particle-burst-demo></kw-particle-burst-demo>
+          </div>
+          <div class="party-bus">
+              <h1>fountain</h1>
+              <div class="fountain-container">
+                  <particle-fountain-demo number-particles="5"></particle-fountain-demo>
+              </div>
+              <div class="fountain-settings">
+                  <p>Number of particles</p>
+                  <paper-slider class="fountain" id="particleCount" min="0" max="50" value="5"></paper-slider>
+                  <p>Size of particles</p>
+                  <paper-slider class="fountain" id="particleSize" min="0" max="50" value="10"></paper-slider>
+              </div>
+          </div>
+          <div class="party-bus">
+              <h1>love</h1>
+              <particle-big-love-demo></particle-big-love-demo>
+          </div>
+      <!-- </div> -->
+
+        <script>
+        document.addEventListener('WebComponentsReady', function() {
+            var particleCount = document.querySelector('#particleCount');
+            particleCount.addEventListener('immediate-value-change', function() {
+                document.querySelector('particle-fountain-demo').setAttribute('number-particles', particleCount.immediateValue);
+            });
+
+            var particleSize = document.querySelector('#particleSize');
+            particleSize.addEventListener('immediate-value-change', function() {
+                document.querySelector('particle-fountain-demo').setAttribute('max-particle-size', particleSize.immediateValue);
+            });
+        });
+        </script>
+    </body>
+</html>
