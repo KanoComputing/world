@@ -2,13 +2,16 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-media-query/iron-media-query.html">
-
+<link rel="import" href="../../bower_components/web-components/kano-modal/kano-modal.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/color.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/button.html">
 <link rel="import" href="../kw-share-feed/kw-share-feed.html">
 <link rel="import" href="../kw-share-detail/kw-share-detail.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
 <link rel="import" href="../kano-session/kano-session.html">
-
+<link rel="import" href="../kano-utils/kano-utils.html">
 <dom-module id="kw-view-feed">
     <template>
         <style>
@@ -90,6 +93,22 @@
             .details {
                 width: 680px;
             }
+            #shopDialog iron-image{
+                width: 100%;
+                height: 200px;
+            }
+            #shopDialog p {
+                padding: 20px;
+            }
+            #shopDialog button {
+                @apply --kano-button;
+                background: var(--color-orange);
+                padding: 10px;
+            }
+            #loaderDialog .loading{
+                width: 120px;
+                height: 120px;
+            }
             @media screen and (max-width: 680px) {
                 .details {
                     width: 100%;
@@ -130,7 +149,7 @@
         <app-route route="{{route}}" pattern="/:slug" data="{{routeData}}"></app-route>
         <div class="content">
             <div id="feed">
-                <kw-share-feed id="share-feed" selected-share="{{selectedShare}}"></kw-share-feed>
+                <kw-share-feed id="share-feed" on-remix-action="_onRemixAction" selected-share="{{selectedShare}}"></kw-share-feed>
                 <div class="promo">
                     <div class="follow"></div>
                     <div class="stats">
@@ -148,17 +167,33 @@
             <div id="detail">
                 <div class="details">
                     <button type="button" class="back-button" on-tap="_backToFeed">Back to feed</button>
-                    <kw-share-detail share="[[selectedShare]]"
-                                        tombstone$="[[!selectedShare]]"
-                                        on-post-comment="_onPostComment"></kw-share-detail>
+                    <kw-share-detail 
+                    share="[[selectedShare]]"
+                    tombstone$="[[!selectedShare]]"
+                    on-post-comment="_onPostComment"
+                    on-remix-action="_onRemixAction"> 
+                    </kw-share-detail>
                 </div>
             </div>
         </div>
+        <kano-modal id="shopDialog" assets-path="../../bower_components/web-components/demo-assets" banner-link="../../bower_components/web-components/demo-assets/avatar/judoka-face.svg">
+            <iron-image sizing="contain" src="http://world.kano.me/assets/projects/overlay-photo.png"></iron-image>
+            <h2>Computer Kit Exclusive</h2>
+            <p>Tame the world of Minecraft, build houses, crush mountains with just a few lines of code. Only on the Computer Kit.</p>
+            <hr>
+            <a href="http://kano.me"><button>Shop now</button></a>
+        </kano-modal>
+        <kano-modal id="loaderDialog" assets-path="../../bower_components/web-components/demo-assets" banner-link="../../bower_components/web-components/demo-assets/avatar/judoka-face.svg">
+            <iron-image sizing="contain" src="https://world.kano.me/assets/layout/spinner.gif"></iron-image>
+            <h2>Launching game</h2>
+            <p>Please wait ...</p>
+            <hr>
+        </kano-modal>
     </template>
     <script>
         Polymer({
             is: 'kw-view-feed',
-            behaviors: [Kano.APIClient],
+            behaviors: [Kano.APIClient, Kano.Utils],
             properties: {
                 route: {
                     type: Object,
@@ -174,6 +209,46 @@
                 '_routeChanged(route.path)',
                 '_queryMatchesChanged(detailQueryMatches, feedQueryMatches)'
             ],
+            _onRemixAction (e) {
+                var id = e.detail.id,
+                type = e.detail.type,
+                url = '';
+                switch (type) {
+                    case 'kano-draw':
+                        url = Kano.World.config.KANO_MAKEART_URL + (id ? '/share/' + id : '/');
+                        window.open(url);
+                        break;
+                    case 'make-apps':
+                        var pathname = window.location.pathname.replace('/shares/', '/remix/');
+                        url = Kano.World.config.KANO_CODE_URL + pathname;
+                        window.open(url);
+                        break;
+                    case 'make-adventures':
+                        url = Kano.World.config.KANO_ADVENTURES_URL + (id ? '/shared/' + id : '/');
+                        window.open(url);
+                        break;
+                    case 'make-pong':
+                        url = 'http://play-pong.kano.me' + (id ? '?project=' + id : '/')
+                        window.open(url);
+                        break;
+                    case 'kano-draw':
+                    case 'make-apps':
+                    case 'make-adventures':
+                    case 'make-pong':
+                        if (!Kano.Utils.isPi) {
+                            this.$.shopDialog.open();
+                        } else {
+                            this.$.loaderDialog.open();
+                            window.open("kano:share:" + id);
+                            setTimeout(() => {
+                                this.$.loaderDialog.close();
+                            }, 2500);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            },
             attached () {
                 this._supportsAnimations = ('animate' in HTMLElement.prototype);
                 Polymer.RenderStatus.afterNextRender(this, () => {

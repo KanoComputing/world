@@ -216,28 +216,9 @@
                 }
             },
             _onTapRemix() {
-                var url = '';
-                var item = this.share;
-                var appType = item.app;
-                switch (appType) {
-                    case 'kano-draw':
-                        url = Kano.World.config.KANO_MAKEART_URL + (item.id ? '/share/' + item.id : '/');
-                        break;
-                    case 'make-apps':
-                        var pathname = window.location.pathname.replace('/shares/', '/remix/');
-                        url = Kano.World.config.KANO_CODE_URL + pathname;
-                        break;
-                    case 'make-adventures':
-                        url = Kano.World.config.KANO_ADVENTURES_URL + (item.id ? '/shared/' + item.id : '/');
-                        break;
-                    case 'make-pong':
-                        url = 'http://play-pong.kano.me' + (item.id ? '?project=' + item.id : '/')
-                        break;
-                    default:
-                        break;
-                }
-
-                window.location.href = url;
+                var item = this.share,
+                appType = item.app;
+                this.fire("remix-action", {id: item.id, type: appType});
             },
             _shareChanged(share) {
                 let tagName, templateString, template;

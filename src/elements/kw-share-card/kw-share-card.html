@@ -149,7 +149,9 @@
                 share: Object
             },
             _onTapRemix(){
-                this.fire("remix-action");
+                var item = this.share,
+                appType = item.app;
+                this.fire("remix-action", {id: item.id, type: appType});
             },
             getCoverElement () {
                 return this;
