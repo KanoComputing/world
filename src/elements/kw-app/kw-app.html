@@ -262,7 +262,7 @@
                 '_tokenChanged(token)',
                 '_userChanged(user)',
                 '_viewChanged(routeData.page)',
-                '_computeNavbar(routeData.page)'
+                '_computePageType(routeData.page)'
             ],
             attached () {
                 this.config = Kano.World.config;
@@ -278,7 +278,7 @@
                     this.dispatchVirtualPageView(document.title, window.location.pathname);
                 });
             },
-            _computeNavbar (view) {
+            _computePageType (view) {
                 this.simplePage = view === 'start'
             },
             _computeSelectedLink (path) {
