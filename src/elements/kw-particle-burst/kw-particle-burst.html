@@ -12,10 +12,24 @@ A configurable particle burst.
     <style>
       :host {
         display: block;
+        position: relative;
+      }
+      :host .particle-container {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          transform: translate(-50%, -50%);
+          z-index: 1;
+      }
+      :host .particle-content {
+          position: relative;
+          z-index: 2;
       }
     </style>
-    <div id="particles"></div>
-    <slot></slot>
+    <svg id="particle-container" class="particle-container" width$="{{svgWrap.width}}" height$="{{svgWrap.width}}" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="particle-content">
+        <slot></slot>
+    </div>
 </template>
 <script>
     Polymer({
@@ -65,14 +79,11 @@ A configurable particle burst.
                 type: Object,
                 value: function () {
                     return {
-                        width: 600,
-                        height: 300
+                        width: 400,
+                        height: 400
                     }
                 }
             }
-        },
-        listeners: {
-            'fireAnimation': 'triggerParticles'
         },
         animateTick: function() {
             var particles = this.particles;
@@ -80,8 +91,8 @@ A configurable particle burst.
                 requestAnimationFrame(this.animateTick.bind(this));
             }
             particles.forEach(function (particle, index) {
-                var inner = document.getElementById(particle.id);
-                inner.setAttribute("transform", "translate(" + particle.x + ", " + particle.y + ") scale(" + particle.scale + ", " + particle.scale + ")");
+                var inner = this.$$('#' + particle.id);
+                inner.setAttribute('transform', 'translate(' + particle.x + ', ' + particle.y + ') scale(' + particle.scale + ', ' + particle.scale + ')');
                 particle.x += particle.dx;
                 particle.y += particle.dy;
                 particle.dy += this.gravity;
@@ -89,11 +100,7 @@ A configurable particle burst.
                     particle.scale -= this.particleDecay;
                 } else {
                     particles.splice(index, 1);
-                    var outer = inner.parentElement;
                     inner.remove();
-                    if (!outer.hasChildNodes()) {
-                        outer.remove();
-                    }
                 }
             }, this);
         },
@@ -102,43 +109,37 @@ A configurable particle burst.
             if (this.particles.length < 500) {
                 var x = _x,
                     y = _y,
-                    svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                svg.setAttribute("height", this.svgWrap.width);
-                svg.setAttribute("width", this.svgWrap.height);
-                svg.setAttribute("class", "particle-container");
-                svg.setAttribute("style", "position: absolute; top: " + (y - (this.svgWrap.width / 2)) + "; left: " + (x - (this.svgWrap.height / 2)) + ";");
-                var containerCount = document.getElementsByClassName('particle-container').length;
+                    svg = this.$$('#particle-container');
                 for (var i = 0; i < this.numberParticles; i++) {
                     var radius = Math.random() * this.maxParticleSize,
-                        uniqueId = 'inner' + containerCount + this.idCount;
-                    this.idCount ++;
-                    var newParticle = {
-                        x: -radius + 150,
-                        y: -radius + 300,
+                        uniqueId = 'inner-' + this.idCount,
+                        newParticle = {
+                        x: -radius + this.svgWrap.width / 2,
+                        y: -radius + this.svgWrap.height / 2,
                         r: radius,
                         dx: Math.random() * (this.particleSpeed / 2) - (this.particleSpeed / 4),
                         dy: (Math.random() * this.particleSpeed - (this.particleSpeed / 2)) - this.initialVelocity,
                         color: '#' + Math.floor(Math.random() * 77215 + 16700000).toString(16),
                         id: uniqueId,
                         scale: 1,
-                    }
+                    },
+                        circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', newParticle.r);
+                    circle.setAttribute('cy', newParticle.r);
+                    circle.setAttribute('r', newParticle.r);
+                    circle.setAttribute('fill', newParticle.color);
+                    circle.setAttribute('id', uniqueId);
                     this.particles.push(newParticle);
-                    var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    circle.setAttribute("cx", newParticle.r);
-                    circle.setAttribute("cy", newParticle.r);
-                    circle.setAttribute("r", newParticle.r);
-                    circle.setAttribute("fill", newParticle.color);
-                    circle.setAttribute("id", uniqueId);
                     svg.appendChild(circle);
+                    this.idCount ++;
                 }
-                document.body.appendChild(svg);
                 if (!playing) {
                     this.animateTick();
                 }
             };
         },
         triggerParticles: function(){
-            var offsets = this.$.particles.getBoundingClientRect();
+            var offsets = this.$$('.particle-container').getBoundingClientRect();
             this.generateParticles(
                 offsets.left + window.scrollX + (offsets.width / 2),
                 offsets.top + window.scrollY + (offsets.height / 2)

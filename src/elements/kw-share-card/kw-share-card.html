@@ -128,7 +128,8 @@
             <div class="shell-inner">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
                 <div class="bottom">
-                    <kw-share-stats likes="[[numberOfLikes]]"
+                    <kw-share-stats id="stats"
+                                    likes="[[numberOfLikes]]"
                                     liked="[[liked]]"
                                     comments="[[share.comments_count]]"
                                     tombstone$="[[!share]]"
@@ -158,7 +159,8 @@
             properties: {
                 liked: {
                     type: Boolean,
-                    notify: true
+                    notify: true,
+                    value: null
                 },
                 numberOfLikes: {
                     type: Number,
@@ -181,7 +183,7 @@
                         })
                         this.set('liked', liked);
                     } else {
-                        this.set('liked', false);
+                        return this.set('liked', false)
                     }
                 }
             },
@@ -219,8 +221,8 @@
                         }
                     })
                     .catch((err) => {
-                        console.log('Failed');
-                    });
+                        this.set('liked', !liked);
+                    })
                 } else {
                     this.fire('login');
                 }

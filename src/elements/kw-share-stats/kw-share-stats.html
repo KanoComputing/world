@@ -58,10 +58,11 @@
         <div class="stats">
             <button class$="[[_computeLikeClass(liked)]]"
                     on-tap="_onLikeTapped">
-                <kw-particle-burst number-particles="30"
-                                     gravity="0.3"
-                                     particle-decay="0.02"
-                                     max-particle-size="15">
+                <kw-particle-burst id="particle-burst"
+                                   number-particles="40"
+                                   gravity="0.5"
+                                   particle-decay="0.04"
+                                   max-particle-size="13">
                     <svg class="icon icon--like" width="14px" height="12px" viewBox="0 0 14 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                         <title>Like Heart</title>
                         <g id="like-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -105,15 +106,15 @@
                 },
                 liked: {
                     observer: '_checkLike',
-                    type: Boolean,
-                    value: undefined
+                    type: Boolean
                 }
             },
             _checkLike (update, previous) {
                 let updated = update && (previous === false);
                 if (updated) {
-                    let childElement = Polymer.dom(this.root).querySelector('kw-particle-burst');
-                    childElement.fire('fireAnimation');
+                    let particleBurst = this.$$('#particle-burst');
+                    particleBurst.triggerParticles();
+                    window.setTimeout(() => particleBurst.triggerParticles(), 250);
                 }
             },
             _computeLikeClass (liked) {
