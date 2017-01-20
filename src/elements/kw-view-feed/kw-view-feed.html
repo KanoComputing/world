@@ -151,7 +151,7 @@
                     <kw-share-detail share="[[selectedShare]]"
                                         tombstone$="[[!selectedShare]]"
                                         on-post-comment="_onPostComment"
-                                        on-load-comment="_loadMoreData" ></kw-share-detail>
+                                        on-load-comment="_loadMoreData"></kw-share-detail>
                 </div>
             </div>
         </div>
@@ -358,12 +358,10 @@
             },
             _loadMoreData (e) {
                 var card = e.detail;
-                console.log(card.id);
                 if (!card.id || !card.page) {
                     return;
                 }
                 this._getMoreComment(card.id, card.page);
-                console.log(card.id, card.page);
             },
             _getMoreComment (id, page) {
                 if (!id) {
