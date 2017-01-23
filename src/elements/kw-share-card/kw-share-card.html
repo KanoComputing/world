@@ -149,7 +149,7 @@
                 share: Object
             },
             _onTapRemix(){
-                let item = this.share,
+                var item = this.share,
                 appType = item.app;
                 this.fire("remix-action", {id: item.id, type: appType});
             },
