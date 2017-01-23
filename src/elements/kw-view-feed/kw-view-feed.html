@@ -335,7 +335,7 @@
                     if (!this.selectedShare) {
                         this._loadIndividualShare();
                     } else {
-                        this._getMoreComment(this.selectedShare.id, 0);
+                        this._getMoreComments(this.selectedShare.id, 0);
                     }
                     this._showDetail();
                 }
@@ -353,21 +353,21 @@
 
                 this.cacheOrAPI(this._getUrl('share-by-slug', { slug })).then(res => {
                     this.selectedShare = res.item;
-                    this._getMoreComment(this.selectedShare.id, 0);
+                    this._getMoreComments(this.selectedShare.id, 0);
                 });
             },
             _loadMoreData (e) {
-                var card = e.detail;
+                let card = e.detail;
                 if (!card.id || !card.page) {
                     return;
                 }
-                this._getMoreComment(card.id, card.page);
+                this._getMoreComments(card.id, card.page);
             },
-            _getMoreComment (id, page) {
+            _getMoreComments (id, page) {
                 if (!id) {
                     return;
                 }
-                var path = this._getUrl('share-comments',{id}) + '?feature=true&page=' + page + '&limit=3';
+                let path = `${this._getUrl('share-comments', {id})}?feature=true&page=${page}&limit=3`;
                 fetch(path)
                     .then(r => r.json())
                     .then(r => {
@@ -379,11 +379,9 @@
                                 this.push('selectedShare.comments', item); 
                             })
                         }
-                        
-                
                     });
             },
-            _getShareComment (id) {
+            _getShareComments (id) {
                 return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
             },
             _onPostComment (e) {
@@ -399,15 +397,15 @@
                         text: commentBody
                     },
                     requestHeaders = new Headers(),
-                    optimisticComment = {
+                    postingComment = {
                         author: this.user,
                         text: commentBody,
                         date_created: new Date(),
-                        optimistic: true,
+                        posting: true,
                         error: ''
                     };
                 if (!retry) {
-                    this.unshift('selectedShare.comments', optimisticComment);
+                    this.unshift('selectedShare.comments', postingComment);
                 }
               
                 requestHeaders.append('Content-Type', 'application/json');
@@ -420,10 +418,9 @@
                 }).then(r => r.json())
                     .then(res => {
                         if (res.success) {
-                            this.set('selectedShare.comments.0.optimistic', false);
+                            this.set('selectedShare.comments.0.posting', false);
                         }
                     }).catch(error => {
-                        console.log('request failed', error);
                         this.set('selectedShare.comments.0.error', true);
                     });
             }
