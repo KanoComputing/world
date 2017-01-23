@@ -210,7 +210,7 @@
                 '_queryMatchesChanged(detailQueryMatches, feedQueryMatches)'
             ],
             _onRemixAction (e) {
-                var id = e.detail.id,
+                let id = e.detail.id,
                 type = e.detail.type,
                 url = '';
                 switch (type) {
@@ -239,7 +239,7 @@
                             this.$.shopDialog.open();
                         } else {
                             this.$.loaderDialog.open();
-                            window.open("kano:share:" + id);
+                            window.open('kano:share:' + id);
                             setTimeout(() => {
                                 this.$.loaderDialog.close();
                             }, 2500);
