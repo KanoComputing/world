@@ -1,0 +1,55 @@
+<link rel="import" href="../kw-particle-burst.html">
+
+<dom-module id="particle-fountain-demo">
+  <template>
+    <style>
+      .particle-repeater{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      kw-particle-burst{
+            width: 5px;
+            height: 5px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px;
+            background-color: #ff3377;
+      }
+    </style>
+
+    <div class="particle-repeater">
+        <kw-particle-burst number-particles={{numberParticles}} max-particle-size={{maxParticleSize}}></kw-particle-burst>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+        is: "particle-fountain-demo",
+        properties: {
+            numberParticles: {
+                type: Number,
+                value: 30,
+                reflectToAttribute: true
+             },
+             maxParticleSize: {
+                 type: Number,
+                 value: 10,
+                 reflectToAttribute: true
+             }
+        },
+        attached: function() {
+            var childElement = Polymer.dom(this.root).querySelector('kw-particle-burst');
+
+            setInterval(function(){
+                childElement.setAttribute('gravity', Math.random() * 0.4 + 0.1);
+                childElement.setAttribute('particle-decay', Math.random()*0.04);
+                childElement.fire('fireAnimation');
+            }.bind(this), 100)
+        },
+    });
+  </script>
+</dom-module>

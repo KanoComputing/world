@@ -1,0 +1,60 @@
+<link rel="import" href="../kw-particle-burst.html">
+
+<dom-module id="kw-particle-burst-demo">
+  <template>
+    <style>
+      .particle-repeater{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      kw-particle-burst{
+            width: 40px;
+            height: 40px;
+            margin: 0;
+            position: absolute;
+            background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, red 0%, orange 100%, red 95%);
+        	background-image: -webkit-radial-gradient(45px 45px, circle cover, red, orange);
+        	background-image: radial-gradient(45px 45px 45deg, circle cover, red 0%, orange 100%, red 95%);
+        	border-radius: 50%;
+            transition: all 900ms cubic-bezier(0.390, 0.575, 0.565, 1.000);
+      }
+      kw-particle-burst.burst{
+          width: 0;
+          height: 0;
+          transition: none;
+          animation: none;
+      }
+    </style>
+
+    <div class="particle-repeater">
+        <kw-particle-burst
+            max-particle-size="30"
+            particle-decay="0.04"
+            gravity="0"
+            initial-velocity="0"
+            particle-speed="20"></kw-particle-burst>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+        is: "kw-particle-burst-demo",
+        listeners: {
+            'tap': 'balloonBurst',
+        },
+        balloonBurst: function(e) {
+            var snd = new Audio("../../demo-assets/pop-sound.wav");
+            snd.play();
+            setTimeout(function(){
+                this.$$('kw-particle-burst').toggleClass('burst');
+                Polymer.dom(this.root).querySelector('kw-particle-burst').fire('fireAnimation');
+            }.bind(this), 50);
+            setTimeout(function(){
+                this.$$('kw-particle-burst').toggleClass('burst');
+            }.bind(this), 800);
+        }
+    });
+  </script>
+</dom-module>
