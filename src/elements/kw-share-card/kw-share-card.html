@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+<link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../kw-share-shell/kw-share-shell.html">
 <link rel="import" href="../kw-share-stats/kw-share-stats.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
@@ -16,23 +18,23 @@
                 overflow: hidden;
                 @apply --kw-share-card;
             }
-            
+
             kw-share-shell {
                 width: 100%;
             }
-            
+
             :host(:focus) {
                 outline: none;
                 box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.08);
             }
-            
+
             .bottom {
                 @apply --layout-vertical;
                 min-height: 30px;
                 margin-bottom: 16px;
                 margin: 24px;
             }
-            
+
             iron-image.cover {
                 @apply --layout-flex;
                 z-index: 0;
@@ -40,18 +42,18 @@
                 height: 480px;
                 background: inherit;
             }
-            
+
             .bottom .content {
                 @apply --layout-horizontal;
                 margin-top: 16px;
                 margin-bottom: 8px;
             }
-            
+
             .bottom .content .description {
                 @apply --layout-flex-3;
                 color: rgba(97, 97, 97, 0.14);
             }
-            
+
             .bottom .content .description h3 {
                 margin: 0;
                 font-size: 16px;
@@ -59,7 +61,7 @@
                 color: var(--color-grey-darker);
                 font-family: var(--font-body);
             }
-            
+
             .bottom .content .description p {
                 color: var(--color-grey-dark);
                 margin-right: 16px;
@@ -69,7 +71,7 @@
                 margin-top: 8px;
                 margin-bottom: 8px;
             }
-            
+
             .bottom .content .actions {
                 width: 25%;
                 @apply --layout-horizontal;
@@ -77,9 +79,11 @@
                 @apply --layout-end-justified;
                 padding-top: 5%;
             }
-            
+
             .remix-button {
-                @apply --kano-icon-button;
+                @apply --kano-button;
+                background: var(--color-orange);
+                padding: 10px;
             }
 
             .remix-button img {
@@ -97,19 +101,19 @@
                 background: var(--color-grey-lightest);
                 pointer-events: none;
             }
-            
+
             :host([tombstone]) .cover {
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
-            
+
             :host([tombstone]) .content .description h3 {
                 width: 240px;
                 height: 20px;
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
-            
+
             :host([tombstone]) .content .description p {
                 width: 100%;
                 height: 60px;
@@ -117,15 +121,21 @@
                 color: transparent;
             }
         </style>
+        <kano-session token="{{token}}" user="{{user}}"></kano-session>
         <kw-share-shell id="shell"
                         avatar-src="[[share.user.avatar.urls.circle]]"
                         username="[[share.user.username]]"
                         date="[[share.date_created]]"
                         tombstone$="[[!share]]">
-            <div>
+            <div class="shell-inner">
                 <iron-image id="cover" class="cover" src="[[share.cover_url]]" sizing="cover" preload fade></iron-image>
                 <div class="bottom">
-                    <kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]" tombstone$="[[!share]]"></kw-share-stats>
+                    <kw-share-stats id="stats"
+                                    likes="[[numberOfLikes]]"
+                                    liked="[[liked]]"
+                                    comments="[[share.comments_count]]"
+                                    tombstone$="[[!share]]"
+                                    on-like-action="_toggleLike"></kw-share-stats>
                     <div class="content">
                         <div class="description">
                             <h3>[[share.title]]</h3>
@@ -145,13 +155,81 @@
     <script>
         Polymer({
             is: 'kw-share-card',
+            behaviors: [
+                Kano.APIClient,
+            ],
             properties: {
-                share: Object
+                liked: {
+                    type: Boolean,
+                    notify: true,
+                    value: null
+                },
+                numberOfLikes: {
+                    type: Number,
+                    value: 0
+                },
+                share: {
+                    type: Object,
+                    notify: true
+                }
             },
-            _onTapRemix(){
+            observers: [
+                '_checkLikes(share.*, user)'
+            ],
+            _checkLikes () {
+                if (this.share) {
+                    this.set('numberOfLikes', this.share.likes.length);
+                    if (this.user) {
+                        let liked = this.share.likes.some((like) => {
+                            return like.user === this.user.id;
+                        })
+                        this.set('liked', liked);
+                    } else {
+                        return this.set('liked', false)
+                    }
+                }
+            },
+            _removeLike () {
+                this.share.likes.forEach((like, index) => {
+                    if (like.user === this.user.id) {
+                        this.splice('share.likes', index, 1);
+                    }
+                });
+            },
+
+            _onTapRemix(e){
                 let item = this.share,
                 appType = item.app;
                 this.fire('remix-action', {id: item.id, type: appType});
+            },
+            _toggleLike (e, liked) {
+                let method = liked ? 'POST' : 'DELETE';
+                if (this.user) {
+                    this.set('liked', liked);
+                    let headers = new Headers({
+                        'Authorization': this.token,
+                        'Content-Type': 'application/json'
+                    });
+                    fetch(this._getUrl('like-share', { id: this.share.id }), {
+                        method,
+                        headers
+                    })
+                    .then((response) => response.json())
+                    .then((response) => {
+                        if (response.success) {
+                            if (response.item) {
+                                this.push('share.likes', response.item);
+                            } else {
+                                this._removeLike();
+                            }
+                        }
+                    })
+                    .catch((err) => {
+                        this.set('liked', !liked);
+                    })
+                } else {
+                    this.fire('login');
+                }
             },
             getCoverElement () {
                 return this;
