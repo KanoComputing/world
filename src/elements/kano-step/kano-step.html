@@ -20,10 +20,12 @@
                 @apply --layout-horizontal;
             }
             .step {
+                position: relative;
                 @apply --layout-center;
             }
             :host([horizontal]) .step {
                 @apply --layout-horizontal;
+                @apply --layout-center-justified;
             }
             :host([vertical]) .step {
                 @apply --layout-vertical;
@@ -31,18 +33,20 @@
             }
             :host .label-container {
                 position: absolute;
+                min-height: 60px;
                 @apply --layout-center-justified;
             }
             :host([horizontal]) .label-container {
                 @apply --layout-horizontal;
-                bottom: 0;
+                @apply --layout-center;
+                bottom: -70px;
                 left: 0;
                 width: 100%;
             }
             :host([vertical]) .label-container {
                 @apply --layout-vertical;
                 top: 0;
-                right: 0;
+                right: -20px;
                 height: 100%;
             }
             :host(:last-child) .line.last,
@@ -66,10 +70,11 @@
                 <div class="line first"></div>
                 <slot name="icon"></slot>
                 <div class="line last"></div>
+                <div class="label-container">
+                    <slot name="label"></slot>
+                </div>
             </div>
-            <div class="label-container">
-                <slot name="label"></slot>
-            </div>
+
     </template>
     <script>
         Polymer({
