@@ -189,7 +189,7 @@
                    api-url="{{config.API_URL}}"
                    assets-path="/assets"
                    on-success="_authSuccess"
-                   on-skip="redirectToProjects"
+                   on-skip="_redirectToProjects"
                    on-cancel="_authCancelled"></kano-auth>
         <kw-blank-project-modal id="project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
         <div class="pages">
@@ -398,7 +398,7 @@
                     this.set('authCallbacks', null);
                 }
             },
-            redirectToProjects () {
+            _redirectToProjects () {
                 this.set('route.path', '/projects');
             }
         });
