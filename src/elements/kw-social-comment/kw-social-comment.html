@@ -7,6 +7,8 @@
 <link rel="import" href="../../bower_components/web-components/kano-style/color.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/button.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
 <dom-module id="kw-social-comment">
     <template>
         <style>
@@ -26,9 +28,11 @@
             }
             .comment-button {
                 position: absolute;
-                right: 14px;
-                bottom: 6px;
-                @apply --kano-icon-button;
+                @apply --kano-button;
+                background: var(--color-orange);
+                right: 5px;
+                bottom: 5px;
+                padding: 10px;
             }
             .comment-button:focus {
                 outline: none;
@@ -98,7 +102,7 @@
                 @apply --layout-horizontal;
                 @apply --layout-center;
             }
-            .comment.optimistic {
+            .comment.posting {
                 opacity: 0.6;
             }
             .content {
@@ -131,6 +135,40 @@
             h3[shown] {
                 display: block;
             }
+            iron-list {
+                width: 80%;
+                height: 100%
+            }
+            .loader {
+                @apply --kano-button;
+                background: var(--color-orange);
+                width: 80%;
+                padding: 10px;
+                text-align: center;
+            }
+            .loader[hidden] {
+                display: block;
+            }
+            .error {
+                @apply --kano-button;
+                background: var(--color-red);
+                padding: 8px;
+                width: 80px;
+                text-align: center;
+            }
+            :host([loader-status="on"]) #loader {
+                background: var(--color-orange);
+            }
+            :host([loader-status="off"]) #loader {
+                display: none;
+            }
+            :host([loader-status="disabled"]) #loader {
+                background: var(--color-grey-mid);
+            }
+            :host([retry-button="hide"]) #retry {
+                display: none;
+            }
+
         </style>
         <h3 shown$="[[!comments.length]]">Be the first to comment!</h3>
         <div class="input-comment">
@@ -148,36 +186,82 @@
             </div>
         </div>
         <p>Remember to be nice</p>
-        <template is="dom-repeat" items="{{comments}}" as="comment">
-            <div class$="comment [[_computeOptimisticClass(comment.optimistic)]]">
-                <div class="comment-avatar">
-                    <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
-                </div>
-                <div class="content">
-                    <p><span class="bold">{{comment.author.username}}</span><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
-                    <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(comment.date_created)]]"></date-util>
-                </div>
-            </div>
-        </template>
+        <iron-list items="[[comments]]" as="comment" hidden$="[[comment]]">
+                <template>
+                    <div class$="comment [[_computePostingClass(comment.posting)]]">
+                        <div class="comment-avatar">
+                            <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
+                        </div>
+                        <div class="content">
+                            <p><span class="bold">{{comment.author.username}}</span><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
+                            <date-util format="H:mm , dd Mon yyyy" date="[[_createDate(comment.date_created)]]"></date-util>
+                        </div>
+                        <button id="retry" on-tap="_retryButtonTapped" hidden$="[[!comment.error]]" class="error">retry</button>
+                    </div>
+                </template>
+        </iron-list>
+        <button hidden$="[[!comments.length]]" class="loader" id="loader" on-tap="_loadMoreData">Load more...</button>
+
     </template>
     <script>
         Polymer({
             is: 'kw-social-comment',
+            behaviors: [Kano.APIClient],
             properties: {
                 comments: {
                     type: Array,
                     value: null
+                },
+                itemId: {
+                    type: String
+                },
+                pageNumber: {
+                    type: Number,
+                    value: 0,
+                    observer: '_onDataLoad'
+                },
+                loaderStatus: {
+                    type: String,
+                    reflectToAttribute: true
+                },
+                retryButton: {
+                    type: String,
+                    reflectToAttribute: true
                 }
+            },
+            _onDataLoad () {
+                if (this.pageNumber === null) {
+                    this.set('loaderStatus', 'off');
+                } else {
+                    this.$.loader.disabled = false;
+                    this.set('loaderStatus', 'on');
+                }
+            },
+            _loadMoreData (e) {
+                // When we hit the last page
+                if (this.pageNumber === null || !this.itemId) {
+                    return;
+                }
+                this.$.loader.disabled = true;
+                this.set('loaderStatus', 'hide');
+                this.fire('load-comment', { id:this.itemId, page:this.pageNumber });
             },
             _createDate (formatted) {
                 return new Date(formatted);
+            },
+            _retryButtonTapped () {
+                this.set('retryButton', 'hide');
+                this.fire('post-comment', { value: this.comments[0].text, retry: true});
             },
             _commentButtonTapped () {
                 this.fire('post-comment', { value: this.$.comment.value });
                 this.$.comment.value = '';
             },
-            _computeOptimisticClass (optimistic) {
-                return optimistic ? 'optimistic' : '';
+            _computePostingClass (posting) {
+                return posting ? 'posting' : '';
+            },
+            _computeErrorState (error) {
+                return error ? true : '';
             },
             _isHintHidden (e) {
                 return true;
