@@ -11,7 +11,7 @@
 <link rel="import" href="../kw-share-detail/kw-share-detail.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
 <link rel="import" href="../kano-session/kano-session.html">
-<link rel="import" href="../kano-utils/kano-utils.html">
+<link rel="import" href="../kw-utils/kw-utils.html">
 <dom-module id="kw-view-feed">
     <template>
         <style>
@@ -93,7 +93,7 @@
             .details {
                 width: 680px;
             }
-            #shopDialog iron-image{
+            #shopDialog iron-image {
                 width: 100%;
                 height: 200px;
             }
@@ -105,7 +105,7 @@
                 background: var(--color-orange);
                 padding: 10px;
             }
-            #loaderDialog .loading{
+            #loaderDialog .loading {
                 width: 120px;
                 height: 120px;
             }
@@ -156,11 +156,11 @@
                         <kw-stat-card class="online"
                                         heading="Online today"
                                         value="[[_commaify(stats.total_active_today)]]"
-                                        icon-src="https://world.kano.me/assets/icons/stats/online.png"></kw-stat-card>
+                                        icon-src="assets/icons/stats/online.png"></kw-stat-card>
                         <kw-stat-card class="lines"
                                         heading="Lines of code"
                                         value="[[_commaify(stats.total_lines_of_code)]]"
-                                        icon-src="https://world.kano.me/assets/icons/stats/lines-of-code.png"></kw-stat-card>
+                                        icon-src="assets/icons/stats/lines-of-code.png"></kw-stat-card>
                     </div>
                 </div>
             </div>
@@ -176,15 +176,15 @@
                 </div>
             </div>
         </div>
-        <kano-modal id="shopDialog" assets-path="../../bower_components/web-components/demo-assets" banner-link="../../bower_components/web-components/demo-assets/avatar/judoka-face.svg">
-            <iron-image sizing="contain" src="http://world.kano.me/assets/projects/overlay-photo.png"></iron-image>
+        <kano-modal id="shopDialog" assets-path="assets" banner-link="assets/avatar/judoka-face.svg">
+            <iron-image sizing="contain" src="assets/projects/overlay-photo.png"></iron-image>
             <h2>Computer Kit Exclusive</h2>
             <p>Tame the world of Minecraft, build houses, crush mountains with just a few lines of code. Only on the Computer Kit.</p>
             <hr>
             <a href="http://kano.me"><button>Shop now</button></a>
         </kano-modal>
-        <kano-modal id="loaderDialog" assets-path="../../bower_components/web-components/demo-assets" banner-link="../../bower_components/web-components/demo-assets/avatar/judoka-face.svg">
-            <iron-image sizing="contain" src="https://world.kano.me/assets/layout/spinner.gif"></iron-image>
+        <kano-modal id="loaderDialog" assets-path="assets" banner-link="assets/avatar/judoka-face.svg">
+            <iron-image sizing="contain" src="assets/layout/spinner.gif"></iron-image>
             <h2>Launching game</h2>
             <p>Please wait ...</p>
             <hr>
@@ -193,7 +193,10 @@
     <script>
         Polymer({
             is: 'kw-view-feed',
-            behaviors: [Kano.APIClient, Kano.Utils],
+            behaviors: [
+                Kano.APIClient,
+                Kano.Utils
+            ],
             properties: {
                 route: {
                     type: Object,
@@ -211,15 +214,15 @@
             ],
             _onRemixAction (e) {
                 let id = e.detail.id,
-                type = e.detail.type,
-                url = '';
+                    type = e.detail.type,
+                    url = '';
                 switch (type) {
                     case 'kano-draw':
                         url = Kano.World.config.KANO_MAKEART_URL + (id ? '/share/' + id : '/');
                         window.open(url);
                         break;
                     case 'make-apps':
-                        var pathname = window.location.pathname.replace('/shares/', '/remix/');
+                        let pathname = window.location.pathname.replace('/shares/', '/remix/');
                         url = Kano.World.config.KANO_CODE_URL + pathname;
                         window.open(url);
                         break;
@@ -231,15 +234,15 @@
                         url = 'http://play-pong.kano.me' + (id ? '?project=' + id : '/')
                         window.open(url);
                         break;
-                    case 'kano-draw':
-                    case 'make-apps':
-                    case 'make-adventures':
-                    case 'make-pong':
+                    case 'make-music':
+                    case 'make-snake':
+                    case 'make-light':
+                    case 'make-minecraft':
                         if (!Kano.Utils.isPi) {
                             this.$.shopDialog.open();
                         } else {
                             this.$.loaderDialog.open();
-                            window.open("kano:share:" + id);
+                            window.open('kano:share:' + id);
                             setTimeout(() => {
                                 this.$.loaderDialog.close();
                             }, 2500);
