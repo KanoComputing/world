@@ -102,6 +102,7 @@
                 width: 40px;
                 margin: 0 12px;
             }
+            :host kano-step.first-step:not([data-status='done']) .step-icon:after,
             :host kano-step.regular-step[data-status='current'] .step-icon:after {
                 content: '';
                 position: absolute;
@@ -111,8 +112,15 @@
                 height: 44px;
                 border-radius: 50%;
                 border: 2px solid #fee33e;
+                z-index: 0;
+            }
+            :host #speaker-puzzles:hover kano-step.first-step:not([data-status='done']) .step-icon:after,
+            :host #speaker-puzzles:hover kano-step.regular-step[data-status='current'] .step-icon:after,
+            :host #screen-puzzles:hover kano-step.first-step:not([data-status='done']) .step-icon:after,
+            :host #screen-puzzles:hover kano-step.regular-step[data-status='current'] .step-icon:after,
+            :host #pixel-puzzles:hover kano-step.first-step:not([data-status='done']) .step-icon:after,
+            :host #pixel-puzzles:hover kano-step.regular-step[data-status='current'] .step-icon:after {
                 animation: pulse 1700ms linear infinite;
-                z-index: -1;
             }
             :host kano-step[data-status='done'] .step-icon {
                 background-image: url("/assets/projects/simple-progress/star.svg");
@@ -134,7 +142,9 @@
             :host kano-step.last-pixel .last-link {
                 background-image: url("/assets/projects/simple-progress/pixel-last.png");
             }
-            :host kano-step.last-step[data-status='current'] .last-link {
+            :host #speaker-puzzles:hover kano-step.last-step[data-status='current'] .last-link,
+            :host #screen-puzzles:hover kano-step.last-step[data-status='current'] .last-link,
+            :host #pixel-puzzles:hover kano-step.last-step[data-status='current'] .last-link {
                 animation: smallPulse 1500ms infinite;
             }
             :host kano-step.last-step[data-status='done'] .last-link {
@@ -214,8 +224,12 @@
                 color: #263A48;
                 animation: bounce 900ms ease-in infinite;
             }
-            :host kano-step:not(.last-step)[data-status='current'] .cta,
-            :host kano-step.first-step:not([data-status='done']) .cta {
+            :host #speaker-puzzles:hover kano-step:not(.last-step)[data-status='current'] .cta,
+            :host #speaker-puzzles:hover kano-step.first-step:not([data-status='done']) .cta,
+            :host #screen-puzzles:hover kano-step:not(.last-step)[data-status='current'] .cta,
+            :host #screen-puzzles:hover kano-step.first-step:not([data-status='done']) .cta,
+            :host #pixel-puzzles:hover kano-step:not(.last-step)[data-status='current'] .cta,
+            :host #pixel-puzzles:hover kano-step.first-step:not([data-status='done']) .cta {
                 display: block;
             }
             :host .cta:after {
@@ -231,7 +245,8 @@
                 width: 10px;
             }
             :host .step-icon .end-label-container {
-                display: none;
+                @apply --layout-horizontal;
+                @apply --layout-center-justified;
                 position: relative;
                 top: -34px;
                 left: 0;
@@ -242,10 +257,6 @@
                 font-size: 18px;
                 margin: 0;
                 white-space: nowrap;
-            }
-            :host kano-step.last-step[data-status='current'] .step-icon .end-label-container {
-                @apply --layout-horizontal;
-                @apply --layout-center-justified;
             }
             :host .left-button, .right-button {
                 font-family: var(--font-body);
@@ -314,287 +325,409 @@
                 50% {transform: translateY(-5%);}
             }
             @keyframes pulse {
-                0% {transform: scale(1.05);}
-                50% {transform: scale(1.1);}
-                100% {transform: scale(1.05);}
+                0% {transform: scale(1);}
+                50% {transform: scale(1.05);}
+                100% {transform: scale(1);}
             }
             @keyframes smallPulse {
                 0% {transform: scale(1);}
-                50% {transform: scale(1.05);}
+                50% {transform: scale(0.95);}
             }
         </style>
         <kano-session id="session" user="{{user}}" include-profile></kano-session>
         <div class="header">
-                <h3>Kano gives you coding powers</h3>
-                <h4>The more challenges you do, the more powerful you'll become</h4>
-                <div class="project-group-container">
-                    <div class="project-group">
-                        <kano-carousel>
-                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
-                            <div id="speaker_puzzles" class="step-display" slot="content">
-                                <div class="project-group-header">
-                                    <iron-image src="/assets/projects/simple-progress/speaker.png" preload fade sizing="contain"></iron-image>
-                                    <h4>The power to make your computer speak</h4>
-                                </div>
-                                <div class="steps-container">
-                                    <kano-step class="step first-step" data-status$="[[_computeStatus(speaker_puzzles, 0)]]" horizontal>
-                                        <div slot="icon">
+            <h3>Kano gives you coding powers</h3>
+            <h4>The more challenges you do, the more powerful you'll become</h4>
+            <div class="project-group-container">
+                <div class="project-group">
+                    <kano-carousel>
+                        <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                        <div id="speaker-puzzles" class="step-display" slot="content">
+                            <div class="project-group-header">
+                                <iron-image src="/assets/projects/simple-progress/speaker.png" preload fade sizing="contain"></iron-image>
+                                <h4>The power to make your computer speak</h4>
+                            </div>
+                            <div class="steps-container">
+                                <kano-step class="step first-step" data-status$="[[_computeStatus(speaker_puzzles, 0)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Start your adventure here</div>
+                                            </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/speaker_hello"></a>
+                                        </div>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 1</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_hello">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 1)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Continue your adventure here</div>
+                                            </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/speaker_cannot_think"></a>
+                                        </div>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 2</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_cannot_think">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 2)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Continue your adventure here</div>
+                                            </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/speaker_code_me_loop"></a>
+                                        </div>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 3</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_code_me_loop">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 3)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Continue your adventure here</div>
+                                            </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/speaker_sound"></a>
+                                        </div>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 4</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_sound">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 4)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Continue your adventure here</div>
+                                            </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/speaker_sound_loop"></a>
+                                        </div>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 5</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_sound_loop">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 5)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Continue your adventure here</div>
+                                            </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/speaker_button_trigger"></a>
+                                        </div>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 6</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_button_trigger">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="last-step last-speaker" data-status$="[[_computeStatus(speaker_puzzles, 6)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="end-label-container">
+                                                <p class="end-label">Build a drum machine</p>
+                                            </div>
+                                            <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/speaker_drum_machine"></a>
+                                        </div>
+                                    </div>
+                                    <div slot="label">
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_drum_machine">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                            </div>
+                        </div>
+                        <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                    </kano-carousel>
+                </div>
+                <div class="project-group">
+                    <kano-carousel>
+                        <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                            <div id="screen-puzzles" class="step-display" slot="content">
+                            <div class="project-group-header">
+                                <iron-image src="/assets/projects/simple-progress/screen.png" class="screen" preload fade sizing="contain"></iron-image>
+                                <h4>The power over your computer's screen</h4>
+                            </div>
+                            <div class="steps-container">
+                                <kano-step class="step first-step" data-status$="[[_computeStatus(screen_puzzles, 0)]]" horizontal>
+                                    <div slot="icon">
                                             <div class="step-icon">
                                                 <div class="cta-container">
                                                     <div class="cta">Start your adventure here</div>
                                                 </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/speaker_hello"></a>
+                                                <a href$="[[config.KANO_CODE_URL]]/story/screen_draw_pixel"></a>
                                             </div>
-                                        </div>
-                                        <div slot="label">
-                                            <p class="text-label">Level 1</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_hello">
-                                                <kano-glint-animation running>
-                                                    <div class="make-btn">make</div>
-                                                </kano-glint-animation>
-                                            </a>
-                                        </div>
-                                    </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 1)]]" horizontal>
-                                        <div slot="icon">
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 1</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_draw_pixel">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 1)]]" horizontal>
+                                    <div slot="icon">
                                             <div class="step-icon">
                                                 <div class="cta-container">
                                                     <div class="cta">Continue your adventure here</div>
                                                 </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/speaker_cannot_think"></a>
+                                                <a href$="[[config.KANO_CODE_URL]]/story/screen_pixel_flood"></a>
                                             </div>
-                                        </div>
-                                        <div slot="label">
-                                            <p class="text-label">Level 2</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_cannot_think">
-                                                <kano-glint-animation running>
-                                                    <div class="make-btn">make</div>
-                                                </kano-glint-animation>
-                                            </a>
-                                        </div>
-                                    </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 2)]]" horizontal>
-                                        <div slot="icon">
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 2</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_pixel_flood">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 2)]]" horizontal>
+                                    <div slot="icon">
                                             <div class="step-icon">
                                                 <div class="cta-container">
                                                     <div class="cta">Continue your adventure here</div>
                                                 </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/speaker_code_me_loop"></a>
+                                                <a href$="[[config.KANO_CODE_URL]]/story/screen_subpixels"></a>
                                             </div>
-                                        </div>
-                                        <div slot="label">
-                                            <p class="text-label">Level 3</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_code_me_loop">
-                                                <kano-glint-animation running>
-                                                    <div class="make-btn">make</div>
-                                                </kano-glint-animation>
-                                            </a>
-                                        </div>
-                                    </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 3)]]" horizontal>
-                                        <div slot="icon">
-                                            <div class="step-icon">
-                                                <div class="cta-container">
-                                                    <div class="cta">Continue your adventure here</div>
-                                                </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/speaker_sound"></a>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 3</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_subpixels">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 3)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Continue your adventure here</div>
                                             </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_shapes"></a>
                                         </div>
-                                        <div slot="label">
-                                            <p class="text-label">Level 4</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_sound">
-                                                <kano-glint-animation running>
-                                                    <div class="make-btn">make</div>
-                                                </kano-glint-animation>
-                                            </a>
-                                        </div>
-                                    </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 4)]]" horizontal>
-                                        <div slot="icon">
-                                            <div class="step-icon">
-                                                <div class="cta-container">
-                                                    <div class="cta">Continue your adventure here</div>
-                                                </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/speaker_sound_loop"></a>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 4</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_colorful_shapes">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 4)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Continue your adventure here</div>
                                             </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/screen_stars"></a>
                                         </div>
-                                        <div slot="label">
-                                            <p class="text-label">Level 5</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_sound_loop">
-                                                <kano-glint-animation running>
-                                                    <div class="make-btn">make</div>
-                                                </kano-glint-animation>
-                                            </a>
-                                        </div>
-                                    </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(speaker_puzzles, 5)]]" horizontal>
-                                        <div slot="icon">
-                                            <div class="step-icon">
-                                                <div class="cta-container">
-                                                    <div class="cta">Continue your adventure here</div>
-                                                </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/speaker_button_trigger"></a>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 5</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_stars">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 5)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="cta-container">
+                                                <div class="cta">Continue your adventure here</div>
                                             </div>
+                                            <a href$="[[config.KANO_CODE_URL]]/story/screen_space_sticker"></a>
                                         </div>
-                                        <div slot="label">
-                                            <p class="text-label">Level 6</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_button_trigger">
-                                                <kano-glint-animation running>
-                                                    <div class="make-btn">make</div>
-                                                </kano-glint-animation>
-                                            </a>
-                                        </div>
-                                    </kano-step>
-                                    <kano-step class="last-step last-speaker" data-status$="[[_computeStatus(speaker_puzzles, 6)]]" horizontal>
-                                        <div slot="icon">
-                                            <div class="step-icon">
-                                                <div class="end-label-container">
-                                                    <p class="end-label">Build a drum machine</p>
-                                                </div>
-                                                <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/speaker_drum_machine"></a>
+                                    </div>
+                                    <div slot="label">
+                                        <p class="text-label">Level 6</p>
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_space_sticker">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
+                                <kano-step class="last-step last-screen" data-status$="[[_computeStatus(screen_puzzles, 6)]]" horizontal>
+                                    <div slot="icon">
+                                        <div class="step-icon">
+                                            <div class="end-label-container">
+                                                <p class="end-label">Create your space scene</p>
                                             </div>
+                                            <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/screen_space_scene"></a>
                                         </div>
-                                        <div slot="label">
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/speaker_drum_machine">
-                                                <kano-glint-animation running>
-                                                    <div class="make-btn">make</div>
-                                                </kano-glint-animation>
-                                            </a>
-                                        </div>
-                                    </kano-step>
-                                </div>
+                                    </div>
+                                    <div slot="label">
+                                        <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_space_scene">
+                                            <kano-glint-animation running>
+                                                <div class="make-btn">make</div>
+                                            </kano-glint-animation>
+                                        </a>
+                                    </div>
+                                </kano-step>
                             </div>
-                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
-                        </kano-carousel>
-                    </div>
-                    <div class="project-group">
-                        <kano-carousel>
-                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
-                                <div id="screen_puzzles" class="step-display" slot="content">
+                        </div>
+                        <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                    </kano-carousel>
+                </div>
+                <div class="project-group">
+                    <kano-carousel>
+                        <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                            <div id="pixel-puzzles" class="step-display" slot="content">
                                 <div class="project-group-header">
-                                    <iron-image src="/assets/projects/simple-progress/screen.png" class="screen" preload fade sizing="contain"></iron-image>
-                                    <h4>The power over your computer's screen</h4>
+                                    <iron-image src="/assets/projects/simple-progress/pixel.png" class="pixel" preload fade sizing="contain">
+                                    </iron-image>
+                                    <h4>The power to control light</h4>
                                 </div>
                                 <div class="steps-container">
-                                    <kano-step class="step first-step" data-status$="[[_computeStatus(screen_puzzles, 0)]]" horizontal>
+                                    <kano-step class="first-step" data-status$="[[_computeStatus(pixel_puzzles, 0)]]" horizontal>
                                         <div slot="icon">
                                                 <div class="step-icon">
                                                     <div class="cta-container">
                                                         <div class="cta">Start your adventure here</div>
                                                     </div>
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_draw_pixel"></a>
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_lights_on"></a>
                                                 </div>
                                         </div>
                                         <div slot="label">
                                             <p class="text-label">Level 1</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_draw_pixel">
+                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_lights_on">
                                                 <kano-glint-animation running>
                                                     <div class="make-btn">make</div>
                                                 </kano-glint-animation>
                                             </a>
                                         </div>
                                     </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 1)]]" horizontal>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 1)]]" horizontal>
                                         <div slot="icon">
                                                 <div class="step-icon">
                                                     <div class="cta-container">
                                                         <div class="cta">Continue your adventure here</div>
                                                     </div>
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_pixel_flood"></a>
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_color_picker"></a>
                                                 </div>
                                         </div>
                                         <div slot="label">
                                             <p class="text-label">Level 2</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_pixel_flood">
+                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_color_picker">
                                                 <kano-glint-animation running>
                                                     <div class="make-btn">make</div>
                                                 </kano-glint-animation>
                                             </a>
                                         </div>
                                     </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 2)]]" horizontal>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 2)]]" horizontal>
                                         <div slot="icon">
                                                 <div class="step-icon">
                                                     <div class="cta-container">
                                                         <div class="cta">Continue your adventure here</div>
                                                     </div>
-                                                    <a href$="[[config.KANO_CODE_URL]]/story/screen_subpixels"></a>
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_color_random_loop"></a>
                                                 </div>
                                         </div>
                                         <div slot="label">
                                             <p class="text-label">Level 3</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_subpixels">
+                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_color_random_loop">
                                                 <kano-glint-animation running>
                                                     <div class="make-btn">make</div>
                                                 </kano-glint-animation>
                                             </a>
                                         </div>
                                     </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 3)]]" horizontal>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 3)]]" horizontal>
                                         <div slot="icon">
-                                            <div class="step-icon">
-                                                <div class="cta-container">
-                                                    <div class="cta">Continue your adventure here</div>
+                                                <div class="step-icon">
+                                                    <div class="cta-container">
+                                                        <div class="cta">Continue your adventure here</div>
+                                                    </div>
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_point"></a>
                                                 </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/screen_colorful_shapes"></a>
-                                            </div>
                                         </div>
                                         <div slot="label">
                                             <p class="text-label">Level 4</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_colorful_shapes">
+                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_point">
                                                 <kano-glint-animation running>
                                                     <div class="make-btn">make</div>
                                                 </kano-glint-animation>
                                             </a>
                                         </div>
                                     </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 4)]]" horizontal>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 4)]]" horizontal>
                                         <div slot="icon">
-                                            <div class="step-icon">
-                                                <div class="cta-container">
-                                                    <div class="cta">Continue your adventure here</div>
+                                                <div class="step-icon">
+                                                    <div class="cta-container">
+                                                        <div class="cta">Continue your adventure here</div>
+                                                    </div>
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_emoji"></a>
                                                 </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/screen_stars"></a>
-                                            </div>
                                         </div>
                                         <div slot="label">
                                             <p class="text-label">Level 5</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_stars">
+                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_emoji">
                                                 <kano-glint-animation running>
                                                     <div class="make-btn">make</div>
                                                 </kano-glint-animation>
                                             </a>
                                         </div>
                                     </kano-step>
-                                    <kano-step class="regular-step" data-status$="[[_computeStatus(screen_puzzles, 5)]]" horizontal>
-                                        <div slot="icon">
-                                            <div class="step-icon">
-                                                <div class="cta-container">
-                                                    <div class="cta">Continue your adventure here</div>
-                                                </div>
-                                                <a href$="[[config.KANO_CODE_URL]]/story/screen_space_sticker"></a>
-                                            </div>
-                                        </div>
-                                        <div slot="label">
-                                            <p class="text-label">Level 6</p>
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_space_sticker">
-                                                <kano-glint-animation running>
-                                                    <div class="make-btn">make</div>
-                                                </kano-glint-animation>
-                                            </a>
-                                        </div>
-                                    </kano-step>
-                                    <kano-step class="last-step last-screen" data-status$="[[_computeStatus(screen_puzzles, 6)]]" horizontal>
+                                    <kano-step class="last-step last-pixel" data-status$="[[_computeStatus(pixel_puzzles, 5)]]" horizontal>
                                         <div slot="icon">
                                             <div class="step-icon">
                                                 <div class="end-label-container">
-                                                    <p class="end-label">Create your space scene</p>
+                                                    <p class="end-label">Bring pixels to life</p>
                                                 </div>
-                                                <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/screen_space_scene"></a>
+                                                <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop"></a>
                                             </div>
                                         </div>
                                         <div slot="label">
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/screen_space_scene">
+                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop">
                                                 <kano-glint-animation running>
                                                     <div class="make-btn">make</div>
                                                 </kano-glint-animation>
@@ -603,132 +736,10 @@
                                     </kano-step>
                                 </div>
                             </div>
-                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
-                        </kano-carousel>
-                    </div>
-                    <div class="project-group">
-                        <kano-carousel>
-                            <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
-                                <div id="pixel_puzzles" class="step-display" slot="content">
-                                    <div class="project-group-header">
-                                        <iron-image src="/assets/projects/simple-progress/pixel.png" class="pixel" preload fade sizing="contain">
-                                        </iron-image>
-                                        <h4>The power to control light</h4>
-                                    </div>
-                                    <div class="steps-container">
-                                        <kano-step class="first-step" data-status$="[[_computeStatus(pixel_puzzles, 0)]]" horizontal>
-                                            <div slot="icon">
-                                                    <div class="step-icon">
-                                                        <div class="cta-container">
-                                                            <div class="cta">Start your adventure here</div>
-                                                        </div>
-                                                        <a href$="[[config.KANO_CODE_URL]]/story/pixel_lights_on"></a>
-                                                    </div>
-                                            </div>
-                                            <div slot="label">
-                                                <p class="text-label">Level 1</p>
-                                                <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_lights_on">
-                                                    <kano-glint-animation running>
-                                                        <div class="make-btn">make</div>
-                                                    </kano-glint-animation>
-                                                </a>
-                                            </div>
-                                        </kano-step>
-                                        <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 1)]]" horizontal>
-                                            <div slot="icon">
-                                                    <div class="step-icon">
-                                                        <div class="cta-container">
-                                                            <div class="cta">Continue your adventure here</div>
-                                                        </div>
-                                                        <a href$="[[config.KANO_CODE_URL]]/story/pixel_color_picker"></a>
-                                                    </div>
-                                            </div>
-                                            <div slot="label">
-                                                <p class="text-label">Level 2</p>
-                                                <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_color_picker">
-                                                    <kano-glint-animation running>
-                                                        <div class="make-btn">make</div>
-                                                    </kano-glint-animation>
-                                                </a>
-                                            </div>
-                                        </kano-step>
-                                        <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 2)]]" horizontal>
-                                            <div slot="icon">
-                                                    <div class="step-icon">
-                                                        <div class="cta-container">
-                                                            <div class="cta">Continue your adventure here</div>
-                                                        </div>
-                                                        <a href$="[[config.KANO_CODE_URL]]/story/pixel_color_random_loop"></a>
-                                                    </div>
-                                            </div>
-                                            <div slot="label">
-                                                <p class="text-label">Level 3</p>
-                                                <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_color_random_loop">
-                                                    <kano-glint-animation running>
-                                                        <div class="make-btn">make</div>
-                                                    </kano-glint-animation>
-                                                </a>
-                                            </div>
-                                        </kano-step>
-                                        <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 3)]]" horizontal>
-                                            <div slot="icon">
-                                                    <div class="step-icon">
-                                                        <div class="cta-container">
-                                                            <div class="cta">Continue your adventure here</div>
-                                                        </div>
-                                                        <a href$="[[config.KANO_CODE_URL]]/story/pixel_point"></a>
-                                                    </div>
-                                            </div>
-                                            <div slot="label">
-                                                <p class="text-label">Level 4</p>
-                                                <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_point">
-                                                    <kano-glint-animation running>
-                                                        <div class="make-btn">make</div>
-                                                    </kano-glint-animation>
-                                                </a>
-                                            </div>
-                                        </kano-step>
-                                        <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 4)]]" horizontal>
-                                            <div slot="icon">
-                                                    <div class="step-icon">
-                                                        <div class="cta-container">
-                                                            <div class="cta">Continue your adventure here</div>
-                                                        </div>
-                                                        <a href$="[[config.KANO_CODE_URL]]/story/pixel_emoji"></a>
-                                                    </div>
-                                            </div>
-                                            <div slot="label">
-                                                <p class="text-label">Level 5</p>
-                                                <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_emoji">
-                                                    <kano-glint-animation running>
-                                                        <div class="make-btn">make</div>
-                                                    </kano-glint-animation>
-                                                </a>
-                                            </div>
-                                        </kano-step>
-                                        <kano-step class="last-step last-pixel" data-status$="[[_computeStatus(pixel_puzzles, 5)]]" horizontal>
-                                            <div slot="icon">
-                                                <div class="step-icon">
-                                                    <div class="end-label-container">
-                                                        <p class="end-label">Bring pixels to life</p>
-                                                    </div>
-                                                    <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop"></a>
-                                                </div>
-                                            </div>
-                                            <div slot="label">
-                                                <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop">
-                                                    <kano-glint-animation running>
-                                                        <div class="make-btn">make</div>
-                                                    </kano-glint-animation>
-                                                </a>
-                                            </div>
-                                        </kano-step>
-                                    </div>
-                                </div>
-                            <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
-                        </kano-carousel>
-                    </div>
+                        <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                    </kano-carousel>
                 </div>
+            </div>
         </div>
         <div class="new-project-field">
             <h4>Start your next project from scratch, <br>or try out the challenges below to earn XP</h4>
