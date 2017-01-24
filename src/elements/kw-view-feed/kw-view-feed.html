@@ -171,7 +171,8 @@
                     share="[[selectedShare]]"
                     tombstone$="[[!selectedShare]]"
                     on-post-comment="_onPostComment"
-                    on-remix-action="_onRemixAction"> 
+                    on-remix-action="_onRemixAction"
+                    on-load-comment="_loadMoreData"> 
                     </kw-share-detail>
                 </div>
             </div>
@@ -412,15 +413,14 @@
                     if (!this.selectedShare) {
                         this._loadIndividualShare();
                     } else {
-                        this._getShareComment(this.selectedShare.id).then(comments => {
-                            this.set('selectedShare.comments', comments);
-                        });
+                        this._getMoreComments(this.selectedShare.id, 0);
                     }
                     this._showDetail();
                 }
             },
             _backToFeed () {
                 this.set('route.path', '');
+                this.set('selectedShare.comments', []); 
             },
             _loadIndividualShare () {
                 let slug;
@@ -431,30 +431,61 @@
 
                 this.cacheOrAPI(this._getUrl('share-by-slug', { slug })).then(res => {
                     this.selectedShare = res.item;
-                    this._getShareComment(this.selectedShare.id).then(comments => {
-                        this.set('selectedShare.comments', comments);
-                    });
+                    this._getMoreComments(this.selectedShare.id, 0);
                 });
             },
-            _getShareComment (id) {
+            _loadMoreData (e) {
+                let card = e.detail;
+                if (!card.id || !card.page) {
+                    return;
+                }
+                this._getMoreComments(card.id, card.page);
+            },
+            _getMoreComments (id, page) {
+                if (!id) {
+                    return;
+                }
+                let path = `${this._getUrl('share-comments', {id})}?feature=true&page=${page}&limit=3`;
+                fetch(path)
+                    .then(r => r.json())
+                    .then(r => {
+                        this.set('selectedShare.pageNumber', r.next);
+                        if (page === 0 ){
+                            this.set('selectedShare.comments', r.entries); 
+                        } else {
+                            r.entries.forEach(item => {
+                                this.push('selectedShare.comments', item); 
+                            })
+                        }
+                    });
+            },
+            _getShareComments (id) {
                 return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
             },
             _onPostComment (e) {
+                if (!this.user) {
+                    this.fire('login');
+                    return;
+                }
                 let commentBody = e.detail.value,
+                retry = e.detail.retry,
                     requestBody = {
                         item_id: this.selectedShare.id,
                         type: 'share',
                         text: commentBody
                     },
                     requestHeaders = new Headers(),
-                    optimisticComment = {
+                    postingComment = {
                         author: this.user,
                         text: commentBody,
                         date_created: new Date(),
-                        optimistic: true
+                        posting: true,
+                        error: ''
                     };
-                this.unshift('selectedShare.comments', optimisticComment);
-
+                if (!retry) {
+                    this.unshift('selectedShare.comments', postingComment);
+                }
+              
                 requestHeaders.append('Content-Type', 'application/json');
                 requestHeaders.append('Authorization', this.token);
 
@@ -465,8 +496,10 @@
                 }).then(r => r.json())
                     .then(res => {
                         if (res.success) {
-                            this.set('selectedShare.comments.0.optimistic', false);
+                            this.set('selectedShare.comments.0.posting', false);
                         }
+                    }).catch(error => {
+                        this.set('selectedShare.comments.0.error', true);
                     });
             }
         });

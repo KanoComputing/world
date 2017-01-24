@@ -25,6 +25,7 @@
                     .step-display-horizontal {
                         display: flex;
                         flex-direction: row;
+                        padding-bottom: 20px;
                     }
                     kano-step {
                         width: 120px;
@@ -40,6 +41,22 @@
                         flex: 1;
                         height: 60px;
                         width: 60px;
+                    }
+                    .make-btn {
+                        color: #263a48;
+                        background-color: #fee33e;
+                        border-radius: 30px;
+                        border: none;
+                        outline: none;
+                        cursor: pointer;
+                        font-size: 18px;
+                        line-height: 18px;
+                        font-family: 'Bariol', sans-serif;
+                        font-weight: bold;
+                        text-shadow: none;
+                        text-transform: uppercase;
+                        overflow: hidden;
+                        padding: 13px 24px 11px;
                     }
                 </style>
                 <div class="step-display-horizontal">
@@ -59,7 +76,9 @@
                         <div slot="icon">
                             <div class="step-icon"></div>
                         </div>
-                        <div slot="label">3</div>
+                        <div slot="label">
+                            <div class="make-btn">make</div>
+                        </div>
                     </kano-step>
                 </div>
             </template>

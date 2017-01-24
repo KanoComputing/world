@@ -216,11 +216,11 @@
                     <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
                 </template>
                 <template is="iron-lazy-page" name="shares" path="/elements/kw-view-feed/kw-view-feed.html">
-                    <kw-view-feed route="{{subroute}}"></kw-view-feed>
+                    <kw-view-feed route="{{subroute}}" on-login="openLogin"></kw-view-feed>
                 </template>
             </iron-lazy-pages>
         </div>
-        <kano-nav assets-path="/assets/navbar/" hidden$="[[simplePage]]">
+        <kano-nav assets-path="/assets/navbar/">
             <kano-primary-links assets-path="/assets/navbar/"
                                 current-site="[[config.WORLD_URL]]"
                                 selected-link="[[_computeSelectedLink(route.path)]]"
@@ -262,7 +262,7 @@
                 '_tokenChanged(token)',
                 '_userChanged(user)',
                 '_viewChanged(routeData.page)',
-                '_computeNavbar(routeData.page)'
+                '_computePageType(routeData.page)'
             ],
             attached () {
                 this.config = Kano.World.config;
@@ -278,7 +278,7 @@
                     this.dispatchVirtualPageView(document.title, window.location.pathname);
                 });
             },
-            _computeNavbar (view) {
+            _computePageType (view) {
                 this.simplePage = view === 'start'
             },
             _computeSelectedLink (path) {

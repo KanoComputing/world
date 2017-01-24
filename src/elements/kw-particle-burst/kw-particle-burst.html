@@ -1,0 +1,150 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--
+`kw-particle-burst`
+A configurable particle burst.
+
+@demo demo/kano-particle-burst.html
+-->
+
+<dom-module id="kw-particle-burst">
+<template>
+    <style>
+      :host {
+        display: block;
+        position: relative;
+      }
+      :host .particle-container {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          transform: translate(-50%, -50%);
+          z-index: 1;
+      }
+      :host .particle-content {
+          position: relative;
+          z-index: 2;
+      }
+    </style>
+    <svg id="particle-container" class="particle-container" width$="{{svgWrap.width}}" height$="{{svgWrap.width}}" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="particle-content">
+        <slot></slot>
+    </div>
+</template>
+<script>
+    Polymer({
+        is: 'kw-particle-burst',
+        properties: {
+            gravity: {
+                type: Number,
+                value: 0.3,
+                reflectToAttribute: true
+            },
+            idCount: {
+                type: Number,
+                value: 0
+            },
+            initialVelocity: {
+                type: Number,
+                value: 5,
+                reflectToAttribute: true
+            },
+            maxParticleSize: {
+                type: Number,
+                value: 10,
+                reflectToAttribute: true
+            },
+            numberParticles: {
+                type: Number,
+                value: 30,
+                reflectToAttribute: true
+            },
+            particleDecay: {
+                type: Number,
+                value: 0.02,
+                reflectToAttribute: true
+            },
+            particles: {
+              type: Array,
+              value: function() {
+                  return [];
+              }
+            },
+            particleSpeed: {
+                type: Number,
+                value: 10,
+                reflectToAttribute: true
+            },
+            svgWrap: {
+                type: Object,
+                value: function () {
+                    return {
+                        width: 400,
+                        height: 400
+                    }
+                }
+            }
+        },
+        animateTick: function() {
+            var particles = this.particles;
+            if (particles.length > 0) {
+                requestAnimationFrame(this.animateTick.bind(this));
+            }
+            particles.forEach(function (particle, index) {
+                var inner = this.$$('#' + particle.id);
+                inner.setAttribute('transform', 'translate(' + particle.x + ', ' + particle.y + ') scale(' + particle.scale + ', ' + particle.scale + ')');
+                particle.x += particle.dx;
+                particle.y += particle.dy;
+                particle.dy += this.gravity;
+                if (particle.scale > 0.1) {
+                    particle.scale -= this.particleDecay;
+                } else {
+                    particles.splice(index, 1);
+                    inner.remove();
+                }
+            }, this);
+        },
+        generateParticles: function (_x, _y) {
+            var playing = this.particles.length > 0;
+            if (this.particles.length < 500) {
+                var x = _x,
+                    y = _y,
+                    svg = this.$$('#particle-container');
+                for (var i = 0; i < this.numberParticles; i++) {
+                    var radius = Math.random() * this.maxParticleSize,
+                        uniqueId = 'inner-' + this.idCount,
+                        newParticle = {
+                        x: -radius + this.svgWrap.width / 2,
+                        y: -radius + this.svgWrap.height / 2,
+                        r: radius,
+                        dx: Math.random() * (this.particleSpeed / 2) - (this.particleSpeed / 4),
+                        dy: (Math.random() * this.particleSpeed - (this.particleSpeed / 2)) - this.initialVelocity,
+                        color: '#' + Math.floor(Math.random() * 77215 + 16700000).toString(16),
+                        id: uniqueId,
+                        scale: 1,
+                    },
+                        circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', newParticle.r);
+                    circle.setAttribute('cy', newParticle.r);
+                    circle.setAttribute('r', newParticle.r);
+                    circle.setAttribute('fill', newParticle.color);
+                    circle.setAttribute('id', uniqueId);
+                    this.particles.push(newParticle);
+                    svg.appendChild(circle);
+                    this.idCount ++;
+                }
+                if (!playing) {
+                    this.animateTick();
+                }
+            };
+        },
+        triggerParticles: function(){
+            var offsets = this.$$('.particle-container').getBoundingClientRect();
+            this.generateParticles(
+                offsets.left + window.scrollX + (offsets.width / 2),
+                offsets.top + window.scrollY + (offsets.height / 2)
+            );
+        }
+    });
+</script>
+</dom-module>
