@@ -763,11 +763,8 @@
                         user.profile.stats['make-apps'].progress || this._getStoredProgress() || null;
             },
             _assignProgressValue (progress) {
-                if (!progress) {
-                    return;
-                }
                 ['speaker_puzzles', 'screen_puzzles', 'pixel_puzzles'].forEach( (category) => {
-                    if (progress[category]) {
+                    if (progress && progress[category]) {
                         this[category] = progress[category].completedStories.length || null;
                     } else {
                         this[category] = 0;
