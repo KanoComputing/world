@@ -22,6 +22,7 @@
     <link rel="lazy-import" href="/elements/kw-view-feed/kw-view-feed.html" group="shares">
     <link rel="lazy-import" href="/elements/kw-music-share/kw-music-share.html" group="kw-music-share">
     <link rel="lazy-import" href="/elements/kw-blank-project-modal/kw-blank-project-modal.html" group="project-modal">
+    <link rel="lazy-import" href="/elements/kw-onboarding-modal/kw-onboarding-modal.html" group="onboarding-modal">
     <link rel="lazy-import" href="/bower_components/web-components/kano-auth/kano-auth.html" group="auth-modal">
     <template>
         <style>
@@ -183,6 +184,7 @@
             </div>
         </div>
         <!-- for now modals need to be taken out of the stacking context of view elements because of overlay issues, see https://github.com/PolymerElements/polymer-starter-kit/issues/154 -->
+        <kano-onboarding-modal id="onboarding-modal"></kano-onboarding-modal>
         <kano-auth id="auth"
                    on-login="_onLogin"
                    world-url="{{config.WORLD_URL}}"
@@ -261,8 +263,7 @@
             observers: [
                 '_tokenChanged(token)',
                 '_userChanged(user)',
-                '_viewChanged(routeData.page)',
-                '_computePageType(routeData.page)'
+                '_viewChanged(routeData.page)'
             ],
             attached () {
                 this.config = Kano.World.config;
@@ -273,13 +274,14 @@
             detached () {
                 this._stopNotificationsPolling();
             },
-            _viewChanged () {
+            _viewChanged (view) {
                 this.debounce('viewChanged', () => {
                     this.dispatchVirtualPageView(document.title, window.location.pathname);
                 });
-            },
-            _computePageType (view) {
-                this.simplePage = view === 'start'
+                this.simplePage = view === 'start';
+                if (view === 'projects') {
+                    this.debounce('initiateOnboarding', this._initiateOnboardingCta, 1000);
+                }
             },
             _computeSelectedLink (path) {
                 let localLink = catchUrls.some(url => url.test(path));
@@ -324,7 +326,7 @@
                 if (loadedImports['auth-modal']) {
                     this.$.auth.open('signup');
                 } else {
-                    this.importLazyGroup('auth-modal').then(()=> {
+                    this.importLazyGroup('auth-modal').then(() => {
                         loadedImports['auth-modal'] = true;
                         this.$.auth.open('signup');
                     });
@@ -334,9 +336,41 @@
                 if (loadedImports['project-modal']) {
                     this.$['project-modal'].open();
                 } else {
-                    this.importLazyGroup('project-modal').then(()=> {
+                    this.importLazyGroup('project-modal').then(() => {
                         loadedImports['project-modal'] = true;
                         this.$['project-modal'].open();
+                    });
+                }
+            },
+            _initiateOnboardingCta () {
+                this.async(() => {
+                    if (this._needOnboardingModal()) {
+                        this._openOnboardingModal();
+                        localStorage.setItem('onboarding-cta', new Date().getTime());
+                    }
+                }, 5000);
+            },
+            _needOnboardingModal () {
+                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently());
+            },
+            _hasUserDoneOnboarding () {
+                return this.user || localStorage.getItem('onboarding');
+            },
+            _hasModalShownRecently () {
+                let onboardingToken = localStorage.getItem('onboarding-cta');
+                if (!onboardingToken) {
+                    return;
+                }
+                //true if shown in last 30 minutes
+                return (new Date().getTime() - parseInt(onboardingToken)) < 30000000
+            },
+            _openOnboardingModal () {
+                if (loadedImports['onboarding-modal']) {
+                    this.$['onboarding-modal'].open();
+                } else {
+                    this.importLazyGroup('onboarding-modal').then(() => {
+                        loadedImports['onboarding-modal'] = true;
+                        this.$['onboarding-modal'].open();
                     });
                 }
             },

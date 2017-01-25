@@ -3,44 +3,45 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../kano-glint-animation/kano-glint-animation.html">
+<link rel="import" href="../../js/config.html">
 
 <!--
-`kano-modal'
+`kano-onboarding-modal'
 @group Kano Elements
-@demo ./kano-modal/demo/kano-modal.html
-
-The following mixins are available for styling:
+@demo ./kano-modal/demo/kano-onboarding-modal.html
  -->
 <dom-module id="kano-onboarding-modal">
     <template>
         <style>
-            :host {
-                background-color: #263A48;
-                font-family: 'Bariol', Helvetica, Arial, sans-serif;
-            }
             :host paper-dialog {
                 overflow-y: auto;
-                background-color: #263A48;
+                background-color: #fff;
+                border: 0;
+                border-radius: 6px;
+                margin: 0;
             }
             :host paper-dialog > * {
                 margin: 0px;
             }
             :host .banner {
                 position: relative;
-                width: 440px;
+                width: 425px;
                 background-size: contain;
                 background-position: bottom;
                 background-repeat: no-repeat;
                 transform: translateZ(0);
-                padding: 35px 0 0;
+                padding: 0;
+                margin: 0 !important;
+                font-family: 'Bariol', sans-serif;
                 @apply --layout-vertical;
                 @apply --layout-center-center;
             }
             :host .close-icon {
-                width: 20px;
                 position: absolute;
+                width: 20px;
                 top: 15px;
                 right: 15px;
+                color: #f4f5f6;
                 cursor: pointer;
                 z-index: 1;
             }
@@ -55,13 +56,11 @@ The following mixins are available for styling:
             :host .background-left {
                 top: 0;
                 left: 0;
-                background-image: url("/assets/start/kano-hero-left.png");
                 background-position: 0% 100%;
             }
             :host .background-right {
                 top: 0;
                 right: 0;
-                background-image: url("/assets/start/kano-hero-right.png");
                 background-position: 100% 100%;
             }
             :host .login-lock-img {
@@ -71,12 +70,13 @@ The following mixins are available for styling:
             :host .background-wrapper {
                 @apply --layout-vertical;
                 @apply --layout-center;
-                @apply --layout-center-justified;;
+                @apply --layout-center-justified;
+                margin: 55px 0;
             }
             :host .logo-wrapper {
                 position: relative;
-                width: 280px;
-                height: 280px;
+                width: 200px;
+                height: 200px;
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --layout-center-justified;;
@@ -94,51 +94,51 @@ The following mixins are available for styling:
                 animation-fill-mode: forwards;
             }
             :host .judoka-background {
-                height: 85%;
-                width: 85%;
+                height: 87%;
+                width: 100%;
                 position: absolute;
-                top: 30px;
-                left: 30px;
+                top: 20px;
+                left: 0;
                 animation: 25s linear infinite spin;
             }
             :host h1 {
-                color: #fff;
-                margin: 17px 0 10px;
+                color: #263238;
                 transform: translateZ(0);
-                font-size: 28px;
+                font-size: 30px;
                 padding: 0 40px;
-                margin: 15px 0 5px;
+                margin: 20px 0 10px;
                 text-align: center;
             }
             :host h4 {
-                color: #fff;
-                font-size: 18px;
+                color: #263238;
+                font-size: 16px;
                 font-weight: normal;
                 padding: 0 40px;
                 margin: 15px 0;
                 text-align: center;
             }
             :host .action {
-                margin: 15px 0 22px;
+                margin-top: 30px;
             }
             :host kano-glint-animation {
-                border-radius: 30px;
+                border-radius: 3px;
             }
             :host kano-glint-animation a {
                 display: block;
                 position: relative;
                 background-color: transparent;
                 border: none;
-                border-radius: 30px;
-                font-size: 12px;
+                border-radius: 3px;
+                font-size: 16px;
                 color: #fff;
                 background-color: #fe8233;
+                font-family: 'Bariol', sans-serif;
                 font-weight: bold;
                 text-transform: uppercase;
                 text-decoration: none;
                 transition: all linear 200ms;
                 cursor: pointer;
-                padding: 15px 35px;
+                padding: 14px 50px;
             }
             :host kano-glint-animation a:hover {
                 background-color: #fd621e;
@@ -148,9 +148,39 @@ The following mixins are available for styling:
                 background-color: #fff;
                 color: #000;
             }
-            @media screen and (max-width: 980px) {
+            @media screen and (max-width: 680px) {
                 :host .banner {
-                    width: 385px;
+                    width: 375px;
+                }
+                :host .background-wrapper {
+                    margin: 40px 0;
+                }
+                :host .action {
+                    margin-top: 20px;
+                }
+                :host h1 {
+                    font-size: 28px;
+                    padding: 0 12px;
+                }
+                :host h4 {
+                    font-size: 18px;
+                    padding: 0 20px;
+                }
+            }
+            @media screen and (max-width: 430px) {
+                :host paper-dialog {
+                    position: fixed;
+                    top: 15%;
+                    /*IE + Edge fix*/
+                    _position: absolute;
+                    _top: expression(eval(0.15 * document.body.scrollTop));
+                    left: 0;
+                    max-width: none !important;
+                    width: 100%;
+                }
+                :host paper-dialog .banner {
+                    width: 100%;
+                    padding: 0;
                 }
                 :host h1 {
                     font-size: 24px;
@@ -159,14 +189,6 @@ The following mixins are available for styling:
                 :host h4 {
                     font-size: 16px;
                     padding: 0 20px;
-                }
-            }
-            @media screen and (max-width: 680px) {
-                :host .banner {
-                    width: 320px;
-                }
-                :host .action {
-                    margin: 10px 0 20px;
                 }
             }
             @keyframes fade-in {
@@ -185,8 +207,7 @@ The following mixins are available for styling:
         </style>
         <paper-dialog id="modal" on-iron-overlay-opened="_openAnimation" with-backdrop>
             <div class="banner">
-                <img hidden$="[[!closable]]"
-                     class="close-icon"
+                <img class="close-icon"
                      src="/assets/icons/modal-close-icon.svg"
                      on-tap="_xTapped"/>
                 <div class="background-left"></div>
@@ -197,7 +218,7 @@ The following mixins are available for styling:
                         <iron-image class="judoka" src="/assets/start/hero-judoka.svg" preload fade sizing="contain"></iron-image>
                     </div>
                     <h1>Want coding superpowers?</h1>
-                    <h4>Start out onboarding and learn how to <br> make your computer speak!</h4>
+                    <h4>Start your journey and learn how to <br> make your computer speak!</h4>
                     <div class="action">
                         <kano-glint-animation running>
                             <a href$="[[config.KANO_CODE_URL]]/onboarding">
@@ -210,13 +231,11 @@ The following mixins are available for styling:
         </paper-dialog>
     </template>
 </dom-module>
-
 <script>
     Polymer({
         is: 'kano-onboarding-modal',
-        properties: {
-        },
         attached () {
+            this.config = Kano.World.config;
         },
         _openAnimation () {
             if ('animate' in HTMLElement.prototype) {
@@ -247,7 +266,6 @@ The following mixins are available for styling:
         },
         _xTapped () {
             this.close();
-            this.fire('dismiss');
         }
     });
 </script>
