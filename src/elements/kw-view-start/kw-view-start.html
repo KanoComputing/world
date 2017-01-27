@@ -11,7 +11,7 @@
                 background-color: #263A48;
             }
             .banner {
-                flex: 4;
+                flex: 2 4 auto;
                 position: relative;
                 background-color: #263A48;
                 background-size: contain;
@@ -19,7 +19,8 @@
                 background-repeat: no-repeat;
                 transform: translateZ(0);
                 overflow: hidden;
-                padding: 35px 0 25px;
+                font-family: 'Bariol', sans-serif;
+                padding: 50px 0;
                 @apply --layout-vertical;
                 @apply --layout-center-center;
             }
@@ -49,15 +50,15 @@
             .background-wrapper {
                 @apply --layout-vertical;
                 @apply --layout-center;
-                @apply --layout-center-justified;;
+                @apply --layout-center-justified;
             }
             .logo-wrapper {
-                position: relative;
-                width: 400px;
-                height: 400px;
                 @apply --layout-vertical;
                 @apply --layout-center;
-                @apply --layout-center-justified;;
+                @apply --layout-center-justified;
+                position: relative;
+                width: 280px;
+                height: 280px;
             }
             .judoka {
                 width: 100%;
@@ -83,13 +84,13 @@
                 color: #ffffff;
                 margin: 17px 0 0;
                 transform: translateZ(0);
-                font-size: 40px;
+                font-size: 36px;
                 padding: 0 10px;
-                margin-top: 0;
+                margin-top: 5px;
                 text-align: center;
             }
             .action {
-                margin: 20px;
+                margin-top: 35px;
             }
             .action button {
                 position: relative;
@@ -97,6 +98,7 @@
                 border: none;
                 border-radius: 30px;
                 padding: 15px 35px;
+                font-family: 'Bariol', sans-serif;
                 font-size: 14px;
                 color: #fff;
                 background-color: #fe8233;
@@ -149,7 +151,7 @@
                 @apply --layout-horizontal;
                 @apply --layout-justified;
                 background-color: #fff;
-                padding: 20px 40px;
+                padding: 15px 40px 15px 20px;
                 font-size: 14px;
                 color: #9C9C9C;
             }
@@ -176,12 +178,12 @@
                     background-size: 70%;
                 }
                 .intro-slides {
-                    padding: 36px 20px 6px;
+                    padding: 36px 0 6px;
                 }
                 .intro-slide {
                     width: 220px;
                     height: 200px;
-                    padding: 10px;
+                    padding: 10px 22px;
                 }
                 .intro-slide h3 {
                     margin-top: 5px;
@@ -193,18 +195,17 @@
                     height: 300px;
                 }
                 h1 {
-                font-size: 34px;
+                font-size: 28px;
                 }
                 .intro-slides {
                     @apply --layout-vertical;
                 }
                 .footer {
-                    padding: 15px 20px;
                     @apply --layout-vertical-reverse;
                     @apply --layout-center;
                 }
                 .footer .nav {
-                    padding: 10px 0;
+                    padding: 12px 0;
                 }
             }
             @keyframes fade-in {
