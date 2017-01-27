@@ -16,7 +16,6 @@
 <link rel="import" href="../../js/config.html">
 
 <dom-module id="kw-app">
-    <link rel="lazy-import" href="/elements/kw-view-welcome/kw-view-welcome.html" group="welcome">
     <link rel="lazy-import" href="/elements/kw-view-start/kw-view-start.html" group="start">
     <link rel="lazy-import" href="/elements/kw-view-projects/kw-view-projects.html" group="projects">
     <link rel="lazy-import" href="/elements/kw-view-feed/kw-view-feed.html" group="shares">
@@ -117,25 +116,6 @@
             .shell-pages>div {
                 min-height: calc(100vh - 60px);
             }
-            .welcome-shell {
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-            }
-            .welcome-banner {
-                flex: 4;
-                background: #493e52;
-            }
-            .welcome-footer {
-                flex: 1.5;
-                background: white;
-            }
-            @media screen and (max-width: 980px) {
-                .welcome-footer {
-                    flex: 1;
-                    margin-top: 22px;
-                }
-            }
             @media screen and (max-width: 680px) {
                 .footer {
                     padding: 20px;
@@ -194,10 +174,6 @@
         <kw-blank-project-modal id="project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
         <div class="pages">
             <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages" unresolved$="[[loadingPage]]">
-                <div name="welcome" class="welcome-shell">
-                    <div class="welcome-banner"></div>
-                    <div class="welcome-footer"></div>
-                </div>
                 <div name="projects" class="projects-shell">
                     <div class="masthead"></div>
                     <div class="project-launch"></div>
@@ -206,9 +182,6 @@
                 </div>
             </iron-pages>
             <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" loading="{{loadingPage}}" restamp hide-immediately>
-                <template is="iron-lazy-page" name="welcome" path="/elements/kw-view-welcome/kw-view-welcome.html">
-                    <kw-view-welcome></kw-view-welcome>
-                </template>
                 <template is="iron-lazy-page" name="start" path="/elements/kw-view-start/kw-view-start.html">
                     <kw-view-start class="simple-page" on-login="openLogin"></kw-view-start>
                 </template>
@@ -244,7 +217,7 @@
     </template>
     <script>
     (function() {
-        const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/];
+        const catchUrls = [/^\/projects$/, /^\/start$/];
         const loadedImports = {};
         Polymer({
             is: 'kw-app',
