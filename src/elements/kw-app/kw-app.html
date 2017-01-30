@@ -23,6 +23,7 @@
     <link rel="lazy-import" href="/elements/kw-music-share/kw-music-share.html" group="kw-music-share">
     <link rel="lazy-import" href="/elements/kw-blank-project-modal/kw-blank-project-modal.html" group="project-modal">
     <link rel="lazy-import" href="/bower_components/web-components/kano-auth/kano-auth.html" group="auth-modal">
+    <link rel="lazy-import" href="/elements/kw-alert-modal/kw-alert-modal.html" group="kw-alert-modal">
     <template>
         <style>
             :host {
@@ -192,6 +193,10 @@
                    on-skip="redirectToProjects"
                    on-cancel="_authCancelled"></kano-auth>
         <kw-blank-project-modal id="project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
+        <kw-alert-modal id="unsubscribe-modal">
+            <h2>Unsubscribed</h2>
+            <p>You have been unsubscribed from receiving Kano World alerts</p>
+        </kw-alert-modal>
         <div class="pages">
             <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages" unresolved$="[[loadingPage]]">
                 <div name="welcome" class="welcome-shell">
@@ -269,6 +274,7 @@
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                     this.stats = stats;
                 });
+                this._checkNewsletterSubscription();
             },
             detached () {
                 this._stopNotificationsPolling();
@@ -400,6 +406,19 @@
             },
             redirectToProjects () {
                 this.set('route.path', '/projects');
+            },
+            _checkNewsletterSubscription () {
+                let check = /.*status=unsubscribe.*/;
+                if (check.test(window.location.search)) {
+                    if (loadedImports['kw-alert-modal']) {
+                        this.$['unsubscribe-modal'].open();
+                    } else {
+                        this.importLazyGroup('kw-alert-modal').then(()=> {
+                            loadedImports['kw-alert-modal'] = true;
+                            this.$['unsubscribe-modal'].open();
+                        });
+                    }
+                }
             }
         });
     })();
