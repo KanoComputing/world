@@ -16,7 +16,6 @@
 <link rel="import" href="../../js/config.html">
 
 <dom-module id="kw-app">
-    <link rel="lazy-import" href="/elements/kw-view-welcome/kw-view-welcome.html" group="welcome">
     <link rel="lazy-import" href="/elements/kw-view-start/kw-view-start.html" group="start">
     <link rel="lazy-import" href="/elements/kw-view-projects/kw-view-projects.html" group="projects">
     <link rel="lazy-import" href="/elements/kw-view-feed/kw-view-feed.html" group="shares">
@@ -24,6 +23,7 @@
     <link rel="lazy-import" href="/elements/kw-blank-project-modal/kw-blank-project-modal.html" group="project-modal">
     <link rel="lazy-import" href="/elements/kw-onboarding-modal/kw-onboarding-modal.html" group="onboarding-modal">
     <link rel="lazy-import" href="/bower_components/web-components/kano-auth/kano-auth.html" group="auth-modal">
+    <link rel="lazy-import" href="/elements/kw-alert-modal/kw-alert-modal.html" group="kw-alert-modal">
     <template>
         <style>
             :host {
@@ -118,25 +118,6 @@
             .shell-pages>div {
                 min-height: calc(100vh - 60px);
             }
-            .welcome-shell {
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-            }
-            .welcome-banner {
-                flex: 4;
-                background: #493e52;
-            }
-            .welcome-footer {
-                flex: 1.5;
-                background: white;
-            }
-            @media screen and (max-width: 980px) {
-                .welcome-footer {
-                    flex: 1;
-                    margin-top: 22px;
-                }
-            }
             @media screen and (max-width: 680px) {
                 .footer {
                     padding: 20px;
@@ -191,15 +172,15 @@
                    api-url="{{config.API_URL}}"
                    assets-path="/assets"
                    on-success="_authSuccess"
-                   on-skip="redirectToProjects"
+                   on-skip="_redirectToProjects"
                    on-cancel="_authCancelled"></kano-auth>
         <kw-blank-project-modal id="project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
+        <kw-alert-modal id="unsubscribe-modal">
+            <h2>Unsubscribed</h2>
+            <p>You have been unsubscribed from receiving Kano World alerts</p>
+        </kw-alert-modal>
         <div class="pages">
             <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages" unresolved$="[[loadingPage]]">
-                <div name="welcome" class="welcome-shell">
-                    <div class="welcome-banner"></div>
-                    <div class="welcome-footer"></div>
-                </div>
                 <div name="projects" class="projects-shell">
                     <div class="masthead"></div>
                     <div class="project-launch"></div>
@@ -208,9 +189,6 @@
                 </div>
             </iron-pages>
             <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" loading="{{loadingPage}}" restamp hide-immediately>
-                <template is="iron-lazy-page" name="welcome" path="/elements/kw-view-welcome/kw-view-welcome.html">
-                    <kw-view-welcome></kw-view-welcome>
-                </template>
                 <template is="iron-lazy-page" name="start" path="/elements/kw-view-start/kw-view-start.html">
                     <kw-view-start class="simple-page" on-login="openLogin"></kw-view-start>
                 </template>
@@ -222,7 +200,8 @@
                 </template>
             </iron-lazy-pages>
         </div>
-        <kano-nav assets-path="/assets/navbar/">
+        <kano-nav assets-path="/assets/navbar/"
+                  site-root="/projects">
             <kano-primary-links assets-path="/assets/navbar/"
                                 current-site="[[config.WORLD_URL]]"
                                 selected-link="[[_computeSelectedLink(route.path)]]"
@@ -246,7 +225,7 @@
     </template>
     <script>
     (function() {
-        const catchUrls = [/^\/projects$/, /^\/welcome$/, /^\/start$/];
+        const catchUrls = [/^\/projects$/, /^\/start$/];
         const loadedImports = {};
         Polymer({
             is: 'kw-app',
@@ -270,6 +249,7 @@
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                     this.stats = stats;
                 });
+                this._checkNewsletterSubscription();
             },
             detached () {
                 this._stopNotificationsPolling();
@@ -432,8 +412,21 @@
                     this.set('authCallbacks', null);
                 }
             },
-            redirectToProjects () {
+            _redirectToProjects () {
                 this.set('route.path', '/projects');
+            },
+            _checkNewsletterSubscription () {
+                let check = /.*status=unsubscribe.*/;
+                if (check.test(window.location.search)) {
+                    if (loadedImports['kw-alert-modal']) {
+                        this.$['unsubscribe-modal'].open();
+                    } else {
+                        this.importLazyGroup('kw-alert-modal').then(()=> {
+                            loadedImports['kw-alert-modal'] = true;
+                            this.$['unsubscribe-modal'].open();
+                        });
+                    }
+                }
             }
         });
     })();

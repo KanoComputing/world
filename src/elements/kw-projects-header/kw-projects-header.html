@@ -88,6 +88,7 @@
             :host kano-step .step-icon,
             :host kano-step .step-icon a {
                 border-radius: 50%;
+                z-index: 0;
             }
             :host kano-step .step-icon,
             :host kano-step[data-status='locked'] .step-icon {
@@ -112,7 +113,7 @@
                 height: 44px;
                 border-radius: 50%;
                 border: 2px solid #fee33e;
-                z-index: 0;
+                z-index: -1;
             }
             :host #speaker-puzzles:hover kano-step.first-step:not([data-status='done']) .step-icon:after,
             :host #speaker-puzzles:hover kano-step.regular-step[data-status='current'] .step-icon:after,
@@ -222,6 +223,7 @@
                 padding: 10px 24px;
                 margin: 0 auto;
                 color: #263A48;
+                box-shadow: 0 0 3px rgba(0,0,0,0.3);
                 animation: bounce 900ms ease-in infinite;
             }
             :host #speaker-puzzles:hover kano-step:not(.last-step)[data-status='current'] .cta,
@@ -243,20 +245,6 @@
                 margin: auto;
                 transform: rotate(45deg);
                 width: 10px;
-            }
-            :host .step-icon .end-label-container {
-                @apply --layout-horizontal;
-                @apply --layout-center-justified;
-                position: relative;
-                top: -34px;
-                left: 0;
-                height: 0;
-            }
-            :host .step-icon p.end-label {
-                flex: 1 0 auto;
-                font-size: 18px;
-                margin: 0;
-                white-space: nowrap;
             }
             :host .left-button, .right-button {
                 font-family: var(--font-body);
@@ -459,9 +447,6 @@
                                 <kano-step class="last-step last-speaker" data-status$="[[_computeStatus(speaker_puzzles, 6)]]" horizontal>
                                     <div slot="icon">
                                         <div class="step-icon">
-                                            <div class="end-label-container">
-                                                <p class="end-label">Build a drum machine</p>
-                                            </div>
                                             <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/speaker_drum_machine"></a>
                                         </div>
                                     </div>
@@ -598,9 +583,6 @@
                                 <kano-step class="last-step last-screen" data-status$="[[_computeStatus(screen_puzzles, 6)]]" horizontal>
                                     <div slot="icon">
                                         <div class="step-icon">
-                                            <div class="end-label-container">
-                                                <p class="end-label">Create your space scene</p>
-                                            </div>
                                             <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/screen_space_scene"></a>
                                         </div>
                                     </div>
@@ -720,9 +702,6 @@
                                     <kano-step class="last-step last-pixel" data-status$="[[_computeStatus(pixel_puzzles, 5)]]" horizontal>
                                         <div slot="icon">
                                             <div class="step-icon">
-                                                <div class="end-label-container">
-                                                    <p class="end-label">Bring pixels to life</p>
-                                                </div>
                                                 <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop"></a>
                                             </div>
                                         </div>
@@ -763,11 +742,8 @@
                         user.profile.stats['make-apps'].progress || this._getStoredProgress() || null;
             },
             _assignProgressValue (progress) {
-                if (!progress) {
-                    return;
-                }
                 ['speaker_puzzles', 'screen_puzzles', 'pixel_puzzles'].forEach( (category) => {
-                    if (progress[category]) {
+                    if (progress && progress[category]) {
                         this[category] = progress[category].completedStories.length || null;
                     } else {
                         this[category] = 0;

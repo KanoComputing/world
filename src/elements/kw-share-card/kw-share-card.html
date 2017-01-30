@@ -189,16 +189,18 @@
                     }
                 }
             },
-            _onTapRemix(e){
-                e.stopPropagation();
-                this.fire('remix-action');
-            },
             _removeLike () {
                 this.share.likes.forEach((like, index) => {
                     if (like.user === this.user.id) {
                         this.splice('share.likes', index, 1);
                     }
                 });
+            },
+
+            _onTapRemix(e){
+                let item = this.share,
+                    appType = item.app;
+                this.fire('remix-action', {id: item.id, type: appType});
             },
             _toggleLike (e, liked) {
                 let method = liked ? 'POST' : 'DELETE';

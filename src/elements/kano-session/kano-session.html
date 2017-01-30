@@ -129,6 +129,7 @@
                 });
             },
             logout () {
+                localStorage.setItem('progress', null);
                 this.set('user', null);
                 this.set('token', null);
                 promises = {};
