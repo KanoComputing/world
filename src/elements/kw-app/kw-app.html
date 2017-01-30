@@ -34,6 +34,7 @@
             }
             kano-nav {
                 --kano-nav-font-family: var(--font-body);
+                z-index: 0;
             }
             kano-user-menu {
                 --kano-user-menu-font-family: var(--font-body);
@@ -226,6 +227,9 @@
     <script>
     (function() {
         const catchUrls = [/^\/projects$/, /^\/start$/];
+        if (Kano.World.config.ENV !== 'production') {
+            catchUrls.push(/^\/shares/);
+        }
         const loadedImports = {};
         Polymer({
             is: 'kw-app',

@@ -112,7 +112,7 @@
             _checkLike (update, previous) {
                 let updated = update && (previous === false);
                 if (updated) {
-                    let particleBurst = this.$$('#particle-burst');
+                    let particleBurst = this.$['particle-burst'];
                     particleBurst.triggerParticles();
                     window.setTimeout(() => particleBurst.triggerParticles(), 250);
                 }

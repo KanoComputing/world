@@ -10,11 +10,16 @@
 <link rel="import" href="../../bower_components/web-components/kano-style/button.html">
 
 <dom-module id="kw-share-detail">
+    <link rel="lazy-import" href="../kw-app-share/kw-app-share.html" group="kw-app-share">
     <link rel="lazy-import" href="../kw-art-share/kw-art-share.html" group="kw-art-share">
     <link rel="lazy-import" href="../kw-music-share/kw-music-share.html" group="kw-music-share">
     <link rel="lazy-import" href="../kw-share/kw-share.html" group="kw-share">
     <template>
         <style>
+            @keyframes fade-in {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
             :host {
                 display: block;
             }
@@ -99,14 +104,40 @@
                 margin-left: 3px;
                 margin-top: 2px;
             }
-            
-            :host #share-container {
+            .share-content {
                 @apply --layout-flex;
                 width: 100%;
                 padding: 0px 16px;
                 min-height: var(--kw-share-detail-player-height, 320px);
                 height: var(--kw-share-detail-player-height, 320px);
                 box-sizing: border-box;
+                position: relative;
+            }
+
+            .share-content .loading {
+                transition: opacity 200ms linear;
+            }
+
+            :host(.loaded) .share-content .loading {
+                opacity: 0;
+            }
+
+            #share-container {
+                animation: fade-in 200ms linear;
+            }
+            
+            #share-container,
+            .share-content .loading,
+            .share-content .loading iron-image,
+            .share-content .loading .overlay {
+                @apply --layout-fit;
+            }
+
+            .share-content .loading .overlay {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                background: rgba(255, 255, 255, 0.1);
             }
             
             :host #share-container>* {
@@ -154,7 +185,15 @@
                         date="[[share.date_created]]"
                         tombstone$="[[!share]]">
             <div id="share" class="details">
-                <div id="share-container"></div>
+                <div class="share-content">
+                    <div class="loading">
+                        <iron-image src="[[share.cover_url]]" sizing="contain"></iron-image>
+                        <div class="overlay">
+                            <h2>Loading</h2>
+                        </div>
+                    </div>
+                    <div id="share-container"></div>
+                </div>
                 <div class="bottom">
                     <div class="content">
                         <div class="description">
@@ -179,6 +218,7 @@
         const appMapping = {
             'make-music': 'kw-music-share',
             'kano-draw': 'kw-art-share',
+            'make-apps': 'kw-app-share'
         };
 
         const loadedImports = {};
@@ -260,6 +300,7 @@
                 });
 
                 this.$['share-container'].appendChild(this.instance.root);
+                this.toggleClass('loaded', true);
             }
         });
     })();

@@ -1,0 +1,63 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/color.html">
+
+<script src="../../scripts/kano/make-apps/msg/en.js"></script>
+<script src="../../scripts/kano/make-apps/blockly/msg/en.js"></script>
+<!-- build:kcConfig -->
+<link rel="import" href="../../scripts/config/staging.html">
+<!-- endbuild -->
+<link rel="import" href="../kano-app-player/kano-app-player.html">
+<link rel="import" href="../../scripts/kano/app-modules/index.html">
+<link rel="import" href="../kano-workspace-normal/kano-workspace-normal.html">
+<link rel="import" href="../kano-workspace-lightboard/kano-workspace-lightboard.html">
+<link rel="import" href="../kano-workspace-camera/kano-workspace-camera.html">
+<link rel="import" href="../ui/kano-ui/kano-ui.html">
+
+<dom-module id="kw-app-share">
+    <template>
+        <style>
+            :host {
+                display: block;
+                position: relative;
+                @apply --layout-vertical;
+            }
+            kano-app-player,
+            iron-image {
+                @apply --layout-fit;
+                transition: opacity 200ms linear;
+            }
+            :host(.loaded) iron-image {
+                opacity: 0;
+            }
+            :host(:not(.loaded)) kano-app-player {
+                opacity: 0;
+            }
+        </style>
+        <iron-image src="[[share.cover_url]]" sizing="contain"></iron-image>
+        <kano-app-player id="player" src="[[appUrl]]" slug="[[slug]]" on-app-ready="_onAppReady" show-toolbar></kano-app-player>
+    </template>
+    <script>
+        Polymer({
+            is:'kw-app-share',
+            properties: {
+                share: {
+                    type: Object,
+                    observer: '_shareChanged'
+                }
+            },
+            _shareChanged () {
+                let attachment = this.share.attachment_url;
+                if (attachment) {
+                    this.slug = this.share.slug;
+                    this.appUrl = attachment;
+                }
+            },
+            _onAppReady () {
+                this.toggleClass('loaded', true);
+            }
+        });
+    </script>
+</dom-module>
