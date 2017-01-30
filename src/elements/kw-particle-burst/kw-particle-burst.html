@@ -19,17 +19,17 @@ A configurable particle burst.
           top: 10px;
           left: 10px;
           transform: translate(-50%, -50%);
-          z-index: 1;
+          pointer-events: none;
       }
       :host .particle-content {
           position: relative;
           z-index: 2;
       }
     </style>
-    <svg id="particle-container" class="particle-container" width$="{{svgWrap.width}}" height$="{{svgWrap.width}}" xmlns="http://www.w3.org/2000/svg"></svg>
     <div class="particle-content">
         <slot></slot>
     </div>
+    <svg id="particle-container" class="particle-container" width$="[[svgWrap.width]]" height$="[[svgWrap.width]]" xmlns="http://www.w3.org/2000/svg"></svg>
 </template>
 <script>
     Polymer({

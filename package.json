@@ -17,6 +17,7 @@
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
+    "handlebars": "^4.0.6",
     "merge-stream": "^1.0.0",
     "mute": "^2.0.6",
     "parse5": "^2.2.3",

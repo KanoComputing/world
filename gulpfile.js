@@ -15,6 +15,7 @@ $.cssSlam = require('css-slam').gulp;
 require('./tasks/sw')(gulp, $);
 
 const htmlReplaceOptions = {
+    kcConfig: `<link rel="import" href="../../scripts/config/${env}.html">`,
     config: `<link rel="import" href="./config/${env}.html">\n`,
     path: `<meta name="path-prefix" data-value="/new/">`
 };
@@ -29,10 +30,34 @@ function isIndexHtml(file) {
     return file.relative.endsWith('index.html');
 }
 
+function copyKC (src, dest) {
+    dest = dest || 'www';
+    return gulp.src(src, { base: 'src/bower_components/make-apps/app' })
+        .pipe(gulp.dest(dest));
+}
+
+function copyKW (src, dest) {
+    dest = dest || 'www';
+    return gulp.src(src, { base: 'src' })
+        .pipe(gulp.dest(dest));
+}
+
+gulp.task('copy-kc', () => {
+    return copyKC('src/bower_components/make-apps/app/**/*');
+});
+
+gulp.task('copy-kw', () => {
+    return copyKW('src/**/*');
+});
+
+gulp.task('dev', (done) => {
+    return runSequence('copy-kc', 'copy-kw', done);
+});
+
 gulp.task('watch', function() {
     browserSync.init({
         server: {
-            baseDir: "./src",
+            baseDir: "./www",
             middleware: function(req, res, next) {
                 var fileName = url.parse(req.url);
                 fileName = fileName.href.split(fileName.search).join("");
@@ -48,14 +73,19 @@ gulp.task('watch', function() {
     });
     return gulp.watch('./src/**/*')
         .on('change', (e) => {
+            console.log(`File ${e.path} was ${e.type}`);
+            copyKW(e.path);
             browserSync.reload();
         });
 });
 
 // Move the whole src folder to .tmp. This ensures that the src folder will not be touched
-gulp.task('move-to-tmp', () => {
-    return gulp.src('src/**/*', { base: 'src' })
-        .pipe(gulp.dest('.tmp'));
+gulp.task('merge-contexts', (done) => {
+    copyKC('src/bower_components/make-apps/app/**/*', '.tmp').on('end', () => {
+        copyKW('src/**/*', '.tmp').on('end', () => {
+            done();
+        });
+    });
 });
 
 gulp.task('copy', () => {
@@ -73,7 +103,7 @@ gulp.task('copy', () => {
 });
 
 gulp.task('config', () => {
-    return gulp.src(['.tmp/js/config.html', '.tmp/index.html'], { base: '.tmp' })
+    return gulp.src(['.tmp/js/config.html', '.tmp/index.html', '.tmp/elements/kw-app-share/kw-app-share.html'], { base: '.tmp' })
         .pipe($.htmlReplace(htmlReplaceOptions))
         .pipe(gulp.dest('.tmp/'));
 });
@@ -99,7 +129,7 @@ gulp.task('compress', () => {
         .pipe($.if(hasExt('html'), $.crisper({ scriptInHead: false })))
         // All theses are to support redirection and navigation through the previous version of Kano World
         .pipe($.replace(/<([^a])(.+)(href|src|assets-path|path|content|image)="\/(.+)"(.*)>/g, '<$1$2$3="/new/$4"$5>'))
-        .pipe($.replace('url("/assets', 'url("/new/assets'))
+        .pipe($.replace('url("/', 'url("/new/'))
         .pipe($.replace('["/', '["/new/'))
         .pipe($.if(hasExt('json'), $.replace('"/assets', '"/new/assets')))
         // End
@@ -111,7 +141,7 @@ gulp.task('compress', () => {
         .pipe($.if(isIndexHtml, $.replace('</body></html>', `<noscript><iframe src='//www.googletagmanager.com/ns.html?id=GTM-WMGKFR' height='0' width='0' style='display: none; visibility: hidden;'></iframe></noscript>
             <script>window.addEventListener('load',function(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WMGKFR')});</script></body></html>`)))
         .pipe($.if(hasExt('css'), $.cssSlam()))
-        .pipe($.if(hasExt('js'), $.babel({ presets: ['es2015'] })))
+        .pipe($.if(hasExt('js'), $.babel({ presets: [['es2015', { modules: false }]]})))
         .pipe($.if(hasExt('js'), $.uglify()))
         .pipe(gulp.dest('www'));
 });
@@ -140,5 +170,5 @@ gulp.task('safari-9-support', () => {
 });
 
 gulp.task('build', () => {
-    return runSequence('move-to-tmp', 'config', 'copy', 'shards', 'polyfill', 'compress', 'safari-9-support', 'sw', 'rewrite-sw');
+    return runSequence('merge-contexts', 'config', 'copy', 'shards', 'polyfill', 'compress', 'safari-9-support', 'sw', 'rewrite-sw');
 });

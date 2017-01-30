@@ -25,7 +25,7 @@
             }
             .content {
                 position: relative;
-                @apply --layout-flex
+                @apply --layout-flex;
             }
             .content>* {
                 position: absolute;
@@ -33,12 +33,19 @@
                 left: 0;
                 width: 100%;
             }
-            #detail {
-                display: none;
+            .content #detail {
+                z-index: 1;
+                position: fixed;
                 height: 100%;
                 @apply --layout-vertical;
                 @apply --layout-center;
                 overflow: auto;
+                background: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                transition: opacity 300ms linear;
+            }
+            .content #detail.selected {
+                opacity: 1;
             }
             #feed {
                 height: 100%;
@@ -75,23 +82,17 @@
                     color: black;
                 };
             }
-            .back-button {
-                margin: 20px 0px;
-                background: black;
-                color: white;
-                border: 0px;
-                padding: 7px 12px;
-                border-radius: 50px;
-                cursor: pointer;
-                font-size: 16px;
-                font-family: var(--font-body);
-            }
             kw-share-detail {
                 width: 100%;
                 --kw-share-detail-player-height: 360px;
+                --kw-share-shell: {
+                    border: 0px;
+                };
             }
             .details {
                 width: 680px;
+                margin-top: 90px;
+                margin-bottom: 120px;
             }
             #shopDialog iron-image {
                 width: 100%;
@@ -116,8 +117,6 @@
                 kw-share-detail {
                     --kw-share-shell: {
                         border-radius: 0px;
-                        border-right: 0px;
-                        border-left: 0px;
                     };
                 }
                 .back-button {
@@ -149,7 +148,7 @@
         <app-route route="{{route}}" pattern="/:slug" data="{{routeData}}"></app-route>
         <div class="content">
             <div id="feed">
-                <kw-share-feed id="share-feed" on-remix-action="_onRemixAction" selected-share="{{selectedShare}}"></kw-share-feed>
+                <kw-share-feed id="share-feed" on-remix-action="_onRemixAction" selected-share="{{feedSelectedShare}}"></kw-share-feed>
                 <div class="promo">
                     <div class="follow"></div>
                     <div class="stats">
@@ -164,9 +163,8 @@
                     </div>
                 </div>
             </div>
-            <div id="detail">
+            <div id="detail" on-tap="_detailTapped">
                 <div class="details">
-                    <button type="button" class="back-button" on-tap="_backToFeed">Back to feed</button>
                     <kw-share-detail 
                     share="[[selectedShare]]"
                     tombstone$="[[!selectedShare]]"
@@ -203,10 +201,10 @@
                     type: Object,
                     notify: true
                 },
-                selectedShare: {
+                feedSelectedShare: {
                     type: Object,
                     value: null,
-                    observer: '_selectedShareChanged'
+                    observer: '_feedSelectedShareChanged'
                 }
             },
             observers: [
@@ -291,112 +289,26 @@
                 return n.toLocaleString();
             },
             _showFeed () {
-                if (this.selectedShare && this._supportsAnimations) {
-                    return new Promise((resolve, reject) => {
-                        let from = this.$$('kw-share-feed').getSelectedShareElement(),
-                            to = this.$$('kw-share-detail').getShareElement(),
-                            fromRect, toRect, timing, animation;
-
-                        if (!from) {
-                            this.$.feed.style.display = 'flex';
-                            this.$.detail.style.display = 'none';
-                            return resolve();
-                        }
-
-                        timing = {
-                            duration: 200,
-                            easing: 'linear'
-                        };
-
-                        // Display the feed view
-                        this.$.feed.style.display = 'flex';
-
-                        // Grab the required boxes, only once
-                        fromRect = from.getBoundingClientRect();
-                        toRect = to.getBoundingClientRect();
-
-                        // Ensure that the origin of the scaling will be from top left
-                        to.style.transformOrigin = 'top left';
-
-                        // Animates the detail view to fit the previous share in the list, then hides it
-                        animation = to.animate([{
-                            transform: 'translate(0px, 0px) scale(1, 1)',
-                            opacity: 1
-                        }, {
-                            transform: `translate(${fromRect.left - toRect.left}px, ${fromRect.top - toRect.top}px) scale(${fromRect.width / toRect.width}, ${fromRect.height / toRect.height})`,
-                            opacity: 0
-                        }], timing);
-                        
-                        animation.onfinish = () => {
-                            this.$.detail.style.display = 'none';
-                            this.$.feed.style.display = 'flex';
-                            resolve();
-                        };
-
-                        this.$.detail.animate({
-                            opacity: [1, 0]
-                        }, timing);
-
-                        // Fade in the feed view
-                        animation = this.$.feed.animate({
-                            opacity: [0, 1]
-                        }, timing);
-                    });
-                } else {
-                    this.$.feed.style.display = 'flex';
-                    this.$.detail.style.display = 'none';
-                    return Promise.resolve();
-                }
+                return new Promise((resolve, reject) => {
+                    let onAnimationFinished = () => {
+                        this.$.detail.removeEventListener('transitionend', onAnimationFinished);
+                        this.$.detail.style.display = 'none';
+                        return resolve();
+                    };
+                    if (!this.$.detail.classList.contains('selected')) {
+                        this.$.detail.style.display = 'none';
+                        return resolve();
+                    } else {
+                        this.$.detail.addEventListener('transitionend', onAnimationFinished);
+                        this.toggleClass('selected', false, this.$.detail);
+                    }
+                });
             },
             _showDetail () {
-                if (this.selectedShare && this._supportsAnimations) {
-                    let from = this.$$('kw-share-feed').getSelectedShareElement(),
-                        to = this.$$('kw-share-detail').getShareElement(),
-                        fromRect, toRect, timing, animation;
-
-                    timing = {
-                        duration: 200,
-                        easing: 'linear'
-                    };
-
-                    // Display the detail view
-                    this.$.detail.style.display = 'flex';
-
-                    // Grab the required boxes, only once
-                    fromRect = from.getBoundingClientRect();
-                    toRect = to.getBoundingClientRect();
-
-                    // Ensure that the origin of the scaling will be from top left
-                    to.style.transformOrigin = 'top left';
-
-                    // Position the detail view on top of the shared selected from the feed, and animate it to its original position
-                    to.animate([{
-                        transform: `translate(${fromRect.left - toRect.left}px, ${fromRect.top - toRect.top}px) scale(${fromRect.width / toRect.width}, ${fromRect.height / toRect.height})`,
-                        opacity: 0
-                    }, {
-                        transform: 'translate(0px, 0px) scale(1, 1)',
-                        opacity: 1
-                    }], timing);
-
-                    this.$.detail.animate({
-                        opacity: [0, 1]
-                    }, timing);
-
-                    // Fade out the feed view
-                    animation = this.$.feed.animate({
-                        opacity: [1, 0]
-                    }, timing);
-                    
-                    animation.onfinish = () => {
-                        this.$.feed.style.display = 'none';
-                        this.$.detail.style.display = 'flex';
-                    };
-                } else {
-                    this.$.feed.style.display = 'none';
-                    this.$.detail.style.display = 'flex';
-                }
+                this.$.detail.style.display = 'flex';
+                this.toggleClass('selected', true, this.$.detail);
             },
-            _selectedShareChanged (share) {
+            _feedSelectedShareChanged (share) {
                 if (share) {
                     this.set('route.path', `/${share.slug}`);
                 }
@@ -408,14 +320,27 @@
                     }
                     this._showFeed().then(() => {
                         this.selectedShare = null;
+                        this.feedSelectedShare = null;
                     });
                 } else {
-                    if (!this.selectedShare) {
+                    if (!this.feedSelectedShare) {
                         this._loadIndividualShare();
                     } else {
-                        this._getMoreComments(this.selectedShare.id, 0);
+                        this._getMoreComments(this.feedSelectedShare.id, 0);
                     }
                     this._showDetail();
+                    this.selectedShare = null;
+                    Polymer.RenderStatus.afterNextRender(this, () => {
+                        this.selectedShare = this.feedSelectedShare;
+                    });
+                }
+            },
+            _detailTapped (e) {
+                let target = e.path ? e.path[0] : e.target;
+                if (this.route.path !== '') {
+                    if (target === this.$.detail) {
+                        this._backToFeed();
+                    }
                 }
             },
             _backToFeed () {

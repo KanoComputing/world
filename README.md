@@ -14,6 +14,11 @@ Just starting a [webserver](https://www.npmjs.com/package/local-web-server) with
 
 For convenience sake, a gulp task `watch` was created. It uses browser sync and reload the pages everytime a change is made.
 
+Update: Since we need the app player from Kano Code, a small build step is necessary to develop on this project.
+
+Start with `gulp dev` to populate the `www` folder, then `gulp watch` will keep it up to date with the `src` folder as you change it.
+If you create new files, don't forget to rerun `gulp dev` as `gulp watch` doesn't register new files to watch
+
 ## Building
 
 To build for production, we use `gulp`.
