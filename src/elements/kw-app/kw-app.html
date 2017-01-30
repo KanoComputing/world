@@ -280,7 +280,7 @@
                 });
                 this.simplePage = view === 'start';
                 if (view === 'projects') {
-                    this.debounce('initiateOnboarding', this._initiateOnboardingCta, 1000);
+                    this.debounce('enableOnboarding', this._enableOnboardingModal, 1000);
                 }
             },
             _computeSelectedLink (path) {
@@ -342,7 +342,7 @@
                     });
                 }
             },
-            _initiateOnboardingCta () {
+            _enableOnboardingModal () {
                 this.async(() => {
                     if (this._needOnboardingModal()) {
                         this._openOnboardingModal();
