@@ -362,7 +362,7 @@
                     return;
                 }
                 //true if shown in last 30 minutes
-                return (new Date().getTime() - parseInt(onboardingToken)) < 30000000
+                return (new Date().getTime() - parseInt(onboardingToken)) < 30000000;
             },
             _openOnboardingModal () {
                 if (loadedImports['onboarding-modal']) {
