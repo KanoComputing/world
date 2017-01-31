@@ -9,6 +9,7 @@ const env = process.env.NODE_ENV || 'development';
 const url = require('url');
 const fs = require('fs');
 const browserSync = require('browser-sync');
+const path = require('path');
 
 $.cssSlam = require('css-slam').gulp;
 
@@ -57,7 +58,7 @@ gulp.task('dev', (done) => {
 gulp.task('watch', function() {
     browserSync.init({
         server: {
-            baseDir: "./www",
+            baseDir: "./src",
             middleware: function(req, res, next) {
                 var fileName = url.parse(req.url);
                 fileName = fileName.href.split(fileName.search).join("");

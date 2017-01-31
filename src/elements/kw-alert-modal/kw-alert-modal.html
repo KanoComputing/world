@@ -26,12 +26,12 @@
                 padding: 40px 100px;
                 text-align: center;
             }
-            :host ::content h2 {
+            :host paper-dialog ::content h2 {
                 font-family: var(--font-heading);
                 font-size: 26px;
                 margin: 0 0 22px 0;
             }
-            :host ::content p {
+            :host paper-dialog ::content p {
                 font-family: var(--font-heading);
                 font-size: 16px;
                 margin: 0 0 16px 0;
@@ -48,7 +48,7 @@
             }
         </style>
         </iron-image>
-        <paper-dialog id="modal" on-iron-overlay-opened="_openAnimation" with-backdrop>
+        <paper-dialog id="modal" on-iron-overlay-opened="_openAnimation" with-backdrop opened="{{opened}}">
             <div class="container">
                 <slot></slot>
                 <div class="actions">
