@@ -174,7 +174,8 @@
                    assets-path="/assets"
                    on-success="_authSuccess"
                    on-skip="_redirectToProjects"
-                   on-cancel="_authCancelled"></kano-auth>
+                   on-cancel="_authCancelled"
+                   opened="{{modalOpened}}"></kano-auth>
         <kw-blank-project-modal id="project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
         <kw-alert-modal id="unsubscribe-modal">
             <h2>Unsubscribed</h2>
@@ -335,10 +336,10 @@
                 }, 5000);
             },
             _needOnboardingModal () {
-                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently());
+                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently() || this.modalOpened);
             },
             _hasUserDoneOnboarding () {
-                return this.user || localStorage.getItem('onboarding');
+                return this.user || localStorage.getItem('onboarding') || localStorage.getItem('progress') && localStorage.getItem('progress') !== 'null';
             },
             _hasModalShownRecently () {
                 let onboardingToken = localStorage.getItem('onboarding-cta');
