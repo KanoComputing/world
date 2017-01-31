@@ -201,8 +201,9 @@
                 </template>
             </iron-lazy-pages>
         </div>
-        <kano-nav assets-path="/assets/navbar/"
-                  site-root="/projects">
+        <kano-nav id="nav"
+                  assets-path="/assets/navbar/"
+                  site-root="/start">
             <kano-primary-links assets-path="/assets/navbar/"
                                 current-site="[[config.WORLD_URL]]"
                                 selected-link="[[_computeSelectedLink(route.path)]]"
@@ -395,8 +396,10 @@
                 this.debounce('userChanged', () => {
                     if (user) {
                         this.updateVisitType('Logged in');
+                        this.$.nav.siteRoot = '/projects';
                     } else {
                         this.updateVisitType('Logged out');
+                        this.$.nav.siteRoot = '/start';
                     }
                 });
             },
