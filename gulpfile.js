@@ -9,7 +9,6 @@ const env = process.env.NODE_ENV || 'development';
 const url = require('url');
 const fs = require('fs');
 const browserSync = require('browser-sync');
-const path = require('path');
 
 $.cssSlam = require('css-slam').gulp;
 
