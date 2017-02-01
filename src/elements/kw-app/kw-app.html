@@ -176,7 +176,9 @@
                    on-skip="_redirectToProjects"
                    on-cancel="_authCancelled"></kano-auth>
         <kw-blank-project-modal id="project-modal" opened="{{projectModalOpened}}" hidden$="[[!projectModalOpened]]"></kw-blank-project-modal>
-        <kw-alert-modal id="unsubscribe-modal">
+        <kw-alert-modal id="unsubscribe-modal"
+                        opened="{{unsubscribeModalOpened}}"
+                        hidden$="[[!unsubscribeModalOpened]]">
             <h2>Unsubscribed</h2>
             <p>You have been unsubscribed from receiving Kano World alerts</p>
         </kw-alert-modal>
@@ -241,6 +243,10 @@
             ],
             properties: {
                 modalOpened: {
+                    type: Boolean,
+                    value: false
+                },
+                unsubscribeModalOpened: {
                     type: Boolean,
                     value: false
                 }
