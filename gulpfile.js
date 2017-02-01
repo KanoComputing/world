@@ -57,7 +57,7 @@ gulp.task('dev', (done) => {
 gulp.task('watch', function() {
     browserSync.init({
         server: {
-            baseDir: "./src",
+            baseDir: "./www",
             middleware: function(req, res, next) {
                 var fileName = url.parse(req.url);
                 fileName = fileName.href.split(fileName.search).join("");
