@@ -261,9 +261,7 @@
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                     this.stats = stats;
                 });
-                this.async(() => {
-                    this._checkNewsletterSubscription();
-                }, 0);
+                this.async(() => this._checkNewsletterSubscription());
             },
             detached () {
                 this._stopNotificationsPolling();
@@ -345,7 +343,7 @@
                 }, 5000);
             },
             _needOnboardingModal () {
-                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently() || this.modalOpened);
+                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently() || this.modalOpened || this.unsubscribeModalOpened);
             },
             _hasUserDoneOnboarding () {
                 return this.user || localStorage.getItem('onboarding') || localStorage.getItem('progress') && localStorage.getItem('progress') !== 'null';
