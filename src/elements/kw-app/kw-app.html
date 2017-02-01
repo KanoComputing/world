@@ -177,7 +177,9 @@
                    on-cancel="_authCancelled"
                    opened="{{modalOpened}}"></kano-auth>
         <kw-blank-project-modal id="project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
-        <kw-alert-modal id="unsubscribe-modal">
+        <kw-alert-modal id="unsubscribe-modal"
+                        opened="{{unsubscribeModalOpened}}"
+                        hidden$="[[!unsubscribeModalOpened]]">
             <h2>Unsubscribed</h2>
             <p>You have been unsubscribed from receiving Kano World alerts</p>
         </kw-alert-modal>
@@ -202,8 +204,9 @@
                 </template>
             </iron-lazy-pages>
         </div>
-        <kano-nav assets-path="/assets/navbar/"
-                  site-root="/projects">
+        <kano-nav id="nav"
+                  assets-path="/assets/navbar/"
+                  site-root="/start">
             <kano-primary-links assets-path="/assets/navbar/"
                                 current-site="[[config.WORLD_URL]]"
                                 selected-link="[[_computeSelectedLink(route.path)]]"
@@ -242,6 +245,10 @@
             properties: {
                 modalOpened: {
                     type: Boolean
+                },
+                unsubscribeModalOpened: {
+                    type: Boolean,
+                    value: false
                 }
             },
             observers: [
@@ -254,7 +261,7 @@
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
                     this.stats = stats;
                 });
-                this._checkNewsletterSubscription();
+                this.async(() => this._checkNewsletterSubscription());
             },
             detached () {
                 this._stopNotificationsPolling();
@@ -339,7 +346,7 @@
                 }, 5000);
             },
             _needOnboardingModal () {
-                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently() || this.modalOpened);
+                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently() || this.modalOpened || this.unsubscribeModalOpened);
             },
             _hasUserDoneOnboarding () {
                 return this.user || localStorage.getItem('onboarding') || localStorage.getItem('progress') && localStorage.getItem('progress') !== 'null';
@@ -399,8 +406,10 @@
                 this.debounce('userChanged', () => {
                     if (user) {
                         this.updateVisitType('Logged in');
+                        this.$.nav.siteRoot = '/projects';
                     } else {
                         this.updateVisitType('Logged out');
+                        this.$.nav.siteRoot = '/start';
                     }
                 });
             },
