@@ -263,7 +263,10 @@
                 this.debounce('viewChanged', () => {
                     this.dispatchVirtualPageView(document.title, window.location.pathname);
                 });
-                this.simplePage = view === 'start';
+                if (view === 'start') {
+                    this.simplePage = true;
+                    localStorage.setItem('onboarding', true);
+                }
                 if (view === 'projects') {
                     this.debounce('enableOnboarding', this._enableOnboardingModal, 1000);
                 }
