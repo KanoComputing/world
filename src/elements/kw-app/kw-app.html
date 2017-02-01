@@ -174,12 +174,9 @@
                    assets-path="/assets"
                    on-success="_authSuccess"
                    on-skip="_redirectToProjects"
-                   on-cancel="_authCancelled"
-                   opened="{{modalOpened}}"></kano-auth>
-        <kw-blank-project-modal id="project-modal" opened="{{modalOpened}}" hidden$="[[!modalOpened]]"></kw-blank-project-modal>
-        <kw-alert-modal id="unsubscribe-modal"
-                        opened="{{unsubscribeModalOpened}}"
-                        hidden$="[[!unsubscribeModalOpened]]">
+                   on-cancel="_authCancelled"></kano-auth>
+        <kw-blank-project-modal id="project-modal" opened="{{projectModalOpened}}" hidden$="[[!projectModalOpened]]"></kw-blank-project-modal>
+        <kw-alert-modal id="unsubscribe-modal">
             <h2>Unsubscribed</h2>
             <p>You have been unsubscribed from receiving Kano World alerts</p>
         </kw-alert-modal>
@@ -244,18 +241,19 @@
             ],
             properties: {
                 modalOpened: {
-                    type: Boolean
-                },
-                unsubscribeModalOpened: {
                     type: Boolean,
                     value: false
-                }
+                },
             },
             observers: [
                 '_tokenChanged(token)',
                 '_userChanged(user)',
                 '_viewChanged(routeData.page)'
             ],
+            listeners: {
+                'iron-overlay-opened': '_onModalOpened',
+                'iron-overlay-closed': '_onModalClosed'
+            },
             attached () {
                 this.config = Kano.World.config;
                 this.cacheOrAPI(this._getUrl('stats')).then(stats => {
@@ -346,7 +344,7 @@
                 }, 5000);
             },
             _needOnboardingModal () {
-                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently() || this.modalOpened || this.unsubscribeModalOpened);
+                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently() || this.modalOpened);
             },
             _hasUserDoneOnboarding () {
                 return this.user || localStorage.getItem('onboarding') || localStorage.getItem('progress') && localStorage.getItem('progress') !== 'null';
@@ -435,6 +433,7 @@
             _checkNewsletterSubscription () {
                 let check = /.*status=unsubscribe.*/;
                 if (check.test(window.location.search)) {
+                    localStorage.setItem('onboarding', true);
                     if (loadedImports['kw-alert-modal']) {
                         this.$['unsubscribe-modal'].open();
                     } else {
@@ -444,6 +443,12 @@
                         });
                     }
                 }
+            },
+            _onModalOpened () {
+                this.modalOpened = true;
+            },
+            _onModalClosed () {
+                this.modalOpened = false;
             }
         });
     })();
