@@ -1,36 +1,47 @@
 {
-    "christmas_challenges": {
-        "label": "Christmas",
-        "header": "Code the holidays",
-        "description": "Time to wrap up warm and code some festive fun",
+      "make_art_101": {
+        "label": "art",
+        "header": "Make Art 101",
+        "description": "Code awesome masterpieces. No pen or pad needed",
         "mode_color": "white",
         "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
-        "api_progress_tracking": "make-apps",
+        "api_progress_tracking": "make-art-basic",
         "projects": [
             {
-                "title": "Code tree",
-                "slug": "code_tree",
-                "image": "/assets/projects/icons/christmas/code_tree.png",
-                "link": "https://apps.kano.me/story/code_tree"
+                "title": "Sunny Day",
+                "slug": 1,
+                "link": "https://art.kano.me/challenge/basic/sunnyday",
+                "image": "/assets/projects/icons/make_art101/sunny-day.png"
             },
             {
-                "title": "Robo wrapper",
-                "slug": "robo_wrapper",
-                "image": "/assets/projects/icons/christmas/robo_wrapper.png",
-                "link": "https://apps.kano.me/story/robo_wrapper"
+                "title": "Swiss Flag",
+                "slug": 3,
+                "link": "https://art.kano.me/challenge/basic/swissflag",
+                "image": "/assets/projects/icons/make_art101/swissflag.png"
             },
             {
-                "title": "Snow day",
-                "slug": "snow_day",
-                "image": "/assets/projects/icons/christmas/snow_day.png",
-                "link": "https://apps.kano.me/story/snow_day"
+                "title": "Stare in the Dark",
+                "slug": 4,
+                "link": "https://art.kano.me/challenge/basic/stare",
+                "image": "/assets/projects/icons/make_art101/stare.png"
             },
             {
-                "title": "Sound hat",
-                "slug": "sound_hat",
-                "image": "/assets/projects/icons/christmas/sound_hat.png",
-                "link": "https://apps.kano.me/story/sound_hat",
-                "dependencies": ["microphone"]
+                "title": "Your first face",
+                "slug": 5,
+                "link": "https://art.kano.me/challenge/basic/smiley",
+                "image": "/assets/projects/icons/make_art101/smiley.png"
+            },
+            {
+                "title": "Blue Balloon",
+                "slug": 6,
+                "link": "https://art.kano.me/challenge/basic/baloon",
+                "image": "/assets/projects/icons/make_art101/blue-balloon.png"
+            },
+            {
+                "title": "Stickman",
+                "slug": 7,
+                "link": "https://art.kano.me/challenge/basic/stickman",
+                "image": "/assets/projects/icons/make_art101/stickman.png"
             }
         ]
     },
@@ -342,52 +353,6 @@
                 "slug": "parade",
                 "link": "https://apps.kano.me/story/parade",
                 "image": "/assets/projects/icons/current-theme-archive/parade.png"
-            }
-        ]
-    },
-    "make_art_101": {
-        "label": "art",
-        "header": "Make Art 101",
-        "description": "Code awesome masterpieces. No pen or pad needed",
-        "mode_color": "white",
-        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
-        "api_progress_tracking": "make-art-basic",
-        "projects": [
-            {
-                "title": "Sunny Day",
-                "slug": 1,
-                "link": "https://art.kano.me/challenge/basic/sunnyday",
-                "image": "/assets/projects/icons/make_art101/sunny-day.png"
-            },
-            {
-                "title": "Swiss Flag",
-                "slug": 3,
-                "link": "https://art.kano.me/challenge/basic/swissflag",
-                "image": "/assets/projects/icons/make_art101/swissflag.png"
-            },
-            {
-                "title": "Stare in the Dark",
-                "slug": 4,
-                "link": "https://art.kano.me/challenge/basic/stare",
-                "image": "/assets/projects/icons/make_art101/stare.png"
-            },
-            {
-                "title": "Your first face",
-                "slug": 5,
-                "link": "https://art.kano.me/challenge/basic/smiley",
-                "image": "/assets/projects/icons/make_art101/smiley.png"
-            },
-            {
-                "title": "Blue Balloon",
-                "slug": 6,
-                "link": "https://art.kano.me/challenge/basic/baloon",
-                "image": "/assets/projects/icons/make_art101/blue-balloon.png"
-            },
-            {
-                "title": "Stickman",
-                "slug": 7,
-                "link": "https://art.kano.me/challenge/basic/stickman",
-                "image": "/assets/projects/icons/make_art101/stickman.png"
             }
         ]
     },
