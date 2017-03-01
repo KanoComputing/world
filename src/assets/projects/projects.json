@@ -1,5 +1,5 @@
 {
-      "make_art_101": {
+    "make_art_101": {
         "label": "art",
         "header": "Make Art 101",
         "description": "Code awesome masterpieces. No pen or pad needed",
@@ -353,6 +353,41 @@
                 "slug": "parade",
                 "link": "https://apps.kano.me/story/parade",
                 "image": "/assets/projects/icons/current-theme-archive/parade.png"
+            }
+        ]
+    },
+    "christmas_challenges": {
+        "label": "Christmas",
+        "header": "Code the holidays",
+        "description": "Time to wrap up warm and code some festive fun",
+        "mode_color": "white",
+        "done_link": "https://insights.hotjar.com/s?siteId=119134&surveyId=14013",
+        "api_progress_tracking": "make-apps",
+        "projects": [
+            {
+                "title": "Code tree",
+                "slug": "code_tree",
+                "image": "/assets/projects/icons/christmas/code_tree.png",
+                "link": "https://apps.kano.me/story/code_tree"
+            },
+            {
+                "title": "Robo wrapper",
+                "slug": "robo_wrapper",
+                "image": "/assets/projects/icons/christmas/robo_wrapper.png",
+                "link": "https://apps.kano.me/story/robo_wrapper"
+            },
+            {
+                "title": "Snow day",
+                "slug": "snow_day",
+                "image": "/assets/projects/icons/christmas/snow_day.png",
+                "link": "https://apps.kano.me/story/snow_day"
+            },
+            {
+                "title": "Sound hat",
+                "slug": "sound_hat",
+                "image": "/assets/projects/icons/christmas/sound_hat.png",
+                "link": "https://apps.kano.me/story/sound_hat",
+                "dependencies": ["microphone"]
             }
         ]
     },
