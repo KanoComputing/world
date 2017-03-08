@@ -5,9 +5,9 @@
 <link rel="import" href="../kw-share-shell/kw-share-shell.html">
 <link rel="import" href="../kw-share-stats/kw-share-stats.html">
 <link rel="import" href="../kw-social-comment/kw-social-comment.html">
-<link rel="import" href="../../bower_components/web-components/kano-style/color.html">
-<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
-<link rel="import" href="../../bower_components/web-components/kano-style/button.html">
+<link rel="import" href="../../bower_components/web-components/kano-particle-burst/kano-particle-burst.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
+<link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
 
 <dom-module id="kw-share-detail">
     <link rel="lazy-import" href="../kw-app-share/kw-app-share.html" group="kw-app-share">
@@ -21,90 +21,28 @@
                 to { opacity: 1; }
             }
             :host {
+                background-color: white;
+                border-radius: 3px;
                 display: block;
+                overflow: hidden;
             }
-            
-            :host kw-share-shell {
-                width: 100%;
+            :host *[hidden] {
+                display: none !important;
             }
-            
-            :host .details {
+            :host .share {
                 @apply --layout-vertical;
                 @apply --layout-center;
                 display: flex;
                 width: 100%;
             }
-            
-            :host .details>iron-image {
+            :host .share>iron-image {
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
             }
-            
-            :host .bottom {
-                @apply --layout-vertical;
-                @apply --layout-self-stretch;
-                margin: 16px;
-            }
-
-            .content {
-                border-top: 1px solid var(--color-grey-mid);
-                padding: 20px 2px;
-            }
-
-            kw-share-stats {
-                border-top: 1px solid var(--color-grey-mid);
-            }
-            
-            :host .bottom .content {
-                @apply --layout-horizontal;
-            }
-            
-            :host .bottom .content .description {
-                color: var(--color-grey-dark);
-                @apply --layout-flex;
-            }
-            
-            :host .bottom .content .description h3 {
-                margin: 0;
-                font-size: 16px;
-                line-height: 23px;
-                color: var(--color-grey-darker);
-                font-family: var(--font-body);
-            }
-            
-            :host .bottom .content .description p {
-                color: var(--color-grey-dark);
-                margin-right: 16px;
-                font-family: var(--font-body);
-                font-weight: normal;
-                font-size: 16px;
-                margin-top: 8px;
-                margin-bottom: 8px;
-            }
-            
-            :host .bottom .content .actions {
-                width: 25%;
-                @apply --layout-horizontal;
-                @apply --layout-center;
-                @apply --layout-end-justified;
-                padding-top: 5%;
-            }
-            
-            .remix-button {
-                @apply --kano-button;
-                position: static;
-                background: var(--color-orange);
-                padding: 10px;
-            }
-
-            .remix-button img {
-                margin-left: 3px;
-                margin-top: 2px;
-            }
-            .share-content {
+            :host .share-content {
                 @apply --layout-flex;
                 width: 100%;
                 padding: 0px 16px;
@@ -113,105 +51,289 @@
                 box-sizing: border-box;
                 position: relative;
             }
-
-            .share-content .loading {
+            :host .share-content .loading {
                 transition: opacity 200ms linear;
             }
-
             :host(.loaded) .share-content .loading {
                 opacity: 0;
             }
-
-            #share-container {
+            :host #share-container {
                 animation: fade-in 200ms linear;
+                background: var(--color-rhubarb);
             }
-            
-            #share-container,
-            .share-content .loading,
-            .share-content .loading iron-image,
-            .share-content .loading .overlay {
+            :host #share-container,
+            :host .share-content .loading,
+            :host .share-content .loading iron-image,
+            :host .share-content .loading .overlay {
                 @apply --layout-fit;
             }
-
-            .share-content .loading .overlay {
+            :host .share-content .loading .overlay {
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --layout-center-justified;
                 background: rgba(255, 255, 255, 0.1);
             }
-            
             :host #share-container>* {
-                width: 100%;
+                background-color: white;
                 height: 100%;
+                margin: 20px auto;
+                max-height: calc(100% - 40px);
+                max-width: calc(100% - 40px);
+                width: 100%;
             }
-            
-            *[hidden] {
-                display: none !important;
+            :host .share-detail {
+                @apply --layout-horizontal;
+                padding-top: 20px;
+                width: 100%;
             }
-
-            :host([tombstone]) .remix-button {
-                color: transparent;
-                opacity: 0.7;
+            :host .main-details {
+                @apply --layout-flex-8;
+                padding: 0 20px 20px 20px;
+            }
+            :host .header {
+                @apply --layout-horizontal;
+            }
+            :host .avatar {
+                height: 60px;
+                margin-right: 20px;
+                width: 60px;
+            }
+            :host .title {
+                margin: 0;
+                padding-bottom: 5px;
+            }
+            :host .attribution {
+                margin: 0;
+                padding-bottom: 10px;
+            }
+            :host .author {
+                color: var(--color-rhubarb);
+            }
+            :host .description {
+                margin: 0;
+                padding-bottom: 10px;
+            }
+            :host .social-nav {
+                @apply --layout-horizontal;
+                border-bottom: 1px solid var(--color-iron-grey);
+                color: var(--color-oslo-grey);
+                list-style: none;
+                margin: 0;
+                padding: 0 0 20px 80px;
+            }
+            :host .social-nav .nav-item {
+                cursor: pointer;
+                margin-right: 20px;
+                position: relative;
+            }
+            :host .social-nav .nav-icon {
+                width: 12px;
+            }
+            :host .nav-item.active {
+                color: black;
+            }
+            :host .nav-item.active .nav-icon {
+                color: var(--color-sky-blue);
+            }
+            :host .nav-item.active::after {
+                background-color: white;
+                border-left: 1px solid var(--color-iron-grey);
+                border-top: 1px solid var(--color-iron-grey);
+                bottom: -30px;
+                content: "";
+                height: 20px;
+                left: 0;
+                margin: auto;
+                position: absolute;
+                right: 0;
+                transform: rotate(45deg);
+                width: 20px;
+            }
+            :host kw-social-comment {
+                padding-top: 20px;
+                width: 100%;
+            }
+            :host .supplementary-details {
+                @apply --layout-flex-4;
+                border-left: 1px solid var(--color-iron-grey);
+                color: var(--color-oslo-grey);
+                padding: 0 20px 20px 20px;
+            }
+            :host .actions {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            :host .actions.above {
+                @apply --layout-vertical;
+            }
+            :host .actions.below {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+            }
+            :host .action {
+                cursor: pointer;
+                padding: 10px 0px;
+            }
+            :host .actions.above .action {
+                border-bottom: 1px solid var(--color-iron-grey);
+            }
+            :host .actions.above .action:first-child {
+                border-top: 1px solid var(--color-iron-grey);
+            }
+            :host .actions.above .action {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+            :host .actions.above .action .action-label {
+                padding-left: 10px;
+            }
+            :host .actions.below .action {
+                @apply --layout-vertical;
+                @apply --layout-center;
+            }
+            :host .actions.below .action .action-label {
+                padding-top: 5px;
+            }
+            :host .like.liked {
+                color: var(--color-rhubarb);
+            }
+            :host .metadata {
+                list-style: none;
+                margin: 0;
+                padding: 20px 0 10px 0;
+            }
+            :host .metadatum {
+                padding-bottom: 10px;
+            }
+            :host([tombstone]) .detail .cover,
+            :host([tombstone]) .detail .avatar {
                 background: var(--color-grey-lightest);
-                pointer-events: none;
-            }
-            
-            :host([tombstone]) .detail .cover {
-                background: var(--color-grey-lightest);
                 color: transparent;
             }
-            
-            :host([tombstone]) .content .description h3 {
+            :host([tombstone]) .title {
                 width: 200px;
                 height: 20px;
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
-            
-            :host([tombstone]) .content .description p {
-                width: 100%;
-                height: 30px;
+            :host([tombstone]) .attribution {
+                width: 100px;
+                height: 20px;
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
-            
-            kw-social-comment {
+            :host([tombstone]) .description {
                 width: 100%;
+                height: 60px;
+                background: var(--color-grey-lightest);
+                color: transparent;
             }
         </style>
-        <kw-share-shell id="shell"
-                        avatar-src="[[share.user.avatar.urls.circle]]"
-                        username="[[share.user.username]]"
-                        date="[[share.date_created]]"
-                        tombstone$="[[!share]]">
-            <div id="share" class="details">
-                <div class="share-content">
-                    <div class="loading">
-                        <iron-image src="[[share.cover_url]]" sizing="contain"></iron-image>
-                        <div class="overlay">
-                            <h2>Loading</h2>
-                        </div>
+        <div id="share" class="share">
+            <div class="share-content">
+                <div class="loading">
+                    <iron-image src="[[share.cover_url]]" sizing="contain"></iron-image>
+                    <div class="overlay">
+                        <h2>Loading</h2>
                     </div>
-                    <div id="share-container"></div>
                 </div>
-                <div class="bottom">
-                    <div class="content">
-                        <div class="description">
-                            <h3>[[share.title]]</h3>
-                            <p>[[share.description]]</p>
-                        </div>
-                        <div class="actions" hidden$="[[_computeAction(share.app)]]">
-                            <button on-tap="_onTapRemix" class="remix-button">
-                                <span>remix</span>
-                                <img src="/assets/icons/shares/remix.svg" />
-                            </button>
-                        </div>
-                    </div>
-                    <kw-share-stats likes="[[share.likes.length]]" comments="[[share.comments_count]]" tombstone$="[[!share]]"></kw-share-stats>
-                </div>
-                <kw-social-comment id="comments" comments="[[share.comments]]" page-number="[[share.pageNumber]]" item-id="[[share.id]]" tombstone$="[[!share]]"></kw-social-comment>
+                <div id="share-container"></div>
             </div>
-        </kw-share-shell>
+            <div class="share-detail">
+                <div class="main-details">
+                    <div class="header">
+                        <img class="avatar" src$="[[avatar]]" />
+                        <div class="description">
+                            <h3 class="title">[[share.title]]</h3>
+                            <h4 class="attribution">By <a class="author">[[share.user.username]]</a></h4>
+                            <p class="description">[[share.description]]</p>
+                        </div>
+                    </div>
+                    <div class="social">
+                        <ul class="social-nav">
+                            <li class$="[[_computeNavItemClass(section, 'comments')]]" on-tap="_showComments">
+                                <iron-icon class="nav-icon" icon="kano-icons:comment"></iron-icon>
+                                <span class="nav-label">[[share.comments_count]] Replies</span>
+                            </li>
+                            <li class$="[[_computeNavItemClass(section, 'likes')]]">
+                                <iron-icon class="nav-icon" icon="kano-icons:like"></iron-icon>
+                                <span class="nav-label">[[share.likes.length]] Likes</span>
+                            </li>
+                        </ul>
+                        <!-- Set up with support for showing lists of
+                             likes and remixes in future, when the API support
+                             is available -->
+                        <iron-pages id="social-sections" selected="[[section]]" attr-for-selected="name">
+                            <div class="social-section" name="comments">
+                                <kw-social-comment id="comments"
+                                                   comments="[[share.comments]]"
+                                                   page-number="[[share.pageNumber]]"
+                                                   item-id="[[share.id]]"
+                                                   tombstone$="[[!share]]">
+                                                   </kw-social-comment>
+                            </div>
+                        </iron-pages>
+                    </div>
+                </div>
+                <div class="supplementary-details">
+                    <ul class="actions above">
+                        <li class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
+                            <kano-particle-burst number-particles="40"
+                                               gravity="0.5"
+                                               particle-decay="0.04"
+                                               max-particle-size="13">
+                                <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
+                            </kano-particle-burst>
+                            <span class="action-label">
+                                Like
+                            </span>
+                        </li>
+                        <li class="action" on-tap="_onRemixTapped">
+                            <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
+                            <span class="action-label">
+                                Remix
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="metadata">
+                        <li class="metadatum">
+                            Created in [[_computeAppLabel(share.app)]]
+                        </li>
+                        <template is="dom-if" if="[[share.challengeRef]]">
+                            <li class="metadatum">
+                              Challenge [[share.challengeRef]]
+                            </li>
+                        </template>
+                    </ul>
+                    <ul class="actions below">
+                        <li class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
+                            <kano-particle-burst number-particles="40"
+                                               gravity="0.5"
+                                               particle-decay="0.04"
+                                               max-particle-size="13">
+                                <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
+                            </kano-particle-burst>
+                            <span class="action-label">
+                                Like
+                            </span>
+                        </li>
+                        <li class="action">
+                            <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
+                            <span class="action-label">
+                                Remix
+                            </span>
+                        </li>
+                        <li class="action">
+                            <iron-icon class="action-icon" icon="kano-icons:share"></iron-icon>
+                            <span class="action-label">
+                                Share
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </template>
     <script>
     (function() {
@@ -221,15 +343,43 @@
             'make-apps': 'kw-app-share'
         };
 
+        const appLabels = {
+            'kano-draw': 'Make Art',
+            'make-music': 'Make Music',
+            'make-apps': 'Kano Code'
+        }
+
         const loadedImports = {};
 
         Polymer({
             is: 'kw-share-detail',
             behaviors: [Polymer.Templatizer, Polymer.LazyImportsBehavior],
             properties: {
+                avatar: {
+                    type: String,
+                    computed: '_computeAvatar(share)'
+                },
+                defaultAvatar: {
+                    type: String,
+                    value: '../../assets/avatar/judoka-face.svg'
+                },
+                liked: {
+                    type: Boolean,
+                    computed: '_computeLiked(share.likes.*)',
+                    notify: true
+                },
+                section: {
+                    type: String,
+                    value: 'comments'
+                },
                 share: {
                     type: Object,
-                    value: null
+                    value: null,
+                    notify: true
+                },
+                userId: {
+                    type: String,
+                    value: ''
                 }
             },
             observers: [
@@ -258,10 +408,67 @@
                         break;
                 }
             },
-            _onTapRemix() {
+            _computeAppLabel (app) {
+                return appLabels[app] || app;
+            },
+            _computeAvatar (share) {
+                if (share && share.user) {
+                    return share.user.avatar.urls.circle || this.defaultAvatar;
+                }
+                return this.defaultAvatar;
+            },
+            _computeLiked (likes) {
+                if (!likes || !this.userId) {
+                    return false;
+                }
+                let userLike = likes.base.find((like) => {
+                    return like.user === this.userId;
+                });
+                return userLike ? true : false;
+            },
+            _computeLikeClass (liked) {
+                let baseClass = 'action like',
+                    activeClass = liked ? 'liked' : 'not-liked';
+                return `${baseClass} ${activeClass}`;
+            },
+            _computeNavItemClass (section, id) {
+                let baseClass = 'nav-item',
+                    activeClass = section === id ? 'active' : 'inactive';
+                return `${baseClass} ${activeClass}`;
+            },
+            _insertShareView (tagName) {
+                let templateString = `<${tagName} share="[[share]]"></${tagName}>`,
+                    template = document.createElement('template');
+
+                template.innerHTML = templateString;
+
+                this.templatize(template);
+
+                this.instance = this.stamp({
+                    share: this.share
+                });
+
+                this.$['share-container'].appendChild(this.instance.root);
+                this.toggleClass('loaded', true);
+            },
+            _onLikeTapped (e) {
+                if (!this.liked) {
+                    let particleBursts = Polymer.dom(this.root).querySelectorAll('kano-particle-burst');
+                    particleBursts.forEach((burst) => {
+                        burst.triggerParticles();
+                        window.setTimeout(() => burst.triggerParticles(), 250);
+                    })
+                }
+                this.fire('like-action', {
+                    id: this.share.id,
+                    liked: !this.liked,
+                    userId: this.share.user.id
+                });
+            },
+            _onRemixTapped () {
                 let item = this.share,
                     appType = item.app;
-                this.fire("remix-action", {id: item.id, type: appType});
+                this.fire('remix-action', {id: item.id, type: appType});
             },
             _shareChanged(share) {
                 let tagName, templateString, template;
@@ -269,7 +476,6 @@
                     return;
                 }
                 tagName = appMapping[this.share.app] || 'kw-share';
-
                 if (this.instance) {
                     while (this.$['share-container'].firstChild) {
                         this.$['share-container'].removeChild(this.$['share-container'].firstChild);
@@ -287,20 +493,11 @@
                     });
                 }
             },
-            _insertShareView (tagName) {
-                let templateString = `<${tagName} share="[[share]]"></${tagName}>`,
-                    template = document.createElement('template');
-
-                template.innerHTML = templateString;
-
-                this.templatize(template);
-
-                this.instance = this.stamp({
-                    share: this.share
-                });
-
-                this.$['share-container'].appendChild(this.instance.root);
-                this.toggleClass('loaded', true);
+            _showComments () {
+                this.set('section', 'comments');
+            },
+            _showLikes () {
+                this.set('section', 'likes');
             }
         });
     })();

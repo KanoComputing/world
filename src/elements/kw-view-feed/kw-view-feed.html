@@ -34,7 +34,7 @@
                 width: 100%;
             }
             .content #detail {
-                z-index: 1;
+                z-index: 100;
                 position: fixed;
                 height: 100%;
                 @apply --layout-vertical;
@@ -53,8 +53,6 @@
             }
             kw-share-feed {
                 @apply --layout-flex;
-            }
-            kw-share-feed {
                 margin-left: -200px;
             }
             .promo {
@@ -84,7 +82,7 @@
             }
             kw-share-detail {
                 width: 100%;
-                --kw-share-detail-player-height: 360px;
+                --kw-share-detail-player-height: 380px;
                 --kw-share-shell: {
                     border: 0px;
                 };
@@ -165,13 +163,14 @@
             </div>
             <div id="detail" on-tap="_detailTapped">
                 <div class="details">
-                    <kw-share-detail 
-                    share="[[selectedShare]]"
-                    tombstone$="[[!selectedShare]]"
-                    on-post-comment="_onPostComment"
-                    on-remix-action="_onRemixAction"
-                    on-load-comment="_loadMoreData"> 
-                    </kw-share-detail>
+                    <kw-share-detail share="[[selectedShare]]"
+                                     tombstone$="[[!selectedShare]]"
+                                     user-id="[[user.id]]"
+                                     on-like-action="_onLikeAction"
+                                     on-post-comment="_onPostComment"
+                                     on-remix-action="_onRemixAction"
+                                     on-load-comment="_loadMoreData">
+                                     </kw-share-detail>
                 </div>
             </div>
         </div>
@@ -345,7 +344,7 @@
             },
             _backToFeed () {
                 this.set('route.path', '');
-                this.set('selectedShare.comments', []); 
+                this.set('selectedShare.comments', []);
             },
             _loadIndividualShare () {
                 let slug;
@@ -376,16 +375,46 @@
                     .then(r => {
                         this.set('selectedShare.pageNumber', r.next);
                         if (page === 0 ){
-                            this.set('selectedShare.comments', r.entries); 
+                            this.set('selectedShare.comments', r.entries);
                         } else {
                             r.entries.forEach(item => {
-                                this.push('selectedShare.comments', item); 
+                                this.push('selectedShare.comments', item);
                             })
                         }
                     });
             },
             _getShareComments (id) {
                 return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
+            },
+            _onLikeAction (e) {
+                if (!this.user) {
+                    this.fire('login');
+                    return;
+                }
+                let id = e.detail.id,
+                    liked = e.detail.liked,
+                    userId = e.detail.userId,
+                    method = liked ? 'POST' : 'DELETE';
+                if (this.user.id !== userId) {
+                    let headers = new Headers({
+                        'Authorization': this.token,
+                        'Content-Type': 'application/json'
+                    });
+                    fetch(this._getUrl('like-share', { id }), {
+                        method,
+                        headers
+                    })
+                    .then((response) => response.json())
+                    .then((response) => {
+                        if (response.success) {
+                            if (response.item) {
+                                this.push('selectedShare.likes', response.item);
+                            } else {
+                                this._removeSelectedLike();
+                            }
+                        }
+                    })
+                }
             },
             _onPostComment (e) {
                 if (!this.user) {
@@ -410,7 +439,7 @@
                 if (!retry) {
                     this.unshift('selectedShare.comments', postingComment);
                 }
-              
+
                 requestHeaders.append('Content-Type', 'application/json');
                 requestHeaders.append('Authorization', this.token);
 
@@ -426,6 +455,13 @@
                     }).catch(error => {
                         this.set('selectedShare.comments.0.error', true);
                     });
+            },
+            _removeSelectedLike () {
+                this.selectedShare.likes.forEach((like, index) => {
+                    if (like.user === this.user.id) {
+                        this.splice('selectedShare.likes', index, 1);
+                    }
+                });
             }
         });
     </script>
