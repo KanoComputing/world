@@ -12,6 +12,8 @@
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
 <link rel="import" href="../kano-session/kano-session.html">
 <link rel="import" href="../kw-utils/kw-utils.html">
+<link rel="import" href="../kw-share-wrapper/kw-share-wrapper-behavior.html">
+
 <dom-module id="kw-view-feed">
     <template>
         <style>
@@ -34,7 +36,7 @@
                 width: 100%;
             }
             .content #detail {
-                z-index: 1;
+                z-index: 100;
                 position: fixed;
                 height: 100%;
                 @apply --layout-vertical;
@@ -53,8 +55,6 @@
             }
             kw-share-feed {
                 @apply --layout-flex;
-            }
-            kw-share-feed {
                 margin-left: -200px;
             }
             .promo {
@@ -84,7 +84,7 @@
             }
             kw-share-detail {
                 width: 100%;
-                --kw-share-detail-player-height: 360px;
+                --kw-share-detail-player-height: 380px;
                 --kw-share-shell: {
                     border: 0px;
                 };
@@ -165,13 +165,14 @@
             </div>
             <div id="detail" on-tap="_detailTapped">
                 <div class="details">
-                    <kw-share-detail 
-                    share="[[selectedShare]]"
-                    tombstone$="[[!selectedShare]]"
-                    on-post-comment="_onPostComment"
-                    on-remix-action="_onRemixAction"
-                    on-load-comment="_loadMoreData"> 
-                    </kw-share-detail>
+                    <kw-share-detail share="[[selectedShare]]"
+                                     tombstone$="[[!selectedShare]]"
+                                     user-id="[[user.id]]"
+                                     on-like-action="_onLikeAction"
+                                     on-post-comment="_onPostComment"
+                                     on-remix-action="_onRemixAction"
+                                     on-load-comment="_loadMoreData">
+                                     </kw-share-detail>
                 </div>
             </div>
         </div>
@@ -194,6 +195,7 @@
             is: 'kw-view-feed',
             behaviors: [
                 Kano.APIClient,
+                Kano.ShareWrapperBehavior,
                 Kano.Utils
             ],
             properties: {
@@ -345,7 +347,7 @@
             },
             _backToFeed () {
                 this.set('route.path', '');
-                this.set('selectedShare.comments', []); 
+                this.set('selectedShare.comments', []);
             },
             _loadIndividualShare () {
                 let slug;
@@ -358,74 +360,6 @@
                     this.selectedShare = res.item;
                     this._getMoreComments(this.selectedShare.id, 0);
                 });
-            },
-            _loadMoreData (e) {
-                let card = e.detail;
-                if (!card.id || !card.page) {
-                    return;
-                }
-                this._getMoreComments(card.id, card.page);
-            },
-            _getMoreComments (id, page) {
-                if (!id) {
-                    return;
-                }
-                let path = `${this._getUrl('share-comments', {id})}?feature=true&page=${page}&limit=3`;
-                fetch(path)
-                    .then(r => r.json())
-                    .then(r => {
-                        this.set('selectedShare.pageNumber', r.next);
-                        if (page === 0 ){
-                            this.set('selectedShare.comments', r.entries); 
-                        } else {
-                            r.entries.forEach(item => {
-                                this.push('selectedShare.comments', item); 
-                            })
-                        }
-                    });
-            },
-            _getShareComments (id) {
-                return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
-            },
-            _onPostComment (e) {
-                if (!this.user) {
-                    this.fire('login');
-                    return;
-                }
-                let commentBody = e.detail.value,
-                retry = e.detail.retry,
-                    requestBody = {
-                        item_id: this.selectedShare.id,
-                        type: 'share',
-                        text: commentBody
-                    },
-                    requestHeaders = new Headers(),
-                    postingComment = {
-                        author: this.user,
-                        text: commentBody,
-                        date_created: new Date(),
-                        posting: true,
-                        error: ''
-                    };
-                if (!retry) {
-                    this.unshift('selectedShare.comments', postingComment);
-                }
-              
-                requestHeaders.append('Content-Type', 'application/json');
-                requestHeaders.append('Authorization', this.token);
-
-                fetch(this._getUrl('post-comment'), {
-                    method: 'POST',
-                    headers: requestHeaders,
-                    body: JSON.stringify(requestBody)
-                }).then(r => r.json())
-                    .then(res => {
-                        if (res.success) {
-                            this.set('selectedShare.comments.0.posting', false);
-                        }
-                    }).catch(error => {
-                        this.set('selectedShare.comments.0.error', true);
-                    });
             }
         });
     </script>
