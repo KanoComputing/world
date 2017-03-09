@@ -1,0 +1,132 @@
+<link rel="import" href="../kano-api-client/kano-api-client-behavior.html">
+
+<script>
+    (function (Kano) {
+
+        // @polymerBehavior
+        let ShareWrapperBehavior = {
+            properties: {
+                selectedShare: {
+                    type: Object,
+                    notify: true
+                }
+            },
+            _getMoreComments (id, page) {
+                if (!id) {
+                    return;
+                }
+                let path = `${this._getUrl('share-comments', {id})}?feature=true&page=${page}&limit=3`;
+                fetch(path)
+                    .then(r => r.json())
+                    .then(r => {
+                        this.set('selectedShare.pageNumber', r.next);
+                        if (page === 0 ){
+                            this.set('selectedShare.comments', r.entries);
+                        } else {
+                            r.entries.forEach(item => {
+                                this.push('selectedShare.comments', item);
+                            })
+                        }
+                    });
+            },
+            _getShareComments (id) {
+                return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
+            },
+            _loadMoreData (e) {
+                let card = e.detail;
+                if (!card.id || !card.page) {
+                    return;
+                }
+                this._getMoreComments(card.id, card.page);
+            },
+            _onLikeAction (e) {
+                if (!this.user) {
+                    this.fire('login');
+                    return;
+                }
+                let id = e.detail.id,
+                    liked = e.detail.liked,
+                    userId = e.detail.userId,
+                    method = liked ? 'POST' : 'DELETE';
+                if (this.user.id !== userId) {
+                    let headers = new Headers({
+                        'Authorization': this.token,
+                        'Content-Type': 'application/json'
+                    });
+                    fetch(this._getUrl('like-share', { id }), {
+                        method,
+                        headers
+                    })
+                    .then((response) => response.json())
+                    .then((response) => {
+                        if (response.success) {
+                            if (response.item) {
+                                this.push('selectedShare.likes', response.item);
+                            } else {
+                                this._removeSelectedLike();
+                            }
+                        }
+                    })
+                }
+            },
+            _onPostComment (e) {
+                if (!this.user) {
+                    this.fire('login');
+                    return;
+                }
+                let commentBody = e.detail.value,
+                retry = e.detail.retry,
+                    requestBody = {
+                        item_id: this.selectedShare.id,
+                        type: 'share',
+                        text: commentBody
+                    },
+                    requestHeaders = new Headers(),
+                    postingComment = {
+                        author: this.user,
+                        text: commentBody,
+                        date_created: new Date(),
+                        posting: true,
+                        error: ''
+                    };
+
+                if (!this.selectedShare.comments) {
+                    this.set('selectedShare.comments', []);
+                }
+
+                if (!retry) {
+                    this.unshift('selectedShare.comments', postingComment);
+                }
+
+                requestHeaders.append('Content-Type', 'application/json');
+                requestHeaders.append('Authorization', this.token);
+
+                fetch(this._getUrl('post-comment'), {
+                    method: 'POST',
+                    headers: requestHeaders,
+                    body: JSON.stringify(requestBody)
+                }).then(r => r.json())
+                    .then(res => {
+                        if (res.success) {
+                            this.set('selectedShare.comments.0.posting', false);
+                        }
+                    }).catch(error => {
+                        this.set('selectedShare.comments.0.error', true);
+                    });
+            },
+            _removeSelectedLike () {
+                this.selectedShare.likes.forEach((like, index) => {
+                    if (like.user === this.user.id) {
+                        this.splice('selectedShare.likes', index, 1);
+                    }
+                });
+            }
+        };
+
+    Kano.ShareWrapperBehavior = [
+        window.Kano.APIClient,
+        ShareWrapperBehavior
+    ];
+
+    })(window.Kano = window.Kano || {});
+</script>

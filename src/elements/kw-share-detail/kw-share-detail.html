@@ -418,7 +418,7 @@
                 return this.defaultAvatar;
             },
             _computeLiked (likes) {
-                if (!likes || !this.userId) {
+                if (!likes.base || !this.userId) {
                     return false;
                 }
                 let userLike = likes.base.find((like) => {
