@@ -61,7 +61,7 @@ gulp.task('watch', function() {
             middleware: function(req, res, next) {
                 var fileName = url.parse(req.url);
                 fileName = fileName.href.split(fileName.search).join("");
-                var fileExists = fs.existsSync('src' + fileName);
+                var fileExists = fs.existsSync('www' + fileName);
                 if (!fileExists && fileName.indexOf("browser-sync-client") < 0) {
                     req.url = "/index.html";
                 }
