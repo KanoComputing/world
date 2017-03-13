@@ -40,7 +40,7 @@
     "marked-element": "PolymerElements/marked-element#^1.2.0",
     "prism-element": "PolymerElements/prism-highlighter#^1.2.0",
     "lazy-imports": "Polymer/lazy-imports#^0.0.2",
-    "web-components": "git@github.com:KanoComputing/web-components.git#master",
+    "web-components": "git@github.com:KanoComputing/web-components.git",
     "make-apps": "git@github.com:KanoComputing/make-apps.git"
   },
   "resolutions": {
