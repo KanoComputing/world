@@ -2,13 +2,8 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
-<link rel="import" href="../../bower_components/date-util/date-util.html">
-<link rel="import" href="../../bower_components/web-components/kano-style/color.html">
-<link rel="import" href="../../bower_components/web-components/kano-style/button.html">
-<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
-<link rel="import" href="../../bower_components/iron-list/iron-list.html">
-<link rel="import" href="../../bower_components/web-components/kano-api-client-behavior/kano-api-client-behavior.html">
+
 <dom-module id="kw-social-comment">
     <template>
         <style>
@@ -33,12 +28,12 @@
                 line-height: 43px;
                 font-family: var(--font-body);
                 display: none;
-                margin: 0 0 20px 0;
+                margin: 20px 0;
             }
             .input-comment {
                 @apply --layout-horizontal;
                 @apply --layout-center;
-                margin-bottom: 20px;
+                margin: 20px 0;
                 width: 100%;
             }
             .comment-avatar {
@@ -88,9 +83,6 @@
                 border-bottom: 1px solid var(--color-iron-grey);
                 height: 100px;
                 width: 100%;
-            }
-            .comment:first-of-type {
-                border-top: 1px solid var(--color-iron-grey);
             }
             .comment.posting {
                 opacity: 0.6;
@@ -169,49 +161,44 @@
             :host([retry-button="hide"]) #retry {
                 display: none;
             }
-
         </style>
         <h3 shown$="[[!comments.length]]">Be the first to comment!</h3>
-        <div class="input-comment">
+        <div class="input-comment" hidden$="[[sharedByUser]]">
             <div class="comment-avatar">
                 <iron-image preload placeholder="../../assets/avatar/judoka-face.svg" fade sizing="contain"></iron-image>
             </div>
             <div class="comment-box">
                 <iron-autogrow-textarea id="comment"
-                                        placeholder="Leave a comment"
-                                        max-rows="7"></iron-autogrow-textarea>
+                placeholder="Leave a comment"
+                max-rows="7"></iron-autogrow-textarea>
                 <button class="orange-button comment-button" on-tap="_commentButtonTapped">
                     <span>comment</span>
                 </button>
             </div>
         </div>
-        <iron-list items="[[comments]]" as="comment" hidden$="[[comment]]">
-            <template>
-                <div class$="comment [[_computePostingClass(comment.posting)]]">
-                    <div class="comment-avatar">
-                        <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
-                    </div>
-                    <div class="content">
-                        <p><span class="author">{{comment.author.username}}</span>
-                          <span class="date">[[_timeSince(comment.date_created)]] ago</span>
-                        </p>
-                        <p><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
-                    </div>
-                    <button id="retry" on-tap="_retryButtonTapped" hidden$="[[!comment.error]]" class="error">retry</button>
+        <template is="dom-repeat" items="[[comments]]" as="comment">
+            <div class$="comment [[_computePostingClass(comment.posting)]]">
+                <div class="comment-avatar">
+                    <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
                 </div>
-            </template>
-        </iron-list>
-        <button hidden$="[[!comments.length]]" class="loader" id="loader" on-tap="_loadMoreData">Load more</button>
-
+                <div class="content">
+                    <p><span class="author">{{comment.author.username}}</span>
+                      <span class="date">[[_timeSince(comment.date_created)]] ago</span>
+                    </p>
+                    <p><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
+                </div>
+                <button id="retry" on-tap="_retryButtonTapped" hidden$="[[!comment.error]]" class="error">retry</button>
+            </div>
+        </template>
+        <button class="loader" id="loader" on-tap="_loadMoreData">Load more</button>
     </template>
     <script>
         Polymer({
             is: 'kw-social-comment',
-            behaviors: [Kano.APIClient],
             properties: {
                 comments: {
                     type: Array,
-                    value: null
+                    notify: true
                 },
                 itemId: {
                     type: String
@@ -228,6 +215,9 @@
                 retryButton: {
                     type: String,
                     reflectToAttribute: true
+                },
+                sharedByUser: {
+                    type: Boolean
                 }
             },
             _onDataLoad () {
@@ -277,25 +267,25 @@
                   seconds = Math.floor((new Date() - parsedDate) / 1000),
                   interval = Math.floor(seconds / 31536000);
               if (interval > 1) {
-                  return interval + " years";
+                  return interval + ' years';
               }
               interval = Math.floor(seconds / 2592000);
               if (interval > 1) {
-                  return interval + " months";
+                  return interval + ' months';
               }
               interval = Math.floor(seconds / 86400);
               if (interval > 1) {
-                  return interval + " days";
+                  return interval + ' days';
               }
               interval = Math.floor(seconds / 3600);
               if (interval > 1) {
-                  return interval + " hours";
+                  return interval + ' hours';
               }
               interval = Math.floor(seconds / 60);
               if (interval > 1) {
-                  return interval + " minutes";
+                  return interval + ' minutes';
               }
-              return Math.floor(seconds) + " seconds";
+              return Math.floor(seconds) + ' seconds';
           }
         });
     </script>

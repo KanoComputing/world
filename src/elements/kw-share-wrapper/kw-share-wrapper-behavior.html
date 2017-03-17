@@ -8,6 +8,11 @@
             properties: {
                 selectedShare: {
                     type: Object,
+                    notify: true,
+                    observer: '_selectedShareChanged'
+                },
+                user: {
+                    type: Object,
                     notify: true
                 }
             },
@@ -25,12 +30,16 @@
                         } else {
                             r.entries.forEach(item => {
                                 this.push('selectedShare.comments', item);
-                            })
+                            });
                         }
                     });
             },
             _getShareComments (id) {
-                return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
+                return this.cacheOrAPI(`${this._getUrl('share-comments', {id})}?feature=true&page=0&limit=3`)
+                    .then(r => {
+                        this.set('selectedShare.pageNumber', r.next);
+                        this.set('selectedShare.comments', r.entries);
+                    });
             },
             _loadMoreData (e) {
                 let card = e.detail;
@@ -38,6 +47,38 @@
                     return;
                 }
                 this._getMoreComments(card.id, card.page);
+            },
+            _onFollowAction (e) {
+                if (!this.user) {
+                    this.fire('login');
+                    return;
+                }
+                let follow = e.detail.action === 'follow',
+                    userId = e.detail.id,
+                    method = follow ? 'POST' : 'DELETE';
+                if (this.user.id !== userId) {
+                    if (follow) {
+                        this.push('user.profile.following', userId);
+                    } else {
+                        this._removeFollowee(userId);
+                    }
+                    let headers = new Headers({
+                        'Authorization': this.token,
+                        'Content-Type': 'application/json'
+                    });
+                    fetch(this._getUrl('follow', { userId }), {
+                        method,
+                        headers
+                    })
+                    .then((response) => response.json())
+                    .catch((err) => {
+                        if (follow) {
+                            this._removeFollowee(userId);
+                        } else {
+                            this.push('user.profile.following', userId);
+                        }
+                    })
+                }
             },
             _onLikeAction (e) {
                 if (!this.user) {
@@ -114,12 +155,24 @@
                         this.set('selectedShare.comments.0.error', true);
                     });
             },
+            _removeFollowee (id) {
+                this.user.profile.following.forEach((userId, index) => {
+                    if (userId === id) {
+                        this.splice('user.profile.following', index, 1);
+                    }
+                });
+            },
             _removeSelectedLike () {
                 this.selectedShare.likes.forEach((like, index) => {
                     if (like.user === this.user.id) {
                         this.splice('selectedShare.likes', index, 1);
                     }
                 });
+            },
+            _selectedShareChanged (share) {
+                if (share) {
+                    this._getShareComments(share.id);
+                }
             }
         };
 
