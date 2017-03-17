@@ -9,6 +9,10 @@
                 selectedShare: {
                     type: Object,
                     notify: true
+                },
+                user: {
+                    type: Object,
+                    notify: true
                 }
             },
             _getMoreComments (id, page) {
@@ -38,6 +42,38 @@
                     return;
                 }
                 this._getMoreComments(card.id, card.page);
+            },
+            _onFollowAction (e) {
+                if (!this.user) {
+                    this.fire('login');
+                    return;
+                }
+                let follow = e.detail.action === 'follow',
+                    userId = e.detail.id,
+                    method = follow ? 'POST' : 'DELETE';
+                if (this.user.id !== userId) {
+                    if (follow) {
+                        this.push('user.profile.following', userId);
+                    } else {
+                        this._removeFollowee(userId);
+                    }
+                    let headers = new Headers({
+                        'Authorization': this.token,
+                        'Content-Type': 'application/json'
+                    });
+                    fetch(this._getUrl('follow', { userId }), {
+                        method,
+                        headers
+                    })
+                    .then((response) => response.json())
+                    .catch((err) => {
+                        if (follow) {
+                            this._removeFollowee(userId);
+                        } else {
+                            this.push('user.profile.following', userId);
+                        }
+                    })
+                }
             },
             _onLikeAction (e) {
                 if (!this.user) {
@@ -113,6 +149,13 @@
                     }).catch(error => {
                         this.set('selectedShare.comments.0.error', true);
                     });
+            },
+            _removeFollowee (id) {
+                this.user.profile.following.forEach((userId, index) => {
+                    if (userId === id) {
+                        this.splice('user.profile.following', index, 1);
+                    }
+                });
             },
             _removeSelectedLike () {
                 this.selectedShare.likes.forEach((like, index) => {

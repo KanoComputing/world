@@ -167,7 +167,8 @@
                 <div class="details">
                     <kw-share-detail share="[[selectedShare]]"
                                      tombstone$="[[!selectedShare]]"
-                                     user-id="[[user.id]]"
+                                     user="[[user]]"
+                                     on-follow-action="_onFollowAction"
                                      on-like-action="_onLikeAction"
                                      on-post-comment="_onPostComment"
                                      on-remix-action="_onRemixAction"
