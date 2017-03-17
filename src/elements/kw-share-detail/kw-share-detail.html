@@ -150,7 +150,6 @@
                 width: 20px;
             }
             :host kw-social-comment {
-                padding-top: 20px;
                 width: 100%;
             }
             :host .supplementary-details {
@@ -274,6 +273,7 @@
                                                    comments="[[share.comments]]"
                                                    page-number="[[share.pageNumber]]"
                                                    item-id="[[share.id]]"
+                                                   shared-by-user="[[sharedByUser]]"
                                                    tombstone$="[[!share]]">
                                                    </kw-social-comment>
                             </div>
@@ -389,7 +389,6 @@
                 },
                 share: {
                     type: Object,
-                    value: null,
                     notify: true
                 },
                 sharedByUser: {
@@ -404,29 +403,6 @@
             observers: [
                 '_shareChanged(share)'
             ],
-            getShareElement() {
-                return this;
-            },
-            _computeAction(appType) {
-                return false;
-                switch (appType) {
-                    case 'kano-draw':
-                    case 'make-apps':
-                    case 'make-adventures':
-                    case 'make-pong':
-                        return false;
-                        break;
-                    case 'make-music':
-                    case 'make-snake':
-                    case 'make-light':
-                    case 'make-minecraft':
-                        return true;
-                        break;
-                    default:
-                        return true;
-                        break;
-                }
-            },
             _computeAppLabel (app) {
                 return appLabels[app] || app;
             },

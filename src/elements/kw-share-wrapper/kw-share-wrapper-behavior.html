@@ -8,7 +8,8 @@
             properties: {
                 selectedShare: {
                     type: Object,
-                    notify: true
+                    notify: true,
+                    observer: '_selectedShareChanged'
                 },
                 user: {
                     type: Object,
@@ -29,12 +30,16 @@
                         } else {
                             r.entries.forEach(item => {
                                 this.push('selectedShare.comments', item);
-                            })
+                            });
                         }
                     });
             },
             _getShareComments (id) {
-                return this.cacheOrAPI(this._getUrl('share-comments', { id })).then(res => res.entries);
+                return this.cacheOrAPI(`${this._getUrl('share-comments', {id})}?feature=true&page=0&limit=3`)
+                    .then(r => {
+                        this.set('selectedShare.pageNumber', r.next);
+                        this.set('selectedShare.comments', r.entries);
+                    });
             },
             _loadMoreData (e) {
                 let card = e.detail;
@@ -163,6 +168,11 @@
                         this.splice('selectedShare.likes', index, 1);
                     }
                 });
+            },
+            _selectedShareChanged (share) {
+                if (share) {
+                    this._getShareComments(share.id);
+                }
             }
         };
 
