@@ -59,7 +59,7 @@
             }
             :host #share-container {
                 animation: fade-in 200ms linear;
-                background: var(--color-rhubarb);
+                background: var(--color-carnation);
             }
             :host #share-container,
             :host .share-content .loading,
@@ -107,7 +107,7 @@
                 padding-bottom: 10px;
             }
             :host .author {
-                color: var(--color-rhubarb);
+                color: var(--color-carnation);
             }
             :host .description {
                 margin: 0;
@@ -115,8 +115,8 @@
             }
             :host .social-nav {
                 @apply --layout-horizontal;
-                border-bottom: 1px solid var(--color-iron-grey);
-                color: var(--color-oslo-grey);
+                border-bottom: 1px solid var(--color-porcelain);
+                color: var(--color-grey);
                 list-style: none;
                 margin: 0;
                 padding: 0 0 20px 80px;
@@ -133,12 +133,12 @@
                 color: black;
             }
             :host .nav-item.active .nav-icon {
-                color: var(--color-sky-blue);
+                color: var(--color-sky);
             }
             :host .nav-item.active::after {
                 background-color: white;
-                border-left: 1px solid var(--color-iron-grey);
-                border-top: 1px solid var(--color-iron-grey);
+                border-left: 1px solid var(--color-porcelain);
+                border-top: 1px solid var(--color-porcelain);
                 bottom: -30px;
                 content: "";
                 height: 20px;
@@ -150,13 +150,12 @@
                 width: 20px;
             }
             :host kw-social-comment {
-                padding-top: 20px;
                 width: 100%;
             }
             :host .supplementary-details {
                 @apply --layout-flex-4;
-                border-left: 1px solid var(--color-iron-grey);
-                color: var(--color-oslo-grey);
+                border-left: 1px solid var(--color-porcelain);
+                color: var(--color-grey);
                 padding: 0 20px 20px 20px;
             }
             :host .actions {
@@ -175,11 +174,11 @@
                 cursor: pointer;
                 padding: 10px 0px;
             }
-            :host .actions.above .action {
-                border-bottom: 1px solid var(--color-iron-grey);
+            :host .actions.above .action:last-child {
+                border-bottom: 1px solid var(--color-porcelain);
             }
-            :host .actions.above .action:first-child {
-                border-top: 1px solid var(--color-iron-grey);
+            :host .actions.above .action {
+                border-top: 1px solid var(--color-porcelain);
             }
             :host .actions.above .action {
                 @apply --layout-horizontal;
@@ -191,12 +190,16 @@
             :host .actions.below .action {
                 @apply --layout-vertical;
                 @apply --layout-center;
+                width: 33%;
             }
             :host .actions.below .action .action-label {
                 padding-top: 5px;
             }
             :host .like.liked {
-                color: var(--color-rhubarb);
+                color: var(--color-carnation);
+            }
+            :host .following {
+                color: var(--color-azure);
             }
             :host .metadata {
                 list-style: none;
@@ -270,6 +273,7 @@
                                                    comments="[[share.comments]]"
                                                    page-number="[[share.pageNumber]]"
                                                    item-id="[[share.id]]"
+                                                   shared-by-user="[[sharedByUser]]"
                                                    tombstone$="[[!share]]">
                                                    </kw-social-comment>
                             </div>
@@ -278,17 +282,19 @@
                 </div>
                 <div class="supplementary-details">
                     <ul class="actions above">
-                        <li class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
-                            <kano-particle-burst number-particles="40"
-                                               gravity="0.5"
-                                               particle-decay="0.04"
-                                               max-particle-size="13">
-                                <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
-                            </kano-particle-burst>
-                            <span class="action-label">
-                                Like
-                            </span>
-                        </li>
+                        <template is="dom-if" if="[[!sharedByUser]]">
+                          <li class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
+                              <kano-particle-burst number-particles="40"
+                                                 gravity="0.5"
+                                                 particle-decay="0.04"
+                                                 max-particle-size="13">
+                                  <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
+                              </kano-particle-burst>
+                              <span class="action-label">
+                                  [[_computeLikeLabel(liked)]]
+                              </span>
+                          </li>
+                        </template>
                         <li class="action" on-tap="_onRemixTapped">
                             <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
                             <span class="action-label">
@@ -307,29 +313,33 @@
                         </template>
                     </ul>
                     <ul class="actions below">
-                        <li class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
-                            <kano-particle-burst number-particles="40"
-                                               gravity="0.5"
-                                               particle-decay="0.04"
-                                               max-particle-size="13">
-                                <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
-                            </kano-particle-burst>
-                            <span class="action-label">
-                                Like
-                            </span>
-                        </li>
-                        <li class="action">
+                        <template is="dom-if" if="[[!sharedByUser]]">
+                            <li class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
+                                <kano-particle-burst number-particles="40"
+                                                   gravity="0.5"
+                                                   particle-decay="0.04"
+                                                   max-particle-size="13">
+                                    <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
+                                </kano-particle-burst>
+                                <span class="action-label">
+                                    [[_computeLikeLabel(liked)]]
+                                </span>
+                            </li>
+                        </template>
+                        <li class="action" on-tap="_onRemixTapped">
                             <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
                             <span class="action-label">
                                 Remix
                             </span>
                         </li>
-                        <li class="action">
-                            <iron-icon class="action-icon" icon="kano-icons:share"></iron-icon>
-                            <span class="action-label">
-                                Share
-                            </span>
-                        </li>
+                        <template is="dom-if" if="[[!sharedByUser]]">
+                            <li class$="[[_computeFollowClass(following)]]" on-tap="_onFollowTapped">
+                                <iron-icon class="action-icon" icon="[[_computeFollowIcon(following)]]"></iron-icon>
+                                <span class="action-label">
+                                    [[_computeFollowLabel(following)]]
+                                </span>
+                            </li>
+                        </template>
                     </ul>
                 </div>
             </div>
@@ -363,6 +373,11 @@
                     type: String,
                     value: '../../assets/avatar/judoka-face.svg'
                 },
+                following: {
+                    type: Boolean,
+                    computed: '_computeFollowing(share, user.profile.following.*)',
+                    notify: true
+                },
                 liked: {
                     type: Boolean,
                     computed: '_computeLiked(share.likes.*)',
@@ -374,40 +389,20 @@
                 },
                 share: {
                     type: Object,
-                    value: null,
                     notify: true
                 },
-                userId: {
-                    type: String,
-                    value: ''
+                sharedByUser: {
+                    type: Boolean,
+                    computed: '_sharedByUser(share, user)'
+                },
+                user: {
+                    type: Object,
+                    notify: true
                 }
             },
             observers: [
                 '_shareChanged(share)'
             ],
-            getShareElement() {
-                return this;
-            },
-            _computeAction(appType) {
-                return false;
-                switch (appType) {
-                    case 'kano-draw':
-                    case 'make-apps':
-                    case 'make-adventures':
-                    case 'make-pong':
-                        return false;
-                        break;
-                    case 'make-music':
-                    case 'make-snake':
-                    case 'make-light':
-                    case 'make-minecraft':
-                        return true;
-                        break;
-                    default:
-                        return true;
-                        break;
-                }
-            },
             _computeAppLabel (app) {
                 return appLabels[app] || app;
             },
@@ -417,12 +412,31 @@
                 }
                 return this.defaultAvatar;
             },
+            _computeFollowing (share, following) {
+                if (!share || !following) {
+                    return false;
+                }
+                return following.base.some((userId) => {
+                    return userId === this.share.user.id;
+                });
+            },
+            _computeFollowClass (following) {
+                let baseClass = 'action',
+                    activeClass = following ? 'following' : 'follow';
+                return `${baseClass} ${activeClass}`;
+            },
+            _computeFollowIcon (following) {
+                return following ? 'kano-icons:followed' : 'kano-icons:follow';
+            },
+            _computeFollowLabel (following) {
+                return following ? 'Following' : 'Follow';
+            },
             _computeLiked (likes) {
-                if (!likes.base || !this.userId) {
+                if (!likes.base || !this.user) {
                     return false;
                 }
                 let userLike = likes.base.find((like) => {
-                    return like.user === this.userId;
+                    return like.user === this.user.id;
                 });
                 return userLike ? true : false;
             },
@@ -430,6 +444,9 @@
                 let baseClass = 'action like',
                     activeClass = liked ? 'liked' : 'not-liked';
                 return `${baseClass} ${activeClass}`;
+            },
+            _computeLikeLabel (liked) {
+                return liked ? 'Liked' : 'Like';
             },
             _computeNavItemClass (section, id) {
                 let baseClass = 'nav-item',
@@ -451,7 +468,18 @@
                 this.$['share-container'].appendChild(this.instance.root);
                 this.toggleClass('loaded', true);
             },
+            _onFollowTapped () {
+                if (this.sharedByUser) {
+                    return;
+                }
+                let id = this.share.user.id,
+                    action = this.following ? 'unfollow' : 'follow';
+                this.fire('follow-action', { action, id });
+            },
             _onLikeTapped (e) {
+                if (this.sharedByUser) {
+                    return;
+                }
                 if (!this.liked) {
                     let particleBursts = Polymer.dom(this.root).querySelectorAll('kano-particle-burst');
                     particleBursts.forEach((burst) => {
@@ -469,6 +497,12 @@
                 let item = this.share,
                     appType = item.app;
                 this.fire('remix-action', {id: item.id, type: appType});
+            },
+            _sharedByUser (share, user) {
+                if (!share || !user) {
+                    return false;
+                }
+                return share.user && share.user.id === user.id;
             },
             _shareChanged(share) {
                 let tagName, templateString, template;
