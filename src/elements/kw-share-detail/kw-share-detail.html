@@ -496,7 +496,11 @@
             _onRemixTapped () {
                 let item = this.share,
                     appType = item.app;
-                this.fire('remix-action', {id: item.id, type: appType});
+                this.fire('remix-action', {
+                    id: item.id,
+                    slug: item.slug,
+                    type: appType
+                });
             },
             _sharedByUser (share, user) {
                 if (!share || !user) {
