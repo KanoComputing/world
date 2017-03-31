@@ -921,7 +921,7 @@
                         user.profile.stats['kano-draw'].groups && user.profile.stats['kano-draw'].groups.basic &&
                         user.profile.stats['kano-draw'].groups.basic.challengeNo || null;
                 //Minus one for zero-based numbering
-                this['art_basic'] = artProgress - 1 || 0;
+                this['art_basic'] = artProgress ? artProgress - 1 : 0;
             },
             _computeStatus (progress, index) {
                 if (index < progress) {
