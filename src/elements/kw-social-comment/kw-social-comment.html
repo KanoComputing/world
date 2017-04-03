@@ -12,9 +12,6 @@
                 @apply --layout-center;
                 @apply --layout-justified;
                 width: 100%;
-                --iron-autogrow-textarea-placeholder: {
-                    color: black;
-                }
             }
             :host([tombstone]) * {
                 visibility: hidden;
@@ -28,60 +25,46 @@
                 line-height: 43px;
                 font-family: var(--font-body);
                 display: none;
-                margin: 20px 0;
+                margin: 24px 0 0 0;
             }
             .input-comment {
                 @apply --layout-horizontal;
-                @apply --layout-center;
-                margin: 20px 0;
+                @apply --layout-start;
+                border-bottom: 1px solid var(--color-porcelain);
+                padding-bottom: 24px;
+                margin: 24px 0 0 0;
                 width: 100%;
             }
             .comment-avatar {
                 @apply --layout-flex-1;
-                margin-left: 16px;
-                margin-right: 16px;
+                margin-right: 28px;
             }
             iron-image {
-                height: 35px;
-                width: 35px;
+                height: 32px;
+                width: 32px;
                 border-radius: 50%;
             }
-            .input-comment .comment-box {
-                position: relative;
-                @apply --layout-horizontal;
-                @apply --layout-center;
-                border-radius: 3px;
-                border: 1px solid var(--color-grey-mid);
-                width: 90%;
-                background: white;
-            }
-            .input-comment .comment-box iron-autogrow-textarea {
-                font-size: 14px;
+            .comment-form {
                 width: 100%;
-                background-color: var(--color-grey-lighter);
-                border: none;
-                padding: 14px 4px;
-                --iron-autogrow-textarea: {
-                    padding: 14px 7px;
-                };
             }
-            .comment-button {
-                position: absolute;
-                @apply --kano-button;
-                background: var(--color-orange);
-                right: 5px;
-                bottom: 5px;
-                padding: 10px;
+            .comment-box {
+                border: 1px solid var(--color-porcelain);
+                border-radius: 3px;
+                box-sizing: border-box;
+                font-family: var(--font-body);
+                font-size: 16px;
+                padding: 16px 16px 32px 16px;
+                width: 100%;
             }
-            .comment-button:focus {
-                outline: none;
-                background: #ec6400;
+            .comment-box:focus {
+                border-color: var(--color-azure);
+                outline: 0;
             }
             .comment {
                 @apply --layout-horizontal;
                 @apply --layout-center;
-                border-bottom: 1px solid var(--color-iron-grey);
-                height: 100px;
+                border-bottom: 1px solid var(--color-porcelain);
+                padding: 24px 0 16px 0;
                 width: 100%;
             }
             .comment.posting {
@@ -90,43 +73,67 @@
             .content {
                 font-size: 16px;
                 font-family: var(--font-body);
-                color: var(--color-grey-dark);
+                color: var(--color-abbey);
                 width: 100%;
+            }
+            .comment-header {
+                margin: 0;
+                padding-bottom: 8px;
             }
             .content p b {
                 margin-right: 6px;
             }
             .content p {
-                margin-top: 6px;
-                margin-bottom: 6px;
+                margin: 0;
+                padding-bottom: 8px;
             }
             .content .date {
                 font-size: 14px;
                 font-family: var(--font-body);
-                color: var(--color-oslo-grey);
+                color: var(--color-grey);
             }
             p {
                 font-family: var(--font-body);
-                color: var(--color-grey-dark);
+                color: var(--color-abbey);
                 font-size: 16px;
             }
+            .comment-body {
+                color: var(--color-black);
+            }
             .author {
+                color: var(--color-kano-orange);
                 font-weight: bold;
                 margin-right: 5px;
             }
-            .comment:nth-of-type(4n-3) .author {
-                color: var(--color-magenta);
+            .actions {
+                @apply --layout-start;
+                @apply --layout-vertical;
             }
-            .comment:nth-of-type(2n) .author {
-                color: var(--color-sky-blue);
+            .action:focus {
+                outline: 0;
             }
-            .comment:nth-of-type(3n) .author {
-                color: var(--color-rhubarb);
+            .action.flag {
+                -webkit-appearance: none;
+                appearance: none;
+                background: transparent;
+                border: 0;
+                border-radius: 3px;
+                color: var(--color-grey);
+                cursor: pointer;
+                transition: 0.3s ease;
             }
-            .comment:nth-of-type(4n) .author {
-                color: black;
+            .action.flag:hover {
+                color: var(--color-carnation);
+            }
+            .action.flag.flagged {
+                color: var(--color-carnation);
+            }
+            .action.flag .icon {
+                height: 16px;
+                width: 16px;
             }
             h3[shown] {
+                color: var(--color-grey);
                 display: block;
             }
             iron-list {
@@ -134,10 +141,12 @@
                 height: 100%
             }
             .loader {
-                @apply --kano-button;
-                background: var(--color-orange);
+                @apply --kano-round-button;
                 margin-top: 20px;
                 text-align: center;
+            }
+            .loader:hover {
+                background-color: var(--color-sushi);
             }
             .loader[hidden] {
                 display: block;
@@ -150,13 +159,18 @@
                 text-align: center;
             }
             :host([loader-status="on"]) #loader {
-                background: var(--color-orange);
+                background-color: var(--color-grassland);
+                color: white;
+            }
+            :host([loader-status="on"]) #loader:hover {
+                background-color: var(--color-sushi);
             }
             :host([loader-status="off"]) #loader {
                 display: none;
             }
             :host([loader-status="disabled"]) #loader {
-                background: var(--color-grey-mid);
+                background-color: var(--color-porcelain);
+                color: rgba(41, 47, 53, 1);
             }
             :host([retry-button="hide"]) #retry {
                 display: none;
@@ -167,14 +181,9 @@
             <div class="comment-avatar">
                 <iron-image preload placeholder="../../assets/avatar/judoka-face.svg" fade sizing="contain"></iron-image>
             </div>
-            <div class="comment-box">
-                <iron-autogrow-textarea id="comment"
-                placeholder="Leave a comment"
-                max-rows="7"></iron-autogrow-textarea>
-                <button class="orange-button comment-button" on-tap="_commentButtonTapped">
-                    <span>comment</span>
-                </button>
-            </div>
+            <form class="comment-form" on-submit="_submitComment">
+                <input class="comment-box" type="text" placeholder="Leave a comment" value="{{comment::input}}" />
+            </form>
         </div>
         <template is="dom-repeat" items="[[comments]]" as="comment">
             <div class$="comment [[_computePostingClass(comment.posting)]]">
@@ -182,10 +191,15 @@
                     <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
                 </div>
                 <div class="content">
-                    <p><span class="author">{{comment.author.username}}</span>
+                    <p class="comment-header"><span class="author">{{comment.author.username}}</span>
                       <span class="date">[[_timeSince(comment.date_created)]] ago</span>
                     </p>
-                    <p><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
+                    <p class="comment-body"><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
+                </div>
+                <div class="actions">
+                    <button type="button" class$="[[_computeFlagClass(comment.flags)]]" on-tap="_flagButtonTapped">
+                        <iron-icon class="icon" icon="kano-icons:flag"></iron-icon>
+                    </button>
                 </div>
                 <button id="retry" on-tap="_retryButtonTapped" hidden$="[[!comment.error]]" class="error">retry</button>
             </div>
@@ -196,6 +210,9 @@
         Polymer({
             is: 'kw-social-comment',
             properties: {
+                comment: {
+                    type: String
+                },
                 comments: {
                     type: Array,
                     notify: true
@@ -218,6 +235,9 @@
                 },
                 sharedByUser: {
                     type: Boolean
+                },
+                userId: {
+                    type: String
                 }
             },
             _onDataLoad () {
@@ -240,13 +260,22 @@
             _createDate (formatted) {
                 return new Date(formatted);
             },
-            _retryButtonTapped () {
-                this.set('retryButton', 'hide');
-                this.fire('post-comment', { value: this.comments[0].text, retry: true});
-            },
             _commentButtonTapped () {
                 this.fire('post-comment', { value: this.$.comment.value });
                 this.$.comment.value = '';
+            },
+            _computeFlag (flags) {
+                if (!flags) {
+                    return false;
+                }
+                return flags.some(flag => {
+                    return flag.author === this.userId;
+                });
+            },
+            _computeFlagClass (flags) {
+                let baseClass = 'action flag',
+                    activeClass = this._computeFlag(flags) ? 'flagged' : 'unflagged';
+                return `${baseClass} ${activeClass}`;
             },
             _computePostingClass (posting) {
                 return posting ? 'posting' : '';
@@ -261,6 +290,22 @@
                 let safeDiv = document.createElement('div');
                 safeDiv.textContent = value;
                 return safeDiv.innerHTML.replace(/\n/g, '<br>');
+            },
+            _flagButtonTapped (e) {
+                let index = e.model.index,
+                    id = this.comments[index].id;
+                this.fire('flag-comment', {
+                    index,
+                    id
+                });
+            },
+            _retryButtonTapped () {
+                this.set('retryButton', 'hide');
+                this.fire('post-comment', { value: this.comments[0].text, retry: true});
+            },
+            _submitComment (e) {
+                e.preventDefault();
+                this.fire('post-comment', { value: this.comment });
             },
             _timeSince (date) {
               let parsedDate = new Date(date),

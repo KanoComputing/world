@@ -8,6 +8,7 @@
 <link rel="import" href="../../bower_components/web-components/kano-particle-burst/kano-particle-burst.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
 <link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
+<link rel="import" href="../../bower_components/web-components/social-icons/social-icons.html">
 
 <dom-module id="kw-share-detail">
     <link rel="lazy-import" href="../kw-app-share/kw-app-share.html" group="kw-app-share">
@@ -25,6 +26,10 @@
                 border-radius: 3px;
                 display: block;
                 overflow: hidden;
+                @apply --kw-share-detail;
+            }
+            :host * {
+                box-sizing: border-box;
             }
             :host *[hidden] {
                 display: none !important;
@@ -46,12 +51,13 @@
                 @apply --layout-flex;
                 width: 100%;
                 padding: 0px 16px;
-                min-height: var(--kw-share-detail-player-height, 320px);
-                height: var(--kw-share-detail-player-height, 320px);
+                min-height: var(--kw-share-detail-player-height, 480px);
+                height: var(--kw-share-detail-player-height, 480px);
                 box-sizing: border-box;
                 position: relative;
             }
             :host .share-content .loading {
+                color: white;
                 transition: opacity 200ms linear;
             }
             :host(.loaded) .share-content .loading {
@@ -59,7 +65,7 @@
             }
             :host #share-container {
                 animation: fade-in 200ms linear;
-                background: var(--color-carnation);
+                background: var(--color-chateau);
             }
             :host #share-container,
             :host .share-content .loading,
@@ -74,44 +80,51 @@
                 background: rgba(255, 255, 255, 0.1);
             }
             :host #share-container>* {
-                background-color: white;
+                background-color: transparent;
                 height: 100%;
                 margin: 20px auto;
                 max-height: calc(100% - 40px);
-                max-width: calc(100% - 40px);
+                max-width: var(--content-width);
                 width: 100%;
             }
             :host .share-detail {
                 @apply --layout-horizontal;
-                padding-top: 20px;
+                max-width: var(--content-width);
                 width: 100%;
             }
             :host .main-details {
                 @apply --layout-flex-8;
-                padding: 0 20px 20px 20px;
+                padding: 32px 40px 32px 8px;
             }
             :host .header {
                 @apply --layout-horizontal;
             }
             :host .avatar {
-                height: 60px;
+                height: 40px;
                 margin-right: 20px;
-                width: 60px;
+                width: 40px;
             }
             :host .title {
                 margin: 0;
                 padding-bottom: 5px;
             }
             :host .attribution {
+                font-weight: normal;
                 margin: 0;
-                padding-bottom: 10px;
+                padding-bottom: 8px;
             }
             :host .author {
                 color: var(--color-carnation);
+                font-weight: bold;
             }
             :host .description {
                 margin: 0;
-                padding-bottom: 10px;
+            }
+            :host .description:not(:empty) {
+                padding-bottom: 24px;
+            }
+            :host .description:empty {
+                padding-bottom: 16px;
             }
             :host .social-nav {
                 @apply --layout-horizontal;
@@ -119,15 +132,17 @@
                 color: var(--color-grey);
                 list-style: none;
                 margin: 0;
-                padding: 0 0 20px 80px;
+                padding: 0 0 32px 60px;
             }
             :host .social-nav .nav-item {
                 cursor: pointer;
+                font-weight: bold;
                 margin-right: 20px;
                 position: relative;
             }
             :host .social-nav .nav-icon {
-                width: 12px;
+                margin-right: 8px;
+                width: 16px;
             }
             :host .nav-item.active {
                 color: black;
@@ -138,16 +153,17 @@
             :host .nav-item.active::after {
                 background-color: white;
                 border-left: 1px solid var(--color-porcelain);
+                border-radius: 3px 0 0 0;
                 border-top: 1px solid var(--color-porcelain);
-                bottom: -30px;
+                bottom: -40px;
                 content: "";
-                height: 20px;
+                height: 16px;
                 left: 0;
                 margin: auto;
                 position: absolute;
                 right: 0;
                 transform: rotate(45deg);
-                width: 20px;
+                width: 16px;
             }
             :host kw-social-comment {
                 width: 100%;
@@ -156,58 +172,100 @@
                 @apply --layout-flex-4;
                 border-left: 1px solid var(--color-porcelain);
                 color: var(--color-grey);
-                padding: 0 20px 20px 20px;
+                padding: 32px 8px 32px 40px;
             }
             :host .actions {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-            }
-            :host .actions.above {
-                @apply --layout-vertical;
-            }
-            :host .actions.below {
                 @apply --layout-horizontal;
                 @apply --layout-justified;
-            }
-            :host .action {
-                cursor: pointer;
-                padding: 10px 0px;
-            }
-            :host .actions.above .action:last-child {
-                border-bottom: 1px solid var(--color-porcelain);
-            }
-            :host .actions.above .action {
-                border-top: 1px solid var(--color-porcelain);
-            }
-            :host .actions.above .action {
-                @apply --layout-horizontal;
-                @apply --layout-center;
-            }
-            :host .actions.above .action .action-label {
-                padding-left: 10px;
-            }
-            :host .actions.below .action {
-                @apply --layout-vertical;
-                @apply --layout-center;
-                width: 33%;
-            }
-            :host .actions.below .action .action-label {
-                padding-top: 5px;
-            }
-            :host .like.liked {
-                color: var(--color-carnation);
-            }
-            :host .following {
-                color: var(--color-azure);
-            }
-            :host .metadata {
                 list-style: none;
                 margin: 0;
-                padding: 20px 0 10px 0;
+                padding: 16px 0 0 0;
             }
-            :host .metadatum {
-                padding-bottom: 10px;
+            :host .action {
+                flex: 1 0 auto;
+                box-sizing: border-box;
+            }
+            :host .action:nth-of-type(2n) {
+                margin: 0 16px;
+            }
+            :host .action:last-of-type {
+                margin-right: 0;
+            }
+            :host .action-button {
+                background-color: rgba(41, 47, 53, 0.3);
+                border: 0;
+                border-radius: 3px;
+                color: rgba(255, 255, 255, 0.6);
+                cursor: pointer;
+                font-family: var(--font-body);
+                font-size: 16px;
+                padding: 16px;
+                text-transform: uppercase;
+                transition: 0.3s ease;
+                width: 100%;
+            }
+            :host .action-button:focus {
+                outline: 0;
+            }
+            :host .action-button:hover {
+                background-color: rgba(41, 47, 53, 0.6);
+                color: rgba(255, 255, 255, 1);
+            }
+            :host .action-button.remix {
+                background-color: var(--color-chateau);
+                color: white;
+                width: 100%;
+            }
+            :host .action-button.remix:hover {
+                background-color: var(--color-black);
+            }
+            :host .like.liked {
+                background-color: var(--color-carnation);
+                color: white;
+            }
+            :host .like.liked:hover {
+                background-color: var(--color-cinnabar);
+                color: white;
+            }
+            :host .kit.saved {
+                background-color: var(--color-sky);
+                color: white;
+            }
+            :host .kit.saved:hover {
+                background-color: var(--color-dodger-cinnabar);
+            }
+            :host .social-actions {
+                @apply --layout-horizontal;
+                @apply --layout-start-justified;
+                list-style: none;
+                margin: 0;
+                padding: 32px 0 0 0;
+            }
+            :host .social-action {
+                box-sizing: border-box;
+                margin-right: 16px;
+            }
+            :host .social-button {
+                border: 0;
+                border-radius: 3px;
+                color: white;
+                cursor: pointer;
+                padding: 8px;
+                text-transform: uppercase;
+                transition: 0.3s ease;
+            }
+            :host .social-button:focus {
+                outline: 0;
+            }
+            :host .social-button.facebook {
+                background-color: var(--color-facebook);
+            }
+            :host .social-button.twitter {
+                background-color: var(--color-twitter);
+            }
+            :host .social-button .action-icon {
+                height: 16px;
+                width: 16px;
             }
             :host([tombstone]) .detail .cover,
             :host([tombstone]) .detail .avatar {
@@ -247,9 +305,9 @@
                 <div class="main-details">
                     <div class="header">
                         <img class="avatar" src$="[[avatar]]" />
-                        <div class="description">
+                        <div class="detail">
                             <h3 class="title">[[share.title]]</h3>
-                            <h4 class="attribution">By <a class="author">[[share.user.username]]</a></h4>
+                            <h4 class="attribution">by <a class="author">[[share.user.username]]</a></h4>
                             <p class="description">[[share.description]]</p>
                         </div>
                     </div>
@@ -274,72 +332,65 @@
                                                    page-number="[[share.pageNumber]]"
                                                    item-id="[[share.id]]"
                                                    shared-by-user="[[sharedByUser]]"
-                                                   tombstone$="[[!share]]">
+                                                   tombstone$="[[!share]]"
+                                                   user-id="[[user.id]]">
                                                    </kw-social-comment>
                             </div>
                         </iron-pages>
                     </div>
                 </div>
                 <div class="supplementary-details">
-                    <ul class="actions above">
-                        <template is="dom-if" if="[[!sharedByUser]]">
-                          <li class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
-                              <kano-particle-burst number-particles="40"
-                                                 gravity="0.5"
-                                                 particle-decay="0.04"
-                                                 max-particle-size="13">
-                                  <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
-                              </kano-particle-burst>
-                              <span class="action-label">
-                                  [[_computeLikeLabel(liked)]]
-                              </span>
-                          </li>
-                        </template>
-                        <li class="action" on-tap="_onRemixTapped">
-                            <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
-                            <span class="action-label">
-                                Remix
-                            </span>
-                        </li>
-                    </ul>
-                    <ul class="metadata">
-                        <li class="metadatum">
-                            Created in [[_computeAppLabel(share.app)]]
-                        </li>
-                        <template is="dom-if" if="[[share.challengeRef]]">
-                            <li class="metadatum">
-                              Challenge [[share.challengeRef]]
+                    <button class="action-button remix" type="button" on-tap="_onRemixTapped">
+                        <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
+                        <span class="action-label">
+                            Remix
+                        </span>
+                    </button>
+                    <ul class="actions">
+                        <template is="dom-if" if="[[deviceAvailable]]">
+                            <li class="action">
+                                <button class$="[[_computeKitClass(savedToDevice)]]" on-tap="_updateKit">
+                                  <template is="dom-if" if="[[savedToDevice]]">
+                                    <iron-icon class="icon saved-to-device" icon="kano-icons:saved-to-device"></iron-icon>
+                                    <iron-icon class="icon remove-from-device" icon="kano-icons:remove-from-device"></iron-icon>
+                                  </template>
+                                  <template is="dom-if" if="[[!savedToDevice]]">
+                                    <iron-icon class="icon" icon="kano-icons:add-to-device"></iron-icon>
+                                  </template>
+                                </button>
                             </li>
                         </template>
-                    </ul>
-                    <ul class="actions below">
                         <template is="dom-if" if="[[!sharedByUser]]">
-                            <li class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
-                                <kano-particle-burst number-particles="40"
-                                                   gravity="0.5"
-                                                   particle-decay="0.04"
-                                                   max-particle-size="13">
+                            <li class="action">
+                                <button class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
+                                    <kano-particle-burst number-particles="40"
+                                    gravity="0.5"
+                                    particle-decay="0.04"
+                                    max-particle-size="13">
                                     <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
-                                </kano-particle-burst>
-                                <span class="action-label">
-                                    [[_computeLikeLabel(liked)]]
-                                </span>
+                                  </kano-particle-burst>
+                              </button>
                             </li>
                         </template>
-                        <li class="action" on-tap="_onRemixTapped">
-                            <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
-                            <span class="action-label">
-                                Remix
-                            </span>
+                        <template is="dom-if" if="[[displayCodeButton]]">
+                            <li class="action">
+                                <button class="action-button view-code" on-tap="_toggleCodeView">
+                                    <iron-icon class="action-icon" icon="kano-icons:code"></iron-icon>
+                                </button>
+                            </li>
+                        </template>
+                    </ul>
+                    <ul class="social-actions">
+                        <li class="social-action">
+                            <button class="social-button facebook" on-tap="_onFacebookTapped">
+                                <iron-icon class="action-icon" icon="social-icons:facebook"></iron-icon>
+                            </button>
                         </li>
-                        <template is="dom-if" if="[[!sharedByUser]]">
-                            <li class$="[[_computeFollowClass(following)]]" on-tap="_onFollowTapped">
-                                <iron-icon class="action-icon" icon="[[_computeFollowIcon(following)]]"></iron-icon>
-                                <span class="action-label">
-                                    [[_computeFollowLabel(following)]]
-                                </span>
-                            </li>
-                        </template>
+                        <li class="social-action">
+                            <button class="social-button twitter" on-tap="_onTwitterTapped">
+                                <iron-icon class="action-icon" icon="social-icons:twitter"></iron-icon>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -350,38 +401,67 @@
         const appMapping = {
             'make-music': 'kw-music-share',
             'kano-draw': 'kw-art-share',
-            'make-apps': 'kw-app-share'
+            'make-apps': 'kw-app-share',
+            'lightboard': 'kw-app-share'
         };
 
         const appLabels = {
             'kano-draw': 'Make Art',
             'make-music': 'Make Music',
-            'make-apps': 'Kano Code'
+            'make-apps': 'Kano Code',
+            'lightboard': 'Kano Code',
         }
 
         const loadedImports = {};
 
         Polymer({
             is: 'kw-share-detail',
-            behaviors: [Polymer.Templatizer, Polymer.LazyImportsBehavior],
+            behaviors: [
+                Polymer.Templatizer,
+                Polymer.LazyImportsBehavior
+            ],
             properties: {
                 avatar: {
                     type: String,
                     computed: '_computeAvatar(share)'
                 },
+                context: {
+                    type: String,
+                    value: 'web'
+                },
                 defaultAvatar: {
                     type: String,
                     value: '../../assets/avatar/judoka-face.svg'
                 },
-                following: {
+                deviceAvailable: {
                     type: Boolean,
-                    computed: '_computeFollowing(share, user.profile.following.*)',
-                    notify: true
+                    computed: '_deviceAvailable(context)'
+                },
+                displayCode: {
+                    type: Boolean,
+                    value: false
+                },
+                displayCodeButton: {
+                    type: Boolean,
+                    computed: '_displayCodeButton(share.app)'
                 },
                 liked: {
                     type: Boolean,
                     computed: '_computeLiked(share.likes.*)',
                     notify: true
+                },
+                loaded: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                mode: {
+                    type: String,
+                    value: 'app'
+                },
+                savedToDevice: {
+                    type: Boolean,
+                    value: false
                 },
                 section: {
                     type: String,
@@ -412,24 +492,8 @@
                 }
                 return this.defaultAvatar;
             },
-            _computeFollowing (share, following) {
-                if (!share || !following) {
-                    return false;
-                }
-                return following.base.some((userId) => {
-                    return userId === this.share.user.id;
-                });
-            },
-            _computeFollowClass (following) {
-                let baseClass = 'action',
-                    activeClass = following ? 'following' : 'follow';
-                return `${baseClass} ${activeClass}`;
-            },
-            _computeFollowIcon (following) {
-                return following ? 'kano-icons:followed' : 'kano-icons:follow';
-            },
-            _computeFollowLabel (following) {
-                return following ? 'Following' : 'Follow';
+            _computeKitClass (saved) {
+                return `action-button kit ${saved ? 'saved' : 'default'}`;
             },
             _computeLiked (likes) {
                 if (!likes.base || !this.user) {
@@ -441,20 +505,25 @@
                 return userLike ? true : false;
             },
             _computeLikeClass (liked) {
-                let baseClass = 'action like',
+                let baseClass = 'action-button like',
                     activeClass = liked ? 'liked' : 'not-liked';
                 return `${baseClass} ${activeClass}`;
-            },
-            _computeLikeLabel (liked) {
-                return liked ? 'Liked' : 'Like';
             },
             _computeNavItemClass (section, id) {
                 let baseClass = 'nav-item',
                     activeClass = section === id ? 'active' : 'inactive';
                 return `${baseClass} ${activeClass}`;
             },
+            _deviceAvailable (context) {
+                return context && context === 'app';
+            },
+            _displayCodeButton (app) {
+                let appType = appMapping[app],
+                    appWithCode = appType === 'kw-app-share' || appType === 'kw-art-share';
+                return appWithCode;
+            },
             _insertShareView (tagName) {
-                let templateString = `<${tagName} share="[[share]]"></${tagName}>`,
+                let templateString = `<${tagName} display-code="[[displayCode]]" share="[[share]]"></${tagName}>`,
                     template = document.createElement('template');
 
                 template.innerHTML = templateString;
@@ -462,19 +531,19 @@
                 this.templatize(template);
 
                 this.instance = this.stamp({
+                    displayCode: this.displayCode,
                     share: this.share
                 });
 
                 this.$['share-container'].appendChild(this.instance.root);
                 this.toggleClass('loaded', true);
+                this.$$(tagName).addEventListener('hide-code', this._toggleCodeView.bind(this));
             },
-            _onFollowTapped () {
-                if (this.sharedByUser) {
-                    return;
-                }
-                let id = this.share.user.id,
-                    action = this.following ? 'unfollow' : 'follow';
-                this.fire('follow-action', { action, id });
+            _onFacebookTapped () {
+                this.fire('social-share', {
+                    action: 'facebook',
+                    share: this.share
+                });
             },
             _onLikeTapped (e) {
                 if (this.sharedByUser) {
@@ -502,6 +571,12 @@
                     type: appType
                 });
             },
+            _onTwitterTapped () {
+                this.fire('social-share', {
+                    action: 'twitter',
+                    share: this.share
+                });
+            },
             _sharedByUser (share, user) {
                 if (!share || !user) {
                     return false;
@@ -513,6 +588,7 @@
                 if (!this.share) {
                     return;
                 }
+
                 tagName = appMapping[this.share.app] || 'kw-share';
                 if (this.instance) {
                     while (this.$['share-container'].firstChild) {
@@ -522,20 +598,36 @@
 
                 if (loadedImports[tagName]) {
                     this._insertShareView(tagName);
+                    this.set('loaded', true);
                 } else {
                     this.async(() => {
                         this.importLazyGroup(tagName).then(() => {
                             loadedImports[tagName] = true;
                             this._insertShareView(tagName);
+                            this.set('loaded', true);
                         });
                     });
                 }
+            },
+            _toggleCodeView () {
+                let newValue = !this.displayCode,
+                    tagName = appMapping[this.share.app] || 'kw-share';
+                this.set('displayCode', newValue);
+                this.$$(tagName).displayCode = newValue;
             },
             _showComments () {
                 this.set('section', 'comments');
             },
             _showLikes () {
                 this.set('section', 'likes');
+            },
+            _updateKit () {
+                let action = !this.savedToDevice ? 'add' : 'remove',
+                    app = this.share;
+                this.fire('update-device-action', {
+                    action,
+                    app
+                });
             }
         });
     })();
