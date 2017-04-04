@@ -6,9 +6,9 @@
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/color.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/button.html">
+<link rel="import" href="../../bower_components/web-components/kano-step/kano-step.html">
 <link rel="import" href="../../bower_components/web-components/kano-session/kano-session.html">
 <link rel="import" href="../kano-carousel/kano-carousel.html">
-<link rel="import" href="../kano-step/kano-step.html">
 <link rel="import" href="../kano-glint-animation/kano-glint-animation.html">
 <link rel="import" href="../../js/config.html">
 <link rel="import" href="../kano-projects-listing/kano-projects-listing-behavior.html">
@@ -44,9 +44,18 @@
                 position: relative;
                 margin-bottom: 10px;
             }
+            :host .project-group:last-of-type {
+                margin-top: 24px;
+            }
             :host .project-group iron-image {
                 width: 150px;
                 height: 118px;
+            }
+            :host .project-group iron-image.make-art {
+                width: 106px;
+                height: 69px;
+                margin: 16px 0 0 8px;
+                border-radius: 4px;
             }
             :host .project-group-header {
                 @apply --layout-horizontal;
@@ -84,6 +93,12 @@
                 width: 110px;
                 height: 100px;
                 --kano-step-line-color: #fff;
+                --kano-step-horizontal: {
+                    justify-content: center;
+                };
+                --kano-step-label: {
+                    bottom: -56px;
+                };
             }
             :host kano-step .step-icon,
             :host kano-step .step-icon a {
@@ -120,7 +135,9 @@
             :host #screen-puzzles:hover kano-step.first-step:not([data-status='done']) .step-icon:after,
             :host #screen-puzzles:hover kano-step.regular-step[data-status='current'] .step-icon:after,
             :host #pixel-puzzles:hover kano-step.first-step:not([data-status='done']) .step-icon:after,
-            :host #pixel-puzzles:hover kano-step.regular-step[data-status='current'] .step-icon:after {
+            :host #pixel-puzzles:hover kano-step.regular-step[data-status='current'] .step-icon:after,
+            :host #make-art:hover kano-step.first-step:not([data-status='done']) .step-icon:after,
+            :host #make-art:hover kano-step.regular-step[data-status='current'] .step-icon:after {
                 animation: pulse 1700ms linear infinite;
             }
             :host kano-step[data-status='done'] .step-icon {
@@ -145,7 +162,8 @@
             }
             :host #speaker-puzzles:hover kano-step.last-step[data-status='current'] .last-link,
             :host #screen-puzzles:hover kano-step.last-step[data-status='current'] .last-link,
-            :host #pixel-puzzles:hover kano-step.last-step[data-status='current'] .last-link {
+            :host #pixel-puzzles:hover kano-step.last-step[data-status='current'] .last-link,
+            :host #make-art:hover kano-step.last-step[data-status='current'] .last-link {
                 animation: smallPulse 1500ms infinite;
             }
             :host kano-step.last-step[data-status='done'] .last-link {
@@ -231,7 +249,9 @@
             :host #screen-puzzles:hover kano-step:not(.last-step)[data-status='current'] .cta,
             :host #screen-puzzles:hover kano-step.first-step:not([data-status='done']) .cta,
             :host #pixel-puzzles:hover kano-step:not(.last-step)[data-status='current'] .cta,
-            :host #pixel-puzzles:hover kano-step.first-step:not([data-status='done']) .cta {
+            :host #pixel-puzzles:hover kano-step.first-step:not([data-status='done']) .cta,
+            :host #make-art:hover kano-step:not(.last-step)[data-status='current'] .cta,
+            :host #make-art:hover kano-step.first-step:not([data-status='done']) .cta {
                 display: block;
             }
             :host .cta:after {
@@ -699,14 +719,152 @@
                                             </a>
                                         </div>
                                     </kano-step>
-                                    <kano-step class="last-step last-pixel" data-status$="[[_computeStatus(pixel_puzzles, 5)]]" horizontal>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(pixel_puzzles, 5)]]" horizontal>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <div class="cta-container">
+                                                        <div class="cta">Continue your adventure here</div>
+                                                    </div>
+                                                    <a href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">
+                                            <p class="text-label">Level 6</p>
+                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop">
+                                                <kano-glint-animation running>
+                                                    <div class="make-btn">make</div>
+                                                </kano-glint-animation>
+                                            </a>
+                                        </div>
+                                    </kano-step>
+                                    <kano-step class="last-step last-pixel" data-status$="[[_computeStatus(pixel_puzzles, 6)]]" horizontal>
                                         <div slot="icon">
                                             <div class="step-icon">
-                                                <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop"></a>
+                                                <a class="last-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_points_loop"></a>
                                             </div>
                                         </div>
                                         <div slot="label">
-                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_point_loop">
+                                            <a class="button-link" href$="[[config.KANO_CODE_URL]]/story/pixel_colorful_points_loop">
+                                                <kano-glint-animation running>
+                                                    <div class="make-btn">make</div>
+                                                </kano-glint-animation>
+                                            </a>
+                                        </div>
+                                    </kano-step>
+
+                                </div>
+                            </div>
+                        <button type="button" slot="right-button" class="right-button" carousel-control-right>&gt;</button>
+                    </kano-carousel>
+                </div>
+                <div class="project-group">
+                    <kano-carousel>
+                        <button type="button" slot="left-button" class="left-button" carousel-control-left>&lt;</button>
+                            <div id="make-art" class="step-display" slot="content">
+                                <div class="project-group-header">
+                                    <iron-image src="/assets/projects/simple-progress/kano-draw.png" class="make-art" preload fade sizing="contain">
+                                    </iron-image>
+                                    <h4>Code art masterpieces</h4>
+                                </div>
+                                <div class="steps-container">
+                                    <kano-step class="first-step" data-status$="[[_computeStatus(art_basic, 0)]]" horizontal>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <div class="cta-container">
+                                                        <div class="cta">Start your adventure here</div>
+                                                    </div>
+                                                    <a href$="[[config.KANO_MAKEART_URL]]/challenge/basic/sunnyday"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">
+                                            <p class="text-label">Level 1</p>
+                                            <a class="button-link" href$="[[config.KANO_MAKEART_URL]]/challenge/basic/sunnyday">
+                                                <kano-glint-animation running>
+                                                    <div class="make-btn">make</div>
+                                                </kano-glint-animation>
+                                            </a>
+                                        </div>
+                                    </kano-step>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(art_basic, 1)]]" horizontal>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <div class="cta-container">
+                                                        <div class="cta">Continue your adventure here</div>
+                                                    </div>
+                                                    <a href$="[[config.KANO_MAKEART_URL]]/challenge/basic/swissflag"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">
+                                            <p class="text-label">Level 2</p>
+                                            <a class="button-link" href$="[[config.KANO_MAKEART_URL]]/challenge/basic/swissflag">
+                                                <kano-glint-animation running>
+                                                    <div class="make-btn">make</div>
+                                                </kano-glint-animation>
+                                            </a>
+                                        </div>
+                                    </kano-step>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(art_basic, 2)]]" horizontal>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <div class="cta-container">
+                                                        <div class="cta">Continue your adventure here</div>
+                                                    </div>
+                                                    <a href$="[[config.KANO_MAKEART_URL]]/challenge/basic/stare"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">
+                                            <p class="text-label">Level 3</p>
+                                            <a class="button-link" href$="[[config.KANO_MAKEART_URL]]/challenge/basic/stare">
+                                                <kano-glint-animation running>
+                                                    <div class="make-btn">make</div>
+                                                </kano-glint-animation>
+                                            </a>
+                                        </div>
+                                    </kano-step>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(art_basic, 3)]]" horizontal>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <div class="cta-container">
+                                                        <div class="cta">Continue your adventure here</div>
+                                                    </div>
+                                                    <a href$="[[config.KANO_MAKEART_URL]]/challenge/basic/smiley"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">
+                                            <p class="text-label">Level 4</p>
+                                            <a class="button-link" href$="[[config.KANO_MAKEART_URL]]/challenge/basic/smiley">
+                                                <kano-glint-animation running>
+                                                    <div class="make-btn">make</div>
+                                                </kano-glint-animation>
+                                            </a>
+                                        </div>
+                                    </kano-step>
+                                    <kano-step class="regular-step" data-status$="[[_computeStatus(art_basic, 4)]]" horizontal>
+                                        <div slot="icon">
+                                                <div class="step-icon">
+                                                    <div class="cta-container">
+                                                        <div class="cta">Continue your adventure here</div>
+                                                    </div>
+                                                    <a href$="[[config.KANO_MAKEART_URL]]/challenge/basic/baloon"></a>
+                                                </div>
+                                        </div>
+                                        <div slot="label">
+                                            <p class="text-label">Level 5</p>
+                                            <a class="button-link" href$="[[config.KANO_MAKEART_URL]]/challenge/basic/baloon">
+                                                <kano-glint-animation running>
+                                                    <div class="make-btn">make</div>
+                                                </kano-glint-animation>
+                                            </a>
+                                        </div>
+                                    </kano-step>
+                                    <kano-step class="last-step last-pixel" data-status$="[[_computeStatus(art_basic, 5)]]" horizontal>
+                                        <div slot="icon">
+                                            <div class="step-icon">
+                                                <a class="last-link" href$="[[config.KANO_MAKEART_URL]]/challenge/basic/stickman"></a>
+                                            </div>
+                                        </div>
+                                        <div slot="label">
+                                            <a class="button-link" href$="[[config.KANO_MAKEART_URL]]/challenge/basic/stickman">
                                                 <kano-glint-animation running>
                                                     <div class="make-btn">make</div>
                                                 </kano-glint-animation>
@@ -735,13 +893,14 @@
                 this.config = Kano.World.config;
             },
             _computeProgress (user) {
-                this._assignProgressValue(this._getProgress(user));
+                this._assignKCProgress(this._getKCProgress(user));
+                this._assignArtProgress(user);
             },
-            _getProgress (user) {
+            _getKCProgress (user) {
                 return user && user.profile && user.profile.stats['make-apps'] &&
                         user.profile.stats['make-apps'].progress || this._getStoredProgress() || null;
             },
-            _assignProgressValue (progress) {
+            _assignKCProgress (progress) {
                 ['speaker_puzzles', 'screen_puzzles', 'pixel_puzzles'].forEach( (category) => {
                     if (progress && progress[category]) {
                         this[category] = progress[category].completedStories.length || null;
@@ -756,6 +915,13 @@
             },
             _openModal () {
                 this.fire('show-modal');
+            },
+            _assignArtProgress (user) {
+                let artProgress = user && user.profile && user.profile.stats['kano-draw'] &&
+                        user.profile.stats['kano-draw'].groups && user.profile.stats['kano-draw'].groups.basic &&
+                        user.profile.stats['kano-draw'].groups.basic.challengeNo || null;
+                //Minus one for zero-based numbering
+                this['art_basic'] = artProgress ? artProgress - 1 : 0;
             },
             _computeStatus (progress, index) {
                 if (index < progress) {
