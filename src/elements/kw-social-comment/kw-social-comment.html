@@ -197,7 +197,7 @@
                     <p class="comment-body"><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
                 </div>
                 <div class="actions">
-                    <button type="button" class$="[[_computeFlagClass(comment.flags)]]" on-tap="_flagButtonTapped">
+                    <button type="button" class$="[[_computeFlagClass(comment.flags.*)]]" on-tap="_flagButtonTapped">
                         <iron-icon class="icon" icon="kano-icons:flag"></iron-icon>
                     </button>
                 </div>
@@ -272,9 +272,9 @@
                     return flag.author === this.userId;
                 });
             },
-            _computeFlagClass (flags) {
+            _computeFlagClass (splice) {
                 let baseClass = 'action flag',
-                    activeClass = this._computeFlag(flags) ? 'flagged' : 'unflagged';
+                    activeClass = this._computeFlag(splice.base) ? 'flagged' : 'unflagged';
                 return `${baseClass} ${activeClass}`;
             },
             _computePostingClass (posting) {
