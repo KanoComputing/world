@@ -391,6 +391,11 @@
                                 <iron-icon class="action-icon" icon="social-icons:twitter"></iron-icon>
                             </button>
                         </li>
+                        <li class="social-action">
+                            <button class="social-button email" on-tap="_onEmailTapped">
+                                <iron-icon class="action-icon" icon="social-icons:email"></iron-icon>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -538,6 +543,12 @@
                 this.$['share-container'].appendChild(this.instance.root);
                 this.toggleClass('loaded', true);
                 this.$$(tagName).addEventListener('hide-code', this._toggleCodeView.bind(this));
+            },
+            _onEmailTapped () {
+                this.fire('social-share', {
+                    action: 'email',
+                    share: this.share
+                });
             },
             _onFacebookTapped () {
                 this.fire('social-share', {
