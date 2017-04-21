@@ -1,6 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../../bower_components/prism-element/prism-highlighter.html">
+<link rel="import" href="./highlight-theme.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/color.html">
 
@@ -17,17 +20,55 @@
 <link rel="import" href="../ui/kano-ui/kano-ui.html">
 
 <dom-module id="kw-app-share">
-    <template>
+  <template>
         <style>
-            :host {
-                display: block;
-                position: relative;
-                @apply --layout-vertical;
+            :host * {
+                box-sizing: border-box;
             }
-            kano-app-player,
+            .app {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                height: 100%;
+                position: relative;
+            }
             iron-image {
                 @apply --layout-fit;
+                height: var(--kw-share-detail-player-height, 480px);
+                width: var(--kw-share-detail-player-height, 480px);
+                min-height: var(--kw-share-detail-player-height, 480px);
+                min-width: var(--kw-share-detail-player-height, 480px);
                 transition: opacity 200ms linear;
+            }
+            kano-app-player {
+                height: var(--kw-share-detail-player-height, 480px);
+                width: var(--kw-share-detail-player-height, 480px);
+                min-height: var(--kw-share-detail-player-height, 480px);
+                min-width: var(--kw-share-detail-player-height, 480px);
+                transition: opacity 200ms linear;
+            }
+            .code {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-start-justified;
+                background-color: rgba(50, 50, 50, 0.8);
+                height: var(--kw-share-detail-player-height, 480px);
+                left: 0;
+                min-height: var(--kw-share-detail-player-height, 480px);
+                padding: 50px 16px 0 16px;
+                position: absolute;
+                top: 0;
+                width: 100%;
+                z-index: 100;
+            }
+            .code-contents {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-start-justified;
+                height: 100%;
+                margin: auto;
+                max-width: 880px;
+                width: 100%;
             }
             :host(.loaded) iron-image {
                 opacity: 0;
@@ -35,29 +76,182 @@
             :host(:not(.loaded)) kano-app-player {
                 opacity: 0;
             }
-        </style>
-        <iron-image src="[[share.cover_url]]" sizing="contain"></iron-image>
-        <kano-app-player id="player" src="[[appUrl]]" slug="[[slug]]" on-app-ready="_onAppReady" show-toolbar></kano-app-player>
-    </template>
-    <script>
-        Polymer({
-            is:'kw-app-share',
-            properties: {
-                share: {
-                    type: Object,
-                    observer: '_shareChanged'
-                }
-            },
-            _shareChanged () {
-                let attachment = this.share.attachment_url;
-                if (attachment) {
-                    this.slug = this.share.slug;
-                    this.appUrl = attachment;
-                }
-            },
-            _onAppReady () {
-                this.toggleClass('loaded', true);
+            .code-header {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-justified;
+                border-bottom: 1px solid var(--color-grey);
+                color: white;
+                padding-bottom: 16px;
+                width: 100%;
             }
-        });
-    </script>
+            .code-icon {
+                color: var(--color-azure);
+                margin-right: 16px;
+                vertical-align: -25%;
+            }
+            .code-title {
+                margin: 0;
+                text-transform: uppercase;
+            }
+            .close-button {
+                -webkit-appearance: none;
+                appearance: none;
+                background-color: var(--color-grey);
+                border: 0;
+                border-radius: 3px;
+                cursor: pointer;
+                padding: 8px;
+            }
+            .close-button:focus {
+                outline: 0;
+            }
+            .close-button-icon {
+                color: white;
+                height: 16px;
+                transform: rotate(45deg);
+                width: 16px;
+            }
+            .code-main {
+                @apply --layout-horizontal;
+                @apply --layout-start;
+                @apply --layout-justified;
+                overflow-y: scroll;
+                padding: 16px 0;
+                width: 100%;
+            }
+            .line-numbers {
+                @apply --layout-flex-1;
+                color: white;
+                font-family: monospace;
+                font-size: 14px;
+                line-height: 18px;
+                opacity: 0.1;
+                padding: 1em 16px 0 0;
+                position: relative;
+                text-align: center;
+            }
+            marked-element {
+                @apply --layout-flex-12;
+                font-size: 14px;
+                line-height: 18px;
+                width: 100%;
+            }
+            .markdown-html {
+                color: white;
+            }
+            .markdown-html .token.number {
+                color: var(--color-amber);
+            }
+            .markdown-html .token.function,
+            .markdown-html .token.keyword {
+                color: #d356cf;
+            }
+            .markdown-html .token.title {
+                color: var(--color-kano-orange);
+            }
+            .markdown-html .token.string {
+                color: var(--color-grassland);
+            }
+            .markdown-html .token.punctuation,
+            .markdown-html .token.operator {
+                color: white;
+                background: transparent;
+            }
+        </style>
+        <div class="app">
+            <iron-image src="[[share.cover_url]]" sizing="contain"></iron-image>
+            <kano-app-player id="player" src="[[appUrl]]" slug="[[slug]]" on-app-ready="_onAppReady" show-toolbar></kano-app-player>
+        </div>
+        <template is="dom-if" if="[[displayCode]]">
+            <div class="code">
+                <div class="code-contents">
+                    <div class="code-header">
+                        <h3 class="code-title"><iron-icon class="code-icon" icon="kano-icons:code"></iron-icon>JavaScript</h3>
+                        <button type="button" class="close-button" on-tap="_hideCode">
+                            <iron-icon class="close-button-icon" icon="kano-icons:plus"></iron-icon>
+                        </button>
+                    </div>
+                    <div class="code-main">
+                        <div class="line-numbers">
+                            <template is="dom-repeat" items="[[lines]]" as="line">
+                                <div class="line-number">[[line]]</div>
+                            </template>
+                        </div>
+                        <prism-highlighter></prism-highlighter>
+                        <marked-element id="code" markdown="[[mdCode]]">
+                            <div class="markdown-html"></div>
+                        </marked-element>
+                    </div>
+                </div>
+            </div>
+        </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'kw-app-share',
+      properties: {
+          code: {
+              type: String,
+              value: null
+          },
+          displayCode: {
+              type: Boolean,
+              value: false
+          },
+          lines: {
+              type: Array,
+              computed: '_computeLines(mdCode)'
+          },
+          mdCode: {
+              type: String,
+              value: null
+          },
+          mode: {
+              type: String,
+              value: 'app'
+          },
+          share: {
+              type: Object,
+              observer: '_shareChanged'
+          }
+      },
+      _computeLines (mdCode) {
+          if (!mdCode) {
+              return [];
+          }
+          let newLines = mdCode.match(/\n(?!$)/g),
+              lineCount = newLines ? newLines.length : 1
+              lines =  Array.apply(null, {
+                  length: lineCount
+              }).map(Number.call, Number);
+          return lines.splice(1);
+      },
+      _hideCode () {
+          this.fire('hide-code');
+      },
+      _shareChanged() {
+        let attachment = this.share.attachment_url,
+          workspaceInfo = this.share.workspace_info_url;
+        if (attachment) {
+          this.slug = this.share.slug;
+          this.appUrl = attachment;
+        }
+        if (workspaceInfo) {
+          fetch(workspaceInfo)
+            .then(r => r.json())
+            .then(r => {
+              if (r.code && r.code.snapshot) {
+                let code = r.code.snapshot.javascript;
+                this.set('code', code);
+                this.set('mdCode', '```javascript\n' + code + '\n```');
+              }
+            });
+        }
+      },
+      _onAppReady() {
+        this.toggleClass('loaded', true);
+      }
+    });
+  </script>
 </dom-module>
