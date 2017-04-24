@@ -343,12 +343,14 @@
                     </div>
                 </div>
                 <div class="supplementary-details">
-                    <button class="action-button remix" type="button" on-tap="_onRemixTapped">
-                        <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
-                        <span class="action-label">
-                            Remix
-                        </span>
-                    </button>
+                    <template is="dom-if" if="[[showRemixButton]]">
+                      <button class="action-button remix" type="button" on-tap="_onRemixTapped">
+                          <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
+                          <span class="action-label">
+                              Remix
+                          </span>
+                      </button>
+                    </template>
                     <ul class="actions">
                         <template is="dom-if" if="[[deviceAvailable]]">
                             <li class="action">
@@ -486,6 +488,10 @@
                 user: {
                     type: Object,
                     notify: true
+                },
+                showRemixButton: {
+                    type: Boolean,
+                    value: false
                 }
             },
             observers: [
