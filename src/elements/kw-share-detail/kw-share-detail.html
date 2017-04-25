@@ -100,9 +100,12 @@
                 @apply --layout-horizontal;
             }
             :host .avatar {
-                height: 40px;
-                margin-right: 20px;
+                height: auto;
+                margin-top: 5px;
                 width: 40px;
+                border-radius: 100%;
+                top: 5px;
+                left: 0px;
             }
             :host .title {
                 margin: 0;
@@ -293,6 +296,17 @@
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
+            :host .detail {
+                margin-left: 10px;
+            }
+            :host .avatar-wrapper {
+                overflow: hidden;
+                width: 40px;
+                height: 40px;
+                border-radius: 100%;
+                position: relative;
+                background-color: var(--color-sky);
+            }
         </style>
         <div id="share" class="share">
             <div class="share-content">
@@ -307,7 +321,9 @@
             <div class="share-detail">
                 <div class="main-details">
                     <div class="header">
-                        <img class="avatar" src$="[[avatar]]" />
+                        <div class="avatar-wrapper">
+                          <img class="avatar" src$="[[avatar]]" />
+                        </div>
                         <div class="detail">
                             <h3 class="title">[[share.title]]</h3>
                             <h4 class="attribution">by <a class="author">[[share.user.username]]</a></h4>
@@ -336,7 +352,8 @@
                                                    item-id="[[share.id]]"
                                                    shared-by-user="[[sharedByUser]]"
                                                    tombstone$="[[!share]]"
-                                                   user-id="[[user.id]]">
+                                                   user-id="[[user.id]]"
+                                                   avatar="[[avatar]]">
                                                    </kw-social-comment>
                             </div>
                         </iron-pages>
@@ -439,7 +456,7 @@
                 },
                 defaultAvatar: {
                     type: String,
-                    value: '../../assets/avatar/judoka-face.svg'
+                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
                 },
                 deviceAvailable: {
                     type: Boolean,
@@ -496,7 +513,7 @@
             },
             _computeAvatar (share) {
                 if (share && share.user) {
-                    return share.user.avatar.urls.circle || this.defaultAvatar;
+                    return share.user.avatar.urls.character || this.defaultAvatar;
                 }
                 return this.defaultAvatar;
             },

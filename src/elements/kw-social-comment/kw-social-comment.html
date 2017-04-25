@@ -29,23 +29,29 @@
             }
             .input-comment {
                 @apply --layout-horizontal;
-                @apply --layout-start;
                 border-bottom: 1px solid var(--color-porcelain);
                 padding-bottom: 24px;
                 margin: 24px 0 0 0;
                 width: 100%;
             }
             .comment-avatar {
-                @apply --layout-flex-1;
-                margin-right: 28px;
+                border-radius: 100%;
+                width: 40px;
+                height: 40px;
+                margin: 0 10px;
+                background-color: var(--color-sky);
+                overflow: hidden;
+            }
+            .comment-avatar .avatar {
+                border-radius: 100%;
+                width: 100%;
+                height: auto;
+                margin-top: 5px;
             }
             iron-image {
                 height: 32px;
                 width: 32px;
                 border-radius: 50%;
-            }
-            .comment-form {
-                width: 100%;
             }
             .comment-box {
                 border: 1px solid var(--color-porcelain);
@@ -74,7 +80,6 @@
                 font-size: 16px;
                 font-family: var(--font-body);
                 color: var(--color-abbey);
-                width: 100%;
             }
             .comment-header {
                 margin: 0;
@@ -179,7 +184,7 @@
         <h3 shown$="[[!comments.length]]">Be the first to comment!</h3>
         <div class="input-comment" hidden$="[[sharedByUser]]">
             <div class="comment-avatar">
-                <iron-image preload placeholder="../../assets/avatar/judoka-face.svg" fade sizing="contain"></iron-image>
+                <img class="avatar" src="[[avatar]]"></img>
             </div>
             <form class="comment-form" on-submit="_submitComment">
                 <input class="comment-box" type="text" placeholder="Leave a comment" value="{{comment::input}}" />
@@ -188,7 +193,7 @@
         <template is="dom-repeat" items="[[comments]]" as="comment">
             <div class$="comment [[_computePostingClass(comment.posting)]]">
                 <div class="comment-avatar">
-                    <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
+                    <img class="avatar" src="[[_computeAvatar(comment)]]"></img>
                 </div>
                 <div class="content">
                     <p class="comment-header"><span class="author">{{comment.author.username}}</span>
@@ -238,7 +243,18 @@
                 },
                 userId: {
                     type: String
+                },
+                avatar: {
+                    type: String,
+                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
                 }
+            },
+            _computeAvatar (comment) {
+                let defaultAvatar = 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png';
+                if (comment && comment.user) {
+                    return comment.author.avatar.urls.character || defaultAvatar;
+                }
+                return defaultAvatar;
             },
             _onDataLoad () {
                 if (this.pageNumber === null) {
