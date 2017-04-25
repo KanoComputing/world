@@ -571,6 +571,7 @@
                     })
                 }
                 this.fire('like-action', {
+                    app: this.share.app,
                     id: this.share.id,
                     liked: !this.liked,
                     userId: this.share.user.id
