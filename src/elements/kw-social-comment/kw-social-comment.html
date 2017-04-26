@@ -177,7 +177,7 @@
             }
         </style>
         <h3 shown$="[[!comments.length]]">Be the first to comment!</h3>
-        <div class="input-comment" hidden$="[[sharedByUser]]">
+        <div class="input-comment">
             <div class="comment-avatar">
                 <iron-image preload placeholder="../../assets/avatar/judoka-face.svg" fade sizing="contain"></iron-image>
             </div>
@@ -192,7 +192,7 @@
                 </div>
                 <div class="content">
                     <p class="comment-header"><span class="author">{{comment.author.username}}</span>
-                      <span class="date">[[_timeSince(comment.date_created)]] ago</span>
+                      <span class="date">[[_timeSince(comment.date_created, comments.*)]] ago</span>
                     </p>
                     <p class="comment-body"><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
                 </div>
@@ -260,10 +260,6 @@
             _createDate (formatted) {
                 return new Date(formatted);
             },
-            _commentButtonTapped () {
-                this.fire('post-comment', { value: this.$.comment.value });
-                this.$.comment.value = '';
-            },
             _computeFlag (flags) {
                 if (!flags) {
                     return false;
@@ -293,7 +289,11 @@
             },
             _flagButtonTapped (e) {
                 let index = e.model.index,
-                    id = this.comments[index].id;
+                    id = this.comments[index].id,
+                    flaged = this._computeFlag(this.comments[index].flags);
+                if (flaged) {
+                    return;
+                }
                 this.fire('flag-comment', {
                     index,
                     id
@@ -306,6 +306,7 @@
             _submitComment (e) {
                 e.preventDefault();
                 this.fire('post-comment', { value: this.comment });
+                this.comment = '';
             },
             _timeSince (date) {
               let parsedDate = new Date(date),
