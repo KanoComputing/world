@@ -65,7 +65,7 @@
             }
             :host #share-container {
                 animation: fade-in 200ms linear;
-                background: var(--color-chateau);
+                background: var(--kw-share-detail-share-background, --color-chateau);
             }
             :host #share-container,
             :host .share-content .loading,
@@ -103,6 +103,7 @@
                 height: 40px;
                 margin-right: 20px;
                 width: 40px;
+                background: var(--color-grey-lightest);
             }
             :host .title {
                 margin: 0;
@@ -277,21 +278,30 @@
             }
             :host([tombstone]) .title {
                 width: 200px;
-                height: 20px;
+                height: 22px;
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
             :host([tombstone]) .attribution {
+                position: relative;
                 width: 100px;
-                height: 20px;
+                height: 16px;
                 background: var(--color-grey-lightest);
                 color: transparent;
+                margin-top: 6px;
             }
             :host([tombstone]) .description {
                 width: 100%;
-                height: 60px;
+                height: 36px;
                 background: var(--color-grey-lightest);
                 color: transparent;
+                margin-top: 6px;
+                margin-bottom: 12px;
+            }
+            :host([tombstone]) .supplementary-details,
+            :host([tombstone]) #share-container,
+            :host([tombstone]) .social {
+                opacity: 0.3;
             }
         </style>
         <div id="share" class="share">
@@ -307,7 +317,7 @@
             <div class="share-detail">
                 <div class="main-details">
                     <div class="header">
-                        <img class="avatar" src$="[[avatar]]" />
+                        <iron-image class="avatar" src$="[[avatar]]" sizing="cover" preload fade></iron-image>
                         <div class="detail">
                             <h3 class="title">[[share.title]]</h3>
                             <h4 class="attribution">by <a class="author">[[share.user.username]]</a></h4>
@@ -604,18 +614,20 @@
                 }
                 return share.user && share.user.id === user.id;
             },
+            _clearShareContainer () {
+                let container = this.$['share-container'];
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
+            },
             _shareChanged(share) {
                 let tagName, templateString, template;
+                this._clearShareContainer();
                 if (!this.share) {
                     return;
                 }
 
                 tagName = appMapping[this.share.app] || 'kw-share';
-                if (this.instance) {
-                    while (this.$['share-container'].firstChild) {
-                        this.$['share-container'].removeChild(this.$['share-container'].firstChild);
-                    }
-                }
 
                 if (loadedImports[tagName]) {
                     this._insertShareView(tagName);
