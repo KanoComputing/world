@@ -182,16 +182,15 @@
                 @apply --layout-justified;
                 list-style: none;
                 margin: 0;
-                padding: 16px 0 0 0;
+                padding: 0;
             }
             :host .action {
                 flex: 1 0 auto;
                 box-sizing: border-box;
+                margin-right: 16px;
             }
-            :host .action:nth-of-type(2n) {
-                margin: 0 16px;
-            }
-            :host .action:last-of-type {
+            :host .action:last-of-type,
+            :host .action:only-child {
                 margin-right: 0;
             }
             :host .action-button {
@@ -217,6 +216,7 @@
             :host .action-button.remix {
                 background-color: var(--color-chateau);
                 color: white;
+                margin-bottom: 32px;
                 width: 100%;
             }
             :host .action-button.remix:hover {
@@ -360,7 +360,7 @@
                     </div>
                 </div>
                 <div class="supplementary-details">
-                    <template is="dom-if" if="[[showRemixButton]]">
+                    <template is="dom-if" if="[[appIntegration]]">
                       <button class="action-button remix" type="button" on-tap="_onRemixTapped">
                           <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
                           <span class="action-label">
@@ -369,7 +369,7 @@
                       </button>
                     </template>
                     <ul class="actions">
-                        <template is="dom-if" if="[[deviceAvailable]]">
+                        <template is="dom-if" if="[[appIntegration]]">
                             <li class="action">
                                 <button class$="[[_computeKitClass(savedToDevice)]]" on-tap="_updateKit">
                                   <template is="dom-if" if="[[savedToDevice]]">
@@ -448,21 +448,20 @@
                 Polymer.LazyImportsBehavior
             ],
             properties: {
+                appIntegration: {
+                    type: Boolean,
+                    computed: '_appIntegration(device, share)'
+                },
                 avatar: {
                     type: String,
                     computed: '_computeAvatar(share)'
-                },
-                context: {
-                    type: String,
-                    value: 'web'
                 },
                 defaultAvatar: {
                     type: String,
                     value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
                 },
-                deviceAvailable: {
-                    type: Boolean,
-                    computed: '_deviceAvailable(context)'
+                device: {
+                    type: String
                 },
                 displayCode: {
                     type: Boolean,
@@ -505,15 +504,17 @@
                 user: {
                     type: Object,
                     notify: true
-                },
-                showRemixButton: {
-                    type: Boolean,
-                    value: false
                 }
             },
             observers: [
                 '_shareChanged(share)'
             ],
+            _appIntegration (device, share) {
+                if (!device || !share) {
+                    return false;
+                }
+                return share.app === device;
+            },
             _computeAppLabel (app) {
                 return appLabels[app] || app;
             },
@@ -544,9 +545,6 @@
                 let baseClass = 'nav-item',
                     activeClass = section === id ? 'active' : 'inactive';
                 return `${baseClass} ${activeClass}`;
-            },
-            _deviceAvailable (context) {
-                return context && context === 'app';
             },
             _displayCodeButton (app) {
                 let appType = appMapping[app],
