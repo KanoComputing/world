@@ -65,7 +65,7 @@
             }
             :host #share-container {
                 animation: fade-in 200ms linear;
-                background: var(--color-chateau);
+                background: var(--kw-share-detail-share-background, --color-chateau);
             }
             :host #share-container,
             :host .share-content .loading,
@@ -99,13 +99,21 @@
             :host .header {
                 @apply --layout-horizontal;
             }
-            :host .avatar {
-                height: auto;
-                margin-top: 5px;
+            :host .avatar-wrapper {
+                overflow: hidden;
                 width: 40px;
-                border-radius: 100%;
+                height: 40px;
+                border-radius: 50%;
+                position: relative;
+                background-color: var(--color-sky);
+            }
+            :host .avatar {
+                transform: translateZ(0);
+                background-color: var(--color-sky);
+                position: absolute;
                 top: 5px;
-                left: 0px;
+                height: 80px;
+                width: 40px;
             }
             :host .title {
                 margin: 0;
@@ -273,39 +281,40 @@
                 height: 16px;
                 width: 16px;
             }
-            :host([tombstone]) .detail .cover,
-            :host([tombstone]) .detail .avatar {
+            :host([tombstone]) .avatar,
+            :host([tombstone]) .avatar-wrapper {
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
             :host([tombstone]) .title {
                 width: 200px;
-                height: 20px;
+                height: 22px;
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
             :host([tombstone]) .attribution {
+                position: relative;
                 width: 100px;
-                height: 20px;
+                height: 16px;
                 background: var(--color-grey-lightest);
                 color: transparent;
+                margin-top: 6px;
             }
             :host([tombstone]) .description {
                 width: 100%;
-                height: 60px;
+                height: 36px;
                 background: var(--color-grey-lightest);
                 color: transparent;
+                margin-top: 6px;
+                margin-bottom: 12px;
+            }
+            :host([tombstone]) .supplementary-details,
+            :host([tombstone]) #share-container,
+            :host([tombstone]) .social {
+                opacity: 0.3;
             }
             :host .detail {
                 margin-left: 10px;
-            }
-            :host .avatar-wrapper {
-                overflow: hidden;
-                width: 40px;
-                height: 40px;
-                border-radius: 100%;
-                position: relative;
-                background-color: var(--color-sky);
             }
         </style>
         <div id="share" class="share">
@@ -322,7 +331,7 @@
                 <div class="main-details">
                     <div class="header">
                         <div class="avatar-wrapper">
-                          <img class="avatar" src$="[[avatar]]" />
+                            <iron-image class="avatar" src$="[[avatar]]" sizing="cover" preload fade></iron-image>
                         </div>
                         <div class="detail">
                             <h3 class="title">[[share.title]]</h3>
@@ -521,7 +530,8 @@
                 if (share && share.user) {
                     return share.user.avatar.urls.character || this.defaultAvatar;
                 }
-                return this.defaultAvatar;
+                // No share provided, don't set the avatar
+                return null;
             },
             _computeKitClass (saved) {
                 return `action-button kit ${saved ? 'saved' : 'default'}`;
@@ -621,18 +631,20 @@
                 }
                 return share.user && share.user.id === user.id;
             },
+            _clearShareContainer () {
+                let container = this.$['share-container'];
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
+            },
             _shareChanged(share) {
                 let tagName, templateString, template;
+                this._clearShareContainer();
                 if (!this.share) {
                     return;
                 }
 
                 tagName = appMapping[this.share.app] || 'kw-share';
-                if (this.instance) {
-                    while (this.$['share-container'].firstChild) {
-                        this.$['share-container'].removeChild(this.$['share-container'].firstChild);
-                    }
-                }
 
                 if (loadedImports[tagName]) {
                     this._insertShareView(tagName);
