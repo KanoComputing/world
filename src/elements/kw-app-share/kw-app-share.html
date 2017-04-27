@@ -22,6 +22,11 @@
 <dom-module id="kw-app-share">
   <template>
         <style>
+            :host {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+            }
             :host * {
                 box-sizing: border-box;
             }
@@ -31,20 +36,14 @@
                 @apply --layout-center-justified;
                 height: 100%;
                 position: relative;
+                height: var(--kw-share-detail-player-height, 480px);
+                width: var(--kw-share-detail-player-height, 480px);
+                min-height: var(--kw-share-detail-player-height, 480px);
+                min-width: var(--kw-share-detail-player-height, 480px);
             }
+            kano-app-player:not(.fullscreen),
             iron-image {
                 @apply --layout-fit;
-                height: var(--kw-share-detail-player-height, 480px);
-                width: var(--kw-share-detail-player-height, 480px);
-                min-height: var(--kw-share-detail-player-height, 480px);
-                min-width: var(--kw-share-detail-player-height, 480px);
-                transition: opacity 200ms linear;
-            }
-            kano-app-player {
-                height: var(--kw-share-detail-player-height, 480px);
-                width: var(--kw-share-detail-player-height, 480px);
-                min-height: var(--kw-share-detail-player-height, 480px);
-                min-width: var(--kw-share-detail-player-height, 480px);
                 transition: opacity 200ms linear;
             }
             .code {
