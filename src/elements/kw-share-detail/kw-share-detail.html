@@ -99,11 +99,21 @@
             :host .header {
                 @apply --layout-horizontal;
             }
-            :host .avatar {
-                height: 40px;
-                margin-right: 20px;
+            :host .avatar-wrapper {
+                overflow: hidden;
                 width: 40px;
-                background: var(--color-grey-lightest);
+                height: 40px;
+                border-radius: 50%;
+                position: relative;
+                background-color: var(--color-sky);
+            }
+            :host .avatar {
+                transform: translateZ(0);
+                background-color: var(--color-sky);
+                position: absolute;
+                top: 5px;
+                height: 80px;
+                width: 40px;
             }
             :host .title {
                 margin: 0;
@@ -271,8 +281,8 @@
                 height: 16px;
                 width: 16px;
             }
-            :host([tombstone]) .detail .cover,
-            :host([tombstone]) .detail .avatar {
+            :host([tombstone]) .avatar,
+            :host([tombstone]) .avatar-wrapper {
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
@@ -303,6 +313,9 @@
             :host([tombstone]) .social {
                 opacity: 0.3;
             }
+            :host .detail {
+                margin-left: 10px;
+            }
         </style>
         <div id="share" class="share">
             <div class="share-content">
@@ -317,7 +330,9 @@
             <div class="share-detail">
                 <div class="main-details">
                     <div class="header">
-                        <iron-image class="avatar" src$="[[avatar]]" sizing="cover" preload fade></iron-image>
+                        <div class="avatar-wrapper">
+                            <iron-image class="avatar" src$="[[avatar]]" sizing="cover" preload fade></iron-image>
+                        </div>
                         <div class="detail">
                             <h3 class="title">[[share.title]]</h3>
                             <h4 class="attribution">by <a class="author">[[share.user.username]]</a></h4>
@@ -346,7 +361,8 @@
                                                    item-id="[[share.id]]"
                                                    shared-by-user="[[sharedByUser]]"
                                                    tombstone$="[[!share]]"
-                                                   user-id="[[user.id]]">
+                                                   user-id="[[user.id]]"
+                                                   avatar="[[avatar]]">
                                                    </kw-social-comment>
                             </div>
                         </iron-pages>
@@ -451,7 +467,7 @@
                 },
                 defaultAvatar: {
                     type: String,
-                    value: '../../assets/avatar/judoka-face.svg'
+                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
                 },
                 deviceAvailable: {
                     type: Boolean,
@@ -512,9 +528,10 @@
             },
             _computeAvatar (share) {
                 if (share && share.user) {
-                    return share.user.avatar.urls.circle || this.defaultAvatar;
+                    return share.user.avatar.urls.character || this.defaultAvatar;
                 }
-                return this.defaultAvatar;
+                // No share provided, don't set the avatar
+                return null;
             },
             _computeKitClass (saved) {
                 return `action-button kit ${saved ? 'saved' : 'default'}`;
