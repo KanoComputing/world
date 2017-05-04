@@ -165,7 +165,8 @@
             </div>
             <div id="detail" on-tap="_detailTapped">
                 <div class="details">
-                    <kw-share-detail share="[[selectedShare]]"
+                    <kw-share-detail available-apps="[[availableApps]]"
+                                     share="[[selectedShare]]"
                                      tombstone$="[[!selectedShare]]"
                                      user="[[user]]"
                                      on-follow-action="_onFollowAction"
@@ -200,6 +201,18 @@
                 Kano.Utils
             ],
             properties: {
+                availableApps: {
+                    type: Array,
+                    value: () => {
+                        return [
+                            'kano-draw',
+                            'make-apps',
+                            'make-adventures',
+                            'make-pong',
+                            'make-minecraft'
+                        ]
+                    }
+                },
                 route: {
                     type: Object,
                     notify: true
