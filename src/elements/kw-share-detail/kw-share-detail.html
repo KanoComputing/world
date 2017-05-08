@@ -379,7 +379,7 @@
                       </button>
                     </template>
                     <ul class="actions">
-                        <template is="dom-if" if="[[appIntegration]]">
+                        <template is="dom-if" if="[[hardwareIntegration]]">
                             <li class="action">
                                 <button class$="[[_computeKitClass(savedToDevice)]]" on-tap="_updateKit">
                                   <template is="dom-if" if="[[savedToDevice]]">
@@ -460,7 +460,15 @@
             properties: {
                 appIntegration: {
                     type: Boolean,
-                    computed: '_appIntegration(device, share)'
+                    computed: '_appIntegration(availableApps, share)'
+                },
+                availableApps: {
+                    type: Array,
+                    value: () => []
+                },
+                availableHardware: {
+                    type: Array,
+                    value: () => []
                 },
                 avatar: {
                     type: String,
@@ -480,6 +488,10 @@
                 displayCodeButton: {
                     type: Boolean,
                     computed: '_displayCodeButton(share.app)'
+                },
+                hardwareIntegration: {
+                    type: Boolean,
+                    computed: '_hardwareIntegration(availableHardware, share)'
                 },
                 liked: {
                     type: Boolean,
@@ -519,11 +531,14 @@
             observers: [
                 '_shareChanged(share)'
             ],
-            _appIntegration (device, share) {
-                if (!device || !share) {
+            /**
+            * Check whether this share can be remixed (or not)
+            */
+            _appIntegration (availableApps, share) {
+                if (!availableApps || !share) {
                     return false;
                 }
-                return share.app === device;
+                return availableApps.indexOf(share.app) > -1;
             },
             _computeAppLabel (app) {
                 return appLabels[app] || app;
@@ -561,6 +576,14 @@
                 let appType = appMapping[app],
                     appWithCode = appType === 'kw-app-share' || appType === 'kw-art-share';
                 return appWithCode;
+            },
+            _hardwareIntegration (availableHardware, share) {
+                if (!availableHardware || !share) {
+                    return false;
+                }
+                return share.hardware.some(hardware => {
+                    return availableHardware.indexOf(hardware.product) > -1;
+                });
             },
             _insertShareView (tagName) {
                 let templateString = `<${tagName} display-code="[[displayCode]]" share="[[share]]"></${tagName}>`,
