@@ -53,6 +53,9 @@
                 width: 32px;
                 border-radius: 50%;
             }
+            .comment-form {
+                @apply --layout-flex-2;
+            }
             .comment-box {
                 border: 1px solid var(--color-porcelain);
                 border-radius: 3px;
@@ -68,7 +71,7 @@
             }
             .comment {
                 @apply --layout-horizontal;
-                @apply --layout-center;
+                @apply --layout-start;
                 border-bottom: 1px solid var(--color-porcelain);
                 padding: 24px 0 16px 0;
                 width: 100%;
@@ -77,6 +80,7 @@
                 opacity: 0.6;
             }
             .content {
+                @apply --layout-flex-2;
                 font-size: 16px;
                 font-family: var(--font-body);
                 color: var(--color-abbey);
@@ -132,6 +136,7 @@
             }
             .action.flag.flagged {
                 color: var(--color-carnation);
+                cursor: default;
             }
             .action.flag .icon {
                 height: 16px;
