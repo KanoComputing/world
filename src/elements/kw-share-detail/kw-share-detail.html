@@ -668,7 +668,7 @@
                         window.setTimeout(() => burst.triggerParticles(), 250);
                     })
                 }
-                this.fire('like-action', this.liked);
+                this.fire('like-action', !this.liked);
             },
             _onRemixTapped () {
                 let item = this.share,
