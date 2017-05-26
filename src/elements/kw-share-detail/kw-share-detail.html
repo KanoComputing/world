@@ -246,6 +246,23 @@
             :host .kit.saved:hover {
                 background-color: var(--color-dodger-blue);
             }
+            :host .action-button.feature {
+                color: white;
+                margin-top: 32px;
+                width: 100%;
+            }
+            :host .action-button.feature.default {
+                background-color: var(--color-chateau);
+            }
+            :host .action-button.feature.featured {
+                background-color: var(--color-kano-orange);
+            }
+            :host .action-button.feature.default:hover {
+                background-color: var(--color-orange);
+            }
+            :host .action-button.feature.featured:hover {
+                background-color: var(--color-flame);
+            }
             :host .social-actions {
                 @apply --layout-horizontal;
                 @apply --layout-start-justified;
@@ -412,6 +429,14 @@
                             </li>
                         </template>
                     </ul>
+                    <template is="dom-if" if="[[displayFeatureButton]]">
+                      <button class$="[[_computeFeatureClass(share.featured)]]" type="button" on-tap="_onFeatureTapped">
+                          <iron-icon class="action-icon" icon="kano-icons:staff"></iron-icon>
+                          <span class="action-label">
+                              Staff Pick
+                          </span>
+                      </button>
+                    </template>
                     <ul class="social-actions">
                         <li class="social-action">
                             <button class="social-button facebook" on-tap="_onFacebookTapped">
@@ -489,6 +514,10 @@
                     type: Boolean,
                     computed: '_displayCodeButton(share.app)'
                 },
+                displayFeatureButton: {
+                    type: Boolean,
+                    computed: '_displayFeatureButton(share, user.admin_level)'
+                },
                 hardwareIntegration: {
                     type: Boolean,
                     computed: '_hardwareIntegration(availableHardware, share)'
@@ -550,6 +579,11 @@
                 // No share provided, don't set the avatar
                 return null;
             },
+            _computeFeatureClass (featured) {
+                let baseClass = 'action-button feature',
+                    activeClass = featured ? 'featured' : 'default';
+                return `${baseClass} ${activeClass}`;
+            },
             _computeKitClass (saved) {
                 return `action-button kit ${saved ? 'saved' : 'default'}`;
             },
@@ -576,6 +610,15 @@
                 let appType = appMapping[app],
                     appWithCode = appType === 'kw-app-share' || appType === 'kw-art-share';
                 return appWithCode;
+            },
+            _displayFeatureButton (share, adminLevel) {
+                return share && adminLevel;
+            },
+            _onFeatureTapped () {
+                this.fire('feature-action', {
+                    feature: !this.share.featured,
+                    id: this.share.id
+                });
             },
             _hardwareIntegration (availableHardware, share) {
                 if (!availableHardware || !share) {
