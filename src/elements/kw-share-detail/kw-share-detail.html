@@ -65,7 +65,7 @@
             }
             :host #share-container {
                 animation: fade-in 200ms linear;
-                background: var(--color-chateau);
+                background: var(--kw-share-detail-share-background, --color-chateau);
             }
             :host #share-container,
             :host .share-content .loading,
@@ -108,9 +108,21 @@
             :host .header {
                 @apply --layout-horizontal;
             }
-            :host .avatar {
+            :host .avatar-wrapper {
+                transform: translateZ(0);
+                overflow: hidden;
+                width: 40px;
                 height: 40px;
-                margin-right: 20px;
+                border-radius: 50%;
+                position: relative;
+                background-color: var(--color-sky);
+            }
+            :host .avatar {
+                transform: translateZ(0);
+                background-color: var(--color-sky);
+                position: absolute;
+                top: 5px;
+                height: 80px;
                 width: 40px;
             }
             :host .title {
@@ -188,16 +200,15 @@
                 @apply --layout-justified;
                 list-style: none;
                 margin: 0;
-                padding: 16px 0 0 0;
+                padding: 0;
             }
             :host .action {
                 flex: 1 0 auto;
                 box-sizing: border-box;
+                margin-right: 16px;
             }
-            :host .action:nth-of-type(2n) {
-                margin: 0 16px;
-            }
-            :host .action:last-of-type {
+            :host .action:last-of-type,
+            :host .action:only-child {
                 margin-right: 0;
             }
             :host .action-button {
@@ -223,6 +234,7 @@
             :host .action-button.remix {
                 background-color: var(--color-chateau);
                 color: white;
+                margin-bottom: 32px;
                 width: 100%;
             }
             :host .action-button.remix:hover {
@@ -242,6 +254,23 @@
             }
             :host .kit.saved:hover {
                 background-color: var(--color-dodger-blue);
+            }
+            :host .action-button.feature {
+                color: white;
+                margin-top: 32px;
+                width: 100%;
+            }
+            :host .action-button.feature.default {
+                background-color: var(--color-chateau);
+            }
+            :host .action-button.feature.featured {
+                background-color: var(--color-kano-orange);
+            }
+            :host .action-button.feature.default:hover {
+                background-color: var(--color-orange);
+            }
+            :host .action-button.feature.featured:hover {
+                background-color: var(--color-flame);
             }
             :host .social-actions {
                 @apply --layout-horizontal;
@@ -279,28 +308,40 @@
                 height: 16px;
                 width: 16px;
             }
-            :host([tombstone]) .detail .cover,
-            :host([tombstone]) .detail .avatar {
+            :host([tombstone]) .avatar,
+            :host([tombstone]) .avatar-wrapper {
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
             :host([tombstone]) .title {
                 width: 200px;
-                height: 20px;
+                height: 22px;
                 background: var(--color-grey-lightest);
                 color: transparent;
             }
             :host([tombstone]) .attribution {
+                position: relative;
                 width: 100px;
-                height: 20px;
+                height: 16px;
                 background: var(--color-grey-lightest);
                 color: transparent;
+                margin-top: 6px;
             }
             :host([tombstone]) .description {
                 width: 100%;
-                height: 60px;
+                height: 36px;
                 background: var(--color-grey-lightest);
                 color: transparent;
+                margin-top: 6px;
+                margin-bottom: 12px;
+            }
+            :host([tombstone]) .supplementary-details,
+            :host([tombstone]) #share-container,
+            :host([tombstone]) .social {
+                opacity: 0.3;
+            }
+            :host .detail {
+                margin-left: 10px;
             }
         </style>
         <div id="share" class="share">
@@ -316,7 +357,9 @@
             <div class="share-detail">
                 <div class="main-details">
                     <div class="header">
-                        <img class="avatar" src$="[[avatar]]" />
+                        <div class="avatar-wrapper">
+                            <iron-image class="avatar" src$="[[avatar]]" sizing="cover" preload fade></iron-image>
+                        </div>
                         <div class="detail">
                             <h3 class="title">[[share.title]]</h3>
                             <h4 class="attribution">by <a class="author">[[share.user.username]]</a></h4>
@@ -345,21 +388,24 @@
                                                    item-id="[[share.id]]"
                                                    shared-by-user="[[sharedByUser]]"
                                                    tombstone$="[[!share]]"
-                                                   user-id="[[user.id]]">
+                                                   user-id="[[user.id]]"
+                                                   avatar="[[avatar]]">
                                                    </kw-social-comment>
                             </div>
                         </iron-pages>
                     </div>
                 </div>
                 <div class="supplementary-details">
-                    <button class="action-button remix" type="button" on-tap="_onRemixTapped">
-                        <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
-                        <span class="action-label">
-                            Remix
-                        </span>
-                    </button>
+                    <template is="dom-if" if="[[appIntegration]]">
+                      <button class="action-button remix" type="button" on-tap="_onRemixTapped">
+                          <iron-icon class="action-icon" icon="kano-icons:remix"></iron-icon>
+                          <span class="action-label">
+                              Remix
+                          </span>
+                      </button>
+                    </template>
                     <ul class="actions">
-                        <template is="dom-if" if="[[deviceAvailable]]">
+                        <template is="dom-if" if="[[hardwareIntegration]]">
                             <li class="action">
                                 <button class$="[[_computeKitClass(savedToDevice)]]" on-tap="_updateKit">
                                   <template is="dom-if" if="[[savedToDevice]]">
@@ -392,6 +438,14 @@
                             </li>
                         </template>
                     </ul>
+                    <template is="dom-if" if="[[displayFeatureButton]]">
+                      <button class$="[[_computeFeatureClass(share.featured)]]" type="button" on-tap="_onFeatureTapped">
+                          <iron-icon class="action-icon" icon="kano-icons:staff"></iron-icon>
+                          <span class="action-label">
+                              Staff Pick
+                          </span>
+                      </button>
+                    </template>
                     <ul class="social-actions">
                         <li class="social-action">
                             <button class="social-button facebook" on-tap="_onFacebookTapped">
@@ -438,21 +492,28 @@
                 Polymer.LazyImportsBehavior
             ],
             properties: {
+                appIntegration: {
+                    type: Boolean,
+                    computed: '_appIntegration(availableApps, share)'
+                },
+                availableApps: {
+                    type: Array,
+                    value: () => []
+                },
+                availableHardware: {
+                    type: Array,
+                    value: () => []
+                },
                 avatar: {
                     type: String,
                     computed: '_computeAvatar(share)'
                 },
-                context: {
-                    type: String,
-                    value: 'web'
-                },
                 defaultAvatar: {
                     type: String,
-                    value: '../../assets/avatar/judoka-face.svg'
+                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
                 },
-                deviceAvailable: {
-                    type: Boolean,
-                    computed: '_deviceAvailable(context)'
+                device: {
+                    type: String
                 },
                 displayCode: {
                     type: Boolean,
@@ -461,6 +522,14 @@
                 displayCodeButton: {
                     type: Boolean,
                     computed: '_displayCodeButton(share.app)'
+                },
+                displayFeatureButton: {
+                    type: Boolean,
+                    computed: '_displayFeatureButton(share, user.admin_level)'
+                },
+                hardwareIntegration: {
+                    type: Boolean,
+                    computed: '_hardwareIntegration(availableHardware, share)'
                 },
                 liked: {
                     type: Boolean,
@@ -500,14 +569,29 @@
             observers: [
                 '_shareChanged(share)'
             ],
+            /**
+            * Check whether this share can be remixed (or not)
+            */
+            _appIntegration (availableApps, share) {
+                if (!availableApps || !share) {
+                    return false;
+                }
+                return availableApps.indexOf(share.app) > -1;
+            },
             _computeAppLabel (app) {
                 return appLabels[app] || app;
             },
             _computeAvatar (share) {
                 if (share && share.user) {
-                    return share.user.avatar.urls.circle || this.defaultAvatar;
+                    return share.user.avatar.urls.character || this.defaultAvatar;
                 }
-                return this.defaultAvatar;
+                // No share provided, don't set the avatar
+                return null;
+            },
+            _computeFeatureClass (featured) {
+                let baseClass = 'action-button feature',
+                    activeClass = featured ? 'featured' : 'default';
+                return `${baseClass} ${activeClass}`;
             },
             _computeKitClass (saved) {
                 return `action-button kit ${saved ? 'saved' : 'default'}`;
@@ -531,13 +615,27 @@
                     activeClass = section === id ? 'active' : 'inactive';
                 return `${baseClass} ${activeClass}`;
             },
-            _deviceAvailable (context) {
-                return context && context === 'app';
-            },
             _displayCodeButton (app) {
                 let appType = appMapping[app],
                     appWithCode = appType === 'kw-app-share' || appType === 'kw-art-share';
                 return appWithCode;
+            },
+            _displayFeatureButton (share, adminLevel) {
+                return share && adminLevel;
+            },
+            _onFeatureTapped () {
+                this.fire('feature-action', {
+                    feature: !this.share.featured,
+                    id: this.share.id
+                });
+            },
+            _hardwareIntegration (availableHardware, share) {
+                if (!availableHardware || !share) {
+                    return false;
+                }
+                return share.hardware.some(hardware => {
+                    return availableHardware.indexOf(hardware.product) > -1;
+                });
             },
             _insertShareView (tagName) {
                 let templateString = `<${tagName} display-code="[[displayCode]]" share="[[share]]"></${tagName}>`,
@@ -579,11 +677,7 @@
                         window.setTimeout(() => burst.triggerParticles(), 250);
                     })
                 }
-                this.fire('like-action', {
-                    id: this.share.id,
-                    liked: !this.liked,
-                    userId: this.share.user.id
-                });
+                this.fire('like-action', !this.liked);
             },
             _onRemixTapped () {
                 let item = this.share,
@@ -606,18 +700,20 @@
                 }
                 return share.user && share.user.id === user.id;
             },
+            _clearShareContainer () {
+                let container = this.$['share-container'];
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
+            },
             _shareChanged(share) {
                 let tagName, templateString, template;
+                this._clearShareContainer();
                 if (!this.share) {
                     return;
                 }
 
                 tagName = appMapping[this.share.app] || 'kw-share';
-                if (this.instance) {
-                    while (this.$['share-container'].firstChild) {
-                        this.$['share-container'].removeChild(this.$['share-container'].firstChild);
-                    }
-                }
 
                 if (loadedImports[tagName]) {
                     this._insertShareView(tagName);

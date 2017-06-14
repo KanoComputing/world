@@ -29,15 +29,24 @@
             }
             .input-comment {
                 @apply --layout-horizontal;
-                @apply --layout-start;
                 border-bottom: 1px solid var(--color-porcelain);
                 padding-bottom: 24px;
                 margin: 24px 0 0 0;
                 width: 100%;
             }
             .comment-avatar {
-                @apply --layout-flex-1;
-                margin-right: 28px;
+                border-radius: 100%;
+                width: 40px;
+                height: 40px;
+                margin: 0 10px;
+                background-color: var(--color-sky);
+                overflow: hidden;
+            }
+            .comment-avatar .avatar {
+                border-radius: 100%;
+                width: 100%;
+                height: auto;
+                margin-top: 5px;
             }
             iron-image {
                 height: 32px;
@@ -45,7 +54,7 @@
                 border-radius: 50%;
             }
             .comment-form {
-                width: 100%;
+                @apply --layout-flex-2;
             }
             .comment-box {
                 border: 1px solid var(--color-porcelain);
@@ -62,7 +71,7 @@
             }
             .comment {
                 @apply --layout-horizontal;
-                @apply --layout-center;
+                @apply --layout-start;
                 border-bottom: 1px solid var(--color-porcelain);
                 padding: 24px 0 16px 0;
                 width: 100%;
@@ -71,10 +80,10 @@
                 opacity: 0.6;
             }
             .content {
+                @apply --layout-flex-2;
                 font-size: 16px;
                 font-family: var(--font-body);
                 color: var(--color-abbey);
-                width: 100%;
             }
             .comment-header {
                 margin: 0;
@@ -127,6 +136,7 @@
             }
             .action.flag.flagged {
                 color: var(--color-carnation);
+                cursor: default;
             }
             .action.flag .icon {
                 height: 16px;
@@ -177,9 +187,9 @@
             }
         </style>
         <h3 shown$="[[!comments.length]]">Be the first to comment!</h3>
-        <div class="input-comment" hidden$="[[sharedByUser]]">
+        <div class="input-comment">
             <div class="comment-avatar">
-                <iron-image preload placeholder="../../assets/avatar/judoka-face.svg" fade sizing="contain"></iron-image>
+                <img class="avatar" src="[[avatar]]"></img>
             </div>
             <form class="comment-form" on-submit="_submitComment">
                 <input class="comment-box" type="text" placeholder="Leave a comment" value="{{comment::input}}" />
@@ -188,11 +198,11 @@
         <template is="dom-repeat" items="[[comments]]" as="comment">
             <div class$="comment [[_computePostingClass(comment.posting)]]">
                 <div class="comment-avatar">
-                    <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
+                    <img class="avatar" src="[[_computeAvatar(comment)]]"></img>
                 </div>
                 <div class="content">
                     <p class="comment-header"><span class="author">{{comment.author.username}}</span>
-                      <span class="date">[[_timeSince(comment.date_created)]] ago</span>
+                      <span class="date">[[_timeSince(comment.date_created, comments.*)]] ago</span>
                     </p>
                     <p class="comment-body"><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
                 </div>
@@ -238,7 +248,18 @@
                 },
                 userId: {
                     type: String
+                },
+                avatar: {
+                    type: String,
+                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
                 }
+            },
+            _computeAvatar (comment) {
+                let defaultAvatar = 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png';
+                if (comment && comment.user) {
+                    return comment.author.avatar.urls.character || defaultAvatar;
+                }
+                return defaultAvatar;
             },
             _onDataLoad () {
                 if (this.pageNumber === null) {
@@ -259,10 +280,6 @@
             },
             _createDate (formatted) {
                 return new Date(formatted);
-            },
-            _commentButtonTapped () {
-                this.fire('post-comment', { value: this.$.comment.value });
-                this.$.comment.value = '';
             },
             _computeFlag (flags) {
                 if (!flags) {
@@ -293,7 +310,11 @@
             },
             _flagButtonTapped (e) {
                 let index = e.model.index,
-                    id = this.comments[index].id;
+                    id = this.comments[index].id,
+                    flaged = this._computeFlag(this.comments[index].flags);
+                if (flaged) {
+                    return;
+                }
                 this.fire('flag-comment', {
                     index,
                     id
@@ -306,6 +327,7 @@
             _submitComment (e) {
                 e.preventDefault();
                 this.fire('post-comment', { value: this.comment });
+                this.comment = '';
             },
             _timeSince (date) {
               let parsedDate = new Date(date),
