@@ -6,6 +6,7 @@
 <link rel="import" href="./highlight-theme.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/color.html">
+<link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
 
 <script src="../../scripts/kano/make-apps/msg/en.js"></script>
 <script src="../../scripts/kano/make-apps/blockly/msg/en.js"></script>
@@ -14,6 +15,7 @@
 <!-- endbuild -->
 <link rel="import" href="../kano-app-player/kano-app-player.html">
 <link rel="import" href="../../scripts/kano/app-modules/index.html">
+<link rel="import" href="../kano-icons/parts.html">
 <link rel="import" href="../kano-workspace-normal/kano-workspace-normal.html">
 <link rel="import" href="../kano-workspace-lightboard/kano-workspace-lightboard.html">
 <link rel="import" href="../kano-workspace-camera/kano-workspace-camera.html">
@@ -23,9 +25,7 @@
   <template>
         <style>
             :host {
-                @apply --layout-vertical;
-                @apply --layout-center;
-                @apply --layout-center-justified;
+                display: block;
             }
             :host * {
                 box-sizing: border-box;
@@ -34,17 +34,52 @@
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --layout-center-justified;
-                height: 100%;
+                height: 90%;
                 position: relative;
-                height: var(--kw-share-detail-player-height, 480px);
-                width: var(--kw-share-detail-player-height, 480px);
-                min-height: var(--kw-share-detail-player-height, 480px);
-                min-width: var(--kw-share-detail-player-height, 480px);
             }
-            kano-app-player:not(.fullscreen),
             iron-image {
                 @apply --layout-fit;
+                height: 95%;
+                margin: auto;
                 transition: opacity 200ms linear;
+                width: 100%;
+            }
+            kano-app-player:not(.fullscreen) {
+                @apply --layout-flex;
+                max-width: 600px;
+                padding: 16px 16px 32px 16px;
+                transition: opacity 200ms linear;
+                width: 100%;
+            }
+            .hardware {
+                @apply --layout-center;
+                padding: 0 16px 40px 16px;
+                width: 100%;
+            }
+            @media all and (max-width: 680px) {
+                .hardware {
+                    @apply --layout-vertical;
+                    @apply --layout-start-justified;
+                }
+            }
+            @media all and (min-width: 681px) {
+                .hardware {
+                    @apply --layout-horizontal;
+                    @apply --layout-around-justified;
+                }
+            }
+            .hardware-item {
+              @apply --layout-horizontal;
+              @apply --layout-center;
+              @apply --layout-justified;
+            }
+            .hardware-icon {
+                color: var(--color-grey);
+            }
+            .hardware-label {
+                color: var(--color-white);
+                font-weight: bold;
+                padding-left: 16px;
             }
             .code {
                 @apply --layout-vertical;
@@ -160,7 +195,15 @@
         </style>
         <div class="app">
             <iron-image src="[[share.cover_url]]" sizing="contain"></iron-image>
-            <kano-app-player id="player" src="[[appUrl]]" slug="[[slug]]" on-app-ready="_onAppReady" show-toolbar></kano-app-player>
+            <kano-app-player id="player" src="[[appUrl]]" slug="[[slug]]" on-app-ready="_onAppReady" show-toolbar layout="horizontal"></kano-app-player>
+        </div>
+        <div class="hardware">
+          <template is="dom-repeat" items="[[hardware]]">
+            <div class="hardware-item">
+              <iron-icon class="hardware-icon" icon="parts:[[item.id]]"></iron-icon>
+              <span class="hardware-label">[[item.label]]</span>
+            </div>
+          </template>
         </div>
         <template is="dom-if" if="[[displayCode]]">
             <div class="code">
@@ -198,6 +241,10 @@
               type: Boolean,
               value: false
           },
+          hardware: {
+              type: Array,
+              computed: '_computeHardware(share)'
+          },
           lines: {
               type: Array,
               computed: '_computeLines(mdCode)'
@@ -215,6 +262,24 @@
               observer: '_shareChanged'
           }
       },
+      _computeHardware  (share) {
+          if (!share || !share.hardware) {
+              return [];
+          }
+          let labelMapping = {
+              'gyro-accelerometer': 'Tilt Sensor',
+              'lightboard': 'Pixel Kit',
+              'microphone': 'Microphone',
+              'motion-sensor': 'Motion Sensor',
+              'speaker': 'Speaker'
+          };
+          return share.hardware.map(item => {
+                return {
+                    label: labelMapping[item.product],
+                    id: item.product
+                }
+          });
+      },
       _computeLines (mdCode) {
           if (!mdCode) {
               return [];
@@ -230,26 +295,26 @@
           this.fire('hide-code');
       },
       _shareChanged() {
-        let attachment = this.share.attachment_url,
-          workspaceInfo = this.share.workspace_info_url;
-        if (attachment) {
-          this.slug = this.share.slug;
-          this.appUrl = attachment;
-        }
-        if (workspaceInfo) {
-          fetch(workspaceInfo)
-            .then(r => r.json())
-            .then(r => {
-              if (r.code && r.code.snapshot) {
-                let code = r.code.snapshot.javascript;
-                this.set('code', code);
-                this.set('mdCode', '```javascript\n' + code + '\n```');
-              }
-            });
-        }
+          let attachment = this.share.attachment_url,
+              workspaceInfo = this.share.workspace_info_url;
+          if (attachment) {
+              this.slug = this.share.slug;
+              this.appUrl = attachment;
+          }
+          if (workspaceInfo) {
+            fetch(workspaceInfo)
+              .then(r => r.json())
+              .then(r => {
+                  if (r.code && r.code.snapshot) {
+                      let code = r.code.snapshot.javascript;
+                      this.set('code', code);
+                      this.set('mdCode', '```javascript\n' + code + '\n```');
+                  }
+              });
+          }
       },
       _onAppReady() {
-        this.toggleClass('loaded', true);
+          this.toggleClass('loaded', true);
       }
     });
   </script>

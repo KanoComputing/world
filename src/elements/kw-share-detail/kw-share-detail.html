@@ -83,9 +83,18 @@
                 background-color: transparent;
                 height: 100%;
                 margin: 20px auto;
-                max-height: calc(100% - 40px);
                 max-width: var(--content-width);
                 width: 100%;
+            }
+            @media all and (max-width: 680px) {
+                :host #share-container>* {
+                    max-height: calc(100% - 120px);
+                }
+            }
+            @media all and (min-width: 681px) {
+                :host #share-container>* {
+                    max-height: calc(100% - 40px);
+                }
             }
             :host .share-detail {
                 @apply --layout-horizontal;
