@@ -49,6 +49,7 @@
             }
             :host .share-content {
                 @apply --layout-flex;
+                background: var(--kw-share-detail-share-background, --color-chateau);
                 width: 100%;
                 padding: 0px 16px;
                 min-height: var(--kw-share-detail-player-height, 480px);
@@ -65,10 +66,11 @@
             }
             :host #share-container {
                 animation: fade-in 200ms linear;
-                background: var(--kw-share-detail-share-background, --color-chateau);
             }
             :host #share-container,
             :host .share-content .loading,
+            :host .share-content .content,
+            :host .share-content .content .featured,
             :host .share-content .loading iron-image,
             :host .share-content .loading .overlay {
                 @apply --layout-fit;
@@ -77,24 +79,32 @@
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --layout-center-justified;
-                background: rgba(255, 255, 255, 0.1);
             }
+            :host .share-content .content .featured,
             :host #share-container>* {
                 background-color: transparent;
                 height: 100%;
                 margin: 20px auto;
-                max-width: var(--content-width);
+                max-width: 600px;
                 width: 100%;
             }
             @media all and (max-width: 680px) {
+                :host .share-content .content .featured,
                 :host #share-container>* {
                     max-height: calc(100% - 120px);
+                    padding: 0 20px;
                 }
             }
             @media all and (min-width: 681px) {
+                :host .share-content .content .featured,
                 :host #share-container>* {
                     max-height: calc(100% - 40px);
                 }
+            }
+            :host .featured-icon {
+                height: 44px;
+                margin-top: 7%;
+                width: 44px;
             }
             :host .share-detail {
                 @apply --layout-horizontal;
@@ -352,7 +362,14 @@
                         <h2>Loading</h2>
                     </div>
                 </div>
-                <div id="share-container"></div>
+                <div class="content">
+                    <template is="dom-if" if="[[share.featured]]">
+                        <div class="featured">
+                           <iron-image class="featured-icon" src="../../assets/icons/shares/featured.svg" sizing="cover" preload fade></iron-image>
+                        </div>
+                    </template>
+                    <div id="share-container"></div>
+                </div>
             </div>
             <div class="share-detail">
                 <div class="main-details">
