@@ -128,11 +128,12 @@
                 background-color: var(--color-sky);
             }
             :host .avatar {
-                transform: translateZ(0);
                 background-color: var(--color-sky);
+                cursor: pointer;
+                height: 80px;
                 position: absolute;
                 top: 5px;
-                height: 80px;
+                transform: translateZ(0);
                 width: 40px;
             }
             :host .title {
@@ -374,7 +375,13 @@
                 <div class="main-details">
                     <div class="header">
                         <div class="avatar-wrapper">
-                            <iron-image class="avatar" src$="[[avatar]]" sizing="cover" preload fade></iron-image>
+                            <iron-image class="avatar"
+                                        src$="[[avatar]]"
+                                        sizing="cover"
+                                        preload
+                                        fade
+                                        on-tap="_userTapped">
+                                        </iron-image>
                         </div>
                         <div class="detail">
                             <h3 class="title">[[share.title]]</h3>
