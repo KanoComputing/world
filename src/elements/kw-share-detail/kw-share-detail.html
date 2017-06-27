@@ -363,11 +363,9 @@
                     </div>
                 </div>
                 <div class="content">
-                    <template is="dom-if" if="[[share.featured]]">
-                        <div class="featured">
-                           <iron-image class="featured-icon" src="../../assets/icons/shares/featured.svg" sizing="cover" preload fade></iron-image>
-                        </div>
-                    </template>
+                    <div class="featured" hidden$="[[!featured]]">
+                       <iron-image class="featured-icon" src="../../assets/icons/shares/featured.svg" sizing="cover" preload fade></iron-image>
+                    </div>
                     <div id="share-container"></div>
                 </div>
             </div>
@@ -543,6 +541,10 @@
                 displayFeatureButton: {
                     type: Boolean,
                     computed: '_displayFeatureButton(share, user.admin_level)'
+                },
+                featured: {
+                    type: Boolean,
+                    value: false
                 },
                 hardwareIntegration: {
                     type: Boolean,
@@ -729,6 +731,8 @@
                 if (!this.share) {
                     return;
                 }
+
+                this.featured = share.featured;
 
                 tagName = appMapping[this.share.app] || 'kw-share';
 
