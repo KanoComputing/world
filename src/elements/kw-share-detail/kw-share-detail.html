@@ -146,6 +146,7 @@
             }
             :host .author {
                 color: var(--color-carnation);
+                cursor: pointer;
                 font-weight: bold;
             }
             :host .description {
@@ -377,7 +378,7 @@
                         </div>
                         <div class="detail">
                             <h3 class="title">[[share.title]]</h3>
-                            <h4 class="attribution">by <a class="author">[[share.user.username]]</a></h4>
+                            <h4 class="attribution">by <a class="author" on-tap="_userTapped">[[share.user.username]]</a></h4>
                             <p class="description">[[share.description]]</p>
                         </div>
                     </div>
@@ -768,6 +769,9 @@
                     action,
                     app
                 });
+            },
+            _userTapped () {
+                this.fire('view-user', { id: this.share.user.id });
             }
         });
     })();
