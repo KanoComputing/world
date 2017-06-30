@@ -6,9 +6,11 @@
 <link rel="import" href="../kw-share-stats/kw-share-stats.html">
 <link rel="import" href="../kw-social-comment/kw-social-comment.html">
 <link rel="import" href="../../bower_components/web-components/kano-particle-burst/kano-particle-burst.html">
+<link rel="import" href="../../bower_components/web-components/kano-share/kano-share-behavior.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
 <link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
 <link rel="import" href="../../bower_components/web-components/social-icons/social-icons.html">
+<link rel="import" href="../../bower_components/web-components/kano-share-wrapper/kano-share-wrapper-behavior.html">
 
 <dom-module id="kw-share-detail">
     <link rel="lazy-import" href="../kw-app-share/kw-app-share.html" group="kw-app-share">
@@ -138,6 +140,11 @@
             :host .title {
                 margin: 0;
                 padding-bottom: 5px;
+            }
+            :host .title .icon {
+                height: 28px;
+                margin-top: -10px;
+                width: 28px;
             }
             :host .attribution {
                 font-weight: normal;
@@ -357,7 +364,7 @@
         <div id="share" class="share">
             <div class="share-content">
                 <div class="loading">
-                    <iron-image src="[[share.cover_url]]" sizing="contain"></iron-image>
+                    <iron-image src="[[selectedShare.cover_url]]" sizing="contain"></iron-image>
                     <div class="overlay">
                         <h2>Loading</h2>
                     </div>
@@ -376,20 +383,23 @@
                             <iron-image class="avatar" src$="[[avatar]]" sizing="cover" preload fade></iron-image>
                         </div>
                         <div class="detail">
-                            <h3 class="title">[[share.title]]</h3>
-                            <h4 class="attribution">by <a class="author">[[share.user.username]]</a></h4>
-                            <p class="description">[[share.description]]</p>
+                            <h3 class="title">
+                                <iron-icon icon="parts:light-animation" class="icon animation" hidden$="[[!_shareContainsAnimation(selectedShare)]]"></iron-icon>
+                                [[selectedShare.title]]
+                            </h3>
+                            <h4 class="attribution">by <a class="author">[[selectedShare.user.username]]</a></h4>
+                            <p class="description">[[selectedShare.description]]</p>
                         </div>
                     </div>
                     <div class="social">
                         <ul class="social-nav">
                             <li class$="[[_computeNavItemClass(section, 'comments')]]" on-tap="_showComments">
                                 <iron-icon class="nav-icon" icon="kano-icons:comment"></iron-icon>
-                                <span class="nav-label">[[share.comments_count]] Replies</span>
+                                <span class="nav-label">[[selectedShare.comments_count]] Replies</span>
                             </li>
                             <li class$="[[_computeNavItemClass(section, 'likes')]]">
                                 <iron-icon class="nav-icon" icon="kano-icons:like"></iron-icon>
-                                <span class="nav-label">[[share.likes.length]] Likes</span>
+                                <span class="nav-label">[[selectedShare.likes.length]] Likes</span>
                             </li>
                         </ul>
                         <!-- Set up with support for showing lists of
@@ -398,11 +408,11 @@
                         <iron-pages id="social-sections" selected="[[section]]" attr-for-selected="name">
                             <div class="social-section" name="comments">
                                 <kw-social-comment id="comments"
-                                                   comments="[[share.comments]]"
-                                                   page-number="[[share.pageNumber]]"
-                                                   item-id="[[share.id]]"
+                                                   comments="[[selectedShare.comments]]"
+                                                   page-number="[[selectedShare.pageNumber]]"
+                                                   item-id="[[selectedShare.id]]"
                                                    shared-by-user="[[sharedByUser]]"
-                                                   tombstone$="[[!share]]"
+                                                   tombstone$="[[!selectedShare]]"
                                                    user-id="[[user.id]]"
                                                    avatar="[[avatar]]">
                                                    </kw-social-comment>
@@ -454,7 +464,7 @@
                         </template>
                     </ul>
                     <template is="dom-if" if="[[displayFeatureButton]]">
-                      <button class$="[[_computeFeatureClass(share.featured)]]" type="button" on-tap="_onFeatureTapped">
+                      <button class$="[[_computeFeatureClass(selectedShare.featured)]]" type="button" on-tap="_onFeatureTapped">
                           <iron-icon class="action-icon" icon="kano-icons:staff"></iron-icon>
                           <span class="action-label">
                               Staff Pick
@@ -504,56 +514,26 @@
             is: 'kw-share-detail',
             behaviors: [
                 Polymer.Templatizer,
-                Polymer.LazyImportsBehavior
+                Polymer.LazyImportsBehavior,
+                Kano.Behaviors.ShareBehavior,
+                Kano.Behaviors.ShareWrapper
             ],
             properties: {
-                appIntegration: {
-                    type: Boolean,
-                    computed: '_appIntegration(availableApps, share)'
-                },
-                availableApps: {
-                    type: Array,
-                    value: () => []
-                },
-                availableHardware: {
-                    type: Array,
-                    value: () => []
-                },
-                avatar: {
-                    type: String,
-                    computed: '_computeAvatar(share)'
-                },
-                defaultAvatar: {
-                    type: String,
-                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
-                },
-                device: {
-                    type: String
-                },
                 displayCode: {
                     type: Boolean,
                     value: false
                 },
                 displayCodeButton: {
                     type: Boolean,
-                    computed: '_displayCodeButton(share.app)'
+                    computed: '_displayCodeButton(selectedShare.app)'
                 },
                 displayFeatureButton: {
                     type: Boolean,
-                    computed: '_displayFeatureButton(share, user.admin_level)'
+                    computed: '_displayFeatureButton(selectedShare, user.admin_level)'
                 },
                 featured: {
                     type: Boolean,
                     value: false
-                },
-                hardwareIntegration: {
-                    type: Boolean,
-                    computed: '_hardwareIntegration(availableHardware, share)'
-                },
-                liked: {
-                    type: Boolean,
-                    computed: '_computeLiked(share.likes.*)',
-                    notify: true
                 },
                 loaded: {
                     type: Boolean,
@@ -564,21 +544,13 @@
                     type: String,
                     value: 'app'
                 },
-                savedToDevice: {
-                    type: Boolean,
-                    value: false
-                },
                 section: {
                     type: String,
                     value: 'comments'
                 },
-                share: {
-                    type: Object,
-                    notify: true
-                },
                 sharedByUser: {
                     type: Boolean,
-                    computed: '_sharedByUser(share, user)'
+                    computed: '_sharedByUser(selectedShare, user)'
                 },
                 user: {
                     type: Object,
@@ -586,11 +558,9 @@
                 }
             },
             observers: [
-                '_shareChanged(share)'
+                '_shareChanged(selectedShare)'
             ],
-            /**
-            * Check whether this share can be remixed (or not)
-            */
+            /** Check whether this share can be remixed (or not) */
             _appIntegration (availableApps, share) {
                 if (!availableApps || !share) {
                     return false;
@@ -604,7 +574,7 @@
                 if (share && share.user) {
                     return share.user.avatar.urls.character || this.defaultAvatar;
                 }
-                // No share provided, don't set the avatar
+                /** No share provided, don't set the avatar */
                 return null;
             },
             _computeFeatureClass (featured) {
@@ -614,15 +584,6 @@
             },
             _computeKitClass (saved) {
                 return `action-button kit ${saved ? 'saved' : 'default'}`;
-            },
-            _computeLiked (likes) {
-                if (!likes.base || !this.user) {
-                    return false;
-                }
-                let userLike = likes.base.find((like) => {
-                    return like.user === this.user.id;
-                });
-                return userLike ? true : false;
             },
             _computeLikeClass (liked) {
                 let baseClass = 'action-button like',
@@ -644,16 +605,8 @@
             },
             _onFeatureTapped () {
                 this.fire('feature-action', {
-                    feature: !this.share.featured,
-                    id: this.share.id
-                });
-            },
-            _hardwareIntegration (availableHardware, share) {
-                if (!availableHardware || !share) {
-                    return false;
-                }
-                return share.hardware.some(hardware => {
-                    return availableHardware.indexOf(hardware.product) > -1;
+                    feature: !this.selectedShare.featured,
+                    id: this.selectedShare.id
                 });
             },
             _insertShareView (tagName) {
@@ -666,7 +619,7 @@
 
                 this.instance = this.stamp({
                     displayCode: this.displayCode,
-                    share: this.share
+                    share: this.selectedShare
                 });
 
                 this.$['share-container'].appendChild(this.instance.root);
@@ -676,17 +629,17 @@
             _onEmailTapped () {
                 this.fire('social-share', {
                     action: 'email',
-                    share: this.share
+                    share: this.selectedShare
                 });
             },
             _onFacebookTapped () {
                 this.fire('social-share', {
                     action: 'facebook',
-                    share: this.share
+                    share: this.selectedShare
                 });
             },
             _onLikeTapped (e) {
-                if (this.sharedByUser) {
+                if (this.selectedSharedByUser) {
                     return;
                 }
                 if (!this.liked) {
@@ -699,7 +652,7 @@
                 this.fire('like-action', !this.liked);
             },
             _onRemixTapped () {
-                let item = this.share,
+                let item = this.selectedShare,
                     appType = item.app;
                 this.fire('remix-action', {
                     id: item.id,
@@ -710,7 +663,7 @@
             _onTwitterTapped () {
                 this.fire('social-share', {
                     action: 'twitter',
-                    share: this.share
+                    share: this.selectedShare
                 });
             },
             _sharedByUser (share, user) {
@@ -728,13 +681,13 @@
             _shareChanged(share) {
                 let tagName, templateString, template;
                 this._clearShareContainer();
-                if (!this.share) {
+                if (!this.selectedShare) {
                     return;
                 }
 
                 this.featured = share.featured;
 
-                tagName = appMapping[this.share.app] || 'kw-share';
+                tagName = appMapping[this.selectedShare.app] || 'kw-share';
 
                 if (loadedImports[tagName]) {
                     this._insertShareView(tagName);
@@ -751,7 +704,7 @@
             },
             _toggleCodeView () {
                 let newValue = !this.displayCode,
-                    tagName = appMapping[this.share.app] || 'kw-share';
+                    tagName = appMapping[this.selectedShare.app] || 'kw-share';
                 this.set('displayCode', newValue);
                 this.$$(tagName).displayCode = newValue;
             },
@@ -763,7 +716,7 @@
             },
             _updateKit () {
                 let action = !this.savedToDevice ? 'add' : 'remove',
-                    app = this.share;
+                    app = this.selectedShare;
                 this.fire('update-device-action', {
                     action,
                     app
