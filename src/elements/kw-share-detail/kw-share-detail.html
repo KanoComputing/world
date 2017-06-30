@@ -237,6 +237,7 @@
                 font-family: var(--font-body);
                 font-size: 16px;
                 padding: 16px;
+                position: relative;
                 text-transform: uppercase;
                 transition: 0.3s ease;
                 width: 100%;
@@ -271,6 +272,17 @@
             }
             :host .kit.saved:hover {
                 background-color: var(--color-dodger-blue);
+            }
+            :host .kit.saved .remove-from-device {
+                @apply --layout-fit;
+                margin: auto;
+                opacity: 0;
+            }
+            :host .kit.saved:hover .saved-to-device {
+                opacity: 0;
+            }
+            :host .kit.saved:hover .remove-from-device {
+                opacity: 1;
             }
             :host .action-button.feature {
                 color: white;
@@ -432,7 +444,7 @@
                     <ul class="actions">
                         <template is="dom-if" if="[[hardwareIntegration]]">
                             <li class="action">
-                                <button class$="[[_computeKitClass(savedToDevice)]]" on-tap="_updateKit">
+                                <button class$="[[_computeKitClass(savedToDevice)]]" on-tap="_updateDevice">
                                   <template is="dom-if" if="[[savedToDevice]]">
                                     <iron-icon class="icon saved-to-device" icon="kano-icons:saved-to-device"></iron-icon>
                                     <iron-icon class="icon remove-from-device" icon="kano-icons:remove-from-device"></iron-icon>
@@ -666,12 +678,6 @@
                     share: this.selectedShare
                 });
             },
-            _sharedByUser (share, user) {
-                if (!share || !user) {
-                    return false;
-                }
-                return share.user && share.user.id === user.id;
-            },
             _clearShareContainer () {
                 let container = this.$['share-container'];
                 while (container.firstChild) {
@@ -713,14 +719,6 @@
             },
             _showLikes () {
                 this.set('section', 'likes');
-            },
-            _updateKit () {
-                let action = !this.savedToDevice ? 'add' : 'remove',
-                    app = this.selectedShare;
-                this.fire('update-device-action', {
-                    action,
-                    app
-                });
             }
         });
     })();
