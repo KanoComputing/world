@@ -622,7 +622,7 @@
                 });
             },
             _insertShareView (tagName) {
-                let templateString = `<${tagName} display-code="[[displayCode]]" share="[[share]]"></${tagName}>`,
+                let templateString = `<${tagName} display-code="[[displayCode]]" share="[[selectedShare]]"></${tagName}>`,
                     template = document.createElement('template');
 
                 template.innerHTML = templateString;
@@ -631,7 +631,7 @@
 
                 this.instance = this.stamp({
                     displayCode: this.displayCode,
-                    share: this.selectedShare
+                    selectedShare: this.selectedShare
                 });
 
                 this.$['share-container'].appendChild(this.instance.root);
