@@ -130,11 +130,12 @@
                 background-color: var(--color-sky);
             }
             :host .avatar {
-                transform: translateZ(0);
                 background-color: var(--color-sky);
+                cursor: pointer;
+                height: 80px;
                 position: absolute;
                 top: 5px;
-                height: 80px;
+                transform: translateZ(0);
                 width: 40px;
             }
             :host .title {
@@ -153,6 +154,7 @@
             }
             :host .author {
                 color: var(--color-carnation);
+                cursor: pointer;
                 font-weight: bold;
             }
             :host .description {
@@ -392,14 +394,20 @@
                 <div class="main-details">
                     <div class="header">
                         <div class="avatar-wrapper">
-                            <iron-image class="avatar" src$="[[avatar]]" sizing="cover" preload fade></iron-image>
+                            <iron-image class="avatar"
+                                        src$="[[avatar]]"
+                                        sizing="cover"
+                                        preload
+                                        fade
+                                        on-tap="_userTapped">
+                                        </iron-image>
                         </div>
                         <div class="detail">
                             <h3 class="title">
                                 <iron-icon icon="parts:light-animation" class="icon animation" hidden$="[[!_shareContainsAnimation(selectedShare)]]"></iron-icon>
                                 [[selectedShare.title]]
                             </h3>
-                            <h4 class="attribution">by <a class="author">[[selectedShare.user.username]]</a></h4>
+                            <h4 class="attribution">by <a class="author" on-tap="_userTapped">[[selectedShare.user.username]]</a></h4>
                             <p class="description">[[selectedShare.description]]</p>
                         </div>
                     </div>
@@ -719,6 +727,9 @@
             },
             _showLikes () {
                 this.set('section', 'likes');
+            },  
+            _userTapped () {
+                this.fire('view-user', { id: this.selectedShare.user.id });
             }
         });
     })();

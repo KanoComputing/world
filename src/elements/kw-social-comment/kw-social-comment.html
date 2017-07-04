@@ -44,9 +44,12 @@
             }
             .comment-avatar .avatar {
                 border-radius: 100%;
-                width: 100%;
                 height: auto;
                 margin-top: 5px;
+                width: 100%;
+            }
+            .comment .avatar {
+                cursor: pointer;
             }
             iron-image {
                 height: 32px;
@@ -111,6 +114,7 @@
             }
             .author {
                 color: var(--color-kano-orange);
+                cursor: pointer;
                 font-weight: bold;
                 margin-right: 5px;
             }
@@ -198,10 +202,10 @@
         <template is="dom-repeat" items="[[comments]]" as="comment">
             <div class$="comment [[_computePostingClass(comment.posting)]]">
                 <div class="comment-avatar">
-                    <img class="avatar" src="[[_computeAvatar(comment)]]"></img>
+                    <img class="avatar" src="[[_computeAvatar(comment)]]" on-tap="_userTapped" />
                 </div>
                 <div class="content">
-                    <p class="comment-header"><span class="author">{{comment.author.username}}</span>
+                    <p class="comment-header"><span class="author" on-tap="_userTapped">{{comment.author.username}}</span>
                       <span class="date">[[_timeSince(comment.date_created, comments.*)]] ago</span>
                     </p>
                     <p class="comment-body"><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
@@ -353,6 +357,11 @@
                   return interval + ' minutes';
               }
               return Math.floor(seconds) + ' seconds';
+          },
+          _userTapped (e) {
+              let index = e.model.index,
+                  author = this.comments[index].author;
+              this.fire('view-user', { id: author.id });
           }
         });
     </script>
