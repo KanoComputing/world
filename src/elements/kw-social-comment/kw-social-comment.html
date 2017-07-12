@@ -35,18 +35,22 @@
                 width: 100%;
             }
             .comment-avatar {
-                border-radius: 100%;
-                width: 40px;
-                height: 40px;
-                margin: 0 10px;
                 background-color: var(--color-sky);
+                border-radius: 50%;
+                height: 40px;
+                margin-right: 10px;
                 overflow: hidden;
+                position: relative;
+                transform: translateZ(0);
+                width: 40px;
             }
-            .comment-avatar .avatar {
-                border-radius: 100%;
-                height: auto;
-                margin-top: 5px;
-                width: 100%;
+            .avatar {
+                background-color: var(--color-sky);
+                height: 80px;
+                position: absolute;
+                top: 5px;
+                transform: translateZ(0);
+                width: 40px;
             }
             .comment .avatar {
                 cursor: pointer;
@@ -190,19 +194,29 @@
                 display: none;
             }
         </style>
-        <h3 shown$="[[!comments.length]]">Be the first to comment!</h3>
         <div class="input-comment">
             <div class="comment-avatar">
-                <img class="avatar" src="[[avatar]]"></img>
+                <iron-image class="avatar"
+                            src$="[[avatar]]"
+                            sizing="cover"
+                            preload
+                            fade>
+                            </iron-image>
             </div>
             <form class="comment-form" on-submit="_submitComment">
-                <input class="comment-box" type="text" placeholder="Leave a comment" value="{{comment::input}}" />
+                <input class="comment-box" type="text" placeholder$="[[placeholder]]" value="{{comment::input}}" />
             </form>
         </div>
         <template is="dom-repeat" items="[[comments]]" as="comment">
             <div class$="comment [[_computePostingClass(comment.posting)]]">
                 <div class="comment-avatar">
-                    <img class="avatar" src="[[_computeAvatar(comment)]]" on-tap="_userTapped" />
+                    <iron-image class="avatar"
+                                src$="[[_computeAvatar(comment)]]"
+                                sizing="cover"
+                                preload
+                                fade
+                                on-tap="_userTapped">
+                                </iron-image>
                 </div>
                 <div class="content">
                     <p class="comment-header"><span class="author" on-tap="_userTapped">{{comment.author.username}}</span>
@@ -224,12 +238,20 @@
         Polymer({
             is: 'kw-social-comment',
             properties: {
+                avatar: {
+                    type: String,
+                    computed: '_computeAvatar(user)'
+                },
                 comment: {
                     type: String
                 },
                 comments: {
                     type: Array,
                     notify: true
+                },
+                defaultAvatar: {
+                    type: String,
+                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
                 },
                 itemId: {
                     type: String
@@ -238,6 +260,10 @@
                     type: Number,
                     value: 0,
                     observer: '_onDataLoad'
+                },
+                placeholder: {
+                    type: String,
+                    computed: '_computePlaceholder(comments.*)'
                 },
                 loaderStatus: {
                     type: String,
@@ -250,20 +276,15 @@
                 sharedByUser: {
                     type: Boolean
                 },
-                userId: {
-                    type: String
-                },
-                avatar: {
-                    type: String,
-                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
+                user: {
+                    type: Object
                 }
             },
-            _computeAvatar (comment) {
-                let defaultAvatar = 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png';
-                if (comment && comment.user) {
-                    return comment.author.avatar.urls.character || defaultAvatar;
+            _computeAvatar (user) {
+                if (!user || !user.avatar || !user.avatar.urls) {
+                    return this.defaultAvatar;
                 }
-                return defaultAvatar;
+                return user.avatar.urls.character || this.defaultAvatar;
             },
             _onDataLoad () {
                 if (this.pageNumber === null) {
@@ -290,13 +311,21 @@
                     return false;
                 }
                 return flags.some(flag => {
-                    return flag.author === this.userId;
+                    return flag.author === this.user.id;
                 });
             },
             _computeFlagClass (splice) {
                 let baseClass = 'action flag',
                     activeClass = this._computeFlag(splice.base) ? 'flagged' : 'unflagged';
                 return `${baseClass} ${activeClass}`;
+            },
+            _computePlaceholder (comments) {
+                let defaultCopy = 'Leave a comment',
+                    emptyCopy = 'Be the first to comment';
+                if (!comments || !comments.base) {
+                    return defaultCopy;
+                }
+                return comments.base.length ? defaultCopy : emptyCopy;
             },
             _computePostingClass (posting) {
                 return posting ? 'posting' : '';

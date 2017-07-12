@@ -429,12 +429,12 @@
                             <div class="social-section" name="comments">
                                 <kw-social-comment id="comments"
                                                    comments="[[selectedShare.comments]]"
+                                                   default-avatar="[[defaultAvatar]]"
                                                    page-number="[[selectedShare.pageNumber]]"
                                                    item-id="[[selectedShare.id]]"
                                                    shared-by-user="[[sharedByUser]]"
                                                    tombstone$="[[!selectedShare]]"
-                                                   user-id="[[user.id]]"
-                                                   avatar="[[avatar]]">
+                                                   user="[[user]]">
                                                    </kw-social-comment>
                             </div>
                         </iron-pages>
@@ -467,9 +467,9 @@
                             <li class="action">
                                 <button class$="[[_computeLikeClass(liked)]]" on-tap="_onLikeTapped">
                                     <kano-particle-burst number-particles="40"
-                                    gravity="0.5"
-                                    particle-decay="0.04"
-                                    max-particle-size="13">
+                                                         gravity="0.5"
+                                                         particle-decay="0.04"
+                                                         max-particle-size="13">
                                     <iron-icon class="action-icon" icon="kano-icons:like"></iron-icon>
                                   </kano-particle-burst>
                               </button>
@@ -580,13 +580,6 @@
             observers: [
                 '_shareChanged(selectedShare)'
             ],
-            /** Check whether this share can be remixed (or not) */
-            _appIntegration (availableApps, share) {
-                if (!availableApps || !share) {
-                    return false;
-                }
-                return availableApps.indexOf(share.app) > -1;
-            },
             _computeAppLabel (app) {
                 return appLabels[app] || app;
             },
@@ -727,7 +720,7 @@
             },
             _showLikes () {
                 this.set('section', 'likes');
-            },  
+            },
             _userTapped () {
                 this.fire('view-user', { id: this.selectedShare.user.id });
             }
