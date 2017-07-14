@@ -37,6 +37,7 @@
             .comment-avatar {
                 background-color: var(--color-sky);
                 border-radius: 50%;
+                flex: none;
                 height: 40px;
                 margin-right: 10px;
                 overflow: hidden;
@@ -91,6 +92,7 @@
                 font-size: 16px;
                 font-family: var(--font-body);
                 color: var(--color-abbey);
+                max-width: 450px;
             }
             .comment-header {
                 margin: 0;
@@ -102,6 +104,7 @@
             .content p {
                 margin: 0;
                 padding-bottom: 8px;
+                width: 100%;
             }
             .content .date {
                 font-size: 14px;
@@ -112,6 +115,7 @@
                 font-family: var(--font-body);
                 color: var(--color-abbey);
                 font-size: 16px;
+                word-wrap: break-word;
             }
             .comment-body {
                 color: var(--color-black);
@@ -125,6 +129,7 @@
             .actions {
                 @apply --layout-start;
                 @apply --layout-vertical;
+                flex: none;
             }
             .action:focus {
                 outline: 0;
