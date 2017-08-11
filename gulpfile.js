@@ -32,7 +32,7 @@ function isIndexHtml(file) {
 
 function copyKC (src, dest) {
     dest = dest || 'www';
-    return gulp.src(src, { base: 'src/bower_components/make-apps/app' })
+    return gulp.src(src, { base: 'src/bower_components/kano-code/app' })
         .pipe(gulp.dest(dest));
 }
 
@@ -43,7 +43,7 @@ function copyKW (src, dest) {
 }
 
 gulp.task('copy-kc', () => {
-    return copyKC('src/bower_components/make-apps/app/**/*');
+    return copyKC('src/bower_components/kano-code/app/**/*');
 });
 
 gulp.task('copy-kw', () => {
@@ -81,7 +81,7 @@ gulp.task('watch', function() {
 
 // Move the whole src folder to .tmp. This ensures that the src folder will not be touched
 gulp.task('merge-contexts', (done) => {
-    copyKC('src/bower_components/make-apps/app/**/*', '.tmp').on('end', () => {
+    copyKC('src/bower_components/kano-code/app/**/*', '.tmp').on('end', () => {
         copyKW('src/**/*', '.tmp').on('end', () => {
             done();
         });
