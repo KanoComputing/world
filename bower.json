@@ -41,7 +41,7 @@
     "prism-element": "PolymerElements/prism-highlighter#^1.2.0",
     "lazy-imports": "Polymer/lazy-imports#^0.0.2",
     "web-components": "git@github.com:KanoComputing/web-components.git",
-    "make-apps": "git@github.com:KanoComputing/make-apps.git#lightboard"
+    "kano-code": "git@github.com:KanoComputing/kano-code.git#lightboard"
   },
   "resolutions": {
     "fetch": "^1.0.0"
