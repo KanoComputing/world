@@ -169,5 +169,5 @@ gulp.task('safari-9-support', () => {
 });
 
 gulp.task('build', () => {
-    return runSequence('merge-contexts', 'config', 'copy', 'polyfill', 'compress', 'safari-9-support', 'sw', 'rewrite-sw');
+    return runSequence('merge-contexts', 'config', 'shards', 'copy', 'polyfill', 'compress', 'safari-9-support', 'sw', 'rewrite-sw');
 });
