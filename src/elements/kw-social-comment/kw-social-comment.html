@@ -29,15 +29,32 @@
             }
             .input-comment {
                 @apply --layout-horizontal;
-                @apply --layout-start;
                 border-bottom: 1px solid var(--color-porcelain);
                 padding-bottom: 24px;
                 margin: 24px 0 0 0;
                 width: 100%;
             }
             .comment-avatar {
-                @apply --layout-flex-1;
-                margin-right: 28px;
+                background-color: var(--color-sky);
+                border-radius: 50%;
+                flex: none;
+                height: 40px;
+                margin-right: 10px;
+                overflow: hidden;
+                position: relative;
+                transform: translateZ(0);
+                width: 40px;
+            }
+            .avatar {
+                background-color: var(--color-sky);
+                height: 80px;
+                position: absolute;
+                top: 5px;
+                transform: translateZ(0);
+                width: 40px;
+            }
+            .comment .avatar {
+                cursor: pointer;
             }
             iron-image {
                 height: 32px;
@@ -45,7 +62,7 @@
                 border-radius: 50%;
             }
             .comment-form {
-                width: 100%;
+                @apply --layout-flex-2;
             }
             .comment-box {
                 border: 1px solid var(--color-porcelain);
@@ -62,7 +79,7 @@
             }
             .comment {
                 @apply --layout-horizontal;
-                @apply --layout-center;
+                @apply --layout-start;
                 border-bottom: 1px solid var(--color-porcelain);
                 padding: 24px 0 16px 0;
                 width: 100%;
@@ -71,10 +88,11 @@
                 opacity: 0.6;
             }
             .content {
+                @apply --layout-flex-2;
                 font-size: 16px;
                 font-family: var(--font-body);
                 color: var(--color-abbey);
-                width: 100%;
+                max-width: 450px;
             }
             .comment-header {
                 margin: 0;
@@ -86,6 +104,7 @@
             .content p {
                 margin: 0;
                 padding-bottom: 8px;
+                width: 100%;
             }
             .content .date {
                 font-size: 14px;
@@ -96,18 +115,21 @@
                 font-family: var(--font-body);
                 color: var(--color-abbey);
                 font-size: 16px;
+                word-wrap: break-word;
             }
             .comment-body {
                 color: var(--color-black);
             }
             .author {
                 color: var(--color-kano-orange);
+                cursor: pointer;
                 font-weight: bold;
                 margin-right: 5px;
             }
             .actions {
                 @apply --layout-start;
                 @apply --layout-vertical;
+                flex: none;
             }
             .action:focus {
                 outline: 0;
@@ -127,6 +149,7 @@
             }
             .action.flag.flagged {
                 color: var(--color-carnation);
+                cursor: default;
             }
             .action.flag .icon {
                 height: 16px;
@@ -176,23 +199,33 @@
                 display: none;
             }
         </style>
-        <h3 shown$="[[!comments.length]]">Be the first to comment!</h3>
-        <div class="input-comment" hidden$="[[sharedByUser]]">
+        <div class="input-comment">
             <div class="comment-avatar">
-                <iron-image preload placeholder="../../assets/avatar/judoka-face.svg" fade sizing="contain"></iron-image>
+                <iron-image class="avatar"
+                            src$="[[avatar]]"
+                            sizing="cover"
+                            preload
+                            fade>
+                            </iron-image>
             </div>
             <form class="comment-form" on-submit="_submitComment">
-                <input class="comment-box" type="text" placeholder="Leave a comment" value="{{comment::input}}" />
+                <input class="comment-box" type="text" placeholder$="[[placeholder]]" value="{{comment::input}}" />
             </form>
         </div>
         <template is="dom-repeat" items="[[comments]]" as="comment">
             <div class$="comment [[_computePostingClass(comment.posting)]]">
                 <div class="comment-avatar">
-                    <iron-image preload placeholder="/assets/icons/shares/commentAvatar.svg" fade sizing="contain" src="{{comment.author.avatar.urls.circle}}"></iron-image>
+                    <iron-image class="avatar"
+                                src$="[[_computeAvatar(comment)]]"
+                                sizing="cover"
+                                preload
+                                fade
+                                on-tap="_userTapped">
+                                </iron-image>
                 </div>
                 <div class="content">
-                    <p class="comment-header"><span class="author">{{comment.author.username}}</span>
-                      <span class="date">[[_timeSince(comment.date_created)]] ago</span>
+                    <p class="comment-header"><span class="author" on-tap="_userTapped">{{comment.author.username}}</span>
+                      <span class="date">[[_timeSince(comment.date_created, comments.*)]] ago</span>
                     </p>
                     <p class="comment-body"><span inner-h-t-m-l="[[_lb(comment.text)]]"></span></p>
                 </div>
@@ -210,12 +243,20 @@
         Polymer({
             is: 'kw-social-comment',
             properties: {
+                avatar: {
+                    type: String,
+                    computed: '_computeAvatar(user)'
+                },
                 comment: {
                     type: String
                 },
                 comments: {
                     type: Array,
                     notify: true
+                },
+                defaultAvatar: {
+                    type: String,
+                    value: 'https://s3.amazonaws.com/kano-avatars/judoka-standard.png'
                 },
                 itemId: {
                     type: String
@@ -224,6 +265,10 @@
                     type: Number,
                     value: 0,
                     observer: '_onDataLoad'
+                },
+                placeholder: {
+                    type: String,
+                    computed: '_computePlaceholder(comments.*)'
                 },
                 loaderStatus: {
                     type: String,
@@ -236,9 +281,15 @@
                 sharedByUser: {
                     type: Boolean
                 },
-                userId: {
-                    type: String
+                user: {
+                    type: Object
                 }
+            },
+            _computeAvatar (user) {
+                if (!user || !user.avatar || !user.avatar.urls) {
+                    return this.defaultAvatar;
+                }
+                return user.avatar.urls.character || this.defaultAvatar;
             },
             _onDataLoad () {
                 if (this.pageNumber === null) {
@@ -260,22 +311,26 @@
             _createDate (formatted) {
                 return new Date(formatted);
             },
-            _commentButtonTapped () {
-                this.fire('post-comment', { value: this.$.comment.value });
-                this.$.comment.value = '';
-            },
             _computeFlag (flags) {
                 if (!flags) {
                     return false;
                 }
                 return flags.some(flag => {
-                    return flag.author === this.userId;
+                    return flag.author === this.user.id;
                 });
             },
             _computeFlagClass (splice) {
                 let baseClass = 'action flag',
                     activeClass = this._computeFlag(splice.base) ? 'flagged' : 'unflagged';
                 return `${baseClass} ${activeClass}`;
+            },
+            _computePlaceholder (comments) {
+                let defaultCopy = 'Leave a comment',
+                    emptyCopy = 'Be the first to comment';
+                if (!comments || !comments.base) {
+                    return defaultCopy;
+                }
+                return comments.base.length ? defaultCopy : emptyCopy;
             },
             _computePostingClass (posting) {
                 return posting ? 'posting' : '';
@@ -293,7 +348,11 @@
             },
             _flagButtonTapped (e) {
                 let index = e.model.index,
-                    id = this.comments[index].id;
+                    id = this.comments[index].id,
+                    flaged = this._computeFlag(this.comments[index].flags);
+                if (flaged) {
+                    return;
+                }
                 this.fire('flag-comment', {
                     index,
                     id
@@ -306,6 +365,7 @@
             _submitComment (e) {
                 e.preventDefault();
                 this.fire('post-comment', { value: this.comment });
+                this.comment = '';
             },
             _timeSince (date) {
               let parsedDate = new Date(date),
@@ -331,6 +391,11 @@
                   return interval + ' minutes';
               }
               return Math.floor(seconds) + ' seconds';
+          },
+          _userTapped (e) {
+              let index = e.model.index,
+                  author = this.comments[index].author;
+              this.fire('view-user', { id: author.id });
           }
         });
     </script>

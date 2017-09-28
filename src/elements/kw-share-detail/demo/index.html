@@ -17,6 +17,8 @@
             }
             kw-share-detail {
                 --kw-share-detail-player-height: 320px;
+                --kw-share-detail-share-background: aliceblue;
+                border-radius: 0px;
             }
         </style>
     </head>
@@ -33,11 +35,11 @@
                             var card = document.getElementById('share'),
                                 button = document.getElementById('toggle');
 
-                            card.share = SHARE;
+                            card.selectedShare = SHARE;
 
                             button.addEventListener('click', () => {
-                                card.share = card.share ? null : SHARE;
-                                if (card.share) {
+                                card.selectedShare = card.selectedShare ? null : SHARE;
+                                if (card.selectedShare) {
                                     card.removeAttribute('tombstone');
                                 } else {
                                     card.setAttribute('tombstone', true);
