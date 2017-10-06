@@ -1,13 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/app-route/app-route.html">
-<link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/web-components/kano-nav/kano-nav.html">
 <link rel="import" href="../../bower_components/web-components/kano-primary-links/kano-primary-links.html">
 <link rel="import" href="../../bower_components/web-components/kano-user-menu/kano-user-menu.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
-<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/lazy-imports/lazy-imports.html">
+<link rel="import" href="/elements/kw-view-projects/kw-view-projects.html">
 
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../kw-stat-card/kw-stat-card.html">
@@ -17,12 +14,7 @@
 <link rel="import" href="../../js/config.html">
 
 <dom-module id="kw-app">
-    <link rel="lazy-import" href="/elements/kw-view-start/kw-view-start.html" group="start">
-    <link rel="lazy-import" href="/elements/kw-view-projects/kw-view-projects.html" group="projects">
-    <link rel="lazy-import" href="/elements/kw-view-feed/kw-view-feed.html" group="shares">
-    <link rel="lazy-import" href="/elements/kw-music-share/kw-music-share.html" group="kw-music-share">
     <link rel="lazy-import" href="/elements/kw-blank-project-modal/kw-blank-project-modal.html" group="project-modal">
-    <link rel="lazy-import" href="/elements/kw-onboarding-modal/kw-onboarding-modal.html" group="onboarding-modal">
     <link rel="lazy-import" href="/bower_components/web-components/kano-auth/kano-auth.html" group="auth-modal">
     <link rel="lazy-import" href="/elements/kw-alert-modal/kw-alert-modal.html" group="kw-alert-modal">
     <template>
@@ -40,7 +32,7 @@
             kano-user-menu {
                 --kano-user-menu-font-family: var(--font-body);
             }
-            iron-lazy-pages>*:not(template) {
+            .pages>* {
                 @apply --layout-vertical;
                 min-height: calc(100vh - 60px);
             }
@@ -65,9 +57,6 @@
                 background-color: #e9e9e9;
                 min-height: 515px;
                 border-top: 1px solid #979797;
-            }
-            kw-view-feed {
-                background-color: #f1f1f1;
             }
             .footer {
                 width: 100%;
@@ -132,21 +121,12 @@
             *[hidden] {
                 display: none !important;
             }
-            iron-pages {
-                opacity: 0;
-                pointer-events: none;
-            }
-            iron-pages[unresolved] {
-                opacity: 1;
-            }
             .footer[page="shares"] {
                 display: none !important;
             }
         </style>
-        <app-location route="{{route}}"></app-location>
-        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
         <kano-session id="session" user="{{user}}" token="{{token}}" include-profile></kano-session>
-        <div class="footer" hidden$="[[simplePage]]" page$="[[routeData.page]]">
+        <div class="footer">
             <div class="stats">
                 <kw-stat-card class="connected" heading="Connected Kanos" value="[[_commaify(stats.total_users)]]" icon-src="/assets/icons/stats/connected.png"></kw-stat-card>
                 <kw-stat-card class="lines" heading="Lines of code" value="[[_commaify(stats.total_lines_of_code)]]" icon-src="/assets/icons/stats/lines-of-code.png"></kw-stat-card>
@@ -165,15 +145,12 @@
                 </div>
             </div>
         </div>
-        <!-- for now modals need to be taken out of the stacking context of view elements because of overlay issues, see https://github.com/PolymerElements/polymer-starter-kit/issues/154 -->
-        <kano-onboarding-modal id="onboarding-modal"></kano-onboarding-modal>
         <kano-auth id="auth"
                    on-login="_onLogin"
                    world-url="{{config.WORLD_URL}}"
                    api-url="{{config.API_URL}}"
                    assets-path="/assets"
                    on-success="_authSuccess"
-                   on-skip="_redirectToProjects"
                    on-cancel="_authCancelled"></kano-auth>
         <kw-blank-project-modal id="project-modal" opened="{{projectModalOpened}}" hidden$="[[!projectModalOpened]]"></kw-blank-project-modal>
         <kw-alert-modal id="unsubscribe-modal"
@@ -183,32 +160,14 @@
             <p>You have been unsubscribed from receiving Kano World alerts</p>
         </kw-alert-modal>
         <div class="pages">
-            <iron-pages attr-for-selected="name" selected="[[routeData.page]]" class="shell-pages" unresolved$="[[loadingPage]]">
-                <div name="projects" class="projects-shell">
-                    <div class="masthead"></div>
-                    <div class="project-launch"></div>
-                    <div class="category"></div>
-                    <div class="category"></div>
-                </div>
-            </iron-pages>
-            <iron-lazy-pages attr-for-selected="name" selected="[[routeData.page]]" loading="{{loadingPage}}" restamp hide-immediately>
-                <template is="iron-lazy-page" name="start" path="/elements/kw-view-start/kw-view-start.html">
-                    <kw-view-start class="simple-page" on-login="openLogin"></kw-view-start>
-                </template>
-                <template is="iron-lazy-page" name="projects" path="/elements/kw-view-projects/kw-view-projects.html">
-                    <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
-                </template>
-                <template is="iron-lazy-page" name="shares" path="/elements/kw-view-feed/kw-view-feed.html">
-                    <kw-view-feed route="{{subroute}}" on-login="openLogin"></kw-view-feed>
-                </template>
-            </iron-lazy-pages>
+            <kw-view-projects on-show-modal="showProjectModal"></kw-view-projects>
         </div>
         <kano-nav id="nav"
                   assets-path="/assets/navbar/"
-                  site-root="/start">
+                  site-root="/projects">
             <kano-primary-links assets-path="/assets/navbar/"
                                 current-site="[[config.WORLD_URL]]"
-                                selected-link="[[_computeSelectedLink(route.path)]]"
+                                selected-link="projects"
                                 slot="primary"
                                 store-root="[[config.STORE_URL]]"
                                 world-root="[[config.WORLD_URL]]">
@@ -229,10 +188,6 @@
     </template>
     <script>
     (function() {
-        const catchUrls = [/^\/projects$/, /^\/start$/];
-        if (Kano.World.config.ENV !== 'production') {
-            catchUrls.push(/^\/shares/);
-        }
         const loadedImports = {};
         Polymer({
             is: 'kw-app',
@@ -253,8 +208,7 @@
             },
             observers: [
                 '_tokenChanged(token)',
-                '_userChanged(user)',
-                '_viewChanged(routeData.page)'
+                '_userChanged(user)'
             ],
             listeners: {
                 'iron-overlay-opened': '_onModalOpened',
@@ -266,32 +220,10 @@
                     this.stats = stats;
                 });
                 this.async(() => this._checkNewsletterSubscription());
+                this.dispatchVirtualPageView(document.title, window.location.pathname);
             },
             detached () {
                 this._stopNotificationsPolling();
-            },
-            _viewChanged (view) {
-                this.debounce('viewChanged', () => {
-                    this.dispatchVirtualPageView(document.title, window.location.pathname);
-                });
-                if (view === 'start') {
-                    this.simplePage = true;
-                    localStorage.setItem('onboarding', true);
-                }
-                if (view === 'projects') {
-                    this.debounce('enableOnboarding', this._enableOnboardingModal, 1000);
-                }
-            },
-            _computeSelectedLink (path) {
-                let localLink = catchUrls.some(url => url.test(path));
-                if (!localLink) {
-                    location.reload();
-                    // Hides the pages to make sure no future content is displayed while old KW loads
-                    // Prepares the page to look like the loading screen of the old KW
-                    document.body.innerHTML = '';
-                    document.body.style.background = '#333';
-                }
-                return path.split('/')[1];
             },
             _logout () {
                 this.$.session.logout();
@@ -341,38 +273,6 @@
                     });
                 }
             },
-            _enableOnboardingModal () {
-                this.async(() => {
-                    if (this._needOnboardingModal()) {
-                        this._openOnboardingModal();
-                        localStorage.setItem('onboarding-cta', new Date().getTime());
-                    }
-                }, 5000);
-            },
-            _needOnboardingModal () {
-                return !(this._hasUserDoneOnboarding() || this._hasModalShownRecently() || this.modalOpened);
-            },
-            _hasUserDoneOnboarding () {
-                return this.user || localStorage.getItem('onboarding') || localStorage.getItem('progress') && localStorage.getItem('progress') !== 'null';
-            },
-            _hasModalShownRecently () {
-                let onboardingToken = localStorage.getItem('onboarding-cta');
-                if (!onboardingToken) {
-                    return;
-                }
-                //true if shown in last 30 minutes
-                return (new Date().getTime() - parseInt(onboardingToken)) < 30000000;
-            },
-            _openOnboardingModal () {
-                if (loadedImports['onboarding-modal']) {
-                    this.$['onboarding-modal'].open();
-                } else {
-                    this.importLazyGroup('onboarding-modal').then(() => {
-                        loadedImports['onboarding-modal'] = true;
-                        this.$['onboarding-modal'].open();
-                    });
-                }
-            },
             _commaify (n) {
                 return n.toLocaleString();
             },
@@ -397,9 +297,6 @@
                     });
             },
             _tokenChanged (token) {
-                if (this.routeData.page === "start" && token) {
-                    this.set('route.path', '/projects');
-                }
                 if (token) {
                     this._startNotificationsPolling();
                 } else {
@@ -410,10 +307,8 @@
                 this.debounce('userChanged', () => {
                     if (user) {
                         this.updateVisitType('Logged in');
-                        this.$.nav.siteRoot = '/projects';
                     } else {
                         this.updateVisitType('Logged out');
-                        this.$.nav.siteRoot = '/start';
                     }
                 });
             },
@@ -433,13 +328,9 @@
                     this.set('authCallbacks', null);
                 }
             },
-            _redirectToProjects () {
-                this.set('route.path', '/projects');
-            },
             _checkNewsletterSubscription () {
                 let check = /.*status=unsubscribe.*/;
                 if (check.test(window.location.search)) {
-                    localStorage.setItem('onboarding', true);
                     if (loadedImports['kw-alert-modal']) {
                         this.$['unsubscribe-modal'].open();
                     } else {
