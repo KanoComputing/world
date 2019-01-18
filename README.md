@@ -1,3 +1,7 @@
+# 🚨world - Unmaintained 🚨
+
+ This codebase was a transition step before we were able to re-implement Kano World entirely in Polymer. As of January 2019, it has been completely [superseded](https://github.com/KanoComputing/hour-of-code/).
+
 ## Dependencies
 
 The dependencies of the project itself are managed with `bower`, the dependencies for the build/dev tasks are managed with `npm` modules.
